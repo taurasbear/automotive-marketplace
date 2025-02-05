@@ -1,0 +1,6 @@
+@Automotive.Marketplace.Server_HostAddress = http://localhost:5062
+
+GET {{Automotive.Marketplace.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
