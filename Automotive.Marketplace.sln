@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automotive.Marketplace.Server", "Automotive.Marketplace.Server\Automotive.Marketplace.Server.csproj", "{36CBF166-B680-4515-B6FB-0C9A44F0A83A}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "automotive.marketplace.client", "automotive.marketplace.client\automotive.marketplace.client.esproj", "{FE4338AC-9165-42D2-98A1-A3A955CAE2BB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D97E448D-AF87-4A99-A5BD-D47AE64372E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{FE4338AC-9165-42D2-98A1-A3A955CAE2BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE4338AC-9165-42D2-98A1-A3A955CAE2BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE4338AC-9165-42D2-98A1-A3A955CAE2BB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D97E448D-AF87-4A99-A5BD-D47AE64372E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D97E448D-AF87-4A99-A5BD-D47AE64372E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D97E448D-AF87-4A99-A5BD-D47AE64372E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D97E448D-AF87-4A99-A5BD-D47AE64372E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

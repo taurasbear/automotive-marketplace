@@ -15,7 +15,6 @@ RUN apt-get install curl
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get -y install nodejs
 
-
 FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
