@@ -1,11 +1,11 @@
 services:
   automotive.marketplace.server:
-    image: ${DOCKER_REGISTRY-}automotivemarketplaceserver
+    image: ${DOCKER_REGISTRY-}automotive.marketplace.server
     build:
       context: .
       dockerfile: Automotive.Marketplace.Server/Dockerfile
   automotive.marketplace.client:
-    image: ${DOCKER_REGISTRY-}automotivemarketplaceclient
+    image: ${DOCKER_REGISTRY-}automotive.marketplace.client
     build:
       context: ./automotive-marketplace.client
       target: production
