@@ -1,5 +1,7 @@
 services:
   automotive.marketplace.server:
+    build:
+      target: base
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -8,8 +10,9 @@ services:
       - "8080"
       - "8081"
     volumes:
+      - ./Automotive.Marketplace.Server:/app
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
 
   automotive.marketplace.client:
     build:
@@ -17,7 +20,9 @@ services:
       target: development
     environment:
       - NODE_ENV=development
+      - APPDATA=/home/app/.aspnet
     ports:
-      - "3000"
+      - "57263:57263"
     volumes:
       - ./automotive.marketplace.client:/app
+      - /app/node_modules

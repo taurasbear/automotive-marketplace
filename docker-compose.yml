@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Automotive.Marketplace.Server/Dockerfile
   automotive.marketplace.client:
-    image: ${DOCKER_REGISTRY-}automotivemarketplaceserver
+    image: ${DOCKER_REGISTRY-}automotivemarketplaceclient
     build:
       context: ./automotive-marketplace.client
       target: production
