@@ -13,6 +13,10 @@ services:
       - ./Automotive.Marketplace.Server:/app
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
+    networks:
+      - app-network
+    depends_on:
+      - db
 
   automotive.marketplace.client:
     image: ${DOCKER_REGISTRY-}automotive.marketplace.client:dev
@@ -21,9 +25,21 @@ services:
       target: development
     environment:
       - NODE_ENV=development
-      - APPDATA=/home/app/.aspnet
+      - VITE_API_URL=http://automotive.marketplace.server:8080
     ports:
       - "57263:57263"
     volumes:
       - ./automotive.marketplace.client:/app
       - /app/node_modules
+    networks:
+      - app-network
+    depends_on:
+      - automotive.marketplace.server
+  
+  db:
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
