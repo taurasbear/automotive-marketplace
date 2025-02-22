@@ -14,7 +14,8 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
 
-  automotive.marketplace.client:dev:
+  automotive.marketplace.client:
+    image: ${DOCKER_REGISTRY-}automotive.marketplace.client:dev
     build:
       context: ./automotive.marketplace.client
       target: development
