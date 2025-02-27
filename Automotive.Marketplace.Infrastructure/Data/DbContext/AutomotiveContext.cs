@@ -17,6 +17,7 @@
 
         public override int SaveChanges()
         {
+            //var entries = ChangeTracker.Entries().Where()
             return base.SaveChanges();
         }
     }
