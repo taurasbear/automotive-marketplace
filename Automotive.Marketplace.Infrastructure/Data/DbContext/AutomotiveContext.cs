@@ -30,7 +30,51 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Model>()
+                .HasOne(mo => mo.Make)
+                .WithMany(ma => ma.Models)
+                .HasForeignKey(mo => mo.MakeId);
 
+            modelBuilder.Entity<Car>()
+                .HasOne(c => c.Model)
+                .WithMany(md => md.Cars)
+                .HasForeignKey(c => c.ModelId);
+
+            modelBuilder.Entity<CarDetails>()
+                .HasOne(cd => cd.Car)
+                .WithMany(c => c.CarDetails)
+                .HasForeignKey(cd => cd.CarId);
+
+            modelBuilder.Entity<Listing>()
+                .HasOne(l => l.CarDetails)
+                .WithOne(cd => cd.Listing)
+                .HasForeignKey<Listing>(l => l.CarDetailsId);
+
+            modelBuilder.Entity<Image>()
+                .HasOne(i => i.Listing)
+                .WithMany(l => l.Images)
+                .HasForeignKey(i => i.ListingId);
+
+            modelBuilder.Entity<Listing>()
+                .HasOne(l => l.Seller)
+                .WithMany(s => s.Listings)
+                .HasForeignKey(l => l.SellerId);
+
+            modelBuilder.Entity<Client>()
+                .HasMany(c => c.LikedListings)
+                .WithMany(l => l.LikeClients)
+                .UsingEntity<ClientListingLike>(
+                    cll => cll.HasOne(cll => cll.Listing)
+                    .WithMany()
+                    .HasForeignKey(cll => cll.ListingId),
+                    cll => cll.HasOne(cll => cll.Client)
+                    .WithMany()
+                    .HasForeignKey(cll => cll.ClientId)
+                );
+
+            modelBuilder.Entity<ClientListingLike>()
+                .HasIndex(cll => new { cll.ClientId, cll.ListingId })
+                .IsUnique();
         }
 
         public override int SaveChanges()
