@@ -8,11 +8,29 @@
         public AutomotiveContext(DbContextOptions options)
         : base(options) { }
 
-        DbSet<Make> Makes;
+        public DbSet<Admin> Admins { get; set; }
+
+        public DbSet<Car> Cars { get; set; }
+
+        public DbSet<CarDetails> CarsDetails { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<Image> Images { get; set; }
+
+        public DbSet<Listing> Listings { get; set; }
+
+        public DbSet<Login> Logins { get; set; }
+
+        public DbSet<Make> Makes { get; set; }
+
+        public DbSet<Model> Models { get; set; }
+
+        public DbSet<Seller> Sellers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
         }
 
         public override int SaveChanges()

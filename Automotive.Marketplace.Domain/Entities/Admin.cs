@@ -2,7 +2,7 @@
 {
     using Automotive.Marketplace.Domain.Enums;
 
-    public class Admin : BaseEntity
+    public class Admin : Login
     {
         public Role Role { get; set; }
     }

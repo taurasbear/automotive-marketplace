@@ -15,5 +15,11 @@
         public int Mileage { get; set; }
 
         public bool IsSteeringWheelRight { get; set; }
+
+        public Guid CarId { get; set; }
+
+        public Car Car { get; set; } = new Car();
+
+        public Listing Listing { get; set; } = new Listing();
     }
 }
