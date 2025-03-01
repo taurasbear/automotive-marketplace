@@ -26,6 +26,7 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://automotive.marketplace.server:8080
+      - CHOKIDAR_USEPOLLING=true
     ports:
       - "57263:57263"
     volumes:
