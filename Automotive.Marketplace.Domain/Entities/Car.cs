@@ -1,5 +1,7 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities
 {
+    using Automotive.Marketplace.Domain.Enums;
+
     public class Car : BaseEntity
     {
         public DateTime Year { get; set; }
@@ -7,5 +9,11 @@
         public Fuel Fuel { get; set; }
 
         public Transmission Transmission { get; set; }
+
+        public BodyType BodyType { get; set; }
+
+        public Drivetrain Drivetrain { get; set; }
+
+        public int DoorCount { get; set; }
     }
 }
