@@ -75,6 +75,8 @@
             modelBuilder.Entity<ClientListingLike>()
                 .HasIndex(cll => new { cll.ClientId, cll.ListingId })
                 .IsUnique();
+
+            modelBuilder.Seed();
         }
 
         public override int SaveChanges()
