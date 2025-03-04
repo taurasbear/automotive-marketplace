@@ -2,14 +2,11 @@ import CarListingCard from "../components/CarListingCard";
 
 const CarListings = () => {
     return (
-        <div>
-            <h1 className="text-3xl font-bold underline">
-                Car Listings :33
-            </h1>
-            <h1>
-                This is a test!
-            </h1>
-            <CarListingCard/>
+        <div className="flex flex-row justify-center">
+            <div className="flex flex-col gap-10 justify-end w-[39rem] bg-mint-500">
+                <CarListingCard />
+                <CarListingCard />
+            </div>
         </div>
     );
 }

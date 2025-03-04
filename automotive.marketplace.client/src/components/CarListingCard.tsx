@@ -11,8 +11,8 @@ const CarListingCard = () => {
             <div className="flex flex-col flex-grow justify-between min-w-0">
                 <div className="flex flex-row justify-between w-full">
                     <div className="truncate">
-                        <p className="truncate">Toyota prius</p>
-                        <p>2025</p>
+                        <p className="truncate font-sans">Toyota prius</p>
+                        <p className="font-mono">2025</p>
                     </div>
                     <p className="flex-shrink-0">9000 eur</p>
                 </div>
