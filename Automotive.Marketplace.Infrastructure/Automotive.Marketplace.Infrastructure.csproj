@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Automotive.Marketplace.Domain\Automotive.Marketplace.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
