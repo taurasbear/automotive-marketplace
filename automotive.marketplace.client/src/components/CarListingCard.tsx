@@ -1,6 +1,6 @@
 const CarListingCard = () => {
     return (
-        <div className="flex flex-row gap-2 w-full">
+        <div className="flex flex-row gap-2 w-full bg-surface">
             <div className="w-40 h-32 flex-shrink-0">
                 <img
                     alt="Toyota Prius 2025"
@@ -11,10 +11,10 @@ const CarListingCard = () => {
             <div className="flex flex-col flex-grow justify-between min-w-0">
                 <div className="flex flex-row justify-between w-full">
                     <div className="truncate">
-                        <p className="truncate font-sans">Toyota prius</p>
-                        <p className="font-mono">2025</p>
+                        <p className="truncate font-sans font-semibold">Toyota prius</p>
+                        <p className="font-sans">2025</p>
                     </div>
-                    <p className="flex-shrink-0">9000 eur</p>
+                    <p className="flex-shrink-0 font-sans font-semibold">9000 eur</p>
                 </div>
                 <div className="flex flex-row gap-2 flex-wrap">
                     <p>Benzinas/Elektra</p>
