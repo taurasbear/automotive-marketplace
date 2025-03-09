@@ -4,6 +4,6 @@
 
     public interface IListingRepository
     {
-        Task<IEnumerable<Listing>> GetListingDetailsWithCar(CancellationToken cancellationToken);
+        Task<IList<Listing>> GetListingDetailsWithCar(CancellationToken cancellationToken);
     }
 }

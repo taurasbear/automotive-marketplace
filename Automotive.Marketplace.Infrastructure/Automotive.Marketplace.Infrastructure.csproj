@@ -11,11 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Automotive.Marketplace.Application\Automotive.Marketplace.Application.csproj" />
     <ProjectReference Include="..\Automotive.Marketplace.Domain\Automotive.Marketplace.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

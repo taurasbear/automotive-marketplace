@@ -2,7 +2,7 @@
 {
     using AutoMapper;
     using Automotive.Marketplace.Application.Interfaces.Data;
-    using System;
+    using Automotive.Marketplace.Domain.Entities;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -11,9 +11,9 @@
         public GetListingDetailsWithCarHandler(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         { }
 
-        public override Task<GetListingDetailsWithCarResponse> Handle(GetListingDetailsWithCarRequest request, CancellationToken cancellationToken)
+        public override async Task<GetListingDetailsWithCarResponse> Handle(GetListingDetailsWithCarRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IList<Listing> listingDetailsWithCar = await this.UnitOfWork.ListingRepository.GetListingDetailsWithCar(cancellationToken);
         }
     }
 }
