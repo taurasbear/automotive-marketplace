@@ -18,8 +18,8 @@
 
         public Guid CarId { get; set; }
 
-        public Car Car { get; set; } = new Car();
+        public Car Car { get; set; } = null!;
 
-        public Listing Listing { get; set; } = new Listing();
+        public Listing Listing { get; set; } = null!;
     }
 }

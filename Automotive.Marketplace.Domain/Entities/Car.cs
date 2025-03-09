@@ -19,7 +19,7 @@
 
         public Guid ModelId { get; set; }
 
-        public Model Model { get; set; } = new Model();
+        public Model Model { get; set; } = null!;
 
         public ICollection<CarDetails> CarDetails { get; set; } = new Collection<CarDetails>();
     }

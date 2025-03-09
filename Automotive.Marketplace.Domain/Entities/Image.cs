@@ -8,6 +8,6 @@
 
         public Guid ListingId { get; set; }
 
-        public Listing Listing { get; set; } = new Listing();
+        public Listing Listing { get; set; } = null!;
     }
 }

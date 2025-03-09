@@ -8,7 +8,7 @@
 
         public Guid MakeId { get; set; }
 
-        public Make Make { get; set; } = new Make();
+        public Make Make { get; set; } = null!;
 
         public ICollection<Car> Cars { get; set; } = new Collection<Car>();
     }

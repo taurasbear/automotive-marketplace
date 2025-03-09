@@ -4,10 +4,10 @@
     {
         public Guid ListingId { get; set; }
 
-        public Listing Listing { get; set; } = new Listing();
+        public Listing Listing { get; set; } = null!;
 
         public Guid ClientId { get; set; }
 
-        public Client Client { get; set; } = new Client();
+        public Client Client { get; set; } = null!;
     }
 }
