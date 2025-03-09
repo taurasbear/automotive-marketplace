@@ -1,8 +1,13 @@
 ﻿namespace Automotive.Marketplace.Application.Interfaces.Data
 {
-    using System;
+    using Automotive.Marketplace.Application.Interfaces.Data.Repositories;
 
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
+        //TODO Add the rest of the repositories
+
+        public IListingRepository ListingRepository { get; }
+
+        public Task SaveAsync(CancellationToken cancellatioToken);
     }
 }
