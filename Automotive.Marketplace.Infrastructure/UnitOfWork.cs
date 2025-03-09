@@ -43,9 +43,9 @@
             GC.SuppressFinalize(this);
         }
 
-        public Task SaveAsync(CancellationToken cancellatioToken)
+        public async Task SaveAsync(CancellationToken cancellatioToken)
         {
-            throw new NotImplementedException();
+            await automotiveContext.SaveChangesAsync(cancellatioToken);
         }
     }
 }
