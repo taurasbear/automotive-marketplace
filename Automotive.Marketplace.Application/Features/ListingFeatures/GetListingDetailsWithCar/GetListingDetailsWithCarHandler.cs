@@ -2,7 +2,6 @@
 {
     using AutoMapper;
     using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Domain.Entities;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -13,7 +12,9 @@
 
         public override async Task<GetListingDetailsWithCarResponse> Handle(GetListingDetailsWithCarRequest request, CancellationToken cancellationToken)
         {
-            IList<Listing> listingDetailsWithCar = await this.UnitOfWork.ListingRepository.GetListingDetailsWithCar(cancellationToken);
+            var listingDetailsWithCar = await this.UnitOfWork.ListingRepository.GetListingDetailsWithCar(cancellationToken);
+
+            return this.Mapper.Map<GetListingDetailsWithCarResponse>(listingDetailsWithCar);
         }
     }
 }

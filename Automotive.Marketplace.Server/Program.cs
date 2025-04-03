@@ -1,8 +1,14 @@
+using Automotive.Marketplace.Application;
+using Automotive.Marketplace.Infrastructure;
+using Automotive.Marketplace.Infrastructure.Data.DbContext;
+using Microsoft.EntityFrameworkCore;
+
 var AllowClientOrigins = "allowClientOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddCors(options =>
 {
@@ -15,6 +21,21 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
+
+string? connectionString;
+if (builder.Environment.IsDevelopment())
+{
+    var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+    connectionString = isDocker
+        ? builder.Configuration.GetConnectionString("Docker")
+        : builder.Configuration.GetConnectionString("Development");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("Production");
+}
+builder.Services.ConfigureInfrastructure(connectionString);
+builder.Services.ConfigureApplication();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\Automotive.Marketplace.Application\Automotive.Marketplace.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FeatureTests\" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

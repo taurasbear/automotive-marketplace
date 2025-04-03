@@ -36,7 +36,17 @@ services:
       - app-network
     depends_on:
       - automotive.marketplace.server
-  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - db
   db:
     networks:
       - app-network

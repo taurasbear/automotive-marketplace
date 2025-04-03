@@ -15,8 +15,9 @@ services:
       POSTGRES_USER: taurasbear
       POSTGRES_PASSWORD: supersecret123
       POSTGRES_DB: automotive_marketplace
+      PGPORT: 5433
     ports:
-      - "5432"
+      - "5433:5433" # remove outside mapped port if necessary
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

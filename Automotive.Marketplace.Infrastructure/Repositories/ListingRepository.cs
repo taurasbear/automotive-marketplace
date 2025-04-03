@@ -15,6 +15,7 @@
             return await this.automotiveContext.Listings
                 .Include(listing => listing.CarDetails)
                 .ThenInclude(cardetails => cardetails.Car)
+                .ThenInclude(car => car.Model)
                 .ToListAsync(cancellationToken);
         }
     }
