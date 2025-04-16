@@ -17,7 +17,7 @@ services:
       POSTGRES_DB: automotive_marketplace
       PGPORT: 5433
     ports:
-      - "5433:5433" # remove outside mapped port if necessary
+      - "5433:5433"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

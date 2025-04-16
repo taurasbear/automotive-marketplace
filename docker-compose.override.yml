@@ -43,6 +43,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     networks:
       - app-network
     depends_on:
@@ -54,3 +56,5 @@ services:
 networks:
   app-network:
     driver: bridge
+volumes:
+    pgadmin_data:
