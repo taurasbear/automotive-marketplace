@@ -10,6 +10,8 @@
 
         public string City { get; set; } = string.Empty;
 
+        public Status Status { get; set; }
+
         public Guid CarDetailsId { get; set; }
 
         public CarDetails CarDetails { get; set; } = null!;
