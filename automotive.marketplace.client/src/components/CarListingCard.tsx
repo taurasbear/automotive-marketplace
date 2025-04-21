@@ -5,8 +5,13 @@ import { PiEngine } from "react-icons/pi";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { TbManualGearbox } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
+import { GetListingDetailsWithCarResponse } from "@/shared/types/dto/Listing/GetListingDetailsWithCarResponse";
 
-const CarListingCard = () => {
+interface CarListingCardProps {
+  listing: GetListingDetailsWithCarResponse;
+}
+
+const CarListingCard: React.FC<CarListingCardProps> = ({ listing }) => {
   return (
     <div className="bg-surface border-secondary-border grid w-full grid-cols-2 gap-8 border-1">
       <div className="flex flex-shrink-0 py-5">
@@ -18,38 +23,40 @@ const CarListingCard = () => {
       </div>
       <div className="flex min-w-0 flex-grow flex-col justify-between pt-4 pr-4 pb-2">
         <div className="truncate">
-          <p className="truncate font-sans text-xs">Used</p>
-          <p className="font-sans text-xl">2013 BMW X6 M Base</p>
-          <p className="font-sans text-xs">137 332 km</p>
-          <p className="font-sans text-3xl font-bold">23 000 €</p>
+          <p className="truncate font-sans text-xs">
+            {listing.used ? "Used" : "New"}
+          </p>
+          <p className="font-sans text-xl">{`${listing.year} ${listing.make} ${listing.model}`}</p>
+          <p className="font-sans text-xs">{listing.mileage} km</p>
+          <p className="font-sans text-3xl font-bold">{listing.price} €</p>
         </div>
         <div className="justify-items-stretched grid grid-cols-2 gap-x-0 gap-y-4">
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<PiEngine className="h-8 w-8" />}
               title={"Engine"}
-              stat="2.4 l 155 kW"
+              stat={`${listing.engineSize / 1000} l ${listing.power} kW`}
             />
           </div>
           <div className="flex justify-self-end">
             <ListingCardBadge
               Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
               title={"Fuel Type"}
-              stat="Diesel"
+              stat={listing.fuelType}
             />
           </div>
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<TbManualGearbox className="h-8 w-8" />}
               title={"Gear Box"}
-              stat="Manual"
+              stat={listing.transmission}
             />
           </div>
           <div className="flex justify-self-end">
             <ListingCardBadge
               Icon={<IoLocationOutline className="h-8 w-8" />}
               title={"Location"}
-              stat="Kaunas"
+              stat={listing.city}
             />
           </div>
         </div>

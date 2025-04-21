@@ -16,6 +16,7 @@
                 .Include(listing => listing.CarDetails)
                 .ThenInclude(cardetails => cardetails.Car)
                 .ThenInclude(car => car.Model)
+                .ThenInclude(model => model.Make)
                 .ToListAsync(cancellationToken);
         }
     }

@@ -14,7 +14,7 @@ const ListingCardBadge: React.FC<ListingCardBadgeProps> = ({
       {Icon}
       <div className="flex w-28 flex-col">
         <p className="font-sans text-sm">{title}</p>
-        <p className="font-sans text-sm font-semibold">{stat}</p>
+        <p className="font-sans text-sm font-semibold truncate">{stat}</p>
       </div>
     </div>
   );

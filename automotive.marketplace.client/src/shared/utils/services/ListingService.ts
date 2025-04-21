@@ -4,7 +4,7 @@ import { GetListingDetailsWithCarResponse } from "../../types/dto/Listing/GetLis
 class ListingService {
     static async GetListings(): Promise<GetListingDetailsWithCarResponse[]> {
         const response = await axiosClient.get('/listing');
-        return await response.data;
+        return await response.data.listingDetailsWithCar;
     }
 }
 

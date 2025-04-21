@@ -1,10 +1,14 @@
 export interface GetListingDetailsWithCarResponse {
-    price: number;
-    description: string;
-    city: string;
-    mileage: number;
-    power: number;
-    engineSize: number;
+    used: boolean;
     year: string;
-    modelName: string;
+    make: string;
+    model: string;
+    mileage: number;
+    price: number;
+    engineSize: number;
+    power: number;
+    fuelType: string;
+    transmission: string;
+    city: string;
+    description: string;
 }

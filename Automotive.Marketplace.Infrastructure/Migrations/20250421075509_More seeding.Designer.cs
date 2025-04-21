@@ -3,6 +3,7 @@ using System;
 using Automotive.Marketplace.Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Automotive.Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(AutomotiveContext))]
-    partial class AutomotiveContextModelSnapshot : ModelSnapshot
+    [Migration("20250421075509_More seeding")]
+    partial class Moreseeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,9 +285,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CarDetailsId")
@@ -305,8 +305,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                             Description = "Smulkūs kėbulo defektai",
                             ModifiedBy = "",
                             Price = 800m,
-                            SellerId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            Status = 0
+                            SellerId = new Guid("99999999-9999-9999-9999-999999999999")
                         },
                         new
                         {
@@ -318,8 +317,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                             Description = "Be defektu",
                             ModifiedBy = "",
                             Price = 130m,
-                            SellerId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            Status = 0
+                            SellerId = new Guid("99999999-9999-9999-9999-999999999999")
                         });
                 });
 
