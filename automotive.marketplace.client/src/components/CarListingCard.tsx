@@ -1,10 +1,15 @@
 import EnginePill from "./EnginePill";
+import ListingCardBadge from "./ListingCardBadge";
 import { Button } from "./ui/button";
+import { PiEngine } from "react-icons/pi";
+import { MdOutlineLocalGasStation } from "react-icons/md";
+import { TbManualGearbox } from "react-icons/tb";
+import { IoLocationOutline } from "react-icons/io5";
 
 const CarListingCard = () => {
   return (
     <div className="bg-surface border-secondary-border grid w-full grid-cols-2 gap-8 border-1">
-      <div className="flex flex-shrink-0 py-4">
+      <div className="flex flex-shrink-0 py-5">
         <img
           className="aspect-[4/3] object-cover"
           alt="Toyota Prius 2025"
@@ -16,24 +21,42 @@ const CarListingCard = () => {
           <p className="truncate font-sans text-xs">Used</p>
           <p className="font-sans text-xl">2013 BMW X6 M Base</p>
           <p className="font-sans text-xs">137 332 km</p>
-          <p className="font-sans text-4xl font-bold">23 000 €</p>
+          <p className="font-sans text-3xl font-bold">23 000 €</p>
         </div>
-        <div className="grid grid-cols-2 justify-items-stretched gap-x-0 gap-y-4">
+        <div className="justify-items-stretched grid grid-cols-2 gap-x-0 gap-y-4">
           <div className="flex justify-self-start">
-            <EnginePill />
+            <ListingCardBadge
+              Icon={<PiEngine className="h-8 w-8" />}
+              title={"Engine"}
+              stat="2.4 l 155 kW"
+            />
           </div>
           <div className="flex justify-self-end">
-            <EnginePill />
+            <ListingCardBadge
+              Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
+              title={"Fuel Type"}
+              stat="Diesel"
+            />
           </div>
           <div className="flex justify-self-start">
-            <EnginePill />
+            <ListingCardBadge
+              Icon={<TbManualGearbox className="h-8 w-8" />}
+              title={"Gear Box"}
+              stat="Manual"
+            />
           </div>
           <div className="flex justify-self-end">
-            <EnginePill />
+            <ListingCardBadge
+              Icon={<IoLocationOutline className="h-8 w-8" />}
+              title={"Location"}
+              stat="Kaunas"
+            />
           </div>
         </div>
         <div className="flex justify-end">
-          <Button>Check out</Button>
+          <Button className="h-full max-h-12 rounded-3xl text-xl font-bold">
+            Check out
+          </Button>
         </div>
       </div>
     </div>
