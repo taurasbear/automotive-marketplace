@@ -13,7 +13,6 @@
         public override async Task<GetListingDetailsWithCarResponse> Handle(GetListingDetailsWithCarRequest request, CancellationToken cancellationToken)
         {
             var listingDetailsWithCar = await this.UnitOfWork.ListingRepository.GetListingDetailsWithCar(cancellationToken);
-
             return this.Mapper.Map<GetListingDetailsWithCarResponse>(listingDetailsWithCar);
         }
     }
