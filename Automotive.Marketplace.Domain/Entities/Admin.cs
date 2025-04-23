@@ -2,8 +2,8 @@
 {
     using Automotive.Marketplace.Domain.Enums;
 
-    public class Admin : Login
+    public class Admin : Account
     {
-        public Role Role { get; set; }
+        public AdminRole AdminRole { get; set; }
     }
 }

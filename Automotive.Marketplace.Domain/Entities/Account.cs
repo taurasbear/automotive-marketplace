@@ -1,6 +1,6 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities
 {
-    public class Login : BaseEntity
+    public class Account : BaseEntity
     {
         public string Username { get; set; } = string.Empty;
 

@@ -2,7 +2,7 @@
 {
     using System.Collections.ObjectModel;
 
-    public class Client : Login
+    public class Client : Account
     {
         public string FirstName { get; set; } = string.Empty;
 

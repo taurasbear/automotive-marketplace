@@ -1,8 +1,8 @@
 ﻿namespace Automotive.Marketplace.Domain.Enums
 {
-    public enum Role
+    public enum AdminRole
     {
-        Moderator,
-        Admin
+        Admin,
+        Moderator
     }
 }
