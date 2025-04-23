@@ -5,5 +5,7 @@
     public class Admin : Account
     {
         public AdminRole AdminRole { get; set; }
+
+        public override string RoleName => "Admin";
     }
 }

@@ -7,5 +7,7 @@
         public string PhoneNumber { get; set; } = string.Empty;
 
         public ICollection<Listing> Listings { get; set; } = new Collection<Listing>();
+
+        public override string RoleName => "Seller";
     }
 }
