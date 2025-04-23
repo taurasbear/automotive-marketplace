@@ -10,7 +10,7 @@
         public ListingRepository(AutomotiveContext automotiveContext) : base(automotiveContext)
         { }
 
-        public async Task<IList<Listing>> GetListingDetailsWithCar(CancellationToken cancellationToken)
+        public async Task<IList<Listing>> GetListingDetailsWithCarAsync(CancellationToken cancellationToken)
         {
             return await this.automotiveContext.Listings
                 .Include(listing => listing.CarDetails)
