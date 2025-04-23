@@ -1,23 +1,45 @@
 using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DbContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var AllowClientOrigins = "allowClientOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowClientOrigins, policy =>
     {
-        policy.WithOrigins("http://localhost:57263")
+        policy.WithOrigins("http://localhost:57263", "https://localhost:57263")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
 });
 
 builder.Services.AddControllers();
@@ -36,7 +58,6 @@ else
 }
 builder.Services.ConfigureInfrastructure(connectionString);
 builder.Services.ConfigureApplication();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -45,7 +66,6 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -56,6 +76,7 @@ app.UseHttpsRedirection();
 
 app.UseCors(AllowClientOrigins);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

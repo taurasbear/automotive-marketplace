@@ -63,7 +63,7 @@
             };
 
             this.fixture.MockUnitOfWork
-                .Setup(uow => uow.ListingRepository.GetListingDetailsWithCar(It.IsAny<CancellationToken>()))
+                .Setup(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(listings);
 
             this.fixture.MockMapper
@@ -80,7 +80,7 @@
             {
                 result.Should().BeEquivalentTo(mappedResponse);
 
-                this.fixture.MockUnitOfWork.Verify(uow => uow.ListingRepository.GetListingDetailsWithCar(It.IsAny<CancellationToken>()), Times.Once);
+                this.fixture.MockUnitOfWork.Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
                 this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
             }
         }
@@ -97,7 +97,7 @@
             };
 
             this.fixture.MockUnitOfWork
-                .Setup(uow => uow.ListingRepository.GetListingDetailsWithCar(It.IsAny<CancellationToken>()))
+                .Setup(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(listings);
 
             this.fixture.MockMapper
@@ -114,7 +114,7 @@
             {
                 result.Should().BeEquivalentTo(mappedResponse);
 
-                this.fixture.MockUnitOfWork.Verify(uow => uow.ListingRepository.GetListingDetailsWithCar(It.IsAny<CancellationToken>()), Times.Once);
+                this.fixture.MockUnitOfWork.Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
                 this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
             }
         }

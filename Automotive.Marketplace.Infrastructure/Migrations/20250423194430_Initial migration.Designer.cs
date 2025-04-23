@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Automotive.Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(AutomotiveContext))]
-    [Migration("20250403142543_Initial migration")]
+    [Migration("20250423194430_Initial migration")]
     partial class Initialmigration
     {
         /// <inheritdoc />
@@ -24,6 +24,52 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Account", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HashedPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+
+                    b.HasDiscriminator().HasValue("Account");
+
+                    b.UseTphMappingStrategy();
+                });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>
                 {
@@ -80,7 +126,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "",
                             DoorCount = 0,
-                            Drivetrain = 0,
+                            Drivetrain = 1,
                             Fuel = 0,
                             ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
                             ModifiedBy = "",
@@ -151,10 +197,10 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                             CreatedBy = "",
                             EngineSize = 1300,
                             IsSteeringWheelRight = false,
-                            Mileage = 26000,
+                            Mileage = 26700,
                             ModifiedBy = "",
                             Power = 97,
-                            Used = false,
+                            Used = true,
                             Vin = ""
                         },
                         new
@@ -285,6 +331,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarDetailsId")
@@ -305,7 +354,8 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                             Description = "Smulkūs kėbulo defektai",
                             ModifiedBy = "",
                             Price = 800m,
-                            SellerId = new Guid("99999999-9999-9999-9999-999999999999")
+                            SellerId = new Guid("99999999-9999-9999-9999-999999999999"),
+                            Status = 0
                         },
                         new
                         {
@@ -317,54 +367,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                             Description = "Be defektu",
                             ModifiedBy = "",
                             Price = 130m,
-                            SellerId = new Guid("99999999-9999-9999-9999-999999999999")
+                            SellerId = new Guid("99999999-9999-9999-9999-999999999999"),
+                            Status = 0
                         });
-                });
-
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Login", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("character varying(8)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("HashedPassword")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Logins");
-
-                    b.HasDiscriminator().HasValue("Login");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Make", b =>
@@ -459,11 +464,54 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Admin", b =>
                 {
-                    b.HasBaseType("Automotive.Marketplace.Domain.Entities.Login");
+                    b.HasBaseType("Automotive.Marketplace.Domain.Entities.Account");
 
-                    b.Property<int>("Role")
+                    b.Property<int>("AdminRole")
                         .HasColumnType("integer");
 
                     b.HasDiscriminator().HasValue("Admin");
@@ -471,7 +519,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Client", b =>
                 {
-                    b.HasBaseType("Automotive.Marketplace.Domain.Entities.Login");
+                    b.HasBaseType("Automotive.Marketplace.Domain.Entities.Account");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -590,6 +638,17 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Make");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>

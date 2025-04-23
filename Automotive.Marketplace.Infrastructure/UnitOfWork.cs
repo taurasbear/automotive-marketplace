@@ -13,6 +13,26 @@
 
         private readonly AutomotiveContext automotiveContext;
 
+        private IRefreshTokenRepository refreshTokenRepository = null!;
+
+        public IRefreshTokenRepository RefreshTokenRepository
+        {
+            get
+            {
+                return refreshTokenRepository ??= new RefreshTokenRepository(automotiveContext);
+            }
+        }
+
+        private IAccountRepository accountRepository = null!;
+
+        public IAccountRepository AccountRepository
+        {
+            get
+            {
+                return accountRepository ??= new AccountRepository(automotiveContext);
+            }
+        }
+
         private IListingRepository listingRepository = null!;
 
         public IListingRepository ListingRepository
@@ -30,7 +50,7 @@
 
         protected virtual void Dispose(bool disposing)
         {
-            if(disposing && !disposed)
+            if (disposing && !disposed)
             {
                 this.automotiveContext.Dispose();
             }

@@ -28,6 +28,8 @@
 
         public DbSet<Seller> Sellers { get; set; }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Model>()
@@ -75,6 +77,11 @@
             modelBuilder.Entity<ClientListingLike>()
                 .HasIndex(cll => new { cll.ClientId, cll.ListingId })
                 .IsUnique();
+
+            modelBuilder.Entity<RefreshToken>()
+                .HasOne(rt => rt.Account)
+                .WithMany()
+                .HasForeignKey(rt => rt.AccountId);
 
             modelBuilder.Seed();
         }

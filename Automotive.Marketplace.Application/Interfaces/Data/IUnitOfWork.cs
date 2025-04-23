@@ -4,7 +4,9 @@
 
     public interface IUnitOfWork : IDisposable
     {
-        //TODO Add the rest of the repositories
+        public IRefreshTokenRepository RefreshTokenRepository { get; }
+
+        public IAccountRepository AccountRepository { get; }
 
         public IListingRepository ListingRepository { get; }
 

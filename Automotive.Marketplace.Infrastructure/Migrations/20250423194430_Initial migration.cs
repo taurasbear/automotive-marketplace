@@ -14,7 +14,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Logins",
+                name: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -22,7 +22,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     HashedPassword = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
-                    Role = table.Column<int>(type: "integer", nullable: true),
+                    AdminRole = table.Column<int>(type: "integer", nullable: true),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
@@ -33,7 +33,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logins", x => x.Id);
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,6 +50,32 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Makes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "boolean", nullable: false),
+                    IsUsed = table.Column<bool>(type: "boolean", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,6 +166,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     CarDetailsId = table.Column<Guid>(type: "uuid", nullable: false),
                     SellerId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -151,15 +178,15 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Listings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Listings_CarsDetails_CarDetailsId",
-                        column: x => x.CarDetailsId,
-                        principalTable: "CarsDetails",
+                        name: "FK_Listings_Accounts_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Listings_Logins_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "Logins",
+                        name: "FK_Listings_CarsDetails_CarDetailsId",
+                        column: x => x.CarDetailsId,
+                        principalTable: "CarsDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -180,15 +207,15 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ClientListingLike", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClientListingLike_Listings_ListingId",
-                        column: x => x.ListingId,
-                        principalTable: "Listings",
+                        name: "FK_ClientListingLike_Accounts_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClientListingLike_Logins_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Logins",
+                        name: "FK_ClientListingLike_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -218,7 +245,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Logins",
+                table: "Accounts",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "Discriminator", "Email", "FirstName", "HashedPassword", "LastName", "ModifiedAt", "ModifiedBy", "PhoneNumber", "Username" },
                 values: new object[] { new Guid("99999999-9999-9999-9999-999999999999"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "Seller", "", "Ben", "", "", null, "", "", "" });
 
@@ -239,24 +266,24 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Cars",
                 columns: new[] { "Id", "BodyType", "CreatedAt", "CreatedBy", "DoorCount", "Drivetrain", "Fuel", "ModelId", "ModifiedAt", "ModifiedBy", "Transmission", "Year" },
-                values: new object[] { new Guid("44444444-4444-4444-4444-444444444444"), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", 0, 0, 0, new Guid("33333333-3333-3333-3333-333333333333"), null, "", 0, new DateTime(2002, 4, 13, 0, 0, 0, 0, DateTimeKind.Utc) });
+                values: new object[] { new Guid("44444444-4444-4444-4444-444444444444"), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", 0, 1, 0, new Guid("33333333-3333-3333-3333-333333333333"), null, "", 0, new DateTime(2002, 4, 13, 0, 0, 0, 0, DateTimeKind.Utc) });
 
             migrationBuilder.InsertData(
                 table: "CarsDetails",
                 columns: new[] { "Id", "CarId", "Colour", "CreatedAt", "CreatedBy", "EngineSize", "IsSteeringWheelRight", "Mileage", "ModifiedAt", "ModifiedBy", "Power", "Used", "Vin" },
                 values: new object[,]
                 {
-                    { new Guid("55555555-5555-5555-5555-555555555555"), new Guid("44444444-4444-4444-4444-444444444444"), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", 1300, false, 26000, null, "", 97, false, "" },
+                    { new Guid("55555555-5555-5555-5555-555555555555"), new Guid("44444444-4444-4444-4444-444444444444"), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", 1300, false, 26700, null, "", 97, true, "" },
                     { new Guid("66666666-6666-6666-6666-666666666666"), new Guid("44444444-4444-4444-4444-444444444444"), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", 1400, false, 200000, null, "", 102, false, "" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "CarDetailsId", "City", "CreatedAt", "CreatedBy", "Description", "ModifiedAt", "ModifiedBy", "Price", "SellerId" },
+                columns: new[] { "Id", "CarDetailsId", "City", "CreatedAt", "CreatedBy", "Description", "ModifiedAt", "ModifiedBy", "Price", "SellerId", "Status" },
                 values: new object[,]
                 {
-                    { new Guid("77777777-7777-7777-7777-777777777777"), new Guid("55555555-5555-5555-5555-555555555555"), "Kaunas", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "Smulkūs kėbulo defektai", null, "", 800m, new Guid("99999999-9999-9999-9999-999999999999") },
-                    { new Guid("88888888-8888-8888-8888-888888888888"), new Guid("66666666-6666-6666-6666-666666666666"), "Vilnius", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "Be defektu", null, "", 130m, new Guid("99999999-9999-9999-9999-999999999999") }
+                    { new Guid("77777777-7777-7777-7777-777777777777"), new Guid("55555555-5555-5555-5555-555555555555"), "Kaunas", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "Smulkūs kėbulo defektai", null, "", 800m, new Guid("99999999-9999-9999-9999-999999999999"), 0 },
+                    { new Guid("88888888-8888-8888-8888-888888888888"), new Guid("66666666-6666-6666-6666-666666666666"), "Vilnius", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "Be defektu", null, "", 130m, new Guid("99999999-9999-9999-9999-999999999999"), 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -300,6 +327,11 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 name: "IX_Models_MakeId",
                 table: "Models",
                 column: "MakeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_AccountId",
+                table: "RefreshTokens",
+                column: "AccountId");
         }
 
         /// <inheritdoc />
@@ -312,13 +344,16 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
                 name: "Listings");
 
             migrationBuilder.DropTable(
-                name: "CarsDetails");
+                name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "Logins");
+                name: "CarsDetails");
 
             migrationBuilder.DropTable(
                 name: "Cars");
