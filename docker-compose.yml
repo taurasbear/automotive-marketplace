@@ -18,7 +18,7 @@ services:
   automotive.marketplace.client:
     image: ${DOCKER_REGISTRY-}automotive.marketplace.client
     build:
-      context: ./automotive-marketplace.client
+      context: ./automotive.marketplace.client
       target: production
     environment:
       - VITE_APP_API_URL=${VITE_APP_API_URL}
