@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowClientOrigins, policy =>
     {
-        policy.WithOrigins("http://localhost:57263", "https://localhost:57263")
+        policy.WithOrigins("https://automotive-marketplace.taurasbear.me", "http://localhost:57263", "https://localhost:57263")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -59,6 +59,12 @@ builder.Services.ConfigureInfrastructure(connectionString);
 builder.Services.ConfigureApplication();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddLogging(logging =>
+{
+    logging.AddConsole();
+    logging.AddDebug();
+});
 
 var app = builder.Build();
 

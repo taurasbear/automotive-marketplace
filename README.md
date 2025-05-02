@@ -5,3 +5,4 @@
 - Test driven development
 - CQRS
 - Unit of work
+- Choice of dockerizing everything for the sake of simplicity. Expand on it
