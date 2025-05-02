@@ -30,3 +30,9 @@ FROM node:22-slim AS production
 
 WORKDIR /app
 COPY --from=build /app/dist ./dist
+
+RUN npm install -g serve
+
+EXPOSE 57263
+
+CMD ["serve", "-s", "dist", "-l", "57263"]
