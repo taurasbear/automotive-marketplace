@@ -99,4 +99,4 @@ jobs:
           host: ${{ secrets.DROPLET_HOST }}
           username: ${{ secrets.DROPLET_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script_file: .github/scripts/deploy.sh
+          script_path: .github/scripts/deploy.sh
