@@ -6,3 +6,4 @@
 - CQRS
 - Unit of work
 - Choice of dockerizing everything for the sake of simplicity. Expand on it
+- docker.compose.yml - production. docker-compose.override.yml - development

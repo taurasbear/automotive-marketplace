@@ -1,5 +1,6 @@
 using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
+using Automotive.Marketplace.Infrastructure.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -75,6 +76,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+        await db.Database.MigrateAsync();
+    }
 }
 
 app.UseHttpsRedirection();

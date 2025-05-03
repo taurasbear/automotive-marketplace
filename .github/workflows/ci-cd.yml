@@ -1,0 +1,101 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+
+  build-and-push-images:
+    needs: build-and-test
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKER_GITHUB_TOKEN }}
+
+      - name: Build and push Server image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Automotive.Marketplace.Server/Dockerfile
+          target: final
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/automotive.marketplace.server:latest
+            ghcr.io/${{ github.repository_owner }}/automotive.marketplace.server:${{ github.sha }}
+
+      - name: Build and push Client image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./automotive.marketplace.client
+          target: production
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/automotive.marketplace.client:latest
+            ghcr.io/${{ github.repository_owner }}/automotive.marketplace.client:${{ github.sha }}
+
+  deploy:
+    needs: build-and-push-images
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Copy deployment files to Droplet
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: |
+            docker-compose.yml
+            nginx/conf/default.conf
+          target: ~/automotive-marketplace
+
+      - name: Deploy to DigitalOcean
+        uses: appleboy/ssh-action@master
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          JWT_KEY: ${{ secrets.JWT_KEY }}
+          JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
+          JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+          JWT_ACCESSTOKENEXPIRATIONMINUTES: ${{ secrets.JWT_ACCESSTOKENEXPIRATIONMINUTES }}
+          JWT_REFRESHTOKENEXPIRATIONDAYS: ${{ secrets.JWT_REFRESHTOKENEXPIRATIONDAYS }}
+          VITE_APP_API_URL: ${{ secrets.VITE_APP_API_URL }}
+          DOCKER_GITHUB_TOKEN: ${{ secrets.DOCKER_GITHUB_TOKEN }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_file: .github/scripts/deploy.sh
