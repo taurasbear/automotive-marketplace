@@ -19,13 +19,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore .\Automotive.Marketplace.sln
+        run: dotnet restore ./Automotive.Marketplace.sln
 
       - name: Build
-        run: dotnet build --no-restore .\Automotive.Marketplace.sln
+        run: dotnet build --no-restore ./Automotive.Marketplace.sln
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal .\Automotive.Marketplace.sln
+        run: dotnet test --no-build --verbosity normal ./Automotive.Marketplace.sln
 
   build-and-push-images:
     needs: build-and-test
