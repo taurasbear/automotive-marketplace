@@ -1,6 +1,8 @@
 services:
   automotive.marketplace.server:
+    image: ${DOCKER_REGISTRY-}automotive.marketplace.server:dev
     build:
+      context: ./automotive.marketplace.server
       target: base
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -52,6 +54,8 @@ services:
   db:
     networks:
       - app-network
+  nginx:
+    restart: no
 
 networks:
   app-network:
