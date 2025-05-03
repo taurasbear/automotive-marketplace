@@ -1,6 +1,6 @@
 # automotive-marketplace
 
-- ASP.NET Core + React TypeScript + PostgreSQL + Docker
+- ASP.NET Core + React TypeScript + PostgreSQL + Docker + with images of logos
 - Clean architecture
 - Test driven development
 - CQRS
