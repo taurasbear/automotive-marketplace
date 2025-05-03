@@ -20,6 +20,9 @@ mkdir -p ~/automotive-marketplace/nginx/conf
 mkdir -p ~/automotive-marketplace/nginx/ssl
 mkdir -p ~/automotive-marketplace/nginx/logs
 
+cp /etc/letsencrypt/live/automotive-marketplace.taurasbear.me/fullchain.pem ./automotive-marketplace/nginx/ssl/
+cp /etc/letsencrypt/live/automotive-marketplace.taurasbear.me/privkey.pem ./automotive-marketplace/nginx/ssl/
+
 echo ${DOCKER_GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_REPOSITORY_OWNER} --password-stdin
 
 cd ~/automotive-marketplace
