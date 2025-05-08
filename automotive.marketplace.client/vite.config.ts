@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
       proxy:
         mode === "development"
           ? {
-              "^/api": {
+              "^": {
                 target,
                 secure: false,
                 changeOrigin: false,
