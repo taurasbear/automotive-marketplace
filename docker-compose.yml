@@ -1,6 +1,6 @@
 services:
   automotive.marketplace.server:
-    image: ${DOCKER_REGISTRY}/automotive.marketplace.server:latest
+    image: ${DOCKER_REGISTRY}automotive.marketplace.server:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_HTTP_PORTS=8080
@@ -12,7 +12,7 @@ services:
       - app-network
     restart: unless-stopped
   automotive.marketplace.client:
-    image: ${DOCKER_REGISTRY}/automotive.marketplace.client:latest
+    image: ${DOCKER_REGISTRY}automotive.marketplace.client:latest
     environment:
       - VITE_APP_API_URL=${VITE_APP_API_URL}
     networks:
