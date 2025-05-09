@@ -2,8 +2,7 @@ import axios from "axios";
 
 const axiosClient = axios.create({
   baseURL:
-    import.meta.env.VITE_APP_API_URL ??
-    "https://api.automotive-marketplace.taurasbear.me",
+    import.meta.env.VITE_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
   },

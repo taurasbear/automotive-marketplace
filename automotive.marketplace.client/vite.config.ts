@@ -5,7 +5,7 @@ import { env } from "process";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const target = env.VITE_API_URL ?? "http://automotive.marketplace.server:8080";
+const target = env.VITE_APP_API_TARGET ?? "http://automotive.marketplace.server:8080";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -24,10 +24,11 @@ export default defineConfig(({ mode }) => {
       proxy:
         mode === "development"
           ? {
-              "^": {
+              "^/api": {
                 target,
                 secure: false,
                 changeOrigin: false,
+                rewrite: (path) => path.replace(/^\/api/, ""),
                 cookieDomainRewrite: {
                   "*": "",
                 },
