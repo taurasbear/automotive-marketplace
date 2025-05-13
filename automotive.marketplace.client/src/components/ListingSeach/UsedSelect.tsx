@@ -10,7 +10,7 @@ const UsedSelect = () => {
   return (
     <div>
       <Select>
-        <SelectTrigger>
+        <SelectTrigger className="w-full min-w-3xs">
           <SelectValue placeholder="Used & New" />
         </SelectTrigger>
         <SelectContent>

@@ -12,7 +12,7 @@ const YearSelect = () => {
   return (
     <div>
       <Select>
-        <SelectTrigger>
+        <SelectTrigger className="w-full">
           <SelectValue placeholder="-" />
         </SelectTrigger>
         <SelectContent>

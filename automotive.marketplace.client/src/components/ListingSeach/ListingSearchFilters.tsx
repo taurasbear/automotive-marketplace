@@ -7,17 +7,29 @@ import YearSelect from "./YearSelect";
 
 const ListingSearchFilters = () => {
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row">
-        <ModelSelect />
+    <div className="grid grid-cols-6 grid-rows-2">
+      <div className="col-span-2">
         <MakeSelect />
+      </div>
+      <div className="col-span-2">
+        <ModelSelect />
+      </div>
+      <div className="col-span-2">
         <LocationCombobox />
       </div>
-      <div className="flex flex-row">
+      <div className="col-span-2">
         <UsedSelect />
+      </div>
+      <div>
         <YearSelect />
+      </div>
+      <div>
         <YearSelect />
+      </div>
+      <div>
         <PriceSelect />
+      </div>
+      <div>
         <PriceSelect />
       </div>
     </div>

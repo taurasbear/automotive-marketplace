@@ -25,7 +25,7 @@ const LocationCombobox = () => {
             variant="outline"
             role="location-combobox"
             //aria-expanded={open}
-            className="w-md justify-between"
+            className="w-full justify-between"
           >
             Any
             <ChevronDown className="opacity-50" />

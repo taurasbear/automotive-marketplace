@@ -12,7 +12,7 @@ const MakeSelect = () => {
   return (
     <div>
       <Select>
-        <SelectTrigger>
+        <SelectTrigger className="w-full">
           <SelectValue placeholder="All" />
         </SelectTrigger>
         <SelectContent>

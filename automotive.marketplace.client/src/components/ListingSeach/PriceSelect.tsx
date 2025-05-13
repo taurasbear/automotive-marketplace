@@ -14,7 +14,7 @@ const PriceSelect = () => {
   return (
     <div>
       <Select>
-        <SelectTrigger>
+        <SelectTrigger className="flex w-full flex-row">
           <SelectValue placeholder="-" />
         </SelectTrigger>
         <SelectContent>
