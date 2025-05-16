@@ -1,10 +1,8 @@
 ﻿namespace Automotive.Marketplace.Server.Controllers
 {
-    using Automotive.Marketplace.Application.Features.AccountFeatures.GetAccountById;
     using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
-    using Automotive.Marketplace.Application.Features.AuthFeatures.GetRefreshTokenByToken;
+    using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
     using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
-    using Automotive.Marketplace.Application.Features.AuthFeatures.RevokeRefreshToken;
     using Automotive.Marketplace.Application.Features.AuthFeatures.SaveRefreshToken;
     using Automotive.Marketplace.Application.Interfaces.Services;
     using MediatR;
@@ -99,36 +97,18 @@
                 return this.Unauthorized("Invalid refresh token.");
             }
 
-            var refreshTokenResponse = await this.mediator.Send(new GetRefreshTokenByTokenRequest(refreshToken), cancellationToken);
-            var refreshTokenRecord = refreshTokenResponse.RefreshToken;
+            var response = await this.mediator.Send(new RefreshTokenRequest(refreshToken), cancellationToken);
 
-            if (refreshTokenRecord == null || refreshTokenRecord.IsRevoked || refreshTokenRecord.ExpiryDate < DateTime.UtcNow)
-            {
-                return this.Unauthorized("Invalid refresh token.");
-            }
-
-            var accountResponse = await this.mediator.Send(new GetAccountByIdRequest(refreshTokenRecord.AccountId));
-
-            if (accountResponse.Account == null)
-            {
-                return this.Unauthorized("Account not found.");
-            }
-
-            var newAccessToken = this.tokenService.GenerateAccessToken(accountResponse.Account);
-            var newRefreshToken = this.tokenService.GenerateRefreshToken();
-            var newRefreshTokenExpiryDate = this.tokenService.GetRefreshTokenExpiryData();
-
-            await this.mediator.Send(new RevokeRefreshTokenRequest(refreshTokenRecord.Token, newRefreshToken, refreshTokenRecord.AccountId, newRefreshTokenExpiryDate));
-
-            Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+            Response.Cookies.Append("refreshToken", response.FreshRefreshToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = newRefreshTokenExpiryDate
+                Expires = response.FreshExpiryDate
             });
 
-            return this.Ok(new { AccessToken = newAccessToken });
+            return this.Ok(new { AccessToken = response.FreshAccessToken });
         }
+
     }
 }
