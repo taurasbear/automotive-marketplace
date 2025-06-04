@@ -2,19 +2,27 @@ services:
   automotive.marketplace.server:
     image: ${DOCKER_REGISTRY-}automotive.marketplace.server:dev
     build:
-      context: ./automotive.marketplace.server
-      target: base
+      context: .
+      dockerfile: ./Automotive.Marketplace.Server/Dockerfile
+      target: dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - DOTNET_WATCH_RESTART_ON_RUDE_EDIT=true
+      - DOTNET_WATCH_SUPPRESS_EMOJIS=0
+      - ConnectionStrings__DevDocker=${DEV_DOCKER_DB_CONNECTION_STRING}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/aspnetapp.pfx
     ports:
       - "8080"
       - "8081"
     volumes:
-      - ./Automotive.Marketplace.Server:/app
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro 
+      - ./:/src
+      - build-output:/build-output
+      - build-obj:/build-obj
+      - ${HOME}/Documents/.aspnet/https:/root/.aspnet/https:ro
     networks:
       - app-network
     depends_on:
@@ -52,6 +60,8 @@ services:
     depends_on:
       - db
   db:
+    ports:
+      - "5433:5433"
     networks:
       - app-network
   nginx:
@@ -62,3 +72,5 @@ networks:
     driver: bridge
 volumes:
     pgadmin_data:
+    build-output:
+    build-obj:

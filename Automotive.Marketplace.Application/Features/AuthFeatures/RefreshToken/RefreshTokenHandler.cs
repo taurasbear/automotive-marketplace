@@ -47,6 +47,7 @@
 
             await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(newRefreshToken, cancellationToken);
             await this.UnitOfWork.SaveAsync(cancellationToken);
+            throw new Exception();
         }
     }
 }

@@ -4,6 +4,7 @@
     using Automotive.Marketplace.Domain.Entities;
     using Automotive.Marketplace.Infrastructure.Data.DbContext;
     using Microsoft.EntityFrameworkCore;
+    using Npgsql;
 
     public class ListingRepository : BaseRepository, IListingRepository
     {
@@ -12,6 +13,13 @@
 
         public async Task<IList<Listing>> GetListingDetailsWithCarAsync(CancellationToken cancellationToken)
         {
+            bool test = true;
+
+            if (test == true)
+            {
+                Console.WriteLine("Test condition is true, executing code block.");
+            }
+
             return await this.automotiveContext.Listings
                 .Include(listing => listing.CarDetails)
                 .ThenInclude(cardetails => cardetails.Car)

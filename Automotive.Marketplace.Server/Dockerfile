@@ -7,31 +7,52 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
 # This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS with-node
-RUN apt-get update
-RUN apt-get install curl
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
-RUN apt-get -y install nodejs
-
-FROM with-node AS build
-ARG BUILD_CONFIGURATION=Release
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+
 COPY ["Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj", "Automotive.Marketplace.Server/"]
-COPY ["automotive.marketplace.client/automotive.marketplace.client.esproj", "automotive.marketplace.client/"]
-RUN dotnet restore "./Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj"
+COPY ["Automotive.Marketplace.Application/Automotive.Marketplace.Application.csproj", "Automotive.Marketplace.Application/"]
+COPY ["Automotive.Marketplace.Infrastructure/Automotive.Marketplace.Infrastructure.csproj", "Automotive.Marketplace.Infrastructure/"]
+COPY ["Automotive.Marketplace.Domain/Automotive.Marketplace.Domain.csproj", "Automotive.Marketplace.Domain/"]
+
+RUN dotnet restore "Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj"
+
 COPY . .
+
 WORKDIR "/src/Automotive.Marketplace.Server"
-RUN dotnet build "./Automotive.Marketplace.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Automotive.Marketplace.Server.csproj" -c Release -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+# Publish the application
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Automotive.Marketplace.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Automotive.Marketplace.Server.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+# Final stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Automotive.Marketplace.Server.dll"]
+
+# Development stage (for hot-reloading)
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dev
+
+WORKDIR /deps
+
+COPY ["Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj", "Automotive.Marketplace.Server/"]
+COPY ["Automotive.Marketplace.Application/Automotive.Marketplace.Application.csproj", "Automotive.Marketplace.Application/"]
+COPY ["Automotive.Marketplace.Infrastructure/Automotive.Marketplace.Infrastructure.csproj", "Automotive.Marketplace.Infrastructure/"]
+COPY ["Automotive.Marketplace.Domain/Automotive.Marketplace.Domain.csproj", "Automotive.Marketplace.Domain/"]
+RUN dotnet restore "./Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj"
+
+WORKDIR /src
+
+COPY . .
+
+WORKDIR /app
+
+RUN mkdir -p /src /build-output /build-obj
+
+EXPOSE 8080
+EXPOSE 8081
+
+ENTRYPOINT ["dotnet", "watch", "run", "--no-restore", "--project", "/src/Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj", "-p:OutputPath=/build-output;BaseIntermediateOutputPath=/build-obj;RestorePackagesPath=/deps/.nuget/packages"]

@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup Condition="'$(MSBuildProjectName)' != 'docker-compose' AND '$(MSBuildProjectName)' != 'automotive.marketplace.client'">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.*" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

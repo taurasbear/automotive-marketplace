@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DotNetEnv;
 
+DotNetEnv.Env.Load();
 var AllowClientOrigins = "allowClientOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowClientOrigins, policy =>
     {
-        policy.WithOrigins("https://automotive-marketplace.taurasbear.me", "http://localhost:57263", "https://localhost:57263")
+        policy.WithOrigins(
+            "https://automotive-marketplace.taurasbear.me",
+            "http://localhost:57263",
+            "https://localhost:57263",
+            "http://localhost:8081",
+            "https://localhost:8081")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -49,8 +56,8 @@ if (builder.Environment.IsDevelopment())
 {
     var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
     connectionString = isDocker
-        ? builder.Configuration.GetConnectionString("Docker")
-        : builder.Configuration.GetConnectionString("Development");
+        ? builder.Configuration.GetConnectionString("DevDocker")
+        : Environment.GetEnvironmentVariable("DEV_LOCAL_DB_CONNECTION_STRING");
 }
 else
 {
@@ -72,6 +79,8 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseCors(AllowClientOrigins);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -86,9 +95,10 @@ else
     }
 }
 
-app.UseHttpsRedirection();
-
-app.UseCors(AllowClientOrigins);
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

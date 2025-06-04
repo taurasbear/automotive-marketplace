@@ -10,6 +10,6 @@
 
         public IListingRepository ListingRepository { get; }
 
-        public Task SaveAsync(CancellationToken cancellatioToken);
+        public Task SaveAsync(CancellationToken cancellationToken);
     }
 }
