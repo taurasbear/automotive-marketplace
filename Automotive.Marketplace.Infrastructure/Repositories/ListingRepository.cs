@@ -13,13 +13,6 @@
 
         public async Task<IList<Listing>> GetListingDetailsWithCarAsync(CancellationToken cancellationToken)
         {
-            bool test = true;
-
-            if (test == true)
-            {
-                Console.WriteLine("Test condition is true, executing code block.");
-            }
-
             return await this.automotiveContext.Listings
                 .Include(listing => listing.CarDetails)
                 .ThenInclude(cardetails => cardetails.Car)
