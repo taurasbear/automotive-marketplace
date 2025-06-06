@@ -1,9 +1,8 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount
-{
-    using Automotive.Marketplace.Domain.Entities;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
-    public sealed record AuthenticateAccountResponse
-    {
-        public Account? Account { get; set; }
-    }
+using Automotive.Marketplace.Domain.Entities;
+
+public sealed record AuthenticateAccountResponse
+{
+    public Account? Account { get; set; }
 }

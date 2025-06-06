@@ -1,13 +1,12 @@
-﻿namespace Automotive.Marketplace.Domain.Enums
+﻿namespace Automotive.Marketplace.Domain.Enums;
+
+public enum BodyType
 {
-    public enum BodyType
-    {
-        Sedan,
-        Hatchback,
-        Wagon,
-        Coupe,
-        SUV,
-        Minivan,
-        Crossover
-    }
+    Sedan,
+    Hatchback,
+    Wagon,
+    Coupe,
+    SUV,
+    Minivan,
+    Crossover
 }

@@ -1,13 +1,12 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount
-{
-    using FluentValidation;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
-    public sealed class AuthenticateAccountValidator : AbstractValidator<AuthenticateAccountRequest>
+using FluentValidation;
+
+public sealed class AuthenticateAccountValidator : AbstractValidator<AuthenticateAccountRequest>
+{
+    public AuthenticateAccountValidator()
     {
-        public AuthenticateAccountValidator()
-        {
-            this.RuleFor(credentials => credentials.email)
-                .EmailAddress();
-        }
+        this.RuleFor(credentials => credentials.email)
+            .EmailAddress();
     }
 }

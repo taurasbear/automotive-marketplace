@@ -1,16 +1,14 @@
-﻿
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount
-{
-    using AutoMapper;
-    using Automotive.Marketplace.Domain.Entities;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
-    public class AuthenticateAccountMapper : Profile
+using AutoMapper;
+using Automotive.Marketplace.Domain.Entities;
+
+public class AuthenticateAccountMapper : Profile
+{
+    public AuthenticateAccountMapper()
     {
-        public AuthenticateAccountMapper()
-        {
-            //this.CreateMap<Account, AuthenticateAccountResponse>()
-            //    .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Id))
-            //    .ForMember(dest => dest.UserRole, opt => opt.MapFrom(src => src.RoleName);
-        }
+        //this.CreateMap<Account, AuthenticateAccountResponse>()
+        //    .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Id))
+        //    .ForMember(dest => dest.UserRole, opt => opt.MapFrom(src => src.RoleName);
     }
 }

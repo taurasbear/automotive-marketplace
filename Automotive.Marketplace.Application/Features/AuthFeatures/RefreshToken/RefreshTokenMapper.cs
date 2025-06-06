@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
+
+internal class RefreshTokenMapper
 {
-    internal class RefreshTokenMapper
-    {
-    }
 }

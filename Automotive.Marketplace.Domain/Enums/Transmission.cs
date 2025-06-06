@@ -1,8 +1,7 @@
-﻿namespace Automotive.Marketplace.Domain.Enums
+﻿namespace Automotive.Marketplace.Domain.Enums;
+
+public enum Transmission
 {
-    public enum Transmission
-    {
-        Automatic,
-        Manual
-    }
+    Automatic,
+    Manual
 }

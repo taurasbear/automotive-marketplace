@@ -1,122 +1,122 @@
-﻿namespace Automotive.Marketplace.Tests.FeatureTests.ListingFeatureTests
+﻿namespace Automotive.Marketplace.Tests.FeatureTests.ListingFeatureTests;
+
+using AutoMapper;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingDetailsWithCar;
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Domain.Entities;
+using FluentAssertions;
+using FluentAssertions.Execution;
+using Moq;
+
+public class TestFixture : IDisposable
 {
-    using AutoMapper;
-    using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingDetailsWithCar;
-    using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Domain.Entities;
-    using FluentAssertions;
-    using FluentAssertions.Execution;
-    using Moq;
+    public Mock<IUnitOfWork> MockUnitOfWork { get; }
+    public Mock<IMapper> MockMapper { get; }
 
-    public class TestFixture : IDisposable
+    public TestFixture()
     {
-        public Mock<IUnitOfWork> MockUnitOfWork { get; }
-        public Mock<IMapper> MockMapper { get; }
-
-        public TestFixture()
-        {
-            MockUnitOfWork = new Mock<IUnitOfWork>();
-            MockMapper = new Mock<IMapper>();
-        }
-
-        public void Dispose()
-        { }
+        MockUnitOfWork = new Mock<IUnitOfWork>();
+        MockMapper = new Mock<IMapper>();
     }
 
-    public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
+    public void Dispose()
+    { }
+}
+
+public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
+{
+    private readonly TestFixture fixture;
+
+    public GetListingDetailsWithCarTests(TestFixture fixture)
     {
-        private readonly TestFixture fixture;
+        this.fixture = fixture;
+        this.fixture.MockUnitOfWork.Reset();
+        this.fixture.MockMapper.Reset();
+    }
 
-        public GetListingDetailsWithCarTests(TestFixture fixture)
+    [Fact]
+    public async Task Handle_ListingDetailsWithCarExists_GetListingDetailsWithCar()
+    {
+        // Arrange
+        var listings = new List<Listing> { new Listing() };
+        var mappedResponse = new GetListingDetailsWithCarResponse
         {
-            this.fixture = fixture;
-            this.fixture.MockUnitOfWork.Reset();
-            this.fixture.MockMapper.Reset();
-        }
-
-
-        [Fact]
-        public async Task Handle_ListingDetailsWithCarExists_GetListingDetailsWithCar()
-        {
-            // Arrange
-            var listings = new List<Listing> { new Listing() };
-            var mappedResponse = new GetListingDetailsWithCarResponse
+            ListingDetailsWithCar = new List<GetListingDetailsWithCarResponse.GetListingWithCarResponse>
             {
-                ListingDetailsWithCar = new List<GetListingDetailsWithCarResponse.GetListingWithCarResponse>
+                new GetListingDetailsWithCarResponse.GetListingWithCarResponse
                 {
-                    new GetListingDetailsWithCarResponse.GetListingWithCarResponse
-                    {
-                        Year = "2015",
-                        Make = "Tesla",
-                        Model = "Model S",
-                        Mileage = 50000,
-                        Power = 150,
-                        EngineSize = 2000,
-                        Used = true,
-                        Price = 30000,
-                        City = "San Francisco",
-                        Description = "Excellent condition",
-                        FuelType = "Electric",
-                        Transmission = "Automatic"
-                    }
+                    Year = "2015",
+                    Make = "Tesla",
+                    Model = "Model S",
+                    Mileage = 50000,
+                    Power = 150,
+                    EngineSize = 2000,
+                    Used = true,
+                    Price = 30000,
+                    City = "San Francisco",
+                    Description = "Excellent condition",
+                    FuelType = "Electric",
+                    Transmission = "Automatic"
                 }
-            };
-
-            this.fixture.MockUnitOfWork
-                .Setup(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(listings);
-
-            this.fixture.MockMapper
-                .Setup(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings))
-                .Returns(mappedResponse);
-
-            var handler = new GetListingDetailsWithCarHandler(this.fixture.MockMapper.Object, this.fixture.MockUnitOfWork.Object);
-
-            // Act
-            var result = await handler.Handle(new GetListingDetailsWithCarRequest(), CancellationToken.None);
-
-            // Assert
-            using (new AssertionScope())
-            {
-                result.Should().BeEquivalentTo(mappedResponse);
-
-                this.fixture.MockUnitOfWork.Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
-                this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
             }
-        }
+        };
 
-        [Fact]
-        public async Task Handle_RepositoryReturnsEmptyList_ReturnsEmptyMappedResponse()
+        this.fixture.MockUnitOfWork
+            .Setup(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(listings);
+
+        this.fixture.MockMapper
+            .Setup(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings))
+            .Returns(mappedResponse);
+
+        var handler = new GetListingDetailsWithCarHandler(this.fixture.MockMapper.Object, this.fixture.MockUnitOfWork.Object);
+
+        // Act
+        var result = await handler.Handle(new GetListingDetailsWithCarRequest(), CancellationToken.None);
+
+        // Assert
+        using (new AssertionScope())
         {
-            // Arrange
-
-            var listings = new List<Listing>();
-            var mappedResponse = new GetListingDetailsWithCarResponse
-            {
-                ListingDetailsWithCar = new List<GetListingDetailsWithCarResponse.GetListingWithCarResponse>()
-            };
+            result.Should().BeEquivalentTo(mappedResponse);
 
             this.fixture.MockUnitOfWork
-                .Setup(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(listings);
+                .Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
+            this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
+        }
+    }
 
-            this.fixture.MockMapper
-                .Setup(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings))
-                .Returns(mappedResponse);
+    [Fact]
+    public async Task Handle_RepositoryReturnsEmptyList_ReturnsEmptyMappedResponse()
+    {
+        // Arrange
 
-            var handler = new GetListingDetailsWithCarHandler(this.fixture.MockMapper.Object, this.fixture.MockUnitOfWork.Object);
+        var listings = new List<Listing>();
+        var mappedResponse = new GetListingDetailsWithCarResponse
+        {
+            ListingDetailsWithCar = new List<GetListingDetailsWithCarResponse.GetListingWithCarResponse>()
+        };
 
-            // Act
-            var result = await handler.Handle(new GetListingDetailsWithCarRequest(), CancellationToken.None);
+        this.fixture.MockUnitOfWork
+            .Setup(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(listings);
 
-            // Assert
-            using (new AssertionScope())
-            {
-                result.Should().BeEquivalentTo(mappedResponse);
+        this.fixture.MockMapper
+            .Setup(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings))
+            .Returns(mappedResponse);
 
-                this.fixture.MockUnitOfWork.Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
-                this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
-            }
+        var handler = new GetListingDetailsWithCarHandler(this.fixture.MockMapper.Object, this.fixture.MockUnitOfWork.Object);
+
+        // Act
+        var result = await handler.Handle(new GetListingDetailsWithCarRequest(), CancellationToken.None);
+
+        // Assert
+        using (new AssertionScope())
+        {
+            result.Should().BeEquivalentTo(mappedResponse);
+
+            this.fixture.MockUnitOfWork
+                .Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
+            this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
         }
     }
 }

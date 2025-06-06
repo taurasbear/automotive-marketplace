@@ -1,13 +1,12 @@
-﻿namespace Automotive.Marketplace.Application.Interfaces.Data.Repositories
+﻿namespace Automotive.Marketplace.Application.Interfaces.Data.Repositories;
+
+using Automotive.Marketplace.Domain.Entities;
+
+public interface IAccountRepository
 {
-    using Automotive.Marketplace.Domain.Entities;
+    public Task<Account?> GetAccountAsync(string email, CancellationToken cancellationToken);
 
-    public interface IAccountRepository
-    {
-        public Task<Account?> GetAccountAsync(string email, CancellationToken cancellationToken);
+    public Task<Account?> GetAccountByIdAsync(Guid accountId, CancellationToken cancellationToken);
 
-        public Task<Account?> GetAccountByIdAsync(Guid accountId, CancellationToken cancellationToken);
-
-        public Task<Account> AddAccountAsync(Account account, CancellationToken cancellationToken);
-    }
+    public Task<Account> AddAccountAsync(Account account, CancellationToken cancellationToken);
 }

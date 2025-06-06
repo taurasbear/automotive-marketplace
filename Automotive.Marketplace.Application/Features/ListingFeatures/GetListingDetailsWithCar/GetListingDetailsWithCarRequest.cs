@@ -1,6 +1,5 @@
-﻿namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListingDetailsWithCar
-{
-    using MediatR;
+﻿namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListingDetailsWithCar;
 
-    public sealed record class GetListingDetailsWithCarRequest() : IRequest<GetListingDetailsWithCarResponse>;
-}
+using MediatR;
+
+public sealed record class GetListingDetailsWithCarRequest() : IRequest<GetListingDetailsWithCarResponse>;

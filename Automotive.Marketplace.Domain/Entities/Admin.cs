@@ -1,11 +1,10 @@
-﻿namespace Automotive.Marketplace.Domain.Entities
+﻿namespace Automotive.Marketplace.Domain.Entities;
+
+using Automotive.Marketplace.Domain.Enums;
+
+public class Admin : Account
 {
-    using Automotive.Marketplace.Domain.Enums;
+    public AdminRole AdminRole { get; set; }
 
-    public class Admin : Account
-    {
-        public AdminRole AdminRole { get; set; }
-
-        public override string RoleName => "Admin";
-    }
+    public override string RoleName => "Admin";
 }

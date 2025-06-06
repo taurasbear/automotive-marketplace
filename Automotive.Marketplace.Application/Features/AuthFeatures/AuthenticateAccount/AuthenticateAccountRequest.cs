@@ -1,6 +1,5 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount
-{
-    using MediatR;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
-    public sealed record AuthenticateAccountRequest(string email, string password) : IRequest<AuthenticateAccountResponse>;
-}
+using MediatR;
+
+public sealed record AuthenticateAccountRequest(string email, string password) : IRequest<AuthenticateAccountResponse>;

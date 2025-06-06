@@ -5,14 +5,13 @@
     using Automotive.Marketplace.Application.Interfaces.Services;
     using Automotive.Marketplace.Domain.Entities;
 
-    public class RegisterAccountHandler : BaseHandler<RegisterAccountRequest, RegisterAccountResponse>
+    public class RegisterAccountHandler(
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IPasswordHasher passwordHasher
+        ) : BaseHandler<RegisterAccountRequest, RegisterAccountResponse>(mapper, unitOfWork)
     {
-        private readonly IPasswordHasher passwordHasher;
-
-        public RegisterAccountHandler(IMapper mapper, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher) : base(mapper, unitOfWork)
-        {
-            this.passwordHasher = passwordHasher;
-        }
+        private readonly IPasswordHasher passwordHasher = passwordHasher;
 
         public override async Task<RegisterAccountResponse> Handle(RegisterAccountRequest request, CancellationToken cancellationToken)
         {

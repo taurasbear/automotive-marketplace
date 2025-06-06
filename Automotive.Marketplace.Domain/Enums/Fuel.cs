@@ -1,12 +1,11 @@
-﻿namespace Automotive.Marketplace.Domain.Enums
+﻿namespace Automotive.Marketplace.Domain.Enums;
+
+public enum Fuel
 {
-    public enum Fuel
-    {
-        Diesel,
-        Petrol,
-        Electric,
-        PetrolLPG,
-        PetrolElectric,
-        PlugIn
-    }
+    Diesel,
+    Petrol,
+    Electric,
+    PetrolLPG,
+    PetrolElectric,
+    PlugIn
 }

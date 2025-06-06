@@ -1,71 +1,65 @@
-﻿namespace Automotive.Marketplace.Infrastructure
+﻿namespace Automotive.Marketplace.Infrastructure;
+
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Data.Repositories;
+using Automotive.Marketplace.Infrastructure.Data.DbContext;
+using Automotive.Marketplace.Infrastructure.Repositories;
+using System.Threading;
+using System.Threading.Tasks;
+
+public class UnitOfWork(AutomotiveContext automotiveContext) : IUnitOfWork
 {
-    using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Application.Interfaces.Data.Repositories;
-    using Automotive.Marketplace.Infrastructure.Data.DbContext;
-    using Automotive.Marketplace.Infrastructure.Repositories;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private bool disposed = false;
 
-    public class UnitOfWork : IUnitOfWork
+    private readonly AutomotiveContext automotiveContext = automotiveContext;
+
+    private IRefreshTokenRepository refreshTokenRepository = null!;
+
+    public IRefreshTokenRepository RefreshTokenRepository
     {
-        private bool disposed = false;
-
-        private readonly AutomotiveContext automotiveContext;
-
-        private IRefreshTokenRepository refreshTokenRepository = null!;
-
-        public IRefreshTokenRepository RefreshTokenRepository
+        get
         {
-            get
-            {
-                return refreshTokenRepository ??= new RefreshTokenRepository(automotiveContext);
-            }
+            return refreshTokenRepository ??= new RefreshTokenRepository(automotiveContext);
         }
+    }
 
-        private IAccountRepository accountRepository = null!;
+    private IAccountRepository accountRepository = null!;
 
-        public IAccountRepository AccountRepository
+    public IAccountRepository AccountRepository
+    {
+        get
         {
-            get
-            {
-                return accountRepository ??= new AccountRepository(automotiveContext);
-            }
+            return accountRepository ??= new AccountRepository(automotiveContext);
         }
+    }
 
-        private IListingRepository listingRepository = null!;
+    private IListingRepository listingRepository = null!;
 
-        public IListingRepository ListingRepository
+    public IListingRepository ListingRepository
+    {
+        get
         {
-            get
-            {
-                return listingRepository ??= new ListingRepository(automotiveContext);
-            }
+            return listingRepository ??= new ListingRepository(automotiveContext);
         }
+    }
 
-        public UnitOfWork(AutomotiveContext automotiveContext)
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing && !disposed)
         {
-            this.automotiveContext = automotiveContext;
+            this.automotiveContext.Dispose();
         }
+        this.disposed = true;
+    }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing && !disposed)
-            {
-                this.automotiveContext.Dispose();
-            }
-            this.disposed = true;
-        }
+    public void Dispose()
+    {
+        this.Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public async Task SaveAsync(CancellationToken cancellatioToken)
-        {
-            await automotiveContext.SaveChangesAsync(cancellatioToken);
-        }
+    public async Task SaveAsync(CancellationToken cancellatioToken)
+    {
+        await automotiveContext.SaveChangesAsync(cancellatioToken);
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace Automotive.Marketplace.Domain.Entities
+﻿namespace Automotive.Marketplace.Domain.Entities;
+
+using System.Collections.ObjectModel;
+
+public class Make : BaseEntity
 {
-    using System.Collections.ObjectModel;
+    public string Name { get; set; } = string.Empty;
 
-    public class Make : BaseEntity
-    {
-        public string Name { get; set; } = string.Empty;
-
-        public ICollection<Model> Models { get; set; } = new Collection<Model>();
-    }
+    public ICollection<Model> Models { get; set; } = new Collection<Model>();
 }

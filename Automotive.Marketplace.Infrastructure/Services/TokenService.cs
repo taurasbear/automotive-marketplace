@@ -1,63 +1,57 @@
-﻿namespace Automotive.Marketplace.Infrastructure.Services
+﻿namespace Automotive.Marketplace.Infrastructure.Services;
+
+using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Domain.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+
+public class TokenService(IConfiguration configuration) : ITokenService
 {
-    using Automotive.Marketplace.Application.Interfaces.Services;
-    using Automotive.Marketplace.Domain.Entities;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.IdentityModel.Tokens;
-    using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Security.Cryptography;
-    using System.Text;
+    private readonly IConfiguration configuration = configuration;
 
-    public class TokenService : ITokenService
+    public string GenerateAccessToken(Account account)
     {
-        private readonly IConfiguration configuration;
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        public TokenService(IConfiguration configuration)
+        var claims = new List<Claim>
         {
-            this.configuration = configuration;
-        }
+            new Claim(ClaimTypes.Email, account.Email),
+            new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
+            new Claim(ClaimTypes.Role, account.RoleName)
+        };
 
-        public string GenerateAccessToken(Account account)
+        var token = new JwtSecurityToken(
+            issuer: this.configuration["Jwt:Issuer"],
+            audience: this.configuration["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(
+                Convert.ToDouble(this.configuration["Jwt:AccessTokenExpirationMinutes"])
+                ),
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new Byte[32];
+        using (var rng = RandomNumberGenerator.Create())
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Email, account.Email),
-                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimTypes.Role, account.RoleName)
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: this.configuration["Jwt:Issuer"],
-                audience: this.configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(
-                    Convert.ToDouble(this.configuration["Jwt:AccessTokenExpirationMinutes"])
-                    ),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
         }
+    }
 
-        public string GenerateRefreshToken()
-        {
-            var randomNumber = new Byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
-        }
-
-        public DateTime GetRefreshTokenExpiryData()
-        {
-            return DateTime.UtcNow
-                .AddDays(Convert.ToDouble(this.configuration["Jwt:RefreshTokenExpirationDays"]));
-        }
+    public DateTime GetRefreshTokenExpiryData()
+    {
+        return DateTime.UtcNow
+            .AddDays(Convert.ToDouble(this.configuration["Jwt:RefreshTokenExpirationDays"]));
     }
 }

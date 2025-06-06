@@ -1,35 +1,32 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+
+using AutoMapper;
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
+
+public class AuthenticateAccountHandler(
+    IMapper mapper,
+    IUnitOfWork unitOfWork,
+    IPasswordHasher passwordHasher) : BaseHandler<AuthenticateAccountRequest, AuthenticateAccountResponse>(mapper, unitOfWork)
 {
-    using AutoMapper;
-    using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Application.Interfaces.Services;
+    private readonly IPasswordHasher passwordHasher = passwordHasher;
 
-    public class AuthenticateAccountHandler : BaseHandler<AuthenticateAccountRequest, AuthenticateAccountResponse>
+    public override async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
     {
-        private readonly IPasswordHasher passwordHasher;
+        var account = await this.UnitOfWork.AccountRepository.GetAccountAsync(request.email, cancellationToken);
 
-        public AuthenticateAccountHandler(IMapper mapper, IUnitOfWork unitOfWork, ITokenService tokenService, IPasswordHasher passwordHasher) : base(mapper, unitOfWork)
+        if (account == null)
         {
-            this.passwordHasher = passwordHasher;
+            return new AuthenticateAccountResponse();
         }
 
-        public override async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
+        if (this.passwordHasher.Verify(request.password, account.HashedPassword))
         {
-            var account = await this.UnitOfWork.AccountRepository.GetAccountAsync(request.email, cancellationToken);
-
-            if (account == null)
-            {
-                return new AuthenticateAccountResponse();
-            }
-
-            if (this.passwordHasher.Verify(request.password, account.HashedPassword))
-            {
-                return new AuthenticateAccountResponse() { Account = account };
-            }
-            else
-            {
-                return new AuthenticateAccountResponse();
-            }
+            return new AuthenticateAccountResponse() { Account = account };
+        }
+        else
+        {
+            return new AuthenticateAccountResponse();
         }
     }
 }
