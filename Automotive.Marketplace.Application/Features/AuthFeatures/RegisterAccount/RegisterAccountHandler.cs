@@ -1,32 +1,42 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+
+using AutoMapper;
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Domain.Entities;
+
+public class RegisterAccountHandler(
+    IMapper mapper,
+    IUnitOfWork unitOfWork,
+    IPasswordHasher passwordHasher,
+    ITokenService tokenService
+    ) : BaseHandler<RegisterAccountRequest, RegisterAccountResponse>(mapper, unitOfWork)
 {
-    using AutoMapper;
-    using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Application.Interfaces.Services;
-    using Automotive.Marketplace.Domain.Entities;
+    private readonly IPasswordHasher passwordHasher = passwordHasher;
 
-    public class RegisterAccountHandler(
-        IMapper mapper,
-        IUnitOfWork unitOfWork,
-        IPasswordHasher passwordHasher
-        ) : BaseHandler<RegisterAccountRequest, RegisterAccountResponse>(mapper, unitOfWork)
+    private readonly ITokenService tokenService = tokenService;
+
+    public override async Task<RegisterAccountResponse> Handle(RegisterAccountRequest request, CancellationToken cancellationToken)
     {
-        private readonly IPasswordHasher passwordHasher = passwordHasher;
-
-        public override async Task<RegisterAccountResponse> Handle(RegisterAccountRequest request, CancellationToken cancellationToken)
+        var accountToAdd = new Account
         {
-            var account = new Account
-            {
-                Username = request.username,
-                Email = request.email,
-                HashedPassword = this.passwordHasher.Hash(request.password),
-            };
+            Username = request.username,
+            Email = request.email,
+            HashedPassword = this.passwordHasher.Hash(request.password),
+        };
 
-            var addedAccount = await this.UnitOfWork.AccountRepository.AddAccountAsync(account, cancellationToken);
+        var addedAccount = await this.UnitOfWork.AccountRepository.AddAccountAsync(accountToAdd, cancellationToken);
 
-            await this.UnitOfWork.SaveAsync(cancellationToken);
+        var freshAccessToken = this.tokenService.GenerateAccessToken(addedAccount);
+        var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(addedAccount);
 
-            return this.Mapper.Map<RegisterAccountResponse>(addedAccount);
-        }
+        await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToAdd, cancellationToken);
+
+        var response = this.Mapper.Map<RegisterAccountResponse>(refreshTokenToAdd);
+        response.AccessToken = freshAccessToken;
+
+        await this.UnitOfWork.SaveAsync(cancellationToken);
+
+        return response;
     }
 }

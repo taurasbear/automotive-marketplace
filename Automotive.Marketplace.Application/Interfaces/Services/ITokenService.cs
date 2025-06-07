@@ -8,5 +8,7 @@ public interface ITokenService
 
     public string GenerateRefreshToken();
 
+    public RefreshToken GenerateRefreshTokenEntity(Account account);
+
     public DateTime GetRefreshTokenExpiryData();
 }

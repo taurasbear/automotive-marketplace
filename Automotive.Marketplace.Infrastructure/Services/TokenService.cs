@@ -49,6 +49,21 @@ public class TokenService(IConfiguration configuration) : ITokenService
         }
     }
 
+    public RefreshToken GenerateRefreshTokenEntity(Account account)
+    {
+        var freshRefreshToken = this.GenerateRefreshToken();
+        var freshExpiryDate = this.GetRefreshTokenExpiryData();
+
+        return new RefreshToken
+        {
+            Token = freshRefreshToken,
+            ExpiryDate = freshExpiryDate,
+            IsRevoked = false,
+            IsUsed = false,
+            Account = account
+        };
+    }
+
     public DateTime GetRefreshTokenExpiryData()
     {
         return DateTime.UtcNow

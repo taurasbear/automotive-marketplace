@@ -7,7 +7,10 @@ public class RegisterAccountMapper : Profile
 {
     public RegisterAccountMapper()
     {
-        this.CreateMap<Account, RegisterAccountResponse>()
-            .ForMember(dest => dest.Account, opt => opt.MapFrom(src => src));
+        this.CreateMap<RefreshToken, RegisterAccountResponse>()
+            .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.Token))
+            .ForMember(dest => dest.RefreshTokenExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
+            .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.AccountId))
+            .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Account.RoleName));
     }
 }

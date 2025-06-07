@@ -4,7 +4,6 @@ using Automotive.Marketplace.Application.Interfaces.Data.Repositories;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 public class ListingRepository(AutomotiveContext automotiveContext) : BaseRepository(automotiveContext), IListingRepository
 {

@@ -1,8 +1,14 @@
 ﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
-using Automotive.Marketplace.Domain.Entities;
-
 public sealed record AuthenticateAccountResponse
 {
-    public Account? Account { get; set; }
+    public string FreshAccessToken { get; set; } = string.Empty;
+
+    public string FreshRefreshToken { get; set; } = string.Empty;
+
+    public DateTime FreshExpiryDate { get; set; }
+
+    public Guid AccountId { get; set; }
+
+    public string RoleName { get; set; } = string.Empty;
 }

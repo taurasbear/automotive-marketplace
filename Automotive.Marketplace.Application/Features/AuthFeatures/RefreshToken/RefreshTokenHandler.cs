@@ -3,7 +3,6 @@
 using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
-using Automotive.Marketplace.Domain.Entities;
 
 public class RefreshTokenHandler(
     IMapper mapper,
@@ -27,29 +26,21 @@ public class RefreshTokenHandler(
             throw new Exception();
         }
 
-        var account = await this.UnitOfWork.AccountRepository.GetAccountByIdAsync(currentRefreshToken.AccountId, cancellationToken);
-
-        if (account == null)
-        {
-            throw new Exception();
-        }
-
-        var freshAccessToken = this.tokenService.GenerateAccessToken(account);
-        var freshRefreshToken = this.tokenService.GenerateRefreshToken();
-        var freshExpiryDate = this.tokenService.GetRefreshTokenExpiryData();
+        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAccountByIdAsync(currentRefreshToken.AccountId, cancellationToken)
+            ?? throw new Exception();
 
         currentRefreshToken.IsRevoked = true;
-        var newRefreshToken = new RefreshToken
-        {
-            Token = freshRefreshToken,
-            ExpiryDate = freshExpiryDate,
-            IsRevoked = false,
-            IsUsed = false,
-            AccountId = currentRefreshToken.AccountId
-        };
 
-        await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(newRefreshToken, cancellationToken);
+        var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
+        var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(fetchedAccount);
+
+        await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToAdd, cancellationToken);
+
+        var response = this.Mapper.Map<RefreshTokenResponse>(refreshTokenToAdd);
+        response.FreshAccessToken = freshAccessToken;
+
         await this.UnitOfWork.SaveAsync(cancellationToken);
-        throw new Exception();
+
+        return response;
     }
 }
