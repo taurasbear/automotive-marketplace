@@ -5,7 +5,7 @@ using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 
-public class ListingRepository(AutomotiveContext automotiveContext) : BaseRepository(automotiveContext), IListingRepository
+public class ListingRepository(AutomotiveContext automotiveContext) : BaseRepository<Listing>(automotiveContext), IListingRepository
 {
     public async Task<IList<Listing>> GetListingDetailsWithCarAsync(CancellationToken cancellationToken)
     {

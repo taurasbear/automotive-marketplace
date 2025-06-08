@@ -26,7 +26,7 @@ public class RefreshTokenHandler(
             throw new Exception();
         }
 
-        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAccountByIdAsync(currentRefreshToken.AccountId, cancellationToken)
+        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAsync(currentRefreshToken.AccountId, cancellationToken)
             ?? throw new Exception();
 
         currentRefreshToken.IsRevoked = true;
@@ -34,7 +34,7 @@ public class RefreshTokenHandler(
         var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
         var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(fetchedAccount);
 
-        await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToAdd, cancellationToken);
+        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
 
         var response = this.Mapper.Map<RefreshTokenResponse>(refreshTokenToAdd);
         response.FreshAccessToken = freshAccessToken;

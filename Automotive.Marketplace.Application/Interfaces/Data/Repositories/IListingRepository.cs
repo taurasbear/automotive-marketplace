@@ -2,7 +2,7 @@
 
 using Automotive.Marketplace.Domain.Entities;
 
-public interface IListingRepository
+public interface IListingRepository : IBaseRepository<Listing>
 {
     Task<IList<Listing>> GetListingDetailsWithCarAsync(CancellationToken cancellationToken);
 }

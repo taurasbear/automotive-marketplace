@@ -16,7 +16,7 @@ public class AuthenticateAccountHandler(
 
     public override async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
     {
-        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAccountAsync(request.email, cancellationToken)
+        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAccountByEmailAsync(request.email, cancellationToken)
             ?? throw new Exception("Account does not exist"); // TODO: Use custom exception
 
         if (!this.passwordHasher.Verify(request.password, fetchedAccount.HashedPassword))
@@ -28,7 +28,7 @@ public class AuthenticateAccountHandler(
         var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
         var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(fetchedAccount);
 
-        await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToAdd, cancellationToken);
+        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
 
         var response = this.Mapper.Map<AuthenticateAccountResponse>(refreshTokenToAdd);
         response.FreshAccessToken = freshAccessToken;

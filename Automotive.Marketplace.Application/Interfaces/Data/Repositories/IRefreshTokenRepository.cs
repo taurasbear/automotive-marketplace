@@ -2,9 +2,7 @@
 
 using Automotive.Marketplace.Domain.Entities;
 
-public interface IRefreshTokenRepository
+public interface IRefreshTokenRepository : IBaseRepository<RefreshToken>
 {
-    public Task AddRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken);
-
     public Task<RefreshToken?> GetRefreshTokenByTokenAsync(string token, CancellationToken cancellationToken);
 }

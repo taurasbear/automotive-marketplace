@@ -25,12 +25,12 @@ public class RegisterAccountHandler(
             HashedPassword = this.passwordHasher.Hash(request.password),
         };
 
-        var addedAccount = await this.UnitOfWork.AccountRepository.AddAccountAsync(accountToAdd, cancellationToken);
+        var addedAccount = await this.UnitOfWork.AccountRepository.AddAsync(accountToAdd, cancellationToken);
 
         var freshAccessToken = this.tokenService.GenerateAccessToken(addedAccount);
         var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(addedAccount);
 
-        await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToAdd, cancellationToken);
+        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
 
         var response = this.Mapper.Map<RegisterAccountResponse>(refreshTokenToAdd);
         response.AccessToken = freshAccessToken;

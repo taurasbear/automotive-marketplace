@@ -2,11 +2,7 @@
 
 using Automotive.Marketplace.Domain.Entities;
 
-public interface IAccountRepository
+public interface IAccountRepository : IBaseRepository<Account>
 {
-    public Task<Account?> GetAccountAsync(string email, CancellationToken cancellationToken);
-
-    public Task<Account?> GetAccountByIdAsync(Guid accountId, CancellationToken cancellationToken);
-
-    public Task<Account> AddAccountAsync(Account account, CancellationToken cancellationToken);
+    public Task<Account?> GetAccountByEmailAsync(string email, CancellationToken cancellationToken);
 }
