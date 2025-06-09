@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 public class GetListingDetailsWithCarHandler(
     IMapper mapper,
-    IUnitOfWork unitOfWork) : BaseHandler<GetListingDetailsWithCarRequest, GetListingDetailsWithCarResponse>(mapper, unitOfWork)
+    IUnitOfWork unitOfWork) : BaseHandler<GetListingDetailsWithCarRequest, GetListingsDetailsWithCarResponse>(mapper, unitOfWork)
 {
-    public override async Task<GetListingDetailsWithCarResponse> Handle(
+    public override async Task<GetListingsDetailsWithCarResponse> Handle(
         GetListingDetailsWithCarRequest request,
         CancellationToken cancellationToken)
     {
         var listingDetailsWithCar = await this.UnitOfWork.ListingRepository.GetListingDetailsWithCarAsync(cancellationToken);
-        return this.Mapper.Map<GetListingDetailsWithCarResponse>(listingDetailsWithCar);
+        return this.Mapper.Map<GetListingsDetailsWithCarResponse>(listingDetailsWithCar);
     }
 }

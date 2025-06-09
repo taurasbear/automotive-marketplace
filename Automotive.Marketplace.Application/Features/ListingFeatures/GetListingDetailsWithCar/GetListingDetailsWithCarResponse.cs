@@ -1,10 +1,10 @@
 ﻿namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListingDetailsWithCar;
 
-public sealed record GetListingDetailsWithCarResponse
+public sealed record GetListingsDetailsWithCarResponse
 {
-    public IEnumerable<GetListingWithCarResponse> ListingDetailsWithCar { get; set; } = new List<GetListingWithCarResponse>();
+    public IEnumerable<ListingDetailsWithCar> ListingsDetailsWithCar { get; set; } = new List<ListingDetailsWithCar>();
 
-    public sealed record GetListingWithCarResponse
+    public sealed record ListingDetailsWithCar
     {
         public bool Used { get; set; }
 

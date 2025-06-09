@@ -11,7 +11,7 @@ public class ListingController(IMediator mediator) : ControllerBase
     private readonly IMediator mediator = mediator;
 
     [HttpGet]
-    public async Task<ActionResult<GetListingDetailsWithCarResponse>> GetListingDetailsWithCar()
+    public async Task<ActionResult<GetListingsDetailsWithCarResponse>> GetListingDetailsWithCar()
     {
         return await this.mediator.Send(new GetListingDetailsWithCarRequest());
     }

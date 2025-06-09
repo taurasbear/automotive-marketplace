@@ -2,4 +2,4 @@
 
 using MediatR;
 
-public sealed record class GetListingDetailsWithCarRequest() : IRequest<GetListingDetailsWithCarResponse>;
+public sealed record class GetListingDetailsWithCarRequest() : IRequest<GetListingsDetailsWithCarResponse>;

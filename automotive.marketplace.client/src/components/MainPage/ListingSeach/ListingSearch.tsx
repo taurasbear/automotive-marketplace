@@ -5,7 +5,7 @@ import PriceSelect from "./PriceSelect";
 import UsedSelect from "./UsedSelect";
 import YearSelect from "./YearSelect";
 
-const ListingSearchFilters = () => {
+const ListingSearch = () => {
   return (
     <div className="grid grid-cols-6 grid-rows-2">
       <div className="col-span-2">
@@ -36,4 +36,4 @@ const ListingSearchFilters = () => {
   );
 };
 
-export default ListingSearchFilters;
+export default ListingSearch;

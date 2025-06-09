@@ -1,11 +1,11 @@
 import axiosClient from "../../../api/axiosClient";
-import { GetListingDetailsWithCarResponse } from "../../types/dto/Listing/GetListingDetailsWithCarResponse";
+import { GetListingsDetailsWithCarResponse } from "../../types/dto/Listing/GetListingDetailsWithCarResponse";
 
 class ListingService {
-    static async GetListings(): Promise<GetListingDetailsWithCarResponse[]> {
-        const response = await axiosClient.get('/listing');
-        return await response.data.listingDetailsWithCar;
-    }
+  static async GetListings(): Promise<GetListingsDetailsWithCarResponse> {
+    const response = await axiosClient.get("/listing");
+    return await response.data;
+  }
 }
 
 export default ListingService;

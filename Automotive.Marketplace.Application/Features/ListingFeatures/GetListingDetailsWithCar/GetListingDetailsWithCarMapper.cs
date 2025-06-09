@@ -7,7 +7,7 @@ public class GetListingDetailsWithCarMapper : Profile
 {
     public GetListingDetailsWithCarMapper()
     {
-        this.CreateMap<Listing, GetListingDetailsWithCarResponse.GetListingWithCarResponse>()
+        this.CreateMap<Listing, GetListingsDetailsWithCarResponse.ListingDetailsWithCar>()
             .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.CarDetails.Mileage))
             .ForMember(dest => dest.Power, opt => opt.MapFrom(src => src.CarDetails.Power))
             .ForMember(dest => dest.EngineSize, opt => opt.MapFrom(src => src.CarDetails.EngineSize))
@@ -18,7 +18,7 @@ public class GetListingDetailsWithCarMapper : Profile
             .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.CarDetails.Car.Model.Name))
             .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.CarDetails.Car.Model.Make.Name));
 
-        this.CreateMap<IList<Listing>, GetListingDetailsWithCarResponse>()
-            .ForMember(dest => dest.ListingDetailsWithCar, opt => opt.MapFrom(src => src));
+        this.CreateMap<IList<Listing>, GetListingsDetailsWithCarResponse>()
+            .ForMember(dest => dest.ListingsDetailsWithCar, opt => opt.MapFrom(src => src));
     }
 }

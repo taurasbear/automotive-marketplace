@@ -39,11 +39,11 @@ public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
     {
         // Arrange
         var listings = new List<Listing> { new Listing() };
-        var mappedResponse = new GetListingDetailsWithCarResponse
+        var mappedResponse = new GetListingsDetailsWithCarResponse
         {
-            ListingDetailsWithCar = new List<GetListingDetailsWithCarResponse.GetListingWithCarResponse>
+            ListingsDetailsWithCar = new List<GetListingsDetailsWithCarResponse.ListingDetailsWithCar>
             {
-                new GetListingDetailsWithCarResponse.GetListingWithCarResponse
+                new GetListingsDetailsWithCarResponse.ListingDetailsWithCar
                 {
                     Year = "2015",
                     Make = "Tesla",
@@ -66,7 +66,7 @@ public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
             .ReturnsAsync(listings);
 
         this.fixture.MockMapper
-            .Setup(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings))
+            .Setup(mapper => mapper.Map<GetListingsDetailsWithCarResponse>(listings))
             .Returns(mappedResponse);
 
         var handler = new GetListingDetailsWithCarHandler(this.fixture.MockMapper.Object, this.fixture.MockUnitOfWork.Object);
@@ -81,7 +81,7 @@ public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
 
             this.fixture.MockUnitOfWork
                 .Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
-            this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
+            this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingsDetailsWithCarResponse>(listings), Times.Once);
         }
     }
 
@@ -91,9 +91,9 @@ public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
         // Arrange
 
         var listings = new List<Listing>();
-        var mappedResponse = new GetListingDetailsWithCarResponse
+        var mappedResponse = new GetListingsDetailsWithCarResponse
         {
-            ListingDetailsWithCar = new List<GetListingDetailsWithCarResponse.GetListingWithCarResponse>()
+            ListingsDetailsWithCar = new List<GetListingsDetailsWithCarResponse.ListingDetailsWithCar>()
         };
 
         this.fixture.MockUnitOfWork
@@ -101,7 +101,7 @@ public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
             .ReturnsAsync(listings);
 
         this.fixture.MockMapper
-            .Setup(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings))
+            .Setup(mapper => mapper.Map<GetListingsDetailsWithCarResponse>(listings))
             .Returns(mappedResponse);
 
         var handler = new GetListingDetailsWithCarHandler(this.fixture.MockMapper.Object, this.fixture.MockUnitOfWork.Object);
@@ -116,7 +116,7 @@ public class GetListingDetailsWithCarTests : IClassFixture<TestFixture>
 
             this.fixture.MockUnitOfWork
                 .Verify(uow => uow.ListingRepository.GetListingDetailsWithCarAsync(It.IsAny<CancellationToken>()), Times.Once);
-            this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingDetailsWithCarResponse>(listings), Times.Once);
+            this.fixture.MockMapper.Verify(mapper => mapper.Map<GetListingsDetailsWithCarResponse>(listings), Times.Once);
         }
     }
 }
