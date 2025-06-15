@@ -1,6 +1,7 @@
 ﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 
 using AutoMapper;
+using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 
@@ -22,12 +23,11 @@ public class RefreshTokenHandler(
             || currentRefreshToken.IsRevoked
             || currentRefreshToken.ExpiryDate < DateTime.UtcNow)
         {
-            // TODO: replace with custom exception (like unauthorized?)
-            throw new Exception();
+            throw new InvalidRefreshTokenException();
         }
 
         var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAsync(currentRefreshToken.AccountId, cancellationToken)
-            ?? throw new Exception();
+            ?? throw new AccountNotFoundException(currentRefreshToken.AccountId);
 
         currentRefreshToken.IsRevoked = true;
 

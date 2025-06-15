@@ -1,6 +1,7 @@
 ﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
 using AutoMapper;
+using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 
@@ -17,12 +18,11 @@ public class AuthenticateAccountHandler(
     public override async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
     {
         var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAccountByEmailAsync(request.email, cancellationToken)
-            ?? throw new Exception("Account does not exist"); // TODO: Use custom exception
+            ?? throw new AccountNotFoundException(request.email);
 
         if (!this.passwordHasher.Verify(request.password, fetchedAccount.HashedPassword))
         {
-            // TODO: Use custom expection
-            throw new Exception("Invalid email or password");
+            throw new InvalidCredentialsException();
         }
 
         var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
