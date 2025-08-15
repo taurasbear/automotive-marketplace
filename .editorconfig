@@ -1,7 +1,0 @@
-root = true
-
-[*.cs]
-#csharp_preserve_single_line_blocks = false
-#csharp_max_line_length = 120
-
-csharp_style_namespace_declarations = file_scoped:warning

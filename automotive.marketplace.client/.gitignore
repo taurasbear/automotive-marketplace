@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+[Oo]bj/
+**/[Oo]bj/**
+obj\\Debug/
+**/obj\\Debug/
+"obj\\Debug/"
+**/"obj\\Debug/"

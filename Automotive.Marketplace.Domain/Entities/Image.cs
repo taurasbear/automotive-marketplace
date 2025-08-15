@@ -1,13 +1,12 @@
-﻿namespace Automotive.Marketplace.Domain.Entities
+﻿namespace Automotive.Marketplace.Domain.Entities;
+
+public class Image : BaseEntity
 {
-    public class Image : BaseEntity
-    {
-        public string ImagePath { get; set; } = string.Empty;
+    public string ImagePath { get; set; } = string.Empty;
 
-        public string AltText { get; set; } = string.Empty;
+    public string AltText { get; set; } = string.Empty;
 
-        public Guid ListingId { get; set; }
+    public Guid ListingId { get; set; }
 
-        public Listing Listing { get; set; } = null!;
-    }
+    public Listing Listing { get; set; } = null!;
 }

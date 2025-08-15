@@ -1,3 +1,5 @@
+.DS_Store
+\package.g.props
 .env
 /nginx/ssl/*
 /nginx/logs/*
@@ -365,3 +367,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+automotive.marketplace.client/obj/Debug//package.g.props

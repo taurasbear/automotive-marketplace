@@ -1,15 +1,14 @@
-﻿namespace Automotive.Marketplace.Application.Interfaces.Data
+﻿namespace Automotive.Marketplace.Application.Interfaces.Data;
+
+using Automotive.Marketplace.Application.Interfaces.Data.Repositories;
+
+public interface IUnitOfWork : IDisposable
 {
-    using Automotive.Marketplace.Application.Interfaces.Data.Repositories;
+    public IRefreshTokenRepository RefreshTokenRepository { get; }
 
-    public interface IUnitOfWork : IDisposable
-    {
-        public IRefreshTokenRepository RefreshTokenRepository { get; }
+    public IAccountRepository AccountRepository { get; }
 
-        public IAccountRepository AccountRepository { get; }
+    public IListingRepository ListingRepository { get; }
 
-        public IListingRepository ListingRepository { get; }
-
-        public Task SaveAsync(CancellationToken cancellationToken);
-    }
+    public Task SaveAsync(CancellationToken cancellationToken);
 }

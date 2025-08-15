@@ -4,7 +4,7 @@ import {
   SelectContent,
   SelectItem,
   Select,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 const UsedSelect = () => {
   return (

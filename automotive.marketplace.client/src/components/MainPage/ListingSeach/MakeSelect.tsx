@@ -6,14 +6,14 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 const MakeSelect = () => {
   return (
     <div>
       <Select>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="All" />
+          <SelectValue placeholder="All makes" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

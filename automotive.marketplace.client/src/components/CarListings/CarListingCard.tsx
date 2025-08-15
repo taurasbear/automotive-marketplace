@@ -1,13 +1,13 @@
-import ListingCardBadge from "./ListingCardBadge";
-import { Button } from "./ui/button";
+import ListingCardBadge from "@/components/CarListings/ListingCardBadge";
+import { Button } from "@/components/ui/button";
 import { PiEngine } from "react-icons/pi";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { TbManualGearbox } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
-import { GetListingDetailsWithCarResponse } from "@/shared/types/dto/Listing/GetListingDetailsWithCarResponse";
+import { ListingDetailsWithCar } from "@/shared/types/dto/Listing/GetListingDetailsWithCarResponse";
 
 interface CarListingCardProps {
-  listing: GetListingDetailsWithCarResponse;
+  listing: ListingDetailsWithCar;
 }
 
 const CarListingCard: React.FC<CarListingCardProps> = ({ listing }) => {

@@ -1,9 +1,14 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount
-{
-    using Automotive.Marketplace.Domain.Entities;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
 
-    public sealed record RegisterAccountResponse
-    {
-        public Account Account { get; set; } = null!;
-    }
+public sealed record RegisterAccountResponse
+{
+    public string AccessToken { get; set; } = string.Empty;
+
+    public string RefreshToken { get; set; } = string.Empty;
+
+    public DateTime RefreshTokenExpiryDate { get; set; }
+
+    public Guid AccountId { get; set; }
+
+    public string RoleName { get; set; } = string.Empty;
 }

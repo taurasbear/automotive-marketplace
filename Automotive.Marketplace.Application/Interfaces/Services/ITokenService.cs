@@ -1,13 +1,14 @@
-﻿namespace Automotive.Marketplace.Application.Interfaces.Services
+﻿namespace Automotive.Marketplace.Application.Interfaces.Services;
+
+using Automotive.Marketplace.Domain.Entities;
+
+public interface ITokenService
 {
-    using Automotive.Marketplace.Domain.Entities;
+    public string GenerateAccessToken(Account account);
 
-    public interface ITokenService
-    {
-        public string GenerateAccessToken(Account account);
+    public string GenerateRefreshToken();
 
-        public string GenerateRefreshToken();
+    public RefreshToken GenerateRefreshTokenEntity(Account account);
 
-        public DateTime GetRefreshTokenExpiryData();
-    }
+    public DateTime GetRefreshTokenExpiryData();
 }

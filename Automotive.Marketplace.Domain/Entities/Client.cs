@@ -1,15 +1,14 @@
-﻿namespace Automotive.Marketplace.Domain.Entities
+﻿namespace Automotive.Marketplace.Domain.Entities;
+
+using System.Collections.ObjectModel;
+
+public class Client : Account
 {
-    using System.Collections.ObjectModel;
+    public string FirstName { get; set; } = string.Empty;
 
-    public class Client : Account
-    {
-        public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
 
-        public string LastName { get; set; } = string.Empty;
+    public ICollection<Listing> LikedListings { get; set; } = new Collection<Listing>();
 
-        public ICollection<Listing> LikedListings { get; set; } = new Collection<Listing>();
-
-        public override string RoleName => "Client";
-    }
+    public override string RoleName => "Client";
 }

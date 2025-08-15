@@ -1,53 +1,46 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
+
+using AutoMapper;
+using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
+
+public class RefreshTokenHandler(
+    IMapper mapper,
+    IUnitOfWork unitOfWork,
+    ITokenService tokenService) : BaseHandler<RefreshTokenRequest, RefreshTokenResponse>(mapper, unitOfWork)
 {
-    using AutoMapper;
-    using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Application.Interfaces.Services;
-    using Automotive.Marketplace.Domain.Entities;
+    private readonly ITokenService tokenService = tokenService;
 
-    public class RefreshTokenHandler : BaseHandler<RefreshTokenRequest, RefreshTokenResponse>
+    public override async Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        private readonly ITokenService tokenService;
+        var currentRefreshToken = await this.UnitOfWork.RefreshTokenRepository
+            .GetRefreshTokenByTokenAsync(request.refreshToken, cancellationToken);
 
-        public RefreshTokenHandler(IMapper mapper, IUnitOfWork unitOfWork, ITokenService tokenService) : base(mapper, unitOfWork)
+        if (
+            currentRefreshToken == null
+            || string.IsNullOrWhiteSpace(currentRefreshToken.Token)
+            || currentRefreshToken.IsRevoked
+            || currentRefreshToken.ExpiryDate < DateTime.UtcNow)
         {
-            this.tokenService = tokenService;
+            throw new InvalidRefreshTokenException();
         }
 
-        public override async Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
-        {
-            var currentRefreshToken = await this.UnitOfWork.RefreshTokenRepository.GetRefreshTokenByTokenAsync(request.refreshToken, cancellationToken);
+        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAsync(currentRefreshToken.AccountId, cancellationToken)
+            ?? throw new AccountNotFoundException(currentRefreshToken.AccountId);
 
-            if (currentRefreshToken == null || string.IsNullOrWhiteSpace(currentRefreshToken.Token) || currentRefreshToken.IsRevoked || currentRefreshToken.ExpiryDate < DateTime.UtcNow)
-            {
-                // TODO: replace with custom exception (like unauthorized?)
-                throw new Exception();
-            }
+        currentRefreshToken.IsRevoked = true;
 
-            var account = await this.UnitOfWork.AccountRepository.GetAccountByIdAsync(currentRefreshToken.AccountId, cancellationToken);
+        var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
+        var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(fetchedAccount);
 
-            if (account == null)
-            {
-                throw new Exception();
-            }
+        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
 
-            var freshAccessToken = this.tokenService.GenerateAccessToken(account);
-            var freshRefreshToken = this.tokenService.GenerateRefreshToken();
-            var freshExpiryDate = this.tokenService.GetRefreshTokenExpiryData();
+        var response = this.Mapper.Map<RefreshTokenResponse>(refreshTokenToAdd);
+        response.FreshAccessToken = freshAccessToken;
 
-            currentRefreshToken.IsRevoked = true;
-            var newRefreshToken = new RefreshToken
-            {
-                Token = freshRefreshToken,
-                ExpiryDate = freshExpiryDate,
-                IsRevoked = false,
-                IsUsed = false,
-                AccountId = currentRefreshToken.AccountId
-            };
+        await this.UnitOfWork.SaveAsync(cancellationToken);
 
-            await this.UnitOfWork.RefreshTokenRepository.AddRefreshTokenAsync(newRefreshToken, cancellationToken);
-            await this.UnitOfWork.SaveAsync(cancellationToken);
-            throw new Exception();
-        }
+        return response;
     }
 }

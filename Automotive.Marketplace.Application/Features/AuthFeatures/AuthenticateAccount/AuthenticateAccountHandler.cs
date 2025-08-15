@@ -1,35 +1,40 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+
+using AutoMapper;
+using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
+
+public class AuthenticateAccountHandler(
+    IMapper mapper,
+    IUnitOfWork unitOfWork,
+    IPasswordHasher passwordHasher,
+    ITokenService tokenService) : BaseHandler<AuthenticateAccountRequest, AuthenticateAccountResponse>(mapper, unitOfWork)
 {
-    using AutoMapper;
-    using Automotive.Marketplace.Application.Interfaces.Data;
-    using Automotive.Marketplace.Application.Interfaces.Services;
+    private readonly IPasswordHasher passwordHasher = passwordHasher;
 
-    public class AuthenticateAccountHandler : BaseHandler<AuthenticateAccountRequest, AuthenticateAccountResponse>
+    private readonly ITokenService tokenService = tokenService;
+
+    public override async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
     {
-        private readonly IPasswordHasher passwordHasher;
+        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAccountByEmailAsync(request.email, cancellationToken)
+            ?? throw new AccountNotFoundException(request.email);
 
-        public AuthenticateAccountHandler(IMapper mapper, IUnitOfWork unitOfWork, ITokenService tokenService, IPasswordHasher passwordHasher) : base(mapper, unitOfWork)
+        if (!this.passwordHasher.Verify(request.password, fetchedAccount.HashedPassword))
         {
-            this.passwordHasher = passwordHasher;
+            throw new InvalidCredentialsException();
         }
 
-        public override async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
-        {
-            var account = await this.UnitOfWork.AccountRepository.GetAccountAsync(request.email, cancellationToken);
+        var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
+        var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(fetchedAccount);
 
-            if (account == null)
-            {
-                return new AuthenticateAccountResponse();
-            }
+        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
 
-            if (this.passwordHasher.Verify(request.password, account.HashedPassword))
-            {
-                return new AuthenticateAccountResponse() { Account = account };
-            }
-            else
-            {
-                return new AuthenticateAccountResponse();
-            }
-        }
+        var response = this.Mapper.Map<AuthenticateAccountResponse>(refreshTokenToAdd);
+        response.FreshAccessToken = freshAccessToken;
+
+        await this.UnitOfWork.SaveAsync(cancellationToken);
+
+        return response;
     }
 }

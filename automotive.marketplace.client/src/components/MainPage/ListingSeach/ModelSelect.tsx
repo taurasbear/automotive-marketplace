@@ -13,7 +13,7 @@ const ModelSelect = () => {
     <div>
       <Select>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a model" />
+          <SelectValue placeholder="All models" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

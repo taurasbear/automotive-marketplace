@@ -1,9 +1,8 @@
-﻿namespace Automotive.Marketplace.Domain.Enums
+﻿namespace Automotive.Marketplace.Domain.Enums;
+
+public enum Drivetrain
 {
-    public enum Drivetrain
-    {
-        FWD,
-        RWD,
-        AWD
-    }
+    FWD,
+    RWD,
+    AWD
 }

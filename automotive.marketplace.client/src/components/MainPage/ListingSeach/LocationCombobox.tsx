@@ -1,5 +1,9 @@
-import { Button } from "../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -7,8 +11,9 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../ui/command";
+} from "@/components/ui/command";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 const LocationCombobox = () => {
   const locations = [
@@ -17,17 +22,25 @@ const LocationCombobox = () => {
     { value: "vilnius", label: "Vilnius" },
   ];
 
+  const [currentLocation, setCurrentLocation] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <div>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="location-combobox"
             //aria-expanded={open}
-            className="w-full justify-between"
+            className="w-full justify-between font-normal"
           >
-            Any
+            {currentLocation ? (
+              locations.find((location) => location.value === currentLocation)
+                ?.label
+            ) : (
+              <p className="text-muted-foreground text-sm">Any</p>
+            )}
             <ChevronDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -40,8 +53,13 @@ const LocationCombobox = () => {
                 {locations.map((location) => (
                   <CommandItem
                     key={location.value}
-                    value={location.value}
-                    onSelect={() => {}}
+                    value={location.value.toString()}
+                    onSelect={(newLocation) => {
+                      setCurrentLocation(
+                        newLocation == currentLocation ? "" : newLocation,
+                      );
+                      setOpen(false);
+                    }}
                   >
                     {location.label}
                   </CommandItem>
