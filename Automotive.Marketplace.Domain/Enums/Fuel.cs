@@ -3,9 +3,14 @@
 public enum Fuel
 {
     Diesel,
+
     Petrol,
+
     Electric,
+
     PetrolLPG,
+
     PetrolElectric,
+
     PlugIn
 }

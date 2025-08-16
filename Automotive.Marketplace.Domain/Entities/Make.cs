@@ -6,5 +6,5 @@ public class Make : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
 
-    public ICollection<Model> Models { get; set; } = new Collection<Model>();
+    public virtual ICollection<Model> Models { get; set; } = [];
 }

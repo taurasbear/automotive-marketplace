@@ -6,7 +6,7 @@ public class Seller : Client
 {
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public ICollection<Listing> Listings { get; set; } = new Collection<Listing>();
+    public virtual ICollection<Listing> Listings { get; set; } = [];
 
     public override string RoleName => "Seller";
 }

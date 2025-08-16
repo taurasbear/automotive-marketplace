@@ -4,21 +4,23 @@ using AutoMapper;
 using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
-
+using Automotive.Marketplace.Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using RefreshTokenEntity = Domain.Entities.RefreshToken;
 public class RefreshTokenHandler(
     IMapper mapper,
-    IUnitOfWork unitOfWork,
-    ITokenService tokenService) : BaseHandler<RefreshTokenRequest, RefreshTokenResponse>(mapper, unitOfWork)
+    ITokenService tokenService,
+    IRepository repository) : IRequestHandler<RefreshTokenRequest, RefreshTokenResponse>
 {
-    private readonly ITokenService tokenService = tokenService;
-
-    public override async Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
-        var currentRefreshToken = await this.UnitOfWork.RefreshTokenRepository
-            .GetRefreshTokenByTokenAsync(request.refreshToken, cancellationToken);
+        var currentRefreshToken = await repository
+            .AsQueryable<RefreshTokenEntity>()
+            .Where(refreshToken => refreshToken.Token == request.refreshToken)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (
-            currentRefreshToken == null
+        if (currentRefreshToken == null
             || string.IsNullOrWhiteSpace(currentRefreshToken.Token)
             || currentRefreshToken.IsRevoked
             || currentRefreshToken.ExpiryDate < DateTime.UtcNow)
@@ -26,20 +28,18 @@ public class RefreshTokenHandler(
             throw new InvalidRefreshTokenException();
         }
 
-        var fetchedAccount = await this.UnitOfWork.AccountRepository.GetAsync(currentRefreshToken.AccountId, cancellationToken)
+        var fetchedAccount = await repository.GetByIdAsync<Account>(currentRefreshToken.AccountId, cancellationToken)
             ?? throw new AccountNotFoundException(currentRefreshToken.AccountId);
 
         currentRefreshToken.IsRevoked = true;
 
-        var freshAccessToken = this.tokenService.GenerateAccessToken(fetchedAccount);
-        var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(fetchedAccount);
+        var freshAccessToken = tokenService.GenerateAccessToken(fetchedAccount);
+        var freshRefreshToken = tokenService.GenerateRefreshTokenEntity(fetchedAccount);
 
-        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
+        await repository.CreateAsync(freshRefreshToken, cancellationToken);
 
-        var response = this.Mapper.Map<RefreshTokenResponse>(refreshTokenToAdd);
+        var response = mapper.Map<RefreshTokenResponse>(freshRefreshToken);
         response.FreshAccessToken = freshAccessToken;
-
-        await this.UnitOfWork.SaveAsync(cancellationToken);
 
         return response;
     }
