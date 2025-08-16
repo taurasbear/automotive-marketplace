@@ -2,6 +2,7 @@
 
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Infrastructure.Data;
 using Automotive.Marketplace.Infrastructure.Data.DbContext;
 using Automotive.Marketplace.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,8 @@ public static class ServiceExtensions
         services.AddDbContext<AutomotiveContext>(opt => opt
             .UseLazyLoadingProxies()
             .UseNpgsql(connectionString));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IRepository, Repository>();
     }
 }

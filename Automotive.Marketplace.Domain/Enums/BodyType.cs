@@ -3,10 +3,16 @@
 public enum BodyType
 {
     Sedan,
+
     Hatchback,
+
     Wagon,
+
     Coupe,
+
     SUV,
+
     Minivan,
+
     Crossover
 }

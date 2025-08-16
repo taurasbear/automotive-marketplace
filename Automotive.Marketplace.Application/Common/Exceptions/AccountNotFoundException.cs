@@ -4,7 +4,7 @@ public class AccountNotFoundException : Exception
 {
     public string Email { get; } = string.Empty;
 
-    public Guid AccountId { get; set; }
+    public Guid AccountId { get; }
 
     public AccountNotFoundException()
     { }

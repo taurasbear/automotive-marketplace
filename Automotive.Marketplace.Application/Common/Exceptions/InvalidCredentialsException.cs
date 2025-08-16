@@ -1,5 +1,3 @@
-using System;
-
 namespace Automotive.Marketplace.Application.Common.Exceptions;
 
 public class InvalidCredentialsException : Exception

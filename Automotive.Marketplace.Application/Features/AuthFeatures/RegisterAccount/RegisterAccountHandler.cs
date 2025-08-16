@@ -4,38 +4,32 @@ using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
+using MediatR;
 
 public class RegisterAccountHandler(
     IMapper mapper,
-    IUnitOfWork unitOfWork,
     IPasswordHasher passwordHasher,
-    ITokenService tokenService
-    ) : BaseHandler<RegisterAccountRequest, RegisterAccountResponse>(mapper, unitOfWork)
+    ITokenService tokenService,
+    IRepository repository) : IRequestHandler<RegisterAccountRequest, RegisterAccountResponse>
 {
-    private readonly IPasswordHasher passwordHasher = passwordHasher;
-
-    private readonly ITokenService tokenService = tokenService;
-
-    public override async Task<RegisterAccountResponse> Handle(RegisterAccountRequest request, CancellationToken cancellationToken)
+    public async Task<RegisterAccountResponse> Handle(RegisterAccountRequest request, CancellationToken cancellationToken)
     {
-        var accountToAdd = new Account
+        var account = new Account
         {
             Username = request.username,
             Email = request.email,
-            HashedPassword = this.passwordHasher.Hash(request.password),
+            HashedPassword = passwordHasher.Hash(request.password),
         };
 
-        var addedAccount = await this.UnitOfWork.AccountRepository.AddAsync(accountToAdd, cancellationToken);
+        await repository.CreateAsync(account, cancellationToken);
 
-        var freshAccessToken = this.tokenService.GenerateAccessToken(addedAccount);
-        var refreshTokenToAdd = this.tokenService.GenerateRefreshTokenEntity(addedAccount);
+        var freshAccessToken = tokenService.GenerateAccessToken(account);
+        var refreshTokenToAdd = tokenService.GenerateRefreshTokenEntity(account);
 
-        await this.UnitOfWork.RefreshTokenRepository.AddAsync(refreshTokenToAdd, cancellationToken);
+        await repository.CreateAsync(refreshTokenToAdd, cancellationToken);
 
-        var response = this.Mapper.Map<RegisterAccountResponse>(refreshTokenToAdd);
+        var response = mapper.Map<RegisterAccountResponse>(refreshTokenToAdd);
         response.AccessToken = freshAccessToken;
-
-        await this.UnitOfWork.SaveAsync(cancellationToken);
 
         return response;
     }
