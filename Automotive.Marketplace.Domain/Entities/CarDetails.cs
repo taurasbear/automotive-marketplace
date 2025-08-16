@@ -18,7 +18,7 @@ public class CarDetails : BaseEntity
 
     public Guid CarId { get; set; }
 
-    public Car Car { get; set; } = null!;
+    public virtual Car Car { get; set; } = null!;
 
-    public Listing Listing { get; set; } = null!;
+    public virtual Listing Listing { get; set; } = null!;
 }

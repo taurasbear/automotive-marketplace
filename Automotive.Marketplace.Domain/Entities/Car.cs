@@ -19,7 +19,7 @@ public class Car : BaseEntity
 
     public Guid ModelId { get; set; }
 
-    public Model Model { get; set; } = null!;
+    public virtual Model Model { get; set; } = null!;
 
-    public ICollection<CarDetails> CarDetails { get; set; } = new Collection<CarDetails>();
+    public virtual ICollection<CarDetails> CarDetails { get; set; } = [];
 }

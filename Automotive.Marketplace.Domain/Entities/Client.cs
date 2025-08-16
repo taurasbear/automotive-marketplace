@@ -8,7 +8,7 @@ public class Client : Account
 
     public string LastName { get; set; } = string.Empty;
 
-    public ICollection<Listing> LikedListings { get; set; } = new Collection<Listing>();
+    public virtual ICollection<Listing> LikedListings { get; set; } = [];
 
     public override string RoleName => "Client";
 }

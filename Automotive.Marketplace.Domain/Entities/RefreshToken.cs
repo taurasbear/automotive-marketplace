@@ -12,5 +12,5 @@ public class RefreshToken : BaseEntity
 
     public Guid AccountId { get; set; }
 
-    public Account Account { get; set; } = null!;
+    public virtual Account Account { get; set; } = null!;
 }

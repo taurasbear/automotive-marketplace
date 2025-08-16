@@ -8,7 +8,7 @@ public class Model : BaseEntity
 
     public Guid MakeId { get; set; }
 
-    public Make Make { get; set; } = null!;
+    public virtual Make Make { get; set; } = null!;
 
-    public ICollection<Car> Cars { get; set; } = new Collection<Car>();
+    public virtual ICollection<Car> Cars { get; set; } = [];
 }

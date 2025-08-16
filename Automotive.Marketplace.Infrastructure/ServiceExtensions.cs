@@ -11,7 +11,9 @@ public static class ServiceExtensions
 {
     public static void ConfigureInfrastructure(this IServiceCollection services, string? connectionString)
     {
-        services.AddDbContext<AutomotiveContext>(opt => opt.UseNpgsql(connectionString));
+        services.AddDbContext<AutomotiveContext>(opt => opt
+            .UseLazyLoadingProxies()
+            .UseNpgsql(connectionString));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();

@@ -8,5 +8,5 @@ public class Image : BaseEntity
 
     public Guid ListingId { get; set; }
 
-    public Listing Listing { get; set; } = null!;
+    public virtual Listing Listing { get; set; } = null!;
 }
