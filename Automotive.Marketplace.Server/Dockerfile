@@ -36,6 +36,11 @@ ENTRYPOINT ["dotnet", "Automotive.Marketplace.Server.dll"]
 # Development stage (for hot-reloading)
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dev
 
+# Install Visual Studio Debugger (in order to have the ability to attach to it)
+RUN apt-get update && apt-get install -y curl unzip && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /deps
 
 COPY ["Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj", "Automotive.Marketplace.Server/"]
