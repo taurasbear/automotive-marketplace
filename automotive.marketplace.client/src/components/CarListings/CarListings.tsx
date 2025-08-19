@@ -1,8 +1,8 @@
-import { ListingDetailsWithCar } from "@/shared/types/dto/listing/GetListingDetailsWithCarResponse";
+import { GetAllListingsResponse } from "@/shared/types/dto/listing/GetAllListingsResponse";
 import CarListingCard from "@/components/CarListings/CarListingCard";
 
 export interface CarListingsProps {
-  listings: ListingDetailsWithCar[];
+  listings: GetAllListingsResponse[];
 }
 
 const CarListings: React.FC<CarListingsProps> = ({ listings }) => {

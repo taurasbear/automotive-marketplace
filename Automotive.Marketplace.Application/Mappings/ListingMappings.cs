@@ -1,13 +1,14 @@
-﻿namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListingDetailsWithCar;
-
 using AutoMapper;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Domain.Entities;
 
-public class GetListingDetailsWithCarMapper : Profile
+namespace Automotive.Marketplace.Application.Mappings;
+
+public class ListingMapping : Profile
 {
-    public GetListingDetailsWithCarMapper()
+    public ListingMapping()
     {
-        this.CreateMap<Listing, GetListingsDetailsWithCarResponse.ListingDetailsWithCar>()
+        CreateMap<Listing, GetAllListingsResponse>()
             .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.CarDetails.Mileage))
             .ForMember(dest => dest.Power, opt => opt.MapFrom(src => src.CarDetails.Power))
             .ForMember(dest => dest.EngineSize, opt => opt.MapFrom(src => src.CarDetails.EngineSize))
@@ -17,8 +18,5 @@ public class GetListingDetailsWithCarMapper : Profile
             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.CarDetails.Car.Year.Year.ToString()))
             .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.CarDetails.Car.Model.Name))
             .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.CarDetails.Car.Model.Make.Name));
-
-        this.CreateMap<IList<Listing>, GetListingsDetailsWithCarResponse>()
-            .ForMember(dest => dest.ListingsDetailsWithCar, opt => opt.MapFrom(src => src));
     }
 }

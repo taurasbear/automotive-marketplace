@@ -4,10 +4,10 @@ import { PiEngine } from "react-icons/pi";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { TbManualGearbox } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
-import { ListingDetailsWithCar } from "@/shared/types/dto/listing/GetListingDetailsWithCarResponse";
+import { GetAllListingsResponse } from "@/shared/types/dto/listing/GetAllListingsResponse";
 
 interface CarListingCardProps {
-  listing: ListingDetailsWithCar;
+  listing: GetAllListingsResponse;
 }
 
 const CarListingCard: React.FC<CarListingCardProps> = ({ listing }) => {

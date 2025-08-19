@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRefreshToken } from "@/shared/utils/queries/auth/useRefreshToken";
 import { useRegisterAccount } from "@/shared/utils/queries/auth/useRegisterAccount";
-import { RegisterAccountRequest } from "@/shared/types/dto/auth/RegisterAccountRequest";
+import { RegisterAccountCommand } from "@/shared/types/dto/auth/RegisterAccountCommand";
 
 const RegisterSchema = z.object({
   username: z
@@ -56,7 +56,7 @@ const Register = () => {
       ),
     });
 
-    const body: RegisterAccountRequest = {
+    const body: RegisterAccountCommand = {
       username: data.username,
       email: data.email,
       password: data.password,

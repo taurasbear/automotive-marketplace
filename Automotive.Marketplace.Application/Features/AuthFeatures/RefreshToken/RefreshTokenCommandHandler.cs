@@ -1,23 +1,24 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
-
-using AutoMapper;
+﻿using AutoMapper;
 using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using RefreshTokenEntity = Domain.Entities.RefreshToken;
-public class RefreshTokenHandler(
+using RefreshTokenEntity = Automotive.Marketplace.Domain.Entities.RefreshToken;
+
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
+
+public class RefreshTokenCommandHandler(
     IMapper mapper,
     ITokenService tokenService,
-    IRepository repository) : IRequestHandler<RefreshTokenRequest, RefreshTokenResponse>
+    IRepository repository) : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
 {
-    public async Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var currentRefreshToken = await repository
             .AsQueryable<RefreshTokenEntity>()
-            .Where(refreshToken => refreshToken.Token == request.refreshToken)
+            .Where(refreshToken => refreshToken.Token == request.RefreshToken)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (currentRefreshToken == null

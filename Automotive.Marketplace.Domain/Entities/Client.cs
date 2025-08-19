@@ -1,7 +1,5 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities;
 
-using System.Collections.ObjectModel;
-
 public class Client : Account
 {
     public string FirstName { get; set; } = string.Empty;
