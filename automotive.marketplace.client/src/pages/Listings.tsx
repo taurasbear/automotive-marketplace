@@ -1,8 +1,8 @@
-import CarListings from "@/components/CarListings/CarListings";
+import ListingCard from "@/components/Listings/ListingCard";
 import { getAllListingsOptions } from "@/shared/utils/queries/listing/getAllListingsOptions";
 import { useQuery } from "@tanstack/react-query";
 
-const CarListingsContainer = () => {
+const Listings = () => {
   const {
     data: listingsQuery,
     error,
@@ -27,7 +27,13 @@ const CarListingsContainer = () => {
     );
   }
 
-  return <CarListings listings={listings!} />;
+  return (
+    <div className="flex flex-row justify-center">
+      <div className="bg-background text-on-background flex w-188 flex-col gap-10">
+        {listings?.map((l) => <ListingCard key={l.price} listing={l} />)}
+      </div>
+    </div>
+  );
 };
 
-export default CarListingsContainer;
+export default Listings;
