@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y curl unzip && \
     curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /deps
+WORKDIR /app
 
 COPY ["Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj", "Automotive.Marketplace.Server/"]
 COPY ["Automotive.Marketplace.Application/Automotive.Marketplace.Application.csproj", "Automotive.Marketplace.Application/"]
@@ -49,15 +49,7 @@ COPY ["Automotive.Marketplace.Infrastructure/Automotive.Marketplace.Infrastructu
 COPY ["Automotive.Marketplace.Domain/Automotive.Marketplace.Domain.csproj", "Automotive.Marketplace.Domain/"]
 RUN dotnet restore "./Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj"
 
-WORKDIR /src
-
-COPY . .
-
-WORKDIR /app
-
-RUN mkdir -p /src /build-output /build-obj
-
 EXPOSE 8080
 EXPOSE 8081
 
-ENTRYPOINT ["dotnet", "watch", "run", "--no-restore", "--project", "/src/Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj", "-p:OutputPath=/build-output;BaseIntermediateOutputPath=/build-obj;RestorePackagesPath=/deps/.nuget/packages"]
+ENTRYPOINT ["dotnet", "watch", "run", "--no-restore", "--project", "/app/Automotive.Marketplace.Server/Automotive.Marketplace.Server.csproj"]

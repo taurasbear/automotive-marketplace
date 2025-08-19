@@ -19,9 +19,18 @@ services:
       - "8080"
       - "8081"
     volumes:
-      - ./:/src
-      - build-output:/build-output
-      - build-obj:/build-obj
+      - ./Automotive.Marketplace.Server:/app/Automotive.Marketplace.Server
+      - ./Automotive.Marketplace.Application:/app/Automotive.Marketplace.Application
+      - ./Automotive.Marketplace.Domain:/app/Automotive.Marketplace.Domain
+      - ./Automotive.Marketplace.Infrastructure:/app/Automotive.Marketplace.Infrastructure
+      - /app/Automotive.Marketplace.Server/bin
+      - /app/Automotive.Marketplace.Server/obj
+      - /app/Automotive.Marketplace.Application/bin
+      - /app/Automotive.Marketplace.Application/obj
+      - /app/Automotive.Marketplace.Domain/bin
+      - /app/Automotive.Marketplace.Domain/obj
+      - /app/Automotive.Marketplace.Infrastructure/bin
+      - /app/Automotive.Marketplace.Infrastructure/obj
       - ${HOME}/Documents/.aspnet/https:/root/.aspnet/https:ro
     networks:
       - app-network
@@ -72,5 +81,3 @@ networks:
     driver: bridge
 volumes:
     pgadmin_data:
-    build-output:
-    build-obj:
