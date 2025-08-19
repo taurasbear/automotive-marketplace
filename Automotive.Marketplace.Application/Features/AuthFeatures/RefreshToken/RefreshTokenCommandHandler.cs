@@ -1,13 +1,13 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
-
-using AutoMapper;
+﻿using AutoMapper;
 using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using RefreshTokenEntity = Domain.Entities.RefreshToken;
+using RefreshTokenEntity = Automotive.Marketplace.Domain.Entities.RefreshToken;
+
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 
 public class RefreshTokenCommandHandler(
     IMapper mapper,

@@ -1,8 +1,4 @@
-export interface GetListingsDetailsWithCarResponse {
-  listingsDetailsWithCar: ListingDetailsWithCar[];
-}
-
-export interface ListingDetailsWithCar {
+export type GetAllListingsResponse = {
   used: boolean;
   year: string;
   make: string;
@@ -15,4 +11,4 @@ export interface ListingDetailsWithCar {
   transmission: string;
   city: string;
   description: string;
-}
+};

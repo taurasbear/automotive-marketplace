@@ -27,7 +27,7 @@ const CarListingsContainer = () => {
     );
   }
 
-  return <CarListings listings={listings!.listingsDetailsWithCar} />;
+  return <CarListings listings={listings!} />;
 };
 
 export default CarListingsContainer;

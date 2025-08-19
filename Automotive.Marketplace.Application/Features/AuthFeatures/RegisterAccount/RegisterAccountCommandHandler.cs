@@ -1,10 +1,10 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
-
-using AutoMapper;
+﻿using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
+
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
 
 public class RegisterAccountCommandHandler(
     IMapper mapper,

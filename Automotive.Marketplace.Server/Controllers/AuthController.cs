@@ -70,7 +70,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             return this.Unauthorized("Invalid refresh token.");
         }
 
-        var response = await this.mediator.Send(new RefreshTokenRequest(refreshToken), cancellationToken);
+        var response = await this.mediator.Send(new RefreshTokenCommand { RefreshToken = refreshToken }, cancellationToken);
 
         Response.Cookies.Append("refreshToken", response.FreshRefreshToken, new CookieOptions
         {

@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+﻿using FluentValidation;
 
-using FluentValidation;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
 
 public class RegisterAccountCommandValidator : AbstractValidator<RegisterAccountCommand>
 {

@@ -11,8 +11,9 @@ public class ListingController(IMediator mediator) : ControllerBase
     private readonly IMediator mediator = mediator;
 
     [HttpGet]
-    public async Task<ActionResult<GetAllListingsResponse>> GetAll()
+    public async Task<ActionResult<IEnumerable<GetAllListingsResponse>>> GetAll()
     {
-        return await this.mediator.Send(new GetAllListingsQuery());
+        var result = await this.mediator.Send(new GetAllListingsQuery());
+        return Ok(result);
     }
 }

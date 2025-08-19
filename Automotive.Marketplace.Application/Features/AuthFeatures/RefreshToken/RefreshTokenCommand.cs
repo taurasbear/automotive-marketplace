@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
+﻿using MediatR;
 
-using MediatR;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 
 public sealed record RefreshTokenCommand : IRequest<RefreshTokenResponse>
 {

@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+﻿using MediatR;
 
-using MediatR;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
 
 public sealed record RegisterAccountCommand : IRequest<RegisterAccountResponse>
 {
