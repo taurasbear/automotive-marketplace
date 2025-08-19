@@ -8,16 +8,17 @@ using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RefreshTokenEntity = Domain.Entities.RefreshToken;
-public class RefreshTokenHandler(
+
+public class RefreshTokenCommandHandler(
     IMapper mapper,
     ITokenService tokenService,
-    IRepository repository) : IRequestHandler<RefreshTokenRequest, RefreshTokenResponse>
+    IRepository repository) : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
 {
-    public async Task<RefreshTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
+    public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var currentRefreshToken = await repository
             .AsQueryable<RefreshTokenEntity>()
-            .Where(refreshToken => refreshToken.Token == request.refreshToken)
+            .Where(refreshToken => refreshToken.Token == request.RefreshToken)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (currentRefreshToken == null

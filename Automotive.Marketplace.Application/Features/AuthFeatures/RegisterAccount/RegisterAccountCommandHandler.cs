@@ -6,19 +6,19 @@ using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 
-public class RegisterAccountHandler(
+public class RegisterAccountCommandHandler(
     IMapper mapper,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
-    IRepository repository) : IRequestHandler<RegisterAccountRequest, RegisterAccountResponse>
+    IRepository repository) : IRequestHandler<RegisterAccountCommand, RegisterAccountResponse>
 {
-    public async Task<RegisterAccountResponse> Handle(RegisterAccountRequest request, CancellationToken cancellationToken)
+    public async Task<RegisterAccountResponse> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
     {
         var account = new Account
         {
-            Username = request.username,
-            Email = request.email,
-            HashedPassword = passwordHasher.Hash(request.password),
+            Username = request.Username,
+            Email = request.Email,
+            HashedPassword = passwordHasher.Hash(request.Password),
         };
 
         await repository.CreateAsync(account, cancellationToken);

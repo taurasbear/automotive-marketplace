@@ -14,7 +14,7 @@ public class AuthController(IMediator mediator) : ControllerBase
 
     [HttpPost("login")]
     public async Task<ActionResult> Login(
-        [FromBody] AuthenticateAccountRequest authenticateAccountRequest,
+        [FromBody] AuthenticateAccountCommand authenticateAccountRequest,
         CancellationToken cancellationToken)
     {
         var response = await this.mediator.Send(authenticateAccountRequest, cancellationToken);
@@ -38,7 +38,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult> Register(RegisterAccountRequest registerAccountRequest, CancellationToken cancellationToken)
+    public async Task<ActionResult> Register(RegisterAccountCommand registerAccountRequest, CancellationToken cancellationToken)
     {
         var response = await this.mediator.Send(registerAccountRequest, cancellationToken);
 

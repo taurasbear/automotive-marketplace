@@ -1,6 +1,4 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
-
-using AutoMapper;
+﻿using AutoMapper;
 using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
@@ -8,20 +6,22 @@ using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public class AuthenticateAccountHandler(
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+
+public class AuthenticateAccountCommandHandler(
     IMapper mapper,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
-    IRepository repository) : IRequestHandler<AuthenticateAccountRequest, AuthenticateAccountResponse>
+    IRepository repository) : IRequestHandler<AuthenticateAccountCommand, AuthenticateAccountResponse>
 {
-    public async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountRequest request, CancellationToken cancellationToken)
+    public async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountCommand request, CancellationToken cancellationToken)
     {
         var fetchedAccount = await repository
             .AsQueryable<Account>()
-            .Where(account => account.Email == request.email)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new AccountNotFoundException(request.email);
+            .Where(account => account.Email == request.Email)
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new AccountNotFoundException(request.Email);
 
-        if (!passwordHasher.Verify(request.password, fetchedAccount.HashedPassword))
+        if (!passwordHasher.Verify(request.Password, fetchedAccount.HashedPassword))
         {
             throw new InvalidCredentialsException();
         }
