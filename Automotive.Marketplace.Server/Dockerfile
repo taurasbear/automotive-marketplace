@@ -38,7 +38,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dev
 
 # Install Visual Studio Debugger (in order to have the ability to attach to it)
 RUN apt-get update && apt-get install -y curl unzip && \
-    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /remote_debugger && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
