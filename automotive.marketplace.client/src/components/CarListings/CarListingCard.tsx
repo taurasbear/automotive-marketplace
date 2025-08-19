@@ -4,7 +4,7 @@ import { PiEngine } from "react-icons/pi";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { TbManualGearbox } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
-import { ListingDetailsWithCar } from "@/shared/types/dto/Listing/GetListingDetailsWithCarResponse";
+import { ListingDetailsWithCar } from "@/shared/types/dto/listing/GetListingDetailsWithCarResponse";
 
 interface CarListingCardProps {
   listing: ListingDetailsWithCar;

@@ -1,4 +1,4 @@
-import { ListingDetailsWithCar } from "@/shared/types/dto/Listing/GetListingDetailsWithCarResponse";
+import { ListingDetailsWithCar } from "@/shared/types/dto/listing/GetListingDetailsWithCarResponse";
 import CarListingCard from "@/components/CarListings/CarListingCard";
 
 export interface CarListingsProps {

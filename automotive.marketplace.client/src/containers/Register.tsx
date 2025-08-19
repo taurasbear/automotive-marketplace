@@ -16,8 +16,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRefresh, useRegister } from "@/shared/utils/queries/AuthQueries";
-import { RegisterAccountRequest } from "@/shared/types/dto/Auth/RegisterAccountRequest";
+import { useRefreshToken } from "@/shared/utils/queries/auth/useRefreshToken";
+import { useRegisterAccount } from "@/shared/utils/queries/auth/useRegisterAccount";
+import { RegisterAccountRequest } from "@/shared/types/dto/auth/RegisterAccountRequest";
 
 const RegisterSchema = z.object({
   username: z
@@ -30,8 +31,8 @@ const RegisterSchema = z.object({
 });
 
 const Register = () => {
-  const register = useRegister();
-  const refresh = useRefresh();
+  const { mutateAsync: registerAccountAsync } = useRegisterAccount();
+  const { mutateAsync: refreshAsync } = useRefreshToken();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -43,7 +44,7 @@ const Register = () => {
   });
 
   const handleOnSubmit = () => {
-    refresh.mutate();
+    refreshAsync();
   };
 
   function onSubmit(data: z.infer<typeof RegisterSchema>) {
@@ -55,13 +56,13 @@ const Register = () => {
       ),
     });
 
-    const request: RegisterAccountRequest = {
+    const body: RegisterAccountRequest = {
       username: data.username,
       email: data.email,
       password: data.password,
     };
 
-    register.mutate({ request });
+    registerAccountAsync(body);
   }
 
   return (

@@ -1,8 +1,15 @@
 import CarListings from "@/components/CarListings/CarListings";
-import { useGetListings } from "@/shared/utils/queries/ListingQueries";
+import { getAllListingsOptions } from "@/shared/utils/queries/listing/getAllListingsOptions";
+import { useQuery } from "@tanstack/react-query";
 
 const CarListingsContainer = () => {
-  const { data: listings, error, isLoading } = useGetListings();
+  const {
+    data: listingsQuery,
+    error,
+    isLoading,
+  } = useQuery(getAllListingsOptions);
+
+  const listings = listingsQuery?.data;
 
   if (error) {
     return (
