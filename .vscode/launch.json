@@ -10,7 +10,7 @@
             "request": "attach",
             "platform": "netCore",
             "sourceFileMap": {
-                "/src": "${workspaceFolder}"
+                "/app": "${workspaceFolder}"
             },
             "processName": "Automotive.Marketplace.Server"
         },
