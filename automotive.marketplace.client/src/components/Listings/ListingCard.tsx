@@ -1,4 +1,4 @@
-import ListingCardBadge from "@/components/CarListings/ListingCardBadge";
+import ListingCardBadge from "@/components/Listings/ListingCardBadge";
 import { Button } from "@/components/ui/button";
 import { PiEngine } from "react-icons/pi";
 import { MdOutlineLocalGasStation } from "react-icons/md";
@@ -6,11 +6,11 @@ import { TbManualGearbox } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
 import { GetAllListingsResponse } from "@/shared/types/dto/listing/GetAllListingsResponse";
 
-interface CarListingCardProps {
+interface ListingCardProps {
   listing: GetAllListingsResponse;
 }
 
-const CarListingCard: React.FC<CarListingCardProps> = ({ listing }) => {
+const ListingCard: React.FC<ListingCardProps> = ({ listing }) => {
   return (
     <div className="bg-surface border-secondary-border grid w-full grid-cols-2 gap-8 border-1">
       <div className="flex flex-shrink-0 py-5">
@@ -69,4 +69,4 @@ const CarListingCard: React.FC<CarListingCardProps> = ({ listing }) => {
   );
 };
 
-export default CarListingCard;
+export default ListingCard;

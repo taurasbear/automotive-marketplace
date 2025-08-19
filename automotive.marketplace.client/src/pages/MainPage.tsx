@@ -1,6 +1,6 @@
 import ListingSearch from "@/components/MainPage/ListingSeach/ListingSearch";
 
-const MainPageContainer = () => {
+const MainPage = () => {
   return (
     <div className="flex flex-col items-center justify-center pt-64">
       <ListingSearch />
@@ -8,4 +8,4 @@ const MainPageContainer = () => {
   );
 };
 
-export default MainPageContainer;
+export default MainPage;
