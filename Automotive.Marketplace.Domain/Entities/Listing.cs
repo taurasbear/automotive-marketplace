@@ -1,7 +1,5 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities;
 
-using System.Collections.ObjectModel;
-
 public class Listing : BaseEntity
 {
     public decimal Price { get; set; }

@@ -1,7 +1,6 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities;
 
 using Automotive.Marketplace.Domain.Enums;
-using System.Collections.ObjectModel;
 
 public class Car : BaseEntity
 {

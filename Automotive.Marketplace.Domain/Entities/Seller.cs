@@ -1,7 +1,5 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities;
 
-using System.Collections.ObjectModel;
-
 public class Seller : Client
 {
     public string PhoneNumber { get; set; } = string.Empty;
