@@ -4,23 +4,33 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from "@/components/ui/select";
 
 const years = Array.from({ length: 2025 - 1950 + 1 }, (_, i) => 1950 + i);
 
-const YearSelect = () => {
+type YearSelectProps = {
+  label: string;
+  onValueChange: (value: string) => void;
+};
+
+const YearSelect = ({ label, onValueChange }: YearSelectProps) => {
   return (
     <div>
-      <Select>
+      <Select onValueChange={onValueChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="-" />
         </SelectTrigger>
         <SelectContent>
-          {years.map((year) => (
-            <SelectItem key={year} value={year.toString()}>
-              {year}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            <SelectLabel>{label}</SelectLabel>
+            {years.map((year) => (
+              <SelectItem key={year} value={year.toString()}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </div>

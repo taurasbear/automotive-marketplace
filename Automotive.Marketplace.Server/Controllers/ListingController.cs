@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class ListingController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator mediator = mediator;
-
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetAllListingsResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<GetAllListingsResponse>>> GetAll(
+        [FromQuery] GetAllListingsQuery query,
+        CancellationToken cancellationToken)
     {
-        var result = await this.mediator.Send(new GetAllListingsQuery());
+        var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 }

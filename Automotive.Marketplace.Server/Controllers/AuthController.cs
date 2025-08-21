@@ -10,14 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator mediator = mediator;
-
     [HttpPost("login")]
     public async Task<ActionResult> Login(
         [FromBody] AuthenticateAccountCommand authenticateAccountRequest,
         CancellationToken cancellationToken)
     {
-        var response = await this.mediator.Send(authenticateAccountRequest, cancellationToken);
+        var response = await mediator.Send(authenticateAccountRequest, cancellationToken);
 
         var cookieOptions = new CookieOptions
         {
@@ -40,7 +38,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult> Register(RegisterAccountCommand registerAccountRequest, CancellationToken cancellationToken)
     {
-        var response = await this.mediator.Send(registerAccountRequest, cancellationToken);
+        var response = await mediator.Send(registerAccountRequest, cancellationToken);
 
         var cookieOptions = new CookieOptions
         {
@@ -70,7 +68,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             return this.Unauthorized("Invalid refresh token.");
         }
 
-        var response = await this.mediator.Send(new RefreshTokenCommand { RefreshToken = refreshToken }, cancellationToken);
+        var response = await mediator.Send(new RefreshTokenCommand { RefreshToken = refreshToken }, cancellationToken);
 
         Response.Cookies.Append("refreshToken", response.FreshRefreshToken, new CookieOptions
         {

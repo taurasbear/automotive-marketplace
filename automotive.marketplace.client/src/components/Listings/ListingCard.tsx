@@ -10,7 +10,7 @@ interface ListingCardProps {
   listing: GetAllListingsResponse;
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({ listing }) => {
+const ListingCard = ({ listing }: ListingCardProps) => {
   return (
     <div className="bg-surface border-secondary-border grid w-full grid-cols-2 gap-8 border-1">
       <div className="flex flex-shrink-0 py-5">

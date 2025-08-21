@@ -6,4 +6,10 @@ export const ENDPOINTS = {
     REFRESH: "/auth/refresh",
     REGISTER: "/auth/register",
   },
+  MAKE: {
+    GET_ALL: "/make",
+  },
+  MODEL: {
+    GET_BY_MAKE_ID: "/model",
+  },
 } as const;
