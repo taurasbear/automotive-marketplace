@@ -15,19 +15,26 @@ import {
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-const LocationCombobox = () => {
+type LocationComboboxProps = {
+  selectedLocation?: string;
+  onValueChange: (value: string) => void;
+};
+
+const LocationCombobox = ({
+  selectedLocation,
+  onValueChange,
+}: LocationComboboxProps) => {
   const locations = [
     { value: "kaunas", label: "Kaunas" },
     { value: "trakai", label: "Trakai" },
     { value: "vilnius", label: "Vilnius" },
   ];
 
-  const [currentLocation, setCurrentLocation] = useState<string>("");
-  const [open, setOpen] = useState<boolean>(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   return (
     <div>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -35,11 +42,11 @@ const LocationCombobox = () => {
             //aria-expanded={open}
             className="w-full justify-between font-normal"
           >
-            {currentLocation ? (
-              locations.find((location) => location.value === currentLocation)
+            {selectedLocation ? (
+              locations.find((location) => location.value === selectedLocation)
                 ?.label
             ) : (
-              <p className="text-muted-foreground text-sm">Any</p>
+              <p className="text-muted-foreground text-sm">Any location</p>
             )}
             <ChevronDown className="opacity-50" />
           </Button>
@@ -55,10 +62,10 @@ const LocationCombobox = () => {
                     key={location.value}
                     value={location.value.toString()}
                     onSelect={(newLocation) => {
-                      setCurrentLocation(
-                        newLocation == currentLocation ? "" : newLocation,
+                      onValueChange(
+                        newLocation == selectedLocation ? "any" : newLocation,
                       );
-                      setOpen(false);
+                      setIsPopoverOpen(false);
                     }}
                   >
                     {location.label}

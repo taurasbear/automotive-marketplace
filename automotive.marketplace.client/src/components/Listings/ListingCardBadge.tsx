@@ -4,11 +4,7 @@ interface ListingCardBadgeProps {
   stat: string;
 }
 
-const ListingCardBadge: React.FC<ListingCardBadgeProps> = ({
-  Icon,
-  title,
-  stat,
-}) => {
+const ListingCardBadge = ({ Icon, title, stat }: ListingCardBadgeProps) => {
   return (
     <div className="border-primary-border flex w-full max-w-40 flex-row items-center justify-center gap-3 rounded-md border p-1">
       {Icon}

@@ -4,11 +4,15 @@ import { queryOptions } from "@tanstack/react-query";
 import { listingKeys } from "./listingKeys";
 import { GetAllListingsResponse } from "@/shared/types/dto/listing/GetAllListingsResponse";
 import { AxiosResponse } from "axios";
+import { GetAllListingsQuery } from "@/shared/types/dto/listing/GetAllListingsQuery";
 
-const getAllListings = (): Promise<AxiosResponse<GetAllListingsResponse[]>> =>
-  axiosClient.get(ENDPOINTS.LISTING.GET_ALL);
+const getAllListings = (
+  query: GetAllListingsQuery,
+): Promise<AxiosResponse<GetAllListingsResponse[]>> =>
+  axiosClient.get(ENDPOINTS.LISTING.GET_ALL, { params: query });
 
-export const getAllListingsOptions = queryOptions({
-  queryKey: [listingKeys.all()],
-  queryFn: getAllListings,
-});
+export const getAllListingsOptions = (query: GetAllListingsQuery) =>
+  queryOptions({
+    queryKey: listingKeys.bySearchParams(query),
+    queryFn: () => getAllListings(query),
+  });

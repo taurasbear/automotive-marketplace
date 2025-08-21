@@ -5,18 +5,26 @@ import {
   SelectItem,
   Select,
 } from "@/components/ui/select";
+import {
+  CarConditionKey,
+  CAR_CONDITION_OPTIONS,
+} from "@/shared/constants/carConditions";
 
-const UsedSelect = () => {
+type UsedSelectProps = {
+  onValueChange: (value: CarConditionKey) => void;
+};
+
+const UsedSelect = ({ onValueChange }: UsedSelectProps) => {
   return (
     <div>
-      <Select>
+      <Select onValueChange={onValueChange} defaultValue="newused">
         <SelectTrigger className="w-full min-w-3xs">
-          <SelectValue placeholder="Used & New" />
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="used">Used</SelectItem>
-          <SelectItem value="new">New</SelectItem>
-          <SelectItem value="newused">Used & New</SelectItem>
+          {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (
+            <SelectItem value={conditionKey}>{conditionName}</SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

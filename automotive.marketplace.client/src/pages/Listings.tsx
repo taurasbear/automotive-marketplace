@@ -1,13 +1,16 @@
 import ListingCard from "@/components/Listings/ListingCard";
+import { Route } from "@/routes/listings";
 import { getAllListingsOptions } from "@/shared/utils/queries/listing/getAllListingsOptions";
 import { useQuery } from "@tanstack/react-query";
 
 const Listings = () => {
+  const searchParams = Route.useSearch();
+
   const {
     data: listingsQuery,
     error,
-    isLoading,
-  } = useQuery(getAllListingsOptions);
+    isLoading: isPending,
+  } = useQuery(getAllListingsOptions(searchParams));
 
   const listings = listingsQuery?.data;
 
@@ -19,7 +22,7 @@ const Listings = () => {
     );
   }
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div>
         <h1>Loading...</h1>
