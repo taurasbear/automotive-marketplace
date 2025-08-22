@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/shared/hooks/redux";
 import { selectAccessToken } from "@/shared/state/authSlice";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const axiosClient = axios.create({
   baseURL:
