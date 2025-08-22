@@ -1,4 +1,6 @@
-import axios from "axios";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { selectAccessToken } from "@/shared/state/authSlice";
+import axios, { AxiosRequestConfig } from "axios";
 
 const axiosClient = axios.create({
   baseURL:
@@ -9,6 +11,14 @@ const axiosClient = axios.create({
   },
   timeout: 0,
   withCredentials: true,
+});
+
+axiosClient.interceptors.request.use((config) => {
+  const token = useAppSelector(selectAccessToken);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default axiosClient;
