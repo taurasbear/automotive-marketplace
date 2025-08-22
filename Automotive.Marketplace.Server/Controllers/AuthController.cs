@@ -27,7 +27,7 @@ public class AuthController(IMediator mediator) : ControllerBase
 
         Response.Cookies.Append("refreshToken", response.FreshRefreshToken, cookieOptions);
 
-        return this.Ok(new
+        return Ok(new
         {
             AccessToken = response.FreshAccessToken,
             AccountId = response.AccountId,
@@ -50,7 +50,7 @@ public class AuthController(IMediator mediator) : ControllerBase
 
         Response.Cookies.Append("refreshToken", response.RefreshToken, cookieOptions);
 
-        return this.Ok(new
+        return Ok(new
         {
             AccessToken = response.AccessToken,
             AccountId = response.AccountId,
@@ -78,9 +78,24 @@ public class AuthController(IMediator mediator) : ControllerBase
             Expires = response.FreshExpiryDate
         });
 
-        return this.Ok(new
+        return Ok(new
         {
             AccessToken = response.FreshAccessToken
         });
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        if (!string.IsNullOrWhiteSpace(refreshToken))
+        {
+            var command = new LogoutAccountCommand { RefreshToken = refreshToken };
+            await mediator.Send(command, cancellationToken);
+        }
+
+        Response.Cookies.Delete("refreshToken");
+
+        return Ok();
     }
 }
