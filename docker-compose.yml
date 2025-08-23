@@ -8,6 +8,8 @@ services:
       - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__AccessTokenExpirationMinutes=${JWT_ACCESSTOKENEXPIRATIONMINUTES}
+      - Jwt__RefreshTokenExpirationDays=${JWT_REFRESHTOKENEXPIRATIONDAYS}
     networks:
       - app-network
     restart: unless-stopped

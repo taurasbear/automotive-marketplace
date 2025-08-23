@@ -1,3 +1,5 @@
+import { selectAccessToken } from "@/shared/state/authSlice";
+import { store } from "@/shared/state/store";
 import axios from "axios";
 
 const axiosClient = axios.create({
@@ -9,6 +11,14 @@ const axiosClient = axios.create({
   },
   timeout: 0,
   withCredentials: true,
+});
+
+axiosClient.interceptors.request.use((config) => {
+  const accessToken = selectAccessToken(store.getState());
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
 });
 
 export default axiosClient;

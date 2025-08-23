@@ -1,10 +1,6 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,20 +15,15 @@ import { Input } from "@/components/ui/input";
 import { useRefreshToken } from "@/shared/utils/queries/auth/useRefreshToken";
 import { useRegisterAccount } from "@/shared/utils/queries/auth/useRegisterAccount";
 import { RegisterAccountCommand } from "@/shared/types/dto/auth/RegisterAccountCommand";
-
-const RegisterSchema = z.object({
-  username: z
-    .string()
-    .min(2, { message: "Username must be at least 2 characters." }),
-  email: z.string().email({ message: "Invalid email address." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
-});
+import { RegisterSchema } from "@/shared/constants/validation/registerSchema";
+import { useAppDispatch } from "@/shared/hooks/redux";
+import { setAccessToken, setCredentials } from "@/shared/state/authSlice";
 
 const Register = () => {
   const { mutateAsync: registerAccountAsync } = useRegisterAccount();
   const { mutateAsync: refreshAsync } = useRefreshToken();
+
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -43,27 +34,28 @@ const Register = () => {
     },
   });
 
-  const handleOnSubmit = () => {
-    refreshAsync();
+  const handleOnRefreshToken = async () => {
+    const { data: account } = await refreshAsync();
+    dispatch(setAccessToken({ accessToken: account.accessToken }));
   };
 
-  function onSubmit(data: z.infer<typeof RegisterSchema>) {
-    toast("Registration submitted:", {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-
+  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
     const body: RegisterAccountCommand = {
       username: data.username,
       email: data.email,
       password: data.password,
     };
 
-    registerAccountAsync(body);
-  }
+    const { data: account } = await registerAccountAsync(body);
+
+    dispatch(
+      setCredentials({
+        accessToken: account.accessToken,
+        role: account.role,
+        accountId: account.accountId,
+      }),
+    );
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
@@ -126,8 +118,8 @@ const Register = () => {
           </Button>
         </form>
       </Form>
-      <Button onClick={handleOnSubmit} className="w-full">
-        Refresh
+      <Button className="m-4" onClick={handleOnRefreshToken}>
+        Refresh token(temporary)
       </Button>
     </div>
   );

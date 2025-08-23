@@ -1,4 +1,8 @@
-import { MutationCache, QueryClient } from "@tanstack/react-query";
+import {
+  handleMutationError,
+  handleQueryError,
+} from "@/shared/utils/errorHandler";
+import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const queryClient = new QueryClient({
@@ -8,6 +12,11 @@ const queryClient = new QueryClient({
       staleTime: 10000,
     },
   },
+
+  queryCache: new QueryCache({
+    onError: handleQueryError,
+  }),
+
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
       const successMessage = mutation.meta?.successMessage;
@@ -15,9 +24,7 @@ const queryClient = new QueryClient({
         toast.success(successMessage);
       }
     },
-    onError: () => {
-      toast.error("Something went wrong!");
-    },
+    onError: handleMutationError,
     onSettled: (_data, _error, _variables, _context, mutation) => {
       const queryToInvalidate = mutation.meta?.invalidatesQuery;
       if (queryToInvalidate) {

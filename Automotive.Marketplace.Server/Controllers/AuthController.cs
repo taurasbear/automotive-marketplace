@@ -1,10 +1,10 @@
-﻿namespace Automotive.Marketplace.Server.Controllers;
-
-using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+﻿using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Automotive.Marketplace.Server.Controllers;
 
 [Route("[controller]")]
 [ApiController]
@@ -15,6 +15,11 @@ public class AuthController(IMediator mediator) : ControllerBase
         [FromBody] AuthenticateAccountCommand authenticateAccountRequest,
         CancellationToken cancellationToken)
     {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            return Ok();
+        }
+
         var response = await mediator.Send(authenticateAccountRequest, cancellationToken);
 
         var cookieOptions = new CookieOptions
@@ -27,7 +32,7 @@ public class AuthController(IMediator mediator) : ControllerBase
 
         Response.Cookies.Append("refreshToken", response.FreshRefreshToken, cookieOptions);
 
-        return this.Ok(new
+        return Ok(new
         {
             AccessToken = response.FreshAccessToken,
             AccountId = response.AccountId,
@@ -50,7 +55,7 @@ public class AuthController(IMediator mediator) : ControllerBase
 
         Response.Cookies.Append("refreshToken", response.RefreshToken, cookieOptions);
 
-        return this.Ok(new
+        return Ok(new
         {
             AccessToken = response.AccessToken,
             AccountId = response.AccountId,
@@ -65,10 +70,11 @@ public class AuthController(IMediator mediator) : ControllerBase
 
         if (string.IsNullOrWhiteSpace(refreshToken))
         {
-            return this.Unauthorized("Invalid refresh token.");
+            return Unauthorized("Invalid refresh token.");
         }
 
-        var response = await mediator.Send(new RefreshTokenCommand { RefreshToken = refreshToken }, cancellationToken);
+        var command = new RefreshTokenCommand { RefreshToken = refreshToken };
+        var response = await mediator.Send(command, cancellationToken);
 
         Response.Cookies.Append("refreshToken", response.FreshRefreshToken, new CookieOptions
         {
@@ -78,9 +84,24 @@ public class AuthController(IMediator mediator) : ControllerBase
             Expires = response.FreshExpiryDate
         });
 
-        return this.Ok(new
+        return Ok(new
         {
             AccessToken = response.FreshAccessToken
         });
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        if (!string.IsNullOrWhiteSpace(refreshToken))
+        {
+            var command = new LogoutAccountCommand { RefreshToken = refreshToken };
+            await mediator.Send(command, cancellationToken);
+        }
+
+        Response.Cookies.Delete("refreshToken");
+
+        return Ok();
     }
 }
