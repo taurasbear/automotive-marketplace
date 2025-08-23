@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   AUTH: {
     REFRESH: "/auth/refresh",
     REGISTER: "/auth/register",
+    LOGOUT: "/auth/logout",
   },
   MAKE: {
     GET_ALL: "/make",

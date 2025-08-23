@@ -1,3 +1,5 @@
+import axiosClient from "@/api/axiosClient";
+import { Button } from "@/components/ui/button";
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
@@ -11,6 +13,7 @@ export const Route = createRootRoute({
         <Link to="/about" className="[&.active]:font-bold">
           About
         </Link>
+        <Button onClick={() => axiosClient.post("/auth/logout")}>Logout</Button>
       </div>
       <hr />
       <Outlet />
