@@ -23,7 +23,9 @@ const UsedSelect = ({ onValueChange }: UsedSelectProps) => {
         </SelectTrigger>
         <SelectContent>
           {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (
-            <SelectItem value={conditionKey}>{conditionName}</SelectItem>
+            <SelectItem key={conditionKey} value={conditionKey}>
+              {conditionName}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
