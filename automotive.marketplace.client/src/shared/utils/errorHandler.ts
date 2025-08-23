@@ -1,9 +1,10 @@
 import axiosClient from "@/api/axiosClient";
 import { Mutation, Query } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { clearCredentials, setCredentials } from "../state/authSlice";
+import { clearCredentials, setAccessToken } from "../state/authSlice";
 import { store } from "../state/store";
 import { RefreshTokenResponse } from "../types/dto/auth/RefreshTokenResponse";
+import { toast } from "sonner";
 
 let isRedirecting = false;
 let isRefreshing = false;
@@ -72,10 +73,11 @@ const refreshTokenAndRetry = async (
       failedQueue.push({ query, mutation, variables });
       const { data } =
         await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
-      const accessToken = data.accessToken;
 
       store.dispatch(
-        setCredentials({ accountId: "idk lol", role: "random", accessToken }),
+        setAccessToken({
+          accessToken: data.accessToken,
+        }),
       );
       processFailedQueue();
     } else {
@@ -86,14 +88,15 @@ const refreshTokenAndRetry = async (
     await clearHttpOnlyRefreshToken();
     if (!isRedirecting) {
       isRedirecting = true;
-      window.location.href = "/auth/session-expired";
+      toast.error("Session has ended");
+      window.location.href = "/login";
     }
   }
 };
 
 const clearHttpOnlyRefreshToken = async () => {
   try {
-    await axiosClient.post("auth/logout");
+    await axiosClient.post<void>("auth/logout");
   } catch (error) {
     console.error("Failed to clear refresh token", error);
   }
