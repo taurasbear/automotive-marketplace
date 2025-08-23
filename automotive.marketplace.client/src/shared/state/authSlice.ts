@@ -30,6 +30,10 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
     },
 
+    setAccessToken: (state, action: PayloadAction<{ accessToken: string }>) => {
+      state.accessToken = action.payload.accessToken;
+    },
+
     clearCredentials: (state) => {
       state.accountId = null;
       state.role = null;
@@ -40,6 +44,7 @@ const authSlice = createSlice({
 
 export const selectAccessToken = (state: RootState) => state.auth.accessToken;
 
-export const { setCredentials, clearCredentials } = authSlice.actions;
+export const { setCredentials, setAccessToken, clearCredentials } =
+  authSlice.actions;
 
 export default authSlice.reducer;
