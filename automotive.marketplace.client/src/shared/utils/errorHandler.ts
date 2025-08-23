@@ -5,6 +5,7 @@ import { clearCredentials, setAccessToken } from "../state/authSlice";
 import { store } from "../state/store";
 import { RefreshTokenResponse } from "../types/dto/auth/RefreshTokenResponse";
 import { toast } from "sonner";
+import { router } from "@/lib/router";
 
 let isRedirecting = false;
 let isRefreshing = false;
@@ -89,7 +90,7 @@ const refreshTokenAndRetry = async (
     if (!isRedirecting) {
       isRedirecting = true;
       toast.error("Session has ended");
-      window.location.href = "/login";
+      router.navigate({ to: "/login" });
     }
   }
 };
