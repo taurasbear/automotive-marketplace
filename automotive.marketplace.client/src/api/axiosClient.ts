@@ -1,5 +1,5 @@
-import { useAppSelector } from "@/shared/hooks/redux";
 import { selectAccessToken } from "@/shared/state/authSlice";
+import { store } from "@/shared/state/store";
 import axios from "axios";
 
 const axiosClient = axios.create({
@@ -14,9 +14,9 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  const token = useAppSelector(selectAccessToken);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const accessToken = selectAccessToken(store.getState());
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
