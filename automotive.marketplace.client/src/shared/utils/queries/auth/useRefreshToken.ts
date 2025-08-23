@@ -5,8 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 const refreshToken = (): Promise<void> =>
   axiosClient.post(ENDPOINTS.AUTH.REFRESH);
 
-export const useRefreshToken = () => {
-  return useMutation({
+export const useRefreshToken = () =>
+  useMutation({
     mutationFn: refreshToken,
   });
-};
