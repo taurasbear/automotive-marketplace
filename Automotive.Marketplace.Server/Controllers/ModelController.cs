@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Automotive.Marketplace.Server.Controllers;
 
-[Route("[controller]")]
-[ApiController]
-public class ModelController(IMediator mediator) : ControllerBase
+public class ModelController(IMediator mediator) : BaseController
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GetAllMakesResponse>>> GetByMakeId(

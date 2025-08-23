@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using Automotive.Marketplace.Application.Common.Exceptions;
-using Automotive.Marketplace.Application.Interfaces.Data;
-using Automotive.Marketplace.Application.Interfaces.Services;
-using Automotive.Marketplace.Domain.Entities;
+﻿using Automotive.Marketplace.Application.Interfaces.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RefreshTokenEntity = Automotive.Marketplace.Domain.Entities.RefreshToken;

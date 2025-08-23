@@ -6,11 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Automotive.Marketplace.Server.Controllers;
 
-[Route("[controller]")]
-[ApiController]
-public class AuthController(IMediator mediator) : ControllerBase
+public class AuthController(IMediator mediator) : BaseController
 {
-    [HttpPost("login")]
+    [HttpPost]
     public async Task<ActionResult> Login(
         [FromBody] AuthenticateAccountCommand authenticateAccountRequest,
         CancellationToken cancellationToken)
@@ -40,7 +38,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         });
     }
 
-    [HttpPost("register")]
+    [HttpPost]
     public async Task<ActionResult> Register(RegisterAccountCommand registerAccountRequest, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(registerAccountRequest, cancellationToken);
@@ -63,7 +61,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         });
     }
 
-    [HttpPost("refresh")]
+    [HttpPost]
     public async Task<ActionResult> Refresh(CancellationToken cancellationToken)
     {
         var refreshToken = Request.Cookies["refreshToken"];
@@ -90,7 +88,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         });
     }
 
-    [HttpPost("logout")]
+    [HttpPost]
     public async Task<IActionResult> Logout(CancellationToken cancellationToken)
     {
         var refreshToken = Request.Cookies["refreshToken"];

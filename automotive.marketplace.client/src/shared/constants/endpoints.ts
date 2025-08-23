@@ -1,17 +1,17 @@
 export const ENDPOINTS = {
   LISTING: {
-    GET_ALL: "/listing",
+    GET_ALL: "/Listing/GetAll",
   },
   AUTH: {
-    REFRESH: "/auth/refresh",
-    REGISTER: "/auth/register",
-    LOGOUT: "/auth/logout",
-    LOGIN: "auth/login",
+    REFRESH: "/Auth/Refresh",
+    REGISTER: "/Auth/Register",
+    LOGOUT: "/Auth/Logout",
+    LOGIN: "Auth/Login",
   },
   MAKE: {
-    GET_ALL: "/make",
+    GET_ALL: "/Make/GetAll",
   },
   MODEL: {
-    GET_BY_MAKE_ID: "/model",
+    GET_BY_MAKE_ID: "/Model/GetByMakeId",
   },
 } as const;

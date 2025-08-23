@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Interfaces.Services;
+﻿using Automotive.Marketplace.Domain.Entities;
 
-using Automotive.Marketplace.Domain.Entities;
+namespace Automotive.Marketplace.Application.Interfaces.Services;
 
 public interface ITokenService
 {

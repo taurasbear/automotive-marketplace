@@ -1,14 +1,13 @@
-﻿namespace Automotive.Marketplace.Infrastructure.Services;
-
-using Automotive.Marketplace.Application.Interfaces.Services;
+﻿using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+
+namespace Automotive.Marketplace.Infrastructure.Services;
 
 public class TokenService(IConfiguration configuration) : ITokenService
 {
