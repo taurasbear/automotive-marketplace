@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Automotive.Marketplace.Domain.Entities;
+﻿using Automotive.Marketplace.Domain.Entities;
 
 namespace Automotive.Marketplace.Application.Interfaces.Services;
 

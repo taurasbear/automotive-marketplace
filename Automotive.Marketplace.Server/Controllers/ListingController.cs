@@ -1,12 +1,10 @@
-﻿namespace Automotive.Marketplace.Server.Controllers;
-
-using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+﻿using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("[controller]")]
-[ApiController]
-public class ListingController(IMediator mediator) : ControllerBase
+namespace Automotive.Marketplace.Server.Controllers;
+
+public class ListingController(IMediator mediator) : BaseController
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GetAllListingsResponse>>> GetAll(

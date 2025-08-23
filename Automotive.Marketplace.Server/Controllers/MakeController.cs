@@ -4,14 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Automotive.Marketplace.Server.Controllers;
 
-[Route("[controller]")]
-[ApiController]
-public class MakeController(IMediator mediator) : ControllerBase
+public class MakeController(IMediator mediator) : BaseController
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetAllMakesResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<GetAllMakesResponse>>> GetAll(CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new GetAllMakesQuery());
+        var query = new GetAllMakesQuery();
+        var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 }
