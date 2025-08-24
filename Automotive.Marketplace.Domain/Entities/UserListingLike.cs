@@ -1,12 +1,12 @@
 ﻿namespace Automotive.Marketplace.Domain.Entities;
 
-public class ClientListingLike : BaseEntity
+public class UserListingLike : BaseEntity
 {
     public Guid ListingId { get; set; }
 
     public virtual Listing Listing { get; set; } = null!;
 
-    public Guid ClientId { get; set; }
+    public Guid UserId { get; set; }
 
-    public virtual Client Client { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

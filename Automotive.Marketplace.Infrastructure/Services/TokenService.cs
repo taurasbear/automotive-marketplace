@@ -13,7 +13,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
 {
     private readonly IConfiguration configuration = configuration;
 
-    public string GenerateAccessToken(Account account)
+    public string GenerateAccessToken(User account)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -48,7 +48,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
         }
     }
 
-    public RefreshToken GenerateRefreshTokenEntity(Account account)
+    public RefreshToken GenerateRefreshTokenEntity(User account)
     {
         var freshRefreshToken = this.GenerateRefreshToken();
         var freshExpiryDate = this.GetRefreshTokenExpiryData();
@@ -59,7 +59,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
             ExpiryDate = freshExpiryDate,
             IsRevoked = false,
             IsUsed = false,
-            Account = account
+            User = account
         };
     }
 

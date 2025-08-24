@@ -29,7 +29,7 @@ public class RefreshTokenCommandHandler(
             throw new InvalidRefreshTokenException();
         }
 
-        var fetchedAccount = await repository.GetByIdAsync<Account>(currentRefreshToken.AccountId, cancellationToken)
+        var fetchedAccount = await repository.GetByIdAsync<User>(currentRefreshToken.AccountId, cancellationToken)
             ?? throw new AccountNotFoundException(currentRefreshToken.AccountId);
 
         currentRefreshToken.IsRevoked = true;

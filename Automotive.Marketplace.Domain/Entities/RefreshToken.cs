@@ -10,7 +10,7 @@ public class RefreshToken : BaseEntity
 
     public bool IsUsed { get; set; }
 
-    public Guid AccountId { get; set; }
+    public Guid UserId { get; set; }
 
-    public virtual Account Account { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

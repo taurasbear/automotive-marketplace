@@ -5,80 +5,74 @@ using Microsoft.EntityFrameworkCore;
 
 public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<Admin> Admins { get; set; }
-
     public DbSet<Car> Cars { get; set; }
 
     public DbSet<CarDetails> CarsDetails { get; set; }
-
-    public DbSet<Client> Clients { get; set; }
 
     public DbSet<Image> Images { get; set; }
 
     public DbSet<Listing> Listings { get; set; }
 
-    public DbSet<Account> Accounts { get; set; }
+    public DbSet<User> Accounts { get; set; }
 
     public DbSet<Make> Makes { get; set; }
 
     public DbSet<Model> Models { get; set; }
-
-    public DbSet<Seller> Sellers { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Model>()
-            .HasOne(mo => mo.Make)
-            .WithMany(ma => ma.Models)
-            .HasForeignKey(mo => mo.MakeId);
+            .HasOne(model => model.Make)
+            .WithMany(make => make.Models)
+            .HasForeignKey(model => model.MakeId);
 
         modelBuilder.Entity<Car>()
-            .HasOne(c => c.Model)
-            .WithMany(md => md.Cars)
-            .HasForeignKey(c => c.ModelId);
+            .HasOne(car => car.Model)
+            .WithMany(model => model.Cars)
+            .HasForeignKey(car => car.ModelId);
 
         modelBuilder.Entity<CarDetails>()
-            .HasOne(cd => cd.Car)
-            .WithMany(c => c.CarDetails)
-            .HasForeignKey(cd => cd.CarId);
+            .HasOne(carDetails => carDetails.Car)
+            .WithMany(car => car.CarDetails)
+            .HasForeignKey(carDetails => carDetails.CarId);
 
         modelBuilder.Entity<Listing>()
-            .HasOne(l => l.CarDetails)
-            .WithOne(cd => cd.Listing)
-            .HasForeignKey<Listing>(l => l.CarDetailsId);
+            .HasOne(listing => listing.CarDetails)
+            .WithOne(carDetails => carDetails.Listing)
+            .HasForeignKey<Listing>(listing => listing.CarDetailsId);
 
         modelBuilder.Entity<Image>()
-            .HasOne(i => i.Listing)
-            .WithMany(l => l.Images)
-            .HasForeignKey(i => i.ListingId);
+            .HasOne(image => image.Listing)
+            .WithMany(listing => listing.Images)
+            .HasForeignKey(image => image.ListingId);
 
         modelBuilder.Entity<Listing>()
-            .HasOne(l => l.Seller)
-            .WithMany(s => s.Listings)
-            .HasForeignKey(l => l.SellerId);
+            .HasOne(listing => listing.Seller)
+            .WithMany(user => user.Listings)
+            .HasForeignKey(listing => listing.SellerId);
 
-        modelBuilder.Entity<Client>()
-            .HasMany(c => c.LikedListings)
-            .WithMany(l => l.LikeClients)
-            .UsingEntity<ClientListingLike>(
-                cll => cll.HasOne(cll => cll.Listing)
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.LikedListings)
+            .WithMany(listing => listing.LikeUsers)
+            .UsingEntity<UserListingLike>(
+                like => like.HasOne(like => like.Listing)
                 .WithMany()
-                .HasForeignKey(cll => cll.ListingId),
-                cll => cll.HasOne(cll => cll.Client)
+                .HasForeignKey(like => like.ListingId),
+                like => like.HasOne(like => like.User)
                 .WithMany()
-                .HasForeignKey(cll => cll.ClientId)
+                .HasForeignKey(like => like.UserId)
             );
 
-        modelBuilder.Entity<ClientListingLike>()
-            .HasIndex(cll => new { cll.ClientId, cll.ListingId })
+        modelBuilder.Entity<UserListingLike>()
+            .HasIndex(like => new { like.UserId, like.ListingId })
             .IsUnique();
 
         modelBuilder.Entity<RefreshToken>()
-            .HasOne(rt => rt.Account)
+            .HasOne(refreshToken => refreshToken.User)
             .WithMany()
-            .HasForeignKey(rt => rt.AccountId);
+            .HasForeignKey(refreshToken => refreshToken.UserId);
 
         modelBuilder.Seed();
     }

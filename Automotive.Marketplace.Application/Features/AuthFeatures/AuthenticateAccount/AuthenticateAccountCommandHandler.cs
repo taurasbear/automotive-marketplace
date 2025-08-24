@@ -17,9 +17,9 @@ public class AuthenticateAccountCommandHandler(
     public async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountCommand request, CancellationToken cancellationToken)
     {
         var fetchedAccount = await repository
-            .AsQueryable<Account>()
+            .AsQueryable<User>()
             .Where(account => account.Email == request.Email)
-            .FirstOrDefaultAsync(cancellationToken) ?? throw new AccountNotFoundException(request.Email);
+            .FirstOrDefaultAsync(cancellationToken) ?? throw new UserNotFoundException(request.Email);
 
         if (!passwordHasher.Verify(request.Password, fetchedAccount.HashedPassword))
         {

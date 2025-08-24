@@ -14,7 +14,7 @@ public class RegisterAccountCommandHandler(
 {
     public async Task<RegisterAccountResponse> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
     {
-        var account = new Account
+        var account = new User
         {
             Username = request.Username,
             Email = request.Email,
