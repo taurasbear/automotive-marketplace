@@ -6,26 +6,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-DotNetEnv.Env.Load();
 var AllowClientOrigins = "allowClientOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowClientOrigins, policy =>
     {
-        policy.WithOrigins(
-            "https://automotive-marketplace.taurasbear.me",
-            "http://localhost:57263",
-            "https://localhost:57263",
-            "http://localhost:8081",
-            "https://localhost:8081")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+        policy.WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -50,18 +43,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 
-string? connectionString;
-if (builder.Environment.IsDevelopment())
-{
-    var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
-    connectionString = isDocker
-        ? builder.Configuration.GetConnectionString("DevDocker")
-        : Environment.GetEnvironmentVariable("DEV_LOCAL_DB_CONNECTION_STRING");
-}
-else
-{
-    connectionString = builder.Configuration.GetConnectionString("Production");
-}
+string? connectionString = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetConnectionString("Development")
+    : builder.Configuration.GetConnectionString("Production");
+
 builder.Services.ConfigureInfrastructure(connectionString);
 builder.Services.ConfigureApplication();
 builder.Services.AddEndpointsApiExplorer();
@@ -85,13 +70,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-else
+
+using (var scope = app.Services.CreateScope())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
-        await db.Database.MigrateAsync();
-    }
+    var automotiveContext = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+    await automotiveContext.Database.MigrateAsync();
 }
 
 if (app.Environment.IsProduction())

@@ -67,6 +67,7 @@ In the beginning of this project, I set out to build something that would give m
 ## Architecture
 
 ### Overview
+
 The project runs as a monolithic Docker Compose instance. In production, each service - frontend, backend, database[^1] and reverse-proxy run in their own containers and are orchestrated by [Docker Compose](/docker-compose.yml). This approach brings a lot of advantages such as consistent and isolated service environments and ease of deployment. However, a monolithic architecture is more difficult to set up initially and has issues with individual scaling of services. But since this is a personal project, I felt it was appropriate to choose this approach for its advantages.
 
 ### Use-case diagram
@@ -82,19 +83,21 @@ The project runs as a monolithic Docker Compose instance. In production, each se
 The project's CI/CD pipeline is implemented using GitHub Actions and consists of 3 stages:
 
 1. **Build and test**
-    - The project gets built and runs tests
-    - If any tests fail, the workflow stops
+
+   - The project gets built and runs tests
+   - If any tests fail, the workflow stops
 
 2. **Build images and push**
-    - Build Docker images for the frontend and backend using their respective Dockerfiles
-    - On success, push the images to the GitHub Container Registry (GHCR)
+
+   - Build Docker images for the frontend and backend using their respective Dockerfiles
+   - On success, push the images to the GitHub Container Registry (GHCR)
 
 3. **Deploy**
-    - SSHs into the production Droplet
-    - Pull the latest Docker images from GHCR
-    - Retrieve secrets from GitHub Repository secrets and generate the `.env` file.
-    - Copy the `docker-compose.yml` from the repository.
-    - Start the services using Docker Compose.
+   - SSHs into the production Droplet
+   - Pull the latest Docker images from GHCR
+   - Retrieve secrets from GitHub Repository secrets and generate the `.env` file.
+   - Copy the `docker-compose.yml` from the repository.
+   - Start the services using Docker Compose.
 
 ## Getting started
 
@@ -108,18 +111,20 @@ The project's CI/CD pipeline is implemented using GitHub Actions and consists of
 1. Create a `.env` file at the project root:
 
 ```dotenv
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_DB=
-JWT_KEY=
-JWT_ISSUER=
-JWT_AUDIENCE=
-JWT_ACCESSTOKENEXPIRATIONMINUTES=
-JWT_REFRESHTOKENEXPIRATIONDAYS=
-VITE_APP_API_URL=
+DEV_DOCKER_DB_CONNECTION_STRING=Host=container-service-name;Port=db-port;Database=db-name;Username=your-username;Password=your-password
+POSTGRES_USER=your-username
+POSTGRES_PASSWORD=your-password
+POSTGRES_DB=db-name
+JWT_KEY=your-jwt-key
+JWT_ISSUER=your-jwt-issuer
+JWT_AUDIENCE=-your-jwt-audience
+JWT_ACCESSTOKENEXPIRATIONMINUTES=99
+JWT_REFRESHTOKENEXPIRATIONDAYS=99
+VITE_APP_API_URL=url-to-your-api
+VITE_APP_PROXY_API_TARGET=api-container-service-name-and-port-if-using-vite-proxy
 ```
 
-2. To run Docker Compose open the solution in Visual Studio or execute the following command:
+2. To launch up, run execute the following command:
 
 ```sh
 docker-compose --env-file .env up -d
@@ -130,7 +135,7 @@ docker-compose --env-file .env up -d
 Tauras Narvilas
 [LinkedIn](https://www.linkedin.com/in/tauras-narvilas/)
 
-[^1]: I would not recommend running your DBVS in a container. For more context, please refer to this [blog post](https://pigsty.io/blog/db/pg-in-docker/)  
+[^1]: I would not recommend running your DBVS in a container. For more context, please refer to this [blog post](https://pigsty.io/blog/db/pg-in-docker/)
 [^2]: Production project is running on Ubuntu Linux while I personally use Docker Desktop on Windows 10
 
 [deployed-app-shield]: https://img.shields.io/badge/-Deployed_App-black.svg?style=for-the-badge&logo=linkedin&colorB=555

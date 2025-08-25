@@ -10,6 +10,8 @@ services:
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__AccessTokenExpirationMinutes=${JWT_ACCESSTOKENEXPIRATIONMINUTES}
       - Jwt__RefreshTokenExpirationDays=${JWT_REFRESHTOKENEXPIRATIONDAYS}
+    depends_on:
+      - db
     networks:
       - app-network
     restart: unless-stopped
