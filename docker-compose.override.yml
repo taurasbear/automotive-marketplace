@@ -1,6 +1,6 @@
 services:
   automotive.marketplace.server:
-    image: ${DOCKER_REGISTRY-}automotive.marketplace.server:dev
+    image: automotive.marketplace.server:dev
     build:
       context: .
       dockerfile: ./Automotive.Marketplace.Server/Dockerfile
@@ -38,7 +38,7 @@ services:
       - db
 
   automotive.marketplace.client:
-    image: ${DOCKER_REGISTRY-}automotive.marketplace.client:dev
+    image: automotive.marketplace.client:dev
     build:
       context: ./automotive.marketplace.client
       target: development
