@@ -1,6 +1,6 @@
 services:
   automotive.marketplace.server:
-    image: ${DOCKER_REGISTRY-}automotive.marketplace.server:dev
+    image: automotive.marketplace.server:dev
     build:
       context: .
       dockerfile: ./Automotive.Marketplace.Server/Dockerfile
@@ -12,7 +12,7 @@ services:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
       - DOTNET_WATCH_RESTART_ON_RUDE_EDIT=true
       - DOTNET_WATCH_SUPPRESS_EMOJIS=0
-      - ConnectionStrings__DevDocker=${DEV_DOCKER_DB_CONNECTION_STRING}
+      - ConnectionStrings__Development=${DEV_DOCKER_DB_CONNECTION_STRING}
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/aspnetapp.pfx
     ports:
@@ -38,13 +38,13 @@ services:
       - db
 
   automotive.marketplace.client:
-    image: ${DOCKER_REGISTRY-}automotive.marketplace.client:dev
+    image: automotive.marketplace.client:dev
     build:
       context: ./automotive.marketplace.client
       target: development
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://automotive.marketplace.server:8080
+      - VITE_APP_PROXY_API_TARGET=${VITE_APP_PROXY_API_TARGET}
       - CHOKIDAR_USEPOLLING=true
     ports:
       - "57263:57263"
