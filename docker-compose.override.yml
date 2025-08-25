@@ -44,7 +44,7 @@ services:
       target: development
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://automotive.marketplace.server:8080
+      - VITE_APP_PROXY_API_TARGET=${VITE_APP_PROXY_API_TARGET}
       - CHOKIDAR_USEPOLLING=true
     ports:
       - "57263:57263"
