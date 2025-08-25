@@ -73,8 +73,8 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
-    await db.Database.MigrateAsync();
+    var automotiveContext = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+    await automotiveContext.Database.MigrateAsync();
 }
 
 if (app.Environment.IsProduction())
