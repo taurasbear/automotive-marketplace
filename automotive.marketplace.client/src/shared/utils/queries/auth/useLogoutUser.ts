@@ -2,12 +2,11 @@ import axiosClient from "@/api/axiosClient";
 import { ENDPOINTS } from "@/shared/constants/endpoints";
 import { useMutation } from "@tanstack/react-query";
 
-const logoutAccount = (): Promise<void> =>
-  axiosClient.post(ENDPOINTS.AUTH.LOGOUT);
+const logoutUser = () => axiosClient.post<void>(ENDPOINTS.AUTH.LOGOUT);
 
-export const useLogoutAccount = () =>
+export const useLogoutUser = () =>
   useMutation({
-    mutationFn: logoutAccount,
+    mutationFn: logoutUser,
     meta: {
       successMessage: "Successfully logged out",
     },

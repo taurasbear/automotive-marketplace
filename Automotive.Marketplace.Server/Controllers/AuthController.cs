@@ -94,7 +94,7 @@ public class AuthController(IMediator mediator) : BaseController
         var refreshToken = Request.Cookies["refreshToken"];
         if (!string.IsNullOrWhiteSpace(refreshToken))
         {
-            var command = new LogoutAccountCommand { RefreshToken = refreshToken };
+            var command = new LogoutUserCommand { RefreshToken = refreshToken };
             await mediator.Send(command, cancellationToken);
         }
 

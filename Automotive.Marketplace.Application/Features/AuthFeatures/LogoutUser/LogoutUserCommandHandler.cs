@@ -3,11 +3,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RefreshTokenEntity = Automotive.Marketplace.Domain.Entities.RefreshToken;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.LogoutUser;
 
-public class LogoutAccountCommandHandler(IRepository repository) : IRequestHandler<LogoutAccountCommand>
+public class LogoutUserCommandHandler(IRepository repository) : IRequestHandler<LogoutUserCommand>
 {
-    public async Task Handle(LogoutAccountCommand request, CancellationToken cancellationToken)
+    public async Task Handle(LogoutUserCommand request, CancellationToken cancellationToken)
     {
         var refreshToken = await repository
             .AsQueryable<RefreshTokenEntity>()
