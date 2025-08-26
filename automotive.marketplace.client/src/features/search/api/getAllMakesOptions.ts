@@ -1,9 +1,9 @@
-import axiosClient from "@/api/axiosClient";
-import { ENDPOINTS } from "@/shared/constants/endpoints";
+import { ENDPOINTS } from "@/constants/endpoints";
+import { GetAllMakesResponse } from "@/features/search/types/GetAllMakesResponse";
+import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
-import { makeKeys } from "./makeKeys";
 import { AxiosResponse } from "axios";
-import { GetAllMakesResponse } from "@/shared/types/dto/make/GetAllMakesResponse";
+import { makeKeys } from "./makeKeys";
 
 const getAllMakes = (): Promise<AxiosResponse<GetAllMakesResponse[]>> =>
   axiosClient.get(ENDPOINTS.MAKE.GET_ALL);

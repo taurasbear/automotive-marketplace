@@ -1,6 +1,6 @@
-import axiosClient from "@/api/axiosClient";
+import { ENDPOINTS } from "@/constants/endpoints";
 import { RefreshTokenResponse } from "@/features/auth/types/RefreshTokenResponse";
-import { ENDPOINTS } from "@/shared/constants/endpoints";
+import axiosClient from "@/lib/axios/axiosClient";
 import { useMutation } from "@tanstack/react-query";
 
 const refreshToken = () =>

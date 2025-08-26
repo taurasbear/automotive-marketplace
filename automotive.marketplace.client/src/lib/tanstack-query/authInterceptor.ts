@@ -1,4 +1,5 @@
-import axiosClient from "@/api/axiosClient";
+import axiosClient from "@/lib/axios/axiosClient";
+import { store } from "@/lib/redux/store";
 import { router } from "@/lib/router";
 import { Mutation, Query } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -8,7 +9,6 @@ import {
   setCredentials,
 } from "../../features/auth/state/authSlice";
 import { RefreshTokenResponse } from "../../features/auth/types/RefreshTokenResponse";
-import { store } from "../state/store";
 
 let isRedirecting = false;
 let isRefreshing = false;

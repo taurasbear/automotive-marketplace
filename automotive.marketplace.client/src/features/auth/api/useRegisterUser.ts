@@ -1,7 +1,7 @@
-import axiosClient from "@/api/axiosClient";
+import { ENDPOINTS } from "@/constants/endpoints";
 import { RegisterUserCommand } from "@/features/auth/types/RegisterUserCommand";
 import { RegisterUserResponse } from "@/features/auth/types/RegisterUserResponse";
-import { ENDPOINTS } from "@/shared/constants/endpoints";
+import axiosClient from "@/lib/axios/axiosClient";
 import { useMutation } from "@tanstack/react-query";
 
 const registerUser = (body: RegisterUserCommand) =>

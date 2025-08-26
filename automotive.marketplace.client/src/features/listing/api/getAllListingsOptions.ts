@@ -1,7 +1,7 @@
-import axiosClient from "@/api/axiosClient";
+import { ENDPOINTS } from "@/constants/endpoints";
 import { GetAllListingsQuery } from "@/features/listing/types/GetAllListingsQuery";
 import { GetAllListingsResponse } from "@/features/listing/types/GetAllListingsResponse";
-import { ENDPOINTS } from "@/shared/constants/endpoints";
+import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { listingKeys } from "./listingKeys";

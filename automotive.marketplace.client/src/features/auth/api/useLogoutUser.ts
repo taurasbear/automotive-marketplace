@@ -1,5 +1,5 @@
-import axiosClient from "@/api/axiosClient";
-import { ENDPOINTS } from "@/shared/constants/endpoints";
+import { ENDPOINTS } from "@/constants/endpoints";
+import axiosClient from "@/lib/axios/axiosClient";
 import { useMutation } from "@tanstack/react-query";
 
 const logoutUser = () => axiosClient.post<void>(ENDPOINTS.AUTH.LOGOUT);

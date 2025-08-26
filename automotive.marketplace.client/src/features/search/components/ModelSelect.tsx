@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getModelsByMakeIdOptions } from "@/shared/utils/queries/model/getModelsByMakeIdOptions";
+import { getModelsByMakeIdOptions } from "@/features/search/api/getModelsByMakeIdOptions";
 import { useQuery } from "@tanstack/react-query";
 
 type ModelSelectProps = {

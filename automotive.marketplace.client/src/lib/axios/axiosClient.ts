@@ -1,5 +1,5 @@
 import { selectAccessToken } from "@/features/auth/state/authSlice";
-import { store } from "@/shared/state/store";
+import { store } from "@/lib/redux/store";
 import axios from "axios";
 
 const axiosClient = axios.create({

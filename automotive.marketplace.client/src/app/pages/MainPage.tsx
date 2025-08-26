@@ -1,4 +1,4 @@
-import ListingSearch from "@/components/MainPage/ListingSeach/ListingSearch";
+import ListingSearch from "@/features/search/components/ListingSearch";
 
 const MainPage = () => {
   return (

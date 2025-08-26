@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getAllMakesOptions } from "@/shared/utils/queries/make/getAllMakesOptions";
+import { getAllMakesOptions } from "@/features/search/api/getAllMakesOptions";
 import { useQuery } from "@tanstack/react-query";
 
 type MakeSelectProps = {

@@ -1,7 +1,7 @@
-import Listings from "@/pages/Listings";
+import Listings from "@/app/pages/Listings";
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
+import { z } from "zod";
 
 const listingSearchSchema = z.object({
   makeId: z.string().optional(),

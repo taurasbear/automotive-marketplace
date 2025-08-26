@@ -1,14 +1,14 @@
 import {
-  SelectValue,
-  SelectTrigger,
+  Select,
   SelectContent,
   SelectItem,
-  Select,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-  CarConditionKey,
   CAR_CONDITION_OPTIONS,
-} from "@/shared/constants/carConditions";
+  CarConditionKey,
+} from "@/constants/carConditions";
 
 type UsedSelectProps = {
   onValueChange: (value: CarConditionKey) => void;

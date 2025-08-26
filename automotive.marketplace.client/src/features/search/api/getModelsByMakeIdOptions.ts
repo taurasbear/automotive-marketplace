@@ -1,10 +1,10 @@
-import axiosClient from "@/api/axiosClient";
-import { ENDPOINTS } from "@/shared/constants/endpoints";
+import { ENDPOINTS } from "@/constants/endpoints";
+import { GetModelsByMakeIdQuery } from "@/features/search/types/GetModelsByMakeIdQuery";
+import { GetModelsByMakeIdResponse } from "@/features/search/types/GetModelsByMakeIdResponse";
+import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
-import { modelKeys } from "./modelKeys";
-import { GetModelsByMakeIdQuery } from "@/shared/types/dto/model/GetModelsByMakeIdQuery";
 import { AxiosResponse } from "axios";
-import { GetModelsByMakeIdResponse } from "@/shared/types/dto/model/GetModelsByMakeIdResponse";
+import { modelKeys } from "./modelKeys";
 
 const getModelsByMakeId = (
   query: GetModelsByMakeIdQuery,
