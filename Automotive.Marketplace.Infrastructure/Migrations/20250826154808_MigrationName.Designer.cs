@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Automotive.Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(AutomotiveContext))]
-    [Migration("20250826101850_MigrationName")]
+    [Migration("20250826154808_MigrationName")]
     partial class MigrationName
     {
         /// <inheritdoc />
