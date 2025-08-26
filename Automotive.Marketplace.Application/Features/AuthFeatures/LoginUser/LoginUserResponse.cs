@@ -1,4 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
+﻿using Automotive.Marketplace.Domain.Enums;
+
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 
 public sealed record LoginUserResponse
 {
@@ -10,5 +12,5 @@ public sealed record LoginUserResponse
 
     public Guid UserId { get; set; }
 
-    public string RoleName { get; set; } = string.Empty;
+    public IEnumerable<Permission> Permissions { get; set; } = [];
 }

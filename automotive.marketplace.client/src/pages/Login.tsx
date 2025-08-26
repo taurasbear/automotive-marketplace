@@ -40,7 +40,7 @@ const Login = () => {
     dispatch(
       setCredentials({
         accessToken: user.accessToken,
-        role: user.role,
+        permissions: user.permissions,
         userId: user.userId,
       }),
     );

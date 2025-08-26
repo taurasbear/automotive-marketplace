@@ -40,6 +40,7 @@ public class RefreshTokenCommandHandler(
         await repository.CreateAsync(freshRefreshToken, cancellationToken);
 
         var response = mapper.Map<RefreshTokenResponse>(freshRefreshToken);
+        response.Permissions = [.. user.UserPermissions.Select(userPermission => userPermission.Permission)];
         response.FreshAccessToken = freshAccessToken;
 
         return response;

@@ -32,6 +32,7 @@ public class LoginUserCommandHandler(
         await repository.CreateAsync(refreshTokenToAdd, cancellationToken);
 
         var response = mapper.Map<LoginUserResponse>(refreshTokenToAdd);
+        response.Permissions = [.. user.UserPermissions.Select(userPermission => userPermission.Permission)];
         response.FreshAccessToken = freshAccessToken;
 
         return response;

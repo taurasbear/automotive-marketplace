@@ -51,7 +51,7 @@ const Register = () => {
     dispatch(
       setCredentials({
         accessToken: user.accessToken,
-        role: user.role,
+        permissions: [],
         userId: user.userId,
       }),
     );

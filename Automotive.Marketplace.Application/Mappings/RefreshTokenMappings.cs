@@ -13,17 +13,16 @@ public class RefreshTokenMappings : Profile
         CreateMap<RefreshToken, LoginUserResponse>()
            .ForMember(dest => dest.FreshExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
            .ForMember(dest => dest.FreshRefreshToken, opt => opt.MapFrom(src => src.Token))
-           .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-           .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.User.RoleName));
+           .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
 
         CreateMap<RefreshToken, RefreshTokenResponse>()
          .ForMember(dest => dest.FreshRefreshToken, opt => opt.MapFrom(src => src.Token))
-         .ForMember(dest => dest.FreshExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate));
+         .ForMember(dest => dest.FreshExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
+         .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
 
         CreateMap<RefreshToken, RegisterUserResponse>()
            .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.Token))
            .ForMember(dest => dest.RefreshTokenExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
-           .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-           .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.User.RoleName));
+           .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
     }
 }

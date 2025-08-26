@@ -2,6 +2,7 @@
 using Automotive.Marketplace.Application.Features.AuthFeatures.LogoutUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
+using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +36,7 @@ public class AuthController(IMediator mediator) : BaseController
         {
             AccessToken = response.FreshAccessToken,
             UserId = response.UserId,
-            Role = response.RoleName
+            Permissions = response.Permissions,
         });
     }
 
@@ -58,7 +59,6 @@ public class AuthController(IMediator mediator) : BaseController
         {
             AccessToken = response.AccessToken,
             UserId = response.UserId,
-            Role = response.RoleName
         });
     }
 
@@ -85,7 +85,9 @@ public class AuthController(IMediator mediator) : BaseController
 
         return Ok(new
         {
-            AccessToken = response.FreshAccessToken
+            AccessToken = response.FreshAccessToken,
+            UserId = response.UserId,
+            Permissions = response.Permissions,
         });
     }
 

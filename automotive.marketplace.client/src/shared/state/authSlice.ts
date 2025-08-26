@@ -3,13 +3,13 @@ import { RootState } from "./store";
 
 interface AuthState {
   userId: string | null;
-  role: string | null;
+  permissions: string[];
   accessToken: string | null;
 }
 
 const initialState: AuthState = {
   userId: null,
-  role: null,
+  permissions: [],
   accessToken: null,
 };
 
@@ -21,12 +21,12 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{
         userId: string;
-        role: string;
+        permissions: string[];
         accessToken: string;
       }>,
     ) => {
       state.userId = action.payload.userId;
-      state.role = action.payload.role;
+      state.permissions = action.payload.permissions;
       state.accessToken = action.payload.accessToken;
     },
 
@@ -36,7 +36,7 @@ const authSlice = createSlice({
 
     clearCredentials: (state) => {
       state.userId = null;
-      state.role = null;
+      state.permissions = [];
       state.accessToken = null;
     },
   },

@@ -8,8 +8,6 @@ public class User : BaseEntity
 
     public string HashedPassword { get; set; } = string.Empty;
 
-    public virtual string RoleName => "User";
-
     public virtual ICollection<Listing> LikedListings { get; set; } = [];
 
     public virtual ICollection<Listing> Listings { get; set; } = [];

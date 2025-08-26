@@ -1,4 +1,5 @@
 ﻿using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Domain.Constants;
 using Automotive.Marketplace.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -20,10 +21,18 @@ public class TokenService(IConfiguration configuration) : ITokenService
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleName)
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
+
+        var userPermissions = user.UserPermissions
+            .Select(userPermission => userPermission.Permission)
+            .ToList();
+
+        foreach (var permission in userPermissions)
+        {
+            claims.Add(new Claim(CustomClaimType.Permissions, permission.ToString()));
+        }
 
         var token = new JwtSecurityToken(
             issuer: this.configuration["Jwt:Issuer"],
