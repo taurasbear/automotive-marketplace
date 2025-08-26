@@ -1,0 +1,31 @@
+# UI components (usually generated or third-party)
+src/components/ui/
+
+# Generated files
+src/routeTree.gen.ts
+src/lib/utils.ts
+
+# Styling files
+src/index.css
+
+# Documentation and non-code files
+README.md
+*.md
+*.json
+*.yml
+*.yaml
+*.xml
+*.html
+*.prettierignore
+
+# Common patterns for non-code files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.eot
