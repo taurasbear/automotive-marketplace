@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 
-public class AuthenticateAccountCommandHandler(
+public class LoginUserCommandHandler(
     IMapper mapper,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
-    IRepository repository) : IRequestHandler<AuthenticateAccountCommand, AuthenticateAccountResponse>
+    IRepository repository) : IRequestHandler<LoginUserCommand, LoginUserResponse>
 {
-    public async Task<AuthenticateAccountResponse> Handle(AuthenticateAccountCommand request, CancellationToken cancellationToken)
+    public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var fetchedAccount = await repository
             .AsQueryable<User>()
@@ -31,7 +32,7 @@ public class AuthenticateAccountCommandHandler(
 
         await repository.CreateAsync(refreshTokenToAdd, cancellationToken);
 
-        var response = mapper.Map<AuthenticateAccountResponse>(refreshTokenToAdd);
+        var response = mapper.Map<LoginUserResponse>(refreshTokenToAdd);
         response.FreshAccessToken = freshAccessToken;
 
         return response;

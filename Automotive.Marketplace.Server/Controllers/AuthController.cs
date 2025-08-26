@@ -1,4 +1,4 @@
-﻿using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+﻿using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
 using MediatR;
@@ -10,7 +10,7 @@ public class AuthController(IMediator mediator) : BaseController
 {
     [HttpPost]
     public async Task<ActionResult> Login(
-        [FromBody] AuthenticateAccountCommand authenticateAccountRequest,
+        [FromBody] LoginUserCommand authenticateAccountRequest,
         CancellationToken cancellationToken)
     {
         if (User.Identity?.IsAuthenticated == true)

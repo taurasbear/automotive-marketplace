@@ -10,7 +10,7 @@ public class RefreshTokenMappings : Profile
 {
     public RefreshTokenMappings()
     {
-        CreateMap<RefreshToken, AuthenticateAccountResponse>()
+        CreateMap<RefreshToken, LoginUserResponse>()
            .ForMember(dest => dest.FreshExpiryDate, opt => opt.MapFrom(src => src.ExpiryDate))
            .ForMember(dest => dest.FreshRefreshToken, opt => opt.MapFrom(src => src.Token))
            .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.UserId))

@@ -1,6 +1,6 @@
 ﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 
-public sealed record AuthenticateAccountResponse
+public sealed record LoginUserResponse
 {
     public string FreshAccessToken { get; set; } = string.Empty;
 

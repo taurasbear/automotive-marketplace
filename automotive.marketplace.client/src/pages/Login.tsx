@@ -11,14 +11,14 @@ import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/shared/constants/validation/loginSchema";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { setCredentials } from "@/shared/state/authSlice";
-import { AuthenticateAccountCommand } from "@/shared/types/dto/auth/AuthenticateAccountCommand";
-import { useAuthenticateAccount } from "@/shared/utils/queries/auth/useAuthenticateAccount";
+import { LoginUserCommand } from "@/shared/types/dto/auth/LoginUserCommand";
+import { useLoginUser } from "@/shared/utils/queries/auth/useLoginUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Login = () => {
-  const { mutateAsync: authenticateAccountAsync } = useAuthenticateAccount();
+  const { mutateAsync: loginUserAsync } = useLoginUser();
 
   const dispatch = useAppDispatch();
 
@@ -31,12 +31,12 @@ const Login = () => {
   });
 
   const onSubmit = async (formData: z.infer<typeof LoginSchema>) => {
-    const body: AuthenticateAccountCommand = {
+    const body: LoginUserCommand = {
       email: formData.email,
       password: formData.password,
     };
 
-    const { data: account } = await authenticateAccountAsync(body);
+    const { data: account } = await loginUserAsync(body);
     dispatch(
       setCredentials({
         accessToken: account.accessToken,
