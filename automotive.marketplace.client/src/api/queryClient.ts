@@ -14,7 +14,7 @@ const queryClient = new QueryClient({
   },
 
   queryCache: new QueryCache({
-    onError: void handleQueryError,
+    onError: (error, query) => void handleQueryError(error, query),
   }),
 
   mutationCache: new MutationCache({
