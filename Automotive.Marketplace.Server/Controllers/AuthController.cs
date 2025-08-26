@@ -1,4 +1,5 @@
 ﻿using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
+using Automotive.Marketplace.Application.Features.AuthFeatures.LogoutUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
 using MediatR;
@@ -10,7 +11,7 @@ public class AuthController(IMediator mediator) : BaseController
 {
     [HttpPost]
     public async Task<ActionResult> Login(
-        [FromBody] LoginUserCommand authenticateAccountRequest,
+        [FromBody] LoginUserCommand command,
         CancellationToken cancellationToken)
     {
         if (User.Identity?.IsAuthenticated == true)
@@ -18,7 +19,7 @@ public class AuthController(IMediator mediator) : BaseController
             return Ok();
         }
 
-        var response = await mediator.Send(authenticateAccountRequest, cancellationToken);
+        var response = await mediator.Send(command, cancellationToken);
 
         var cookieOptions = new CookieOptions
         {
@@ -33,15 +34,15 @@ public class AuthController(IMediator mediator) : BaseController
         return Ok(new
         {
             AccessToken = response.FreshAccessToken,
-            AccountId = response.AccountId,
+            UserId = response.UserId,
             Role = response.RoleName
         });
     }
 
     [HttpPost]
-    public async Task<ActionResult> Register(RegisterUserCommand registerAccountRequest, CancellationToken cancellationToken)
+    public async Task<ActionResult> Register(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(registerAccountRequest, cancellationToken);
+        var response = await mediator.Send(command, cancellationToken);
 
         var cookieOptions = new CookieOptions
         {
@@ -56,7 +57,7 @@ public class AuthController(IMediator mediator) : BaseController
         return Ok(new
         {
             AccessToken = response.AccessToken,
-            AccountId = response.AccountId,
+            UserId = response.UserId,
             Role = response.RoleName
         });
     }

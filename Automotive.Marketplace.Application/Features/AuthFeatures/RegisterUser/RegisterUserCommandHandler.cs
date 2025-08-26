@@ -14,17 +14,17 @@ public class RegisterUserCommandHandler(
 {
     public async Task<RegisterUserResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var account = new User
+        var user = new User
         {
             Username = request.Username,
             Email = request.Email,
             HashedPassword = passwordHasher.Hash(request.Password),
         };
 
-        await repository.CreateAsync(account, cancellationToken);
+        await repository.CreateAsync(user, cancellationToken);
 
-        var freshAccessToken = tokenService.GenerateAccessToken(account);
-        var refreshTokenToAdd = tokenService.GenerateRefreshTokenEntity(account);
+        var freshAccessToken = tokenService.GenerateAccessToken(user);
+        var refreshTokenToAdd = tokenService.GenerateRefreshTokenEntity(user);
 
         await repository.CreateAsync(refreshTokenToAdd, cancellationToken);
 

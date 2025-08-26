@@ -1,7 +1,6 @@
-﻿using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 
 public sealed class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {

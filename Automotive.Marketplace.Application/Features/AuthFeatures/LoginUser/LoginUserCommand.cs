@@ -1,5 +1,4 @@
-﻿using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
-using MediatR;
+﻿using MediatR;
 
 namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 

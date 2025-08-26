@@ -36,12 +36,12 @@ const Login = () => {
       password: formData.password,
     };
 
-    const { data: account } = await loginUserAsync(body);
+    const { data: user } = await loginUserAsync(body);
     dispatch(
       setCredentials({
-        accessToken: account.accessToken,
-        role: account.role,
-        accountId: account.accountId,
+        accessToken: user.accessToken,
+        role: user.role,
+        userId: user.userId,
       }),
     );
   };

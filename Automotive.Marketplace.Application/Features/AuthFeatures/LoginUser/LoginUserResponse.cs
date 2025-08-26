@@ -1,4 +1,4 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 
 public sealed record LoginUserResponse
 {
@@ -8,7 +8,7 @@ public sealed record LoginUserResponse
 
     public DateTime FreshExpiryDate { get; set; }
 
-    public Guid AccountId { get; set; }
+    public Guid UserId { get; set; }
 
     public string RoleName { get; set; } = string.Empty;
 }

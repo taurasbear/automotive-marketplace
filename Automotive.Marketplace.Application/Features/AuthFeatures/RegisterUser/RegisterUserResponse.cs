@@ -8,7 +8,7 @@ public sealed record RegisterUserResponse
 
     public DateTime RefreshTokenExpiryDate { get; set; }
 
-    public Guid AccountId { get; set; }
+    public Guid UserId { get; set; }
 
     public string RoleName { get; set; } = string.Empty;
 }

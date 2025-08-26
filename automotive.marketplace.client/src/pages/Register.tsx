@@ -35,8 +35,8 @@ const Register = () => {
   });
 
   const handleOnRefreshToken = async () => {
-    const { data: account } = await refreshAsync();
-    dispatch(setAccessToken({ accessToken: account.accessToken }));
+    const { data: user } = await refreshAsync();
+    dispatch(setAccessToken({ accessToken: user.accessToken }));
   };
 
   const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
@@ -46,13 +46,13 @@ const Register = () => {
       password: data.password,
     };
 
-    const { data: account } = await registerUserAsync(body);
+    const { data: user } = await registerUserAsync(body);
 
     dispatch(
       setCredentials({
-        accessToken: account.accessToken,
-        role: account.role,
-        accountId: account.accountId,
+        accessToken: user.accessToken,
+        role: user.role,
+        userId: user.userId,
       }),
     );
   };

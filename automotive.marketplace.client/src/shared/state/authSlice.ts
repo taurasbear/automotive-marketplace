@@ -2,13 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 interface AuthState {
-  accountId: string | null;
+  userId: string | null;
   role: string | null;
   accessToken: string | null;
 }
 
 const initialState: AuthState = {
-  accountId: null,
+  userId: null,
   role: null,
   accessToken: null,
 };
@@ -20,12 +20,12 @@ const authSlice = createSlice({
     setCredentials: (
       state,
       action: PayloadAction<{
-        accountId: string;
+        userId: string;
         role: string;
         accessToken: string;
       }>,
     ) => {
-      state.accountId = action.payload.accountId;
+      state.userId = action.payload.userId;
       state.role = action.payload.role;
       state.accessToken = action.payload.accessToken;
     },
@@ -35,7 +35,7 @@ const authSlice = createSlice({
     },
 
     clearCredentials: (state) => {
-      state.accountId = null;
+      state.userId = null;
       state.role = null;
       state.accessToken = null;
     },

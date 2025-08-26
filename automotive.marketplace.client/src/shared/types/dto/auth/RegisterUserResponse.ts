@@ -1,5 +1,5 @@
 export type RegisterUserResponse = {
   accessToken: string;
-  accountId: string;
+  userId: string;
   role: string;
 };

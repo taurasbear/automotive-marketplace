@@ -13,16 +13,16 @@ public class TokenService(IConfiguration configuration) : ITokenService
 {
     private readonly IConfiguration configuration = configuration;
 
-    public string GenerateAccessToken(User account)
+    public string GenerateAccessToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, account.Email),
-            new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-            new Claim(ClaimTypes.Role, account.RoleName)
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.RoleName)
         };
 
         var token = new JwtSecurityToken(
@@ -48,7 +48,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
         }
     }
 
-    public RefreshToken GenerateRefreshTokenEntity(User account)
+    public RefreshToken GenerateRefreshTokenEntity(User user)
     {
         var freshRefreshToken = this.GenerateRefreshToken();
         var freshExpiryDate = this.GetRefreshTokenExpiryData();
@@ -59,7 +59,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
             ExpiryDate = freshExpiryDate,
             IsRevoked = false,
             IsUsed = false,
-            User = account
+            User = user
         };
     }
 

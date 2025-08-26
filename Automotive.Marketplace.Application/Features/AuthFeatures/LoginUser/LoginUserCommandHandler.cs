@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Automotive.Marketplace.Application.Common.Exceptions;
-using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
@@ -17,18 +16,18 @@ public class LoginUserCommandHandler(
 {
     public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var fetchedAccount = await repository
+        var user = await repository
             .AsQueryable<User>()
-            .Where(account => account.Email == request.Email)
+            .Where(user => user.Email == request.Email)
             .FirstOrDefaultAsync(cancellationToken) ?? throw new UserNotFoundException(request.Email);
 
-        if (!passwordHasher.Verify(request.Password, fetchedAccount.HashedPassword))
+        if (!passwordHasher.Verify(request.Password, user.HashedPassword))
         {
             throw new InvalidCredentialsException();
         }
 
-        var freshAccessToken = tokenService.GenerateAccessToken(fetchedAccount);
-        var refreshTokenToAdd = tokenService.GenerateRefreshTokenEntity(fetchedAccount);
+        var freshAccessToken = tokenService.GenerateAccessToken(user);
+        var refreshTokenToAdd = tokenService.GenerateRefreshTokenEntity(user);
 
         await repository.CreateAsync(refreshTokenToAdd, cancellationToken);
 

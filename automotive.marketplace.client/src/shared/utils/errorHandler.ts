@@ -72,12 +72,12 @@ const refreshTokenAndRetry = async (
     if (!isRefreshing) {
       isRefreshing = true;
       failedQueue.push({ query, mutation, variables });
-      const { data: account } =
+      const { data: user } =
         await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
 
       store.dispatch(
         setAccessToken({
-          accessToken: account.accessToken,
+          accessToken: user.accessToken,
         }),
       );
       processFailedQueue();
