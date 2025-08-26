@@ -1,6 +1,6 @@
 ﻿using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
-using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +39,7 @@ public class AuthController(IMediator mediator) : BaseController
     }
 
     [HttpPost]
-    public async Task<ActionResult> Register(RegisterAccountCommand registerAccountRequest, CancellationToken cancellationToken)
+    public async Task<ActionResult> Register(RegisterUserCommand registerAccountRequest, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(registerAccountRequest, cancellationToken);
 

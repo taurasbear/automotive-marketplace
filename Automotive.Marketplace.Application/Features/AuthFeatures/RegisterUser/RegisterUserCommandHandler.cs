@@ -4,15 +4,15 @@ using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
 
-public class RegisterAccountCommandHandler(
+public class RegisterUserCommandHandler(
     IMapper mapper,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
-    IRepository repository) : IRequestHandler<RegisterAccountCommand, RegisterAccountResponse>
+    IRepository repository) : IRequestHandler<RegisterUserCommand, RegisterUserResponse>
 {
-    public async Task<RegisterAccountResponse> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterUserResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var account = new User
         {
@@ -28,7 +28,7 @@ public class RegisterAccountCommandHandler(
 
         await repository.CreateAsync(refreshTokenToAdd, cancellationToken);
 
-        var response = mapper.Map<RegisterAccountResponse>(refreshTokenToAdd);
+        var response = mapper.Map<RegisterUserResponse>(refreshTokenToAdd);
         response.AccessToken = freshAccessToken;
 
         return response;

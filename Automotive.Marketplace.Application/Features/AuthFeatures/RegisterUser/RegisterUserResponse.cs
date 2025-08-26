@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+﻿namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
 
-public sealed record RegisterAccountResponse
+public sealed record RegisterUserResponse
 {
     public string AccessToken { get; set; } = string.Empty;
 

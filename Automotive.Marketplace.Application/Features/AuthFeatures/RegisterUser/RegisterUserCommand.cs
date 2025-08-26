@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
 
-public sealed record RegisterAccountCommand : IRequest<RegisterAccountResponse>
+public sealed record RegisterUserCommand : IRequest<RegisterUserResponse>
 {
     public string Username { get; set; } = string.Empty;
 

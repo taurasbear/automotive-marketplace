@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRefreshToken } from "@/shared/utils/queries/auth/useRefreshToken";
-import { useRegisterAccount } from "@/shared/utils/queries/auth/useRegisterAccount";
-import { RegisterAccountCommand } from "@/shared/types/dto/auth/RegisterAccountCommand";
+import { useRegisterUser } from "@/shared/utils/queries/auth/useRegisterUser";
+import { RegisterUserCommand } from "@/shared/types/dto/auth/RegisterUserCommand";
 import { RegisterSchema } from "@/shared/constants/validation/registerSchema";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { setAccessToken, setCredentials } from "@/shared/state/authSlice";
 
 const Register = () => {
-  const { mutateAsync: registerAccountAsync } = useRegisterAccount();
+  const { mutateAsync: registerUserAsync } = useRegisterUser();
   const { mutateAsync: refreshAsync } = useRefreshToken();
 
   const dispatch = useAppDispatch();
@@ -40,13 +40,13 @@ const Register = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
-    const body: RegisterAccountCommand = {
+    const body: RegisterUserCommand = {
       username: data.username,
       email: data.email,
       password: data.password,
     };
 
-    const { data: account } = await registerAccountAsync(body);
+    const { data: account } = await registerUserAsync(body);
 
     dispatch(
       setCredentials({
