@@ -1,8 +1,8 @@
 ﻿using Automotive.Marketplace.Domain.Enums;
 
-namespace Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
+namespace Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 
-public sealed record class RefreshTokenResponse
+public sealed record LoginUserResponse
 {
     public string FreshAccessToken { get; set; } = string.Empty;
 

@@ -1,4 +1,5 @@
 ﻿using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Domain.Constants;
 using Automotive.Marketplace.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -13,17 +14,25 @@ public class TokenService(IConfiguration configuration) : ITokenService
 {
     private readonly IConfiguration configuration = configuration;
 
-    public string GenerateAccessToken(Account account)
+    public string GenerateAccessToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, account.Email),
-            new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-            new Claim(ClaimTypes.Role, account.RoleName)
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
+
+        var userPermissions = user.UserPermissions
+            .Select(userPermission => userPermission.Permission)
+            .ToList();
+
+        foreach (var permission in userPermissions)
+        {
+            claims.Add(new Claim(CustomClaimType.Permissions, permission.ToString()));
+        }
 
         var token = new JwtSecurityToken(
             issuer: this.configuration["Jwt:Issuer"],
@@ -48,7 +57,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
         }
     }
 
-    public RefreshToken GenerateRefreshTokenEntity(Account account)
+    public RefreshToken GenerateRefreshTokenEntity(User user)
     {
         var freshRefreshToken = this.GenerateRefreshToken();
         var freshExpiryDate = this.GetRefreshTokenExpiryData();
@@ -59,7 +68,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
             ExpiryDate = freshExpiryDate,
             IsRevoked = false,
             IsUsed = false,
-            Account = account
+            User = user
         };
     }
 

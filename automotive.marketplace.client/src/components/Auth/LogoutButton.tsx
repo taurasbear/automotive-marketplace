@@ -1,14 +1,14 @@
-import { useLogoutAccount } from "@/shared/utils/queries/auth/useLogoutAccount";
+import { useLogoutUser } from "@/shared/utils/queries/auth/useLogoutUser";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { clearCredentials } from "@/shared/state/authSlice";
 
 const LogoutButton = () => {
   const dispatch = useAppDispatch();
-  const { mutateAsync: logoutAsync } = useLogoutAccount();
+  const { mutateAsync: logoutUserAsync } = useLogoutUser();
 
   const handleLogout = async () => {
-    await logoutAsync();
+    await logoutUserAsync();
     dispatch(clearCredentials());
   };
 

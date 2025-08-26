@@ -4,11 +4,11 @@ namespace Automotive.Marketplace.Application.Interfaces.Services;
 
 public interface ITokenService
 {
-    public string GenerateAccessToken(Account account);
+    public string GenerateAccessToken(User user);
 
     public string GenerateRefreshToken();
 
-    public RefreshToken GenerateRefreshTokenEntity(Account account);
+    public RefreshToken GenerateRefreshTokenEntity(User user);
 
     public DateTime GetRefreshTokenExpiryData();
 }

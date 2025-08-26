@@ -11,6 +11,11 @@ public class BaseController : ControllerBase
     {
         get
         {
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return Guid.Empty;
+            }
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return string.IsNullOrWhiteSpace(userId) ? Guid.Empty : Guid.Parse(userId);
         }

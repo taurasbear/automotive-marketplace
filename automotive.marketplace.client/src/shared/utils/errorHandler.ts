@@ -1,7 +1,7 @@
 import axiosClient from "@/api/axiosClient";
 import { Mutation, Query } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { clearCredentials, setAccessToken } from "../state/authSlice";
+import { clearCredentials, setCredentials } from "../state/authSlice";
 import { store } from "../state/store";
 import { RefreshTokenResponse } from "../types/dto/auth/RefreshTokenResponse";
 import { toast } from "sonner";
@@ -72,12 +72,15 @@ const refreshTokenAndRetry = async (
     if (!isRefreshing) {
       isRefreshing = true;
       failedQueue.push({ query, mutation, variables });
-      const { data: account } =
+      const { data: user } =
         await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
 
+      console.log("user: ", user);
       store.dispatch(
-        setAccessToken({
-          accessToken: account.accessToken,
+        setCredentials({
+          accessToken: user.accessToken,
+          userId: user.userId,
+          permissions: user.permissions,
         }),
       );
       processFailedQueue();

@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Domain.Entities;
+﻿using Automotive.Marketplace.Domain.Enums;
 
-using Automotive.Marketplace.Domain.Enums;
+namespace Automotive.Marketplace.Domain.Entities;
 
 public class Car : BaseEntity
 {

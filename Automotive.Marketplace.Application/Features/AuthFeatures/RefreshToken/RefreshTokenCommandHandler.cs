@@ -29,17 +29,18 @@ public class RefreshTokenCommandHandler(
             throw new InvalidRefreshTokenException();
         }
 
-        var fetchedAccount = await repository.GetByIdAsync<Account>(currentRefreshToken.AccountId, cancellationToken)
-            ?? throw new AccountNotFoundException(currentRefreshToken.AccountId);
+        var user = await repository.GetByIdAsync<User>(currentRefreshToken.UserId, cancellationToken)
+            ?? throw new UserNotFoundException(currentRefreshToken.UserId);
 
         currentRefreshToken.IsRevoked = true;
 
-        var freshAccessToken = tokenService.GenerateAccessToken(fetchedAccount);
-        var freshRefreshToken = tokenService.GenerateRefreshTokenEntity(fetchedAccount);
+        var freshAccessToken = tokenService.GenerateAccessToken(user);
+        var freshRefreshToken = tokenService.GenerateRefreshTokenEntity(user);
 
         await repository.CreateAsync(freshRefreshToken, cancellationToken);
 
         var response = mapper.Map<RefreshTokenResponse>(freshRefreshToken);
+        response.Permissions = [.. user.UserPermissions.Select(userPermission => userPermission.Permission)];
         response.FreshAccessToken = freshAccessToken;
 
         return response;

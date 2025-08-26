@@ -1,6 +1,8 @@
-﻿using Automotive.Marketplace.Application.Features.AuthFeatures.AuthenticateAccount;
+﻿using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
+using Automotive.Marketplace.Application.Features.AuthFeatures.LogoutUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
-using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterAccount;
+using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
+using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +12,7 @@ public class AuthController(IMediator mediator) : BaseController
 {
     [HttpPost]
     public async Task<ActionResult> Login(
-        [FromBody] AuthenticateAccountCommand authenticateAccountRequest,
+        [FromBody] LoginUserCommand command,
         CancellationToken cancellationToken)
     {
         if (User.Identity?.IsAuthenticated == true)
@@ -18,7 +20,7 @@ public class AuthController(IMediator mediator) : BaseController
             return Ok();
         }
 
-        var response = await mediator.Send(authenticateAccountRequest, cancellationToken);
+        var response = await mediator.Send(command, cancellationToken);
 
         var cookieOptions = new CookieOptions
         {
@@ -33,15 +35,15 @@ public class AuthController(IMediator mediator) : BaseController
         return Ok(new
         {
             AccessToken = response.FreshAccessToken,
-            AccountId = response.AccountId,
-            Role = response.RoleName
+            UserId = response.UserId,
+            Permissions = response.Permissions,
         });
     }
 
     [HttpPost]
-    public async Task<ActionResult> Register(RegisterAccountCommand registerAccountRequest, CancellationToken cancellationToken)
+    public async Task<ActionResult> Register(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(registerAccountRequest, cancellationToken);
+        var response = await mediator.Send(command, cancellationToken);
 
         var cookieOptions = new CookieOptions
         {
@@ -56,8 +58,7 @@ public class AuthController(IMediator mediator) : BaseController
         return Ok(new
         {
             AccessToken = response.AccessToken,
-            AccountId = response.AccountId,
-            Role = response.RoleName
+            UserId = response.UserId,
         });
     }
 
@@ -84,7 +85,9 @@ public class AuthController(IMediator mediator) : BaseController
 
         return Ok(new
         {
-            AccessToken = response.FreshAccessToken
+            AccessToken = response.FreshAccessToken,
+            UserId = response.UserId,
+            Permissions = response.Permissions,
         });
     }
 
@@ -94,7 +97,7 @@ public class AuthController(IMediator mediator) : BaseController
         var refreshToken = Request.Cookies["refreshToken"];
         if (!string.IsNullOrWhiteSpace(refreshToken))
         {
-            var command = new LogoutAccountCommand { RefreshToken = refreshToken };
+            var command = new LogoutUserCommand { RefreshToken = refreshToken };
             await mediator.Send(command, cancellationToken);
         }
 

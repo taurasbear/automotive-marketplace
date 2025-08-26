@@ -16,9 +16,9 @@ public class Listing : BaseEntity
 
     public Guid SellerId { get; set; }
 
-    public virtual Seller Seller { get; set; } = null!;
+    public virtual User Seller { get; set; } = null!;
 
     public virtual ICollection<Image> Images { get; set; } = [];
 
-    public virtual ICollection<Client> LikeClients { get; set; } = [];
+    public virtual ICollection<User> LikeUsers { get; set; } = [];
 }
