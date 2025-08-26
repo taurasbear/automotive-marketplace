@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { getSearchParamFromValue } from "@/shared/utils/listing/listingSearchUtils";
+import { getSearchParamFromValue } from "@/features/listing/utils/listingSearchUtils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import LocationCombobox from "./LocationCombobox";

@@ -3,9 +3,12 @@ import { router } from "@/lib/router";
 import { Mutation, Query } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
-import { clearCredentials, setCredentials } from "../state/authSlice";
+import {
+  clearCredentials,
+  setCredentials,
+} from "../../features/auth/state/authSlice";
+import { RefreshTokenResponse } from "../../features/auth/types/RefreshTokenResponse";
 import { store } from "../state/store";
-import { RefreshTokenResponse } from "../types/dto/auth/RefreshTokenResponse";
 
 let isRedirecting = false;
 let isRefreshing = false;

@@ -1,6 +1,6 @@
+import { useLogoutUser } from "@/features/auth/api/useLogoutUser";
+import { clearCredentials } from "@/features/auth/state/authSlice";
 import { useAppDispatch } from "@/shared/hooks/redux";
-import { clearCredentials } from "@/shared/state/authSlice";
-import { useLogoutUser } from "@/shared/utils/queries/auth/useLogoutUser";
 import { Button } from "../ui/button";
 
 const LogoutButton = () => {

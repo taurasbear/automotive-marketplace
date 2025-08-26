@@ -1,8 +1,8 @@
-import { RegisterUserCommand } from "@/shared/types/dto/auth/RegisterUserCommand";
-import { useMutation } from "@tanstack/react-query";
 import axiosClient from "@/api/axiosClient";
+import { RegisterUserCommand } from "@/features/auth/types/RegisterUserCommand";
+import { RegisterUserResponse } from "@/features/auth/types/RegisterUserResponse";
 import { ENDPOINTS } from "@/shared/constants/endpoints";
-import { RegisterUserResponse } from "@/shared/types/dto/auth/RegisterUserResponse";
+import { useMutation } from "@tanstack/react-query";
 
 const registerUser = (body: RegisterUserCommand) =>
   axiosClient.post<RegisterUserResponse>(ENDPOINTS.AUTH.REGISTER, body);

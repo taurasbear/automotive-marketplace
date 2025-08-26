@@ -1,10 +1,10 @@
 import axiosClient from "@/api/axiosClient";
+import { GetAllListingsQuery } from "@/features/listing/types/GetAllListingsQuery";
+import { GetAllListingsResponse } from "@/features/listing/types/GetAllListingsResponse";
 import { ENDPOINTS } from "@/shared/constants/endpoints";
 import { queryOptions } from "@tanstack/react-query";
-import { listingKeys } from "./listingKeys";
-import { GetAllListingsResponse } from "@/shared/types/dto/listing/GetAllListingsResponse";
 import { AxiosResponse } from "axios";
-import { GetAllListingsQuery } from "@/shared/types/dto/listing/GetAllListingsQuery";
+import { listingKeys } from "./listingKeys";
 
 const getAllListings = (
   query: GetAllListingsQuery,

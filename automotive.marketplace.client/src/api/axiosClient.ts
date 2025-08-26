@@ -1,4 +1,4 @@
-import { selectAccessToken } from "@/shared/state/authSlice";
+import { selectAccessToken } from "@/features/auth/state/authSlice";
 import { store } from "@/shared/state/store";
 import axios from "axios";
 

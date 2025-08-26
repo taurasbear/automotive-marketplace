@@ -1,4 +1,4 @@
-import { GetAllListingsQuery } from "@/shared/types/dto/listing/GetAllListingsQuery";
+import { GetAllListingsQuery } from "@/features/listing/types/GetAllListingsQuery";
 
 export const listingKeys = {
   all: () => ["listing"],
