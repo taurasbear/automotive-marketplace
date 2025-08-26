@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { getSearchParamFromValue } from "@/shared/utils/listing/listingSearchUtils";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import LocationCombobox from "./LocationCombobox";
 import MakeSelect from "./MakeSelect";
@@ -5,9 +8,6 @@ import ModelSelect from "./ModelSelect";
 import PriceSelect from "./PriceSelect";
 import UsedSelect from "./UsedSelect";
 import YearSelect from "./YearSelect";
-import { Button } from "@/components/ui/button";
-import { getSearchParamFromValue } from "@/shared/utils/listing/listingSearchUtils";
-import { Link } from "@tanstack/react-router";
 
 export type SearchParams = {
   makeId?: string;

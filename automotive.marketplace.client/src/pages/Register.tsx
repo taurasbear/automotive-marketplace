@@ -1,6 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,12 +9,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRefreshToken } from "@/shared/utils/queries/auth/useRefreshToken";
-import { useRegisterUser } from "@/shared/utils/queries/auth/useRegisterUser";
-import { RegisterUserCommand } from "@/shared/types/dto/auth/RegisterUserCommand";
 import { RegisterSchema } from "@/shared/constants/validation/registerSchema";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { setAccessToken, setCredentials } from "@/shared/state/authSlice";
+import { RegisterUserCommand } from "@/shared/types/dto/auth/RegisterUserCommand";
+import { useRefreshToken } from "@/shared/utils/queries/auth/useRefreshToken";
+import { useRegisterUser } from "@/shared/utils/queries/auth/useRegisterUser";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const Register = () => {
   const { mutateAsync: registerUserAsync } = useRegisterUser();
@@ -62,7 +62,7 @@ const Register = () => {
       <h2 className="mb-6 text-2xl font-bold">Register</h2>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={void form.handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-6"
         >
           <FormField
@@ -94,7 +94,7 @@ const Register = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>We'll never share your email.</FormDescription>
+                <FormDescription>{`We'll never share your email.`}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -118,7 +118,7 @@ const Register = () => {
           </Button>
         </form>
       </Form>
-      <Button className="m-4" onClick={handleOnRefreshToken}>
+      <Button className="m-4" onClick={void handleOnRefreshToken}>
         Refresh token(temporary)
       </Button>
     </div>

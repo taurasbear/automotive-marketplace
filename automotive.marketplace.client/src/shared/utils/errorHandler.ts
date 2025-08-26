@@ -1,11 +1,11 @@
 import axiosClient from "@/api/axiosClient";
+import { router } from "@/lib/router";
 import { Mutation, Query } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "sonner";
 import { clearCredentials, setCredentials } from "../state/authSlice";
 import { store } from "../state/store";
 import { RefreshTokenResponse } from "../types/dto/auth/RefreshTokenResponse";
-import { toast } from "sonner";
-import { router } from "@/lib/router";
 
 let isRedirecting = false;
 let isRefreshing = false;
@@ -15,7 +15,7 @@ let failedQueue: {
   variables?: unknown;
 }[] = [];
 
-const handleAxiosError = (
+const handleAxiosError = async (
   error: AxiosError,
   query?: Query,
   mutation?: Mutation<unknown, unknown, unknown, unknown>,
@@ -29,36 +29,38 @@ const handleAxiosError = (
   const { status } = axiosError.response;
 
   if (status === 401) {
-    if (mutation) refreshTokenAndRetry(undefined, mutation, variables);
-    else refreshTokenAndRetry(query);
+    if (mutation) await refreshTokenAndRetry(undefined, mutation, variables);
+    else await refreshTokenAndRetry(query);
   } else console.error(axiosError.message);
 };
 
-export const handleQueryError = (
+export const handleQueryError = async (
   error: Error,
   query: Query<unknown, unknown, unknown, readonly unknown[]>,
 ) => {
-  handleAxiosError(error as AxiosError, query as Query);
+  await handleAxiosError(error as AxiosError, query as Query);
 };
 
-export const handleMutationError = (
+export const handleMutationError = async (
   error: Error,
   variables: unknown,
   _context: unknown,
   mutation: Mutation<unknown, unknown, unknown, unknown>,
 ) => {
-  handleAxiosError(error as AxiosError, undefined, mutation, variables);
+  await handleAxiosError(error as AxiosError, undefined, mutation, variables);
 };
 
-const processFailedQueue = () => {
-  failedQueue.forEach(({ query, mutation, variables }) => {
+const processFailedQueue = async () => {
+  const promises = failedQueue.map(async ({ query, mutation, variables }) => {
     if (mutation) {
       const { options } = mutation;
       mutation.setOptions({ ...options });
-      mutation.execute(variables);
+      await mutation.execute(variables);
     }
-    if (query) query.fetch();
+    if (query) await query.fetch();
   });
+
+  await Promise.all(promises);
   isRefreshing = false;
   failedQueue = [];
 };
@@ -75,7 +77,6 @@ const refreshTokenAndRetry = async (
       const { data: user } =
         await axiosClient.post<RefreshTokenResponse>("/auth/refresh");
 
-      console.log("user: ", user);
       store.dispatch(
         setCredentials({
           accessToken: user.accessToken,
@@ -83,7 +84,7 @@ const refreshTokenAndRetry = async (
           permissions: user.permissions,
         }),
       );
-      processFailedQueue();
+      await processFailedQueue();
     } else {
       failedQueue.push({ query, mutation, variables });
     }
@@ -93,7 +94,7 @@ const refreshTokenAndRetry = async (
     if (!isRedirecting) {
       isRedirecting = true;
       toast.error("Session has ended");
-      router.navigate({ to: "/login" });
+      await router.navigate({ to: "/login" });
     }
   }
 };
