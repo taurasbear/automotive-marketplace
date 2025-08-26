@@ -1,7 +1,7 @@
-import { useLogoutUser } from "@/shared/utils/queries/auth/useLogoutUser";
-import { Button } from "../ui/button";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { clearCredentials } from "@/shared/state/authSlice";
+import { useLogoutUser } from "@/shared/utils/queries/auth/useLogoutUser";
+import { Button } from "../ui/button";
 
 const LogoutButton = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button variant="secondary" onClick={async () => handleLogout()}>
+    <Button variant="secondary" onClick={() => void handleLogout()}>
       Logout
     </Button>
   );

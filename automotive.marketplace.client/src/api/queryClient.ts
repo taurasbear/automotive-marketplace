@@ -14,7 +14,7 @@ const queryClient = new QueryClient({
   },
 
   queryCache: new QueryCache({
-    onError: handleQueryError,
+    onError: void handleQueryError,
   }),
 
   mutationCache: new MutationCache({
@@ -25,10 +25,10 @@ const queryClient = new QueryClient({
       }
     },
     onError: handleMutationError,
-    onSettled: (_data, _error, _variables, _context, mutation) => {
+    onSettled: async (_data, _error, _variables, _context, mutation) => {
       const queryToInvalidate = mutation.meta?.invalidatesQuery;
       if (queryToInvalidate) {
-        queryClient.invalidateQueries({ queryKey: queryToInvalidate });
+        await queryClient.invalidateQueries({ queryKey: queryToInvalidate });
       }
     },
   }),

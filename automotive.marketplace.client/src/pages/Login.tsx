@@ -51,7 +51,7 @@ const Login = () => {
       <h2 className="mb-6 text-2xl font-bold">Login</h2>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={void form.handleSubmit(onSubmit)}
           className="w-full max-w-md space-y-6"
         >
           <FormField
