@@ -69,8 +69,24 @@ public static class ModelBuilderExtensions
             }
         );
 
-        modelBuilder.Entity<Seller>().HasData(
-            new Seller { Id = Guid.Parse("99999999-9999-9999-9999-999999999999"), FirstName = "Ben" }
+        modelBuilder.Entity<User>().HasData(
+            new User { Id = Guid.Parse("99999999-9999-9999-9999-999999999999"), Username = "Ben" },
+            new User
+            {
+                Id = Guid.Parse("0198e34c-81ad-7498-9828-5d8c530a994a"),
+                Username = "taurasbear",
+                Email = "bear@gmail.com",
+                HashedPassword = "$2a$11$0gIGetjT4PZ8bfGrXUrwoOImxqNeLM9m.0NR9EEu2mc1UcJocRxQ6",
+            }
+        );
+
+        modelBuilder.Entity<UserPermission>().HasData(
+            new UserPermission
+            {
+                Id = Guid.Parse("99999999-9299-9999-9999-999999999999"),
+                Permission = Permission.ViewListings,
+                UserId = Guid.Parse("0198e34c-81ad-7498-9828-5d8c530a994a")
+            }
         );
 
         modelBuilder.Entity<Listing>().HasData(

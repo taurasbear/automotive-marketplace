@@ -13,7 +13,9 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<Listing> Listings { get; set; }
 
-    public DbSet<User> Accounts { get; set; }
+    public DbSet<User> Users { get; set; }
+
+    public DbSet<UserPermission> UserPermissions { get; set; }
 
     public DbSet<Make> Makes { get; set; }
 
@@ -73,6 +75,11 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
             .HasOne(refreshToken => refreshToken.User)
             .WithMany()
             .HasForeignKey(refreshToken => refreshToken.UserId);
+
+        modelBuilder.Entity<UserPermission>()
+            .HasOne(userPermission => userPermission.User)
+            .WithMany(user => user.UserPermissions)
+            .HasForeignKey(userPermission => userPermission.UserId);
 
         modelBuilder.Seed();
     }
