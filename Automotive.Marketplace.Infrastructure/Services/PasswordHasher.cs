@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Infrastructure.Services;
+﻿using Automotive.Marketplace.Application.Interfaces.Services;
 
-using Automotive.Marketplace.Application.Interfaces.Services;
+namespace Automotive.Marketplace.Infrastructure.Services;
 
 public class PasswordHasher : IPasswordHasher
 {

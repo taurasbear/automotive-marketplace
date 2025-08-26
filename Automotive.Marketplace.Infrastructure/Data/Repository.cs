@@ -1,8 +1,8 @@
 ﻿using Automotive.Marketplace.Domain.Entities;
-using Automotive.Marketplace.Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 
 namespace Automotive.Marketplace.Infrastructure.Data;
 

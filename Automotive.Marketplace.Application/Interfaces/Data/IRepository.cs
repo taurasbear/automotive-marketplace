@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Interfaces.Data;
+﻿using Automotive.Marketplace.Domain.Entities;
 
-using Automotive.Marketplace.Domain.Entities;
+namespace Automotive.Marketplace.Application.Interfaces.Data;
 
 public interface IRepository
 {

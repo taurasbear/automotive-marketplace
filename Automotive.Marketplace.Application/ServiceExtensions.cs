@@ -1,8 +1,8 @@
-﻿namespace Automotive.Marketplace.Application;
-
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+
+namespace Automotive.Marketplace.Application;
 
 public static class ServiceExtensions
 {

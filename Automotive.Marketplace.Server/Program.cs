@@ -1,6 +1,6 @@
 using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
-using Automotive.Marketplace.Infrastructure.Data.DbContext;
+using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

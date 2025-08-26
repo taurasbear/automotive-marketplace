@@ -1,8 +1,8 @@
-﻿namespace Automotive.Marketplace.Infrastructure.Data.DbContext;
-
-using Automotive.Marketplace.Domain.Entities;
+﻿using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+
+namespace Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 
 public static class ModelBuilderExtensions
 {
