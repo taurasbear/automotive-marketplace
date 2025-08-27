@@ -1,9 +1,6 @@
-import {
-  handleMutationError,
-  handleQueryError,
-} from "@/shared/utils/errorHandler";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { handleMutationError, handleQueryError } from "./authInterceptor";
 
 const queryClient = new QueryClient({
   defaultOptions: {

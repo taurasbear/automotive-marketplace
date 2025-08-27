@@ -1,9 +1,9 @@
 import { ENDPOINTS } from "@/constants/endpoints";
-import { GetModelsByMakeIdQuery } from "@/features/search/types/GetModelsByMakeIdQuery";
-import { GetModelsByMakeIdResponse } from "@/features/search/types/GetModelsByMakeIdResponse";
 import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import { GetModelsByMakeIdQuery } from "../types/GetModelsByMakeIdQuery";
+import { GetModelsByMakeIdResponse } from "../types/GetModelsByMakeIdResponse";
 import { modelKeys } from "./modelKeys";
 
 const getModelsByMakeId = (

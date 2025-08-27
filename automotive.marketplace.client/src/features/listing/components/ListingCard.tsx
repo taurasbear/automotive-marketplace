@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import ListingCardBadge from "@/features/listing/components/ListingCardBadge";
-import { GetAllListingsResponse } from "@/features/listing/types/GetAllListingsResponse";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { PiEngine } from "react-icons/pi";
 import { TbManualGearbox } from "react-icons/tb";
+import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
+import ListingCardBadge from "./ListingCardBadge";
 
 interface ListingCardProps {
   listing: GetAllListingsResponse;

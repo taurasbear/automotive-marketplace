@@ -8,11 +8,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLoginUser } from "@/features/auth/api/useLoginUser";
+import { LoginUserCommand, useLoginUser } from "@/features/auth";
 import { LoginSchema } from "@/features/auth/schemas/loginSchema";
 import { setCredentials } from "@/features/auth/state/authSlice";
-import { LoginUserCommand } from "@/features/auth/types/LoginUserCommand";
-import { useAppDispatch } from "@/shared/hooks/redux";
+import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

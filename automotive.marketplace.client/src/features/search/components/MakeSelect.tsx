@@ -7,8 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getAllMakesOptions } from "@/features/search/api/getAllMakesOptions";
 import { useQuery } from "@tanstack/react-query";
+import { getAllMakesOptions } from "../api/getAllMakesOptions";
 
 type MakeSelectProps = {
   onValueChange: (value: string) => void;

@@ -1,5 +1,5 @@
 import { CarConditionKey } from "@/constants/carConditions";
-import { SearchParams } from "@/features/search/components/ListingSearch";
+import { SearchParams } from "@/features/search";
 
 export const getSearchParamFromValue = <K extends keyof SearchParams>(
   key: K,

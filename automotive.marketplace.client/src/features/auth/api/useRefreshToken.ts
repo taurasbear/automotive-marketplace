@@ -1,7 +1,7 @@
 import { ENDPOINTS } from "@/constants/endpoints";
-import { RefreshTokenResponse } from "@/features/auth/types/RefreshTokenResponse";
 import axiosClient from "@/lib/axios/axiosClient";
 import { useMutation } from "@tanstack/react-query";
+import { RefreshTokenResponse } from "../types/RefreshTokenResponse";
 
 const refreshToken = () =>
   axiosClient.post<RefreshTokenResponse>(ENDPOINTS.AUTH.REFRESH);

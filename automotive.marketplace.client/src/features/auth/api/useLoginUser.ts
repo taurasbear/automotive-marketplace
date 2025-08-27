@@ -1,8 +1,8 @@
 import { ENDPOINTS } from "@/constants/endpoints";
-import { LoginUserCommand } from "@/features/auth/types/LoginUserCommand";
-import { LoginUserResponse } from "@/features/auth/types/LoginUserResponse";
 import axiosClient from "@/lib/axios/axiosClient";
 import { useMutation } from "@tanstack/react-query";
+import { LoginUserCommand } from "../types/LoginUserCommand";
+import { LoginUserResponse } from "../types/LoginUserResponse";
 
 const loginUser = (body: LoginUserCommand) =>
   axiosClient.post<LoginUserResponse>(ENDPOINTS.AUTH.LOGIN, body);

@@ -1,6 +1,6 @@
-import { Toaster } from "./components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { router } from "@/lib/router";
 import { RouterProvider } from "@tanstack/react-router";
-import { router } from "./lib/router";
 
 function App() {
   return (

@@ -9,15 +9,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRefreshToken } from "@/features/auth/api/useRefreshToken";
-import { useRegisterUser } from "@/features/auth/api/useRegisterUser";
+import {
+  RegisterUserCommand,
+  useRefreshToken,
+  useRegisterUser,
+} from "@/features/auth";
 import { RegisterSchema } from "@/features/auth/schemas/registerSchema";
 import {
   setAccessToken,
   setCredentials,
 } from "@/features/auth/state/authSlice";
-import { RegisterUserCommand } from "@/features/auth/types/RegisterUserCommand";
-import { useAppDispatch } from "@/shared/hooks/redux";
+import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

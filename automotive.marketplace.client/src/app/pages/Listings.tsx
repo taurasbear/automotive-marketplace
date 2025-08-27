@@ -1,6 +1,5 @@
 import { Route } from "@/app/routes/listings";
-import { getAllListingsOptions } from "@/features/listing/api/getAllListingsOptions";
-import ListingCard from "@/features/listing/components/ListingCard";
+import { getAllListingsOptions, ListingCard } from "@/features/listing";
 import { useQuery } from "@tanstack/react-query";
 
 const Listings = () => {

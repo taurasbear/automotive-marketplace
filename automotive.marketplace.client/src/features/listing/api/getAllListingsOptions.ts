@@ -1,9 +1,9 @@
 import { ENDPOINTS } from "@/constants/endpoints";
-import { GetAllListingsQuery } from "@/features/listing/types/GetAllListingsQuery";
-import { GetAllListingsResponse } from "@/features/listing/types/GetAllListingsResponse";
 import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import { GetAllListingsQuery } from "../types/GetAllListingsQuery";
+import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
 import { listingKeys } from "./listingKeys";
 
 const getAllListings = (

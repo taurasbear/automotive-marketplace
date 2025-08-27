@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import importPlugin from "eslint-plugin-import";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -28,14 +29,37 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       react: react,
+      import: importPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs["jsx-runtime"].rules,
+      "import/no-cycle": "error",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
+      ],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "@/features/*/api/*",
+                "@/features/*/components/*",
+                "@/features/*/types/*",
+              ],
+              message:
+                "Import from feature barrel files (index.ts) instead of internal modules.",
+            },
+            {
+              group: ["@/features/*/!(index)"],
+              message:
+                "Import from feature barrel files (index.ts) instead of internal modules.",
+            },
+          ],
+        },
       ],
     },
   },
