@@ -12,11 +12,9 @@ namespace Automotive.Marketplace.Infrastructure.Services;
 
 public class TokenService(IConfiguration configuration) : ITokenService
 {
-    private readonly IConfiguration configuration = configuration;
-
     public string GenerateAccessToken(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]!));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
@@ -35,11 +33,11 @@ public class TokenService(IConfiguration configuration) : ITokenService
         }
 
         var token = new JwtSecurityToken(
-            issuer: this.configuration["Jwt:Issuer"],
-            audience: this.configuration["Jwt:Audience"],
+            issuer: configuration["Jwt:Issuer"],
+            audience: configuration["Jwt:Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(
-                Convert.ToDouble(this.configuration["Jwt:AccessTokenExpirationMinutes"])
+                Convert.ToDouble(configuration["Jwt:AccessTokenExpirationMinutes"])
                 ),
             signingCredentials: creds
         );
@@ -59,8 +57,8 @@ public class TokenService(IConfiguration configuration) : ITokenService
 
     public RefreshToken GenerateRefreshTokenEntity(User user)
     {
-        var freshRefreshToken = this.GenerateRefreshToken();
-        var freshExpiryDate = this.GetRefreshTokenExpiryData();
+        var freshRefreshToken = GenerateRefreshToken();
+        var freshExpiryDate = GetRefreshTokenExpiryData();
 
         return new RefreshToken
         {
@@ -75,6 +73,6 @@ public class TokenService(IConfiguration configuration) : ITokenService
     public DateTime GetRefreshTokenExpiryData()
     {
         return DateTime.UtcNow
-            .AddDays(Convert.ToDouble(this.configuration["Jwt:RefreshTokenExpirationDays"]));
+            .AddDays(Convert.ToDouble(configuration["Jwt:RefreshTokenExpirationDays"]));
     }
 }
