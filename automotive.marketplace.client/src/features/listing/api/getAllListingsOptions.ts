@@ -1,9 +1,9 @@
+import { listingKeys } from "@/api/queryKeys/listingKeys";
 import { ENDPOINTS } from "@/constants/endpoints";
 import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
 import { GetAllListingsQuery } from "../types/GetAllListingsQuery";
 import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
-import { listingKeys } from "./listingKeys";
 
 const getAllListings = (query: GetAllListingsQuery) =>
   axiosClient.get<GetAllListingsResponse[]>(ENDPOINTS.LISTING.GET_ALL, {
