@@ -25,6 +25,12 @@ public class CarBuilder
             .RuleFor(car => car.DoorCount, faker => faker.Random.Int(1, 8));
     }
 
+    public CarBuilder WithYear(DateTime year)
+    {
+        _faker.RuleFor(car => car.Year, year);
+        return this;
+    }
+
     public CarBuilder WithModel(Guid modelId)
     {
         _faker.RuleFor(car => car.ModelId, modelId);

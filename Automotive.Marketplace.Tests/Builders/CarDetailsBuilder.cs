@@ -22,6 +22,12 @@ public class CarDetailsBuilder
             .RuleFor(carDetails => carDetails.EngineSize, faker => faker.Random.Int(800, 3000));
     }
 
+    public CarDetailsBuilder WithUsed(bool isUsed)
+    {
+        _faker.RuleFor(carDetails => carDetails.Used, isUsed);
+        return this;
+    }
+
     public CarDetailsBuilder WithCar(Guid carId)
     {
         _faker.RuleFor(car => car.CarId, carId);

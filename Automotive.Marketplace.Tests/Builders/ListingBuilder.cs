@@ -18,6 +18,12 @@ public class ListingBuilder
             .RuleFor(listing => listing.Status, Status.Available);
     }
 
+    public ListingBuilder WithPrice(decimal price)
+    {
+        _faker.RuleFor(listing => listing.Price, price);
+        return this;
+    }
+
     public ListingBuilder WithCarDetails(Guid carDetailsId)
     {
         _faker.RuleFor(listing => listing.CarDetailsId, carDetailsId);
