@@ -2,7 +2,6 @@
 using Automotive.Marketplace.Application.Features.AuthFeatures.LogoutUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
-using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

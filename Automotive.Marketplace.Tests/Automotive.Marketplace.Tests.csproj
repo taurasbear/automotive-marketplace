@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.3" />
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +18,9 @@
     <PackageReference Include="FluentAssertions" Version="8.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Respawn" Version="6.2.1" />
+    <PackageReference Include="Testcontainers.PostgreSql" Version="4.6.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -26,6 +30,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Automotive.Marketplace.Application\Automotive.Marketplace.Application.csproj" />
+    <ProjectReference Include="..\Automotive.Marketplace.Infrastructre\Automotive.Marketplace.Infrastructure.csproj" />
+    <ProjectReference Include="..\Automotive.Marketplace.Domain\Automotive.Marketplace.Domain.csproj" />
+    <ProjectReference Include="..\Automotive.Marketplace.Server\Automotive.Marketplace.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>
