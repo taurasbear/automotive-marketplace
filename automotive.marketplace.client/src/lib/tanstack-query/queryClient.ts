@@ -1,6 +1,5 @@
-import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { handleMutationError, handleQueryError } from "./authInterceptor";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -10,10 +9,6 @@ const queryClient = new QueryClient({
     },
   },
 
-  queryCache: new QueryCache({
-    onError: (error, query) => void handleQueryError(error, query),
-  }),
-
   mutationCache: new MutationCache({
     onSuccess: (_data, _variables, _context, mutation) => {
       const successMessage = mutation.meta?.successMessage;
@@ -21,7 +16,6 @@ const queryClient = new QueryClient({
         toast.success(successMessage);
       }
     },
-    onError: handleMutationError,
     onSettled: async (_data, _error, _variables, _context, mutation) => {
       const queryToInvalidate = mutation.meta?.invalidatesQuery;
       if (queryToInvalidate) {
