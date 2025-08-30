@@ -1,4 +1,4 @@
-import { selectAccessToken } from "@/features/auth/state/authSlice";
+import { selectAccessToken } from "@/features/auth";
 import { store } from "@/lib/redux/store";
 import axios, { AxiosError } from "axios";
 import { handleAxiosError } from "./axiosErrorHandler";

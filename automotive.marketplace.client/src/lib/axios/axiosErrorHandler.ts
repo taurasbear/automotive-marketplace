@@ -1,14 +1,14 @@
 import { ENDPOINTS } from "@/constants/endpoints";
+import {
+  clearCredentials,
+  RefreshTokenResponse,
+  setCredentials,
+} from "@/features/auth";
 import axiosClient from "@/lib/axios/axiosClient";
 import { store } from "@/lib/redux/store";
 import { router } from "@/lib/router";
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { toast } from "sonner";
-import {
-  clearCredentials,
-  setCredentials,
-} from "../../features/auth/state/authSlice";
-import { RefreshTokenResponse } from "../../features/auth/types/RefreshTokenResponse";
 import { authClient } from "./authClient";
 
 let isRedirecting = false;

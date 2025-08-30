@@ -1,4 +1,4 @@
-import { GetAllListingsQuery } from "../../features/listing/types/GetAllListingsQuery";
+import { GetAllListingsQuery } from "@/features/listing";
 
 export const listingKeys = {
   all: () => ["listing"],
