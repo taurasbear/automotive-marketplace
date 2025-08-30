@@ -21,7 +21,7 @@ const ModelSelect = ({ selectedMake, onValueChange }: ModelSelectProps) => {
     enabled: selectedMake !== undefined,
   });
 
-  const models = modelsQuery?.data;
+  const models = modelsQuery?.data || [];
 
   return (
     <div>
@@ -33,7 +33,7 @@ const ModelSelect = ({ selectedMake, onValueChange }: ModelSelectProps) => {
           <SelectGroup>
             <SelectLabel>Models</SelectLabel>
             <SelectItem value="all">All models</SelectItem>
-            {models?.map((model) => (
+            {models.map((model) => (
               <SelectItem key={model.id} value={model.id}>
                 {model.name}
               </SelectItem>
