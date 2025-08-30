@@ -71,22 +71,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasIndex("ModelId");
 
                     b.ToTable("Cars");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            BodyType = 0,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            DoorCount = 0,
-                            Drivetrain = 1,
-                            Fuel = 0,
-                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            ModifiedBy = "",
-                            Transmission = 0,
-                            Year = new DateTime(2002, 4, 13, 0, 0, 0, 0, DateTimeKind.Utc)
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.CarDetails", b =>
@@ -140,38 +124,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("CarsDetails");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CarId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            Colour = "",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            EngineSize = 1300,
-                            IsSteeringWheelRight = false,
-                            Mileage = 26700,
-                            ModifiedBy = "",
-                            Power = 97,
-                            Used = true,
-                            Vin = ""
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666666"),
-                            CarId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            Colour = "",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            EngineSize = 1400,
-                            IsSteeringWheelRight = false,
-                            Mileage = 200000,
-                            ModifiedBy = "",
-                            Power = 102,
-                            Used = false,
-                            Vin = ""
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Image", b =>
@@ -260,34 +212,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasIndex("SellerId");
 
                     b.ToTable("Listings");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777777"),
-                            CarDetailsId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            City = "Kaunas",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            Description = "Smulkūs kėbulo defektai",
-                            ModifiedBy = "",
-                            Price = 800m,
-                            SellerId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            Status = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888888"),
-                            CarDetailsId = new Guid("66666666-6666-6666-6666-666666666666"),
-                            City = "Vilnius",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            Description = "Be defektu",
-                            ModifiedBy = "",
-                            Price = 130m,
-                            SellerId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            Status = 0
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Make", b =>
@@ -317,24 +241,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Makes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2025, 4, 3, 19, 46, 19, 0, DateTimeKind.Utc),
-                            CreatedBy = "System",
-                            ModifiedBy = "",
-                            Name = "Toyota"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2025, 4, 3, 19, 46, 19, 0, DateTimeKind.Utc),
-                            CreatedBy = "System",
-                            ModifiedBy = "",
-                            Name = "BMW"
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Model", b =>
@@ -369,17 +275,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasIndex("MakeId");
 
                     b.ToTable("Models");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2025, 4, 3, 19, 46, 19, 0, DateTimeKind.Utc),
-                            CreatedBy = "System",
-                            MakeId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            ModifiedBy = "",
-                            Name = "Camry"
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.RefreshToken", b =>
@@ -460,28 +355,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999999"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            Email = "",
-                            HashedPassword = "",
-                            ModifiedBy = "",
-                            Username = "Ben"
-                        },
-                        new
-                        {
-                            Id = new Guid("0198e34c-81ad-7498-9828-5d8c530a994a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            Email = "bear@gmail.com",
-                            HashedPassword = "$2a$11$0gIGetjT4PZ8bfGrXUrwoOImxqNeLM9m.0NR9EEu2mc1UcJocRxQ6",
-                            ModifiedBy = "",
-                            Username = "taurasbear"
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserListingLike", b =>
@@ -551,17 +424,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserPermissions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("99999999-9299-9999-9999-999999999999"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "",
-                            ModifiedBy = "",
-                            Permission = 0,
-                            UserId = new Guid("0198e34c-81ad-7498-9828-5d8c530a994a")
-                        });
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>

@@ -15,21 +15,9 @@ type MakeSelectProps = {
 };
 
 const MakeSelect = ({ onValueChange }: MakeSelectProps) => {
-  const {
-    data: makesQuery,
-    isPending: isGetAllMakesPending,
-    error: getAllMakesError,
-  } = useQuery(getAllMakesOptions);
+  const { data: makesQuery } = useQuery(getAllMakesOptions);
 
-  if (isGetAllMakesPending) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (getAllMakesError) {
-    return <h1>Error: {getAllMakesError?.message}</h1>;
-  }
-
-  const makes = makesQuery?.data;
+  const makes = makesQuery?.data || [];
 
   return (
     <div>
@@ -41,7 +29,7 @@ const MakeSelect = ({ onValueChange }: MakeSelectProps) => {
           <SelectGroup>
             <SelectLabel>Makes</SelectLabel>
             <SelectItem value="all">All makes</SelectItem>
-            {makes?.map((make) => (
+            {makes.map((make) => (
               <SelectItem key={make.id} value={make.id}>
                 {make.name}
               </SelectItem>
