@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getAllMakesOptions } from "../api/getAllMakesOptions";
 
 type MakeSelectProps = {
@@ -15,9 +15,9 @@ type MakeSelectProps = {
 };
 
 const MakeSelect = ({ onValueChange }: MakeSelectProps) => {
-  const { data: makesQuery } = useSuspenseQuery(getAllMakesOptions);
+  const { data: makesQuery } = useQuery(getAllMakesOptions);
 
-  const makes = makesQuery.data;
+  const makes = makesQuery?.data || [];
 
   return (
     <div>
