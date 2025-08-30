@@ -1,6 +1,7 @@
-import { selectAccessToken } from "@/features/auth/state/authSlice";
+import { selectAccessToken } from "@/features/auth";
 import { store } from "@/lib/redux/store";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { handleAxiosError } from "./axiosErrorHandler";
 
 const axiosClient = axios.create({
   baseURL:
@@ -20,5 +21,10 @@ axiosClient.interceptors.request.use((config) => {
   }
   return config;
 });
+
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => handleAxiosError(error),
+);
 
 export default axiosClient;

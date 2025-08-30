@@ -10,15 +10,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  RegisterSchema,
   RegisterUserCommand,
+  setAccessToken,
+  setCredentials,
   useRefreshToken,
   useRegisterUser,
 } from "@/features/auth";
-import { RegisterSchema } from "@/features/auth/schemas/registerSchema";
-import {
-  setAccessToken,
-  setCredentials,
-} from "@/features/auth/state/authSlice";
 import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
