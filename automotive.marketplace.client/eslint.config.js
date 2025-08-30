@@ -40,6 +40,12 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "no-misused-promises": [
+        "error",
+        {
+          checkVoidReturn: { attributes: true },
+        },
+      ],
       "no-restricted-imports": [
         "error",
         {
