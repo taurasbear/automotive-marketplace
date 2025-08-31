@@ -3,7 +3,7 @@ using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using Bogus;
 
-namespace Automotive.Marketplace.Tests.Builders;
+namespace Automotive.Marketplace.Infrastructure.Data.Builders;
 
 public class CarBuilder
 {

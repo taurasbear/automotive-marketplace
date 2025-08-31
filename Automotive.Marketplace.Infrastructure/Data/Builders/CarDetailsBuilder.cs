@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using Automotive.Marketplace.Domain.Entities;
 using Bogus;
 
-namespace Automotive.Marketplace.Tests.Builders;
+namespace Automotive.Marketplace.Infrastructure.Data.Builders;
 
 public class CarDetailsBuilder
 {
