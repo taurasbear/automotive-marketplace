@@ -19,12 +19,14 @@ import {
 } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Register = () => {
   const { mutateAsync: registerUserAsync } = useRegisterUser();
   const { mutateAsync: refreshAsync } = useRefreshToken();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -58,6 +60,8 @@ const Register = () => {
         userId: user.userId,
       }),
     );
+
+    navigate({ to: "/" });
   };
 
   return (

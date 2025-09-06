@@ -12,5 +12,6 @@ export const useRegisterUser = () =>
     mutationFn: registerUser,
     meta: {
       successMessage: "Successfully registered!",
+      errorMessage: "Sorry, couldn't register an account. Please try again.",
     },
   });
