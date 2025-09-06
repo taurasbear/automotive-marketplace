@@ -1,6 +1,7 @@
 using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
+using Automotive.Marketplace.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -75,6 +76,14 @@ using (var scope = app.Services.CreateScope())
 {
     var automotiveContext = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
     await automotiveContext.Database.MigrateAsync();
+
+    if (app.Environment.IsDevelopment())
+    {
+        foreach (var seeder in scope.ServiceProvider.GetServices<IDevelopmentSeeder>())
+        {
+            await seeder.SeedAsync(CancellationToken.None);
+        }
+    }
 }
 
 if (app.Environment.IsProduction())
