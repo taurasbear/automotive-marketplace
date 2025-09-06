@@ -16,6 +16,12 @@ const queryClient = new QueryClient({
         toast.success(successMessage);
       }
     },
+    onError: (_error, _variables, _context, mutation) => {
+      const errorMessage = mutation.meta?.errorMessage;
+      if (errorMessage) {
+        toast.error(errorMessage);
+      }
+    },
     onSettled: async (_data, _error, _variables, _context, mutation) => {
       const queryToInvalidate = mutation.meta?.invalidatesQuery;
       if (queryToInvalidate) {

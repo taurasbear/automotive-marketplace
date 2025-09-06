@@ -12,5 +12,6 @@ export const useLoginUser = () =>
     mutationFn: (body: LoginUserCommand) => loginUser(body),
     meta: {
       successMessage: "Successfully logged in!",
+      errorMessage: "Sorry, couldn't log you in. Please try again.",
     },
   });

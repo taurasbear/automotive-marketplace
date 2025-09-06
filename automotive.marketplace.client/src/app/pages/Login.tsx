@@ -16,11 +16,13 @@ import {
 } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Login = () => {
   const { mutateAsync: loginUserAsync } = useLoginUser();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -46,6 +48,8 @@ const Login = () => {
         userId: user.userId,
       }),
     );
+
+    navigate({ to: "/" });
   };
 
   return (

@@ -9,5 +9,6 @@ export const useLogoutUser = () =>
     mutationFn: logoutUser,
     meta: {
       successMessage: "Successfully logged out",
+      errorMessage: "Sorry, had trouble logging you out. Please try again.",
     },
   });
