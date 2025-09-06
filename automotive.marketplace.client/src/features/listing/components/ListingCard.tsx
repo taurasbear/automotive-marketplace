@@ -27,7 +27,9 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           </p>
           <p className="font-sans text-xl">{`${listing.year} ${listing.make} ${listing.model}`}</p>
           <p className="font-sans text-xs">{listing.mileage} km</p>
-          <p className="font-sans text-3xl font-bold">{listing.price} €</p>
+          <p className="font-sans text-3xl font-bold">
+            {listing.price.toFixed(0)} €
+          </p>
         </div>
         <div className="justify-items-stretched grid grid-cols-2 gap-x-0 gap-y-4">
           <div className="flex justify-self-start">
