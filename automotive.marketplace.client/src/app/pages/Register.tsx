@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   RegisterSchema,
-  RegisterUserCommand,
   setAccessToken,
   setCredentials,
   useRefreshToken,
@@ -30,7 +29,7 @@ const Register = () => {
 
   const dispatch = useAppDispatch();
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
+  const form = useForm({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       username: "",
@@ -44,14 +43,12 @@ const Register = () => {
     dispatch(setAccessToken({ accessToken: user.accessToken }));
   };
 
-  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
-    const body: RegisterUserCommand = {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    };
-
-    const { data: user } = await registerUserAsync(body);
+  const onSubmit = async (formData: z.infer<typeof RegisterSchema>) => {
+    const { data: user } = await registerUserAsync({
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    });
 
     dispatch(
       setCredentials({
