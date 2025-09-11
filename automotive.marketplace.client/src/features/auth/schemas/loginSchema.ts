@@ -4,18 +4,21 @@ import { z } from "zod";
 
 export const LoginSchema = z.object({
   email: z.email().max(VALIDATION.NAME.LONG, {
-    error: validation.max({ label: "Email", length: VALIDATION.NAME.LONG }),
+    error: validation.maxLength({
+      label: "Email",
+      length: VALIDATION.NAME.LONG,
+    }),
   }),
   password: z
     .string()
     .min(VALIDATION.PASSWORD.MIN, {
-      error: validation.min({
+      error: validation.minLength({
         label: "Password",
         length: VALIDATION.PASSWORD.MIN,
       }),
     })
     .max(VALIDATION.PASSWORD.MAX, {
-      error: validation.max({
+      error: validation.maxLength({
         label: "Password",
         length: VALIDATION.PASSWORD.MAX,
       }),
