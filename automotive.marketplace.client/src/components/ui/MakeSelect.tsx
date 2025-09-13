@@ -7,28 +7,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getAllMakesOptions } from "@/features/search/api/getAllMakesOptions";
+import { cn } from "@/lib/utils";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
-import { getAllMakesOptions } from "../api/getAllMakesOptions";
 
-type MakeSelectProps = {
-  onValueChange: (value: string) => void;
+type MakeSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
+  className?: string;
+  isAllMakesEnabled: boolean;
 };
 
-const MakeSelect = ({ onValueChange }: MakeSelectProps) => {
+const MakeSelect = ({
+  className,
+  isAllMakesEnabled,
+  ...props
+}: MakeSelectProps) => {
   const { data: makesQuery } = useQuery(getAllMakesOptions);
 
   const makes = makesQuery?.data || [];
 
   return (
-    <div>
-      <Select defaultValue="all" onValueChange={onValueChange}>
+    <div className={cn(className)}>
+      <Select {...props}>
         <SelectTrigger className="w-full">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Makes</SelectLabel>
-            <SelectItem value="all">All makes</SelectItem>
+            {!isAllMakesEnabled || (
+              <SelectItem value="all">All makes</SelectItem>
+            )}
             {makes.map((make) => (
               <SelectItem key={make.id} value={make.id}>
                 {make.name}
