@@ -91,7 +91,7 @@ public class AuthController(IMediator mediator) : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+    public async Task<ActionResult> Logout(CancellationToken cancellationToken)
     {
         var refreshToken = Request.Cookies["refreshToken"];
         if (!string.IsNullOrWhiteSpace(refreshToken))
