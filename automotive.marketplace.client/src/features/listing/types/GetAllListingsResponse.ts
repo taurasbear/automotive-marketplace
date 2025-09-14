@@ -1,5 +1,5 @@
 export type GetAllListingsResponse = {
-  used: boolean;
+  isUsed: boolean;
   year: string;
   make: string;
   model: string;

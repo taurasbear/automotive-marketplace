@@ -23,7 +23,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
       <div className="flex min-w-0 flex-grow flex-col justify-between pt-4 pr-4 pb-2">
         <div className="truncate">
           <p className="truncate font-sans text-xs">
-            {listing.used ? "Used" : "New"}
+            {listing.isUsed ? "Used" : "New"}
           </p>
           <p className="font-sans text-xl">{`${listing.year} ${listing.make} ${listing.model}`}</p>
           <p className="font-sans text-xs">{listing.mileage} km</p>
