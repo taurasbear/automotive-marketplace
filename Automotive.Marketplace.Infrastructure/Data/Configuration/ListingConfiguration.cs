@@ -15,5 +15,11 @@ public class ListingConfiguration : IEntityTypeConfiguration<Listing>
         builder.HasOne(listing => listing.Seller)
             .WithMany(user => user.Listings)
             .HasForeignKey(listing => listing.SellerId);
+
+        builder.Property(listing => listing.Status)
+            .HasConversion(
+                statusEnum => statusEnum.ToString(),
+                statusString => (Status)Enum.Parse(typeof(Status), statusString)
+            );
     }
 }
