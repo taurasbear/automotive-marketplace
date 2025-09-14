@@ -100,7 +100,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Permission = table.Column<int>(type: "integer", nullable: false),
+                    Permission = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -123,10 +123,10 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Year = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Fuel = table.Column<int>(type: "integer", nullable: false),
-                    Transmission = table.Column<int>(type: "integer", nullable: false),
-                    BodyType = table.Column<int>(type: "integer", nullable: false),
-                    Drivetrain = table.Column<int>(type: "integer", nullable: false),
+                    Fuel = table.Column<string>(type: "text", nullable: false),
+                    Transmission = table.Column<string>(type: "text", nullable: false),
+                    BodyType = table.Column<string>(type: "text", nullable: false),
+                    Drivetrain = table.Column<string>(type: "text", nullable: false),
                     DoorCount = table.Column<int>(type: "integer", nullable: false),
                     ModelId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -146,35 +146,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CarsDetails",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Vin = table.Column<string>(type: "text", nullable: false),
-                    Colour = table.Column<string>(type: "text", nullable: false),
-                    Used = table.Column<bool>(type: "boolean", nullable: false),
-                    Power = table.Column<int>(type: "integer", nullable: false),
-                    EngineSize = table.Column<int>(type: "integer", nullable: false),
-                    Mileage = table.Column<int>(type: "integer", nullable: false),
-                    IsSteeringWheelRight = table.Column<bool>(type: "boolean", nullable: false),
-                    CarId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarsDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CarsDetails_Cars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "Cars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Listings",
                 columns: table => new
                 {
@@ -182,8 +153,15 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    CarDetailsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Vin = table.Column<string>(type: "text", nullable: false),
+                    Colour = table.Column<string>(type: "text", nullable: false),
+                    IsUsed = table.Column<bool>(type: "boolean", nullable: false),
+                    Power = table.Column<int>(type: "integer", nullable: false),
+                    EngineSize = table.Column<int>(type: "integer", nullable: false),
+                    Mileage = table.Column<int>(type: "integer", nullable: false),
+                    IsSteeringWheelRight = table.Column<bool>(type: "boolean", nullable: false),
+                    CarId = table.Column<Guid>(type: "uuid", nullable: false),
                     SellerId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -194,9 +172,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Listings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Listings_CarsDetails_CarDetailsId",
-                        column: x => x.CarDetailsId,
-                        principalTable: "CarsDetails",
+                        name: "FK_Listings_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -266,20 +244,14 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 column: "ModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CarsDetails_CarId",
-                table: "CarsDetails",
-                column: "CarId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Images_ListingId",
                 table: "Images",
                 column: "ListingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Listings_CarDetailsId",
+                name: "IX_Listings_CarId",
                 table: "Listings",
-                column: "CarDetailsId",
-                unique: true);
+                column: "CarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Listings_SellerId",
@@ -332,13 +304,10 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 name: "Listings");
 
             migrationBuilder.DropTable(
-                name: "CarsDetails");
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "Models");
