@@ -80,13 +80,10 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
             .HasOne(userPermission => userPermission.User)
             .WithMany(user => user.UserPermissions)
             .HasForeignKey(userPermission => userPermission.UserId);
-
-        // modelBuilder.Seed();
     }
 
     public override int SaveChanges()
     {
-        //var entries = ChangeTracker.Entries().Where()
         return base.SaveChanges();
     }
 }
