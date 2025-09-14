@@ -27,7 +27,6 @@ public static class ServiceExtensions
         services.AddScoped<IDevelopmentSeeder, MakeSeeder>();
         services.AddScoped<IDevelopmentSeeder, ModelSeeder>();
         services.AddScoped<IDevelopmentSeeder, CarSeeder>();
-        services.AddScoped<IDevelopmentSeeder, CarDetailsSeeder>();
         services.AddScoped<IDevelopmentSeeder, ListingSeeder>();
     }
 }
