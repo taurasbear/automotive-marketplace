@@ -19,17 +19,17 @@ public class ListingSeeder(AutomotiveContext context) : IDevelopmentSeeder
         var users = await context.Set<User>()
             .ToListAsync(cancellationToken);
 
-        var carDetails = await context.Set<CarDetails>()
+        var cars = await context.Set<Car>()
             .ToListAsync(cancellationToken);
 
-        for (int i = 0; i < carDetails.Count; i++)
+        for (int i = 0; i < cars.Count; i++)
         {
             var user = users
                 .Skip(i % users.Count)
                 .First();
 
             var listing = new ListingBuilder()
-                .WithCarDetails(carDetails[i].Id)
+                .WithCar(cars[i].Id)
                 .WithSeller(user.Id)
                 .Build();
 

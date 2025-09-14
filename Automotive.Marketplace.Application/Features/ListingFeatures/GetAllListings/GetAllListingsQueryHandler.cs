@@ -16,12 +16,12 @@ public class GetAllListingsQueryHandler(
     {
         var listings = await repository
             .AsQueryable<Listing>()
-            .Where(listing => request.MakeId == null || request.MakeId == listing.CarDetails.Car.Model.MakeId)
-            .Where(listing => request.ModelId == null || request.ModelId == listing.CarDetails.Car.ModelId)
+            .Where(listing => request.MakeId == null || request.MakeId == listing.Car.Model.MakeId)
+            .Where(listing => request.ModelId == null || request.ModelId == listing.Car.ModelId)
             .Where(listing => request.City == null || request.City.ToLower() == listing.City.ToLower())
-            .Where(listing => request.IsUsed == null || request.IsUsed == listing.CarDetails.Used)
-            .Where(listing => request.YearFrom == null || request.YearFrom <= listing.CarDetails.Car.Year.Year)
-            .Where(listing => request.YearTo == null || request.YearTo >= listing.CarDetails.Car.Year.Year)
+            .Where(listing => request.IsUsed == null || request.IsUsed == listing.IsUsed)
+            .Where(listing => request.YearFrom == null || request.YearFrom <= listing.Car.Year.Year)
+            .Where(listing => request.YearTo == null || request.YearTo >= listing.Car.Year.Year)
             .Where(listing => request.PriceFrom == null || request.PriceFrom <= listing.Price)
             .Where(listing => request.PriceTo == null || request.PriceTo >= listing.Price)
             .ToListAsync(cancellationToken);

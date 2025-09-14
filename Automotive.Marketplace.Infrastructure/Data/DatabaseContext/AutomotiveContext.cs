@@ -1,4 +1,5 @@
 ﻿using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Infrastructure.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
@@ -6,8 +7,6 @@ namespace Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Car> Cars { get; set; }
-
-    public DbSet<CarDetails> CarsDetails { get; set; }
 
     public DbSet<Image> Images { get; set; }
 
@@ -25,25 +24,10 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Model>()
-            .HasOne(model => model.Make)
-            .WithMany(make => make.Models)
-            .HasForeignKey(model => model.MakeId);
-
-        modelBuilder.Entity<Car>()
-            .HasOne(car => car.Model)
-            .WithMany(model => model.Cars)
-            .HasForeignKey(car => car.ModelId);
-
-        modelBuilder.Entity<CarDetails>()
-            .HasOne(carDetails => carDetails.Car)
-            .WithMany(car => car.CarDetails)
-            .HasForeignKey(carDetails => carDetails.CarId);
-
         modelBuilder.Entity<Listing>()
-            .HasOne(listing => listing.CarDetails)
-            .WithOne(carDetails => carDetails.Listing)
-            .HasForeignKey<Listing>(listing => listing.CarDetailsId);
+            .HasOne(listing => listing.Car)
+            .WithMany(car => car.Listings)
+            .HasForeignKey(listing => listing.CarId);
 
         modelBuilder.Entity<Image>()
             .HasOne(image => image.Listing)
@@ -80,6 +64,8 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
             .HasOne(userPermission => userPermission.User)
             .WithMany(user => user.UserPermissions)
             .HasForeignKey(userPermission => userPermission.UserId);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarConfiguration).Assembly);
     }
 
     public override int SaveChanges()

@@ -73,7 +73,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount);
         _ = await SeedListingsAsync(context, otherCount);
 
-        var makeId = matchingListings.First().CarDetails.Car.Model.MakeId;
+        var makeId = matchingListings.First().Car.Model.MakeId;
 
         var query = new GetAllListingsQuery { MakeId = makeId };
 
@@ -98,7 +98,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount);
         _ = await SeedListingsAsync(context, otherCount);
 
-        var modelId = matchingListings.First().CarDetails.Car.ModelId;
+        var modelId = matchingListings.First().Car.ModelId;
 
         var query = new GetAllListingsQuery { ModelId = modelId };
 
@@ -273,7 +273,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount, isCarUsed: isCarUsed);
         _ = await SeedListingsAsync(context, otherCount, isCarUsed: !isCarUsed);
 
-        var makeId = matchingListings.First().CarDetails.Car.Model.MakeId;
+        var makeId = matchingListings.First().Car.Model.MakeId;
 
         var query = new GetAllListingsQuery { MakeId = makeId, IsUsed = isCarUsed };
 
@@ -307,23 +307,17 @@ public class GetAllListingsQueryHandlerTests(
 
         var cars = carBuilder.Build(count);
 
-        List<CarDetails> carDetails = [];
         List<Listing> listings = [];
         foreach (var car in cars)
         {
-            var carDetailsBuilder = new CarDetailsBuilder()
+            var listingBuilder = new ListingBuilder()
+                .WithSeller(seller.Id)
                 .WithCar(car.Id);
 
             if (isCarUsed.HasValue)
             {
-                carDetailsBuilder.WithUsed(isCarUsed.Value);
+                listingBuilder.WithUsed(isCarUsed.Value);
             }
-
-            var singleCarDetails = carDetailsBuilder.Build();
-
-            var listingBuilder = new ListingBuilder()
-                .WithSeller(seller.Id)
-                .WithCarDetails(singleCarDetails.Id);
 
             if (carPrice.HasValue)
             {
@@ -332,7 +326,6 @@ public class GetAllListingsQueryHandlerTests(
 
             var listing = listingBuilder.Build();
 
-            carDetails.Add(singleCarDetails);
             listings.Add(listing);
         }
 
@@ -340,7 +333,6 @@ public class GetAllListingsQueryHandlerTests(
         await context.AddAsync(make);
         await context.AddAsync(model);
         await context.AddRangeAsync(cars);
-        await context.AddRangeAsync(carDetails);
         await context.AddRangeAsync(listings);
         await context.SaveChangesAsync();
 

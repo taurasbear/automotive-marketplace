@@ -10,9 +10,23 @@ public class Listing : BaseEntity
 
     public Status Status { get; set; }
 
-    public Guid CarDetailsId { get; set; }
+    public string Vin { get; set; } = string.Empty;
 
-    public virtual CarDetails CarDetails { get; set; } = null!;
+    public string Colour { get; set; } = string.Empty;
+
+    public bool IsUsed { get; set; }
+
+    public int Power { get; set; }
+
+    public int EngineSize { get; set; }
+
+    public int Mileage { get; set; }
+
+    public bool IsSteeringWheelRight { get; set; }
+
+    public Guid CarId { get; set; }
+
+    public virtual Car Car { get; set; } = null!;
 
     public Guid SellerId { get; set; }
 
