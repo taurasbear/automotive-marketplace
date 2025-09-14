@@ -31,8 +31,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("BodyType")
-                        .HasColumnType("integer");
+                    b.Property<string>("BodyType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -44,11 +45,13 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<int>("DoorCount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Drivetrain")
-                        .HasColumnType("integer");
+                    b.Property<string>("Drivetrain")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("Fuel")
-                        .HasColumnType("integer");
+                    b.Property<string>("Fuel")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("ModelId")
                         .HasColumnType("uuid");
@@ -60,8 +63,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Transmission")
-                        .HasColumnType("integer");
+                    b.Property<string>("Transmission")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Year")
                         .HasColumnType("timestamp with time zone");
@@ -71,59 +75,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasIndex("ModelId");
 
                     b.ToTable("Cars");
-                });
-
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.CarDetails", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CarId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Colour")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("EngineSize")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsSteeringWheelRight")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Mileage")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Power")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("Used")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Vin")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.ToTable("CarsDetails");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Image", b =>
@@ -170,10 +121,14 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CarDetailsId")
+                    b.Property<Guid>("CarId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Colour")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -188,6 +143,18 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("EngineSize")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsSteeringWheelRight")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Mileage")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -195,19 +162,26 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Power")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarDetailsId")
-                        .IsUnique();
+                    b.HasIndex("CarId");
 
                     b.HasIndex("SellerId");
 
@@ -413,8 +387,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Permission")
-                        .HasColumnType("integer");
+                    b.Property<string>("Permission")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -437,17 +412,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("Model");
                 });
 
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.CarDetails", b =>
-                {
-                    b.HasOne("Automotive.Marketplace.Domain.Entities.Car", "Car")
-                        .WithMany("CarDetails")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Image", b =>
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Listing", "Listing")
@@ -461,9 +425,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Listing", b =>
                 {
-                    b.HasOne("Automotive.Marketplace.Domain.Entities.CarDetails", "CarDetails")
-                        .WithOne("Listing")
-                        .HasForeignKey("Automotive.Marketplace.Domain.Entities.Listing", "CarDetailsId")
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Car", "Car")
+                        .WithMany("Listings")
+                        .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -473,7 +437,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CarDetails");
+                    b.Navigation("Car");
 
                     b.Navigation("Seller");
                 });
@@ -532,13 +496,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>
                 {
-                    b.Navigation("CarDetails");
-                });
-
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.CarDetails", b =>
-                {
-                    b.Navigation("Listing")
-                        .IsRequired();
+                    b.Navigation("Listings");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Listing", b =>

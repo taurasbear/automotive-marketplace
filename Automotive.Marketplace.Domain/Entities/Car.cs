@@ -20,5 +20,5 @@ public class Car : BaseEntity
 
     public virtual Model Model { get; set; } = null!;
 
-    public virtual ICollection<CarDetails> CarDetails { get; set; } = [];
+    public virtual ICollection<Listing> Listings { get; set; } = [];
 }

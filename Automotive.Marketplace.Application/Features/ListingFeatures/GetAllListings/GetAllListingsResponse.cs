@@ -2,7 +2,7 @@
 
 public sealed record GetAllListingsResponse
 {
-    public bool Used { get; set; }
+    public bool IsUsed { get; set; }
 
     public string Year { get; set; } = string.Empty;
 
