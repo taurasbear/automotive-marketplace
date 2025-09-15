@@ -1,3 +1,4 @@
+import { getAllMakesOptions } from "@/api/make/getAllMakesOptions";
 import {
   Select,
   SelectContent,
@@ -7,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getAllMakesOptions } from "@/features/search/api/getAllMakesOptions";
 import { cn } from "@/lib/utils";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
@@ -30,7 +30,7 @@ const MakeSelect = ({
     <div className={cn(className)}>
       <Select {...props}>
         <SelectTrigger className="w-full">
-          <SelectValue />
+          <SelectValue placeholder="Make" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

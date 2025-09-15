@@ -1,3 +1,4 @@
+import { getModelsByMakeIdOptions } from "@/api/model/getModelsByMakeIdOptions";
 import {
   Select,
   SelectContent,
@@ -7,32 +8,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
-import { getModelsByMakeIdOptions } from "../api/getModelsByMakeIdOptions";
 
-type ModelSelectProps = {
+type ModelSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
+  className?: string;
   selectedMake?: string;
-  onValueChange: (value: string) => void;
+  isAllModelsEnabled: boolean;
 };
 
-const ModelSelect = ({ selectedMake, onValueChange }: ModelSelectProps) => {
+const ModelSelect = ({
+  className,
+  selectedMake,
+  isAllModelsEnabled,
+  ...props
+}: ModelSelectProps) => {
   const { data: modelsQuery } = useQuery({
     ...getModelsByMakeIdOptions({ makeId: selectedMake! }),
-    enabled: selectedMake !== undefined,
+    enabled: !!selectedMake,
   });
 
   const models = modelsQuery?.data || [];
 
   return (
-    <div>
-      <Select defaultValue="all" onValueChange={onValueChange}>
+    <div className={cn(className)}>
+      <Select {...props}>
         <SelectTrigger className="w-full">
-          <SelectValue />
+          <SelectValue placeholder="Model" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Models</SelectLabel>
-            <SelectItem value="all">All models</SelectItem>
+            {!isAllModelsEnabled || (
+              <SelectItem value="all">All models</SelectItem>
+            )}
             {models.map((model) => (
               <SelectItem key={model.id} value={model.id}>
                 {model.name}

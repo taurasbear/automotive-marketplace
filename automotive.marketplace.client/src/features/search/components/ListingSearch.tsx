@@ -1,10 +1,10 @@
+import MakeSelect from "@/components/forms/MakeSelect";
+import ModelSelect from "@/components/forms/ModelSelect";
 import { Button } from "@/components/ui/button";
-import MakeSelect from "@/components/ui/MakeSelect";
 import { getSearchParamFromValue } from "@/features/listing/utils/listingSearchUtils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import LocationCombobox from "./LocationCombobox";
-import ModelSelect from "./ModelSelect";
 import PriceSelect from "./PriceSelect";
 import UsedSelect from "./UsedSelect";
 import YearSelect from "./YearSelect";
@@ -43,6 +43,8 @@ const ListingSearch = () => {
         </div>
         <div className="col-span-2">
           <ModelSelect
+            isAllModelsEnabled={true}
+            defaultValue="all"
             selectedMake={searchParams.makeId}
             onValueChange={(value) => updateSearchParam("modelId", value)}
           />
