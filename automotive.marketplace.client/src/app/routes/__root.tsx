@@ -21,6 +21,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         <Link to="/about" className="[&.active]:font-bold">
           About
         </Link>
+        <Link to="/listing/create" className="[&.active]:font-bold">
+          Create listing
+        </Link>
         <LogoutButton />
       </div>
       <hr />
