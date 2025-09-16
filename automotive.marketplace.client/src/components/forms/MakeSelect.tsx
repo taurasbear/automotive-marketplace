@@ -30,7 +30,7 @@ const MakeSelect = ({
     <div className={cn(className)}>
       <Select {...props}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Make" />
+          <SelectValue placeholder="Toyota" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

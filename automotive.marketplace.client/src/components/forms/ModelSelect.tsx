@@ -35,7 +35,7 @@ const ModelSelect = ({
     <div className={cn(className)}>
       <Select {...props}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Model" />
+          <SelectValue placeholder="Auris" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
