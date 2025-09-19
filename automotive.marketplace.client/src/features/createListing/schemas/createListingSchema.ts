@@ -129,13 +129,16 @@ export const CreateListingSchema = z.object({
   }),
   doorCount: z.coerce
     .number<number>()
-    .min(1, {
-      error: validation.minSize({ label: "Door count", size: 1 }),
+    .min(VALIDATION.DOOR_COUNT.MIN, {
+      error: validation.minSize({
+        label: "Door count",
+        size: VALIDATION.DOOR_COUNT.MIN,
+      }),
     })
-    .max(12, {
+    .max(VALIDATION.DOOR_COUNT.MAX, {
       error: validation.maxSize({
         label: "Door count",
-        size: 12,
+        size: VALIDATION.DOOR_COUNT.MAX,
       }),
     }),
 });

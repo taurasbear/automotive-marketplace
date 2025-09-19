@@ -43,4 +43,8 @@ export const VALIDATION = {
     REGEX:
       /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/,
   },
+  DOOR_COUNT: {
+    MIN: 1,
+    MAX: 9,
+  },
 } as const;
