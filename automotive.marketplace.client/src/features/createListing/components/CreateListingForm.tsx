@@ -285,6 +285,19 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             )}
           />
           <FormField
+            name="doorCount"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Door count</FormLabel>
+                <FormControl>
+                  <Input type="number" min={0} max={12} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
             name="isSteeringWheelRight"
             control={form.control}
             render={({ field }) => (

@@ -127,5 +127,15 @@ export const CreateListingSchema = z.object({
   drivetrain: z.string().nonempty({
     error: "Please select a drivetrain type",
   }),
-  doorCount: z.int().positive(),
+  doorCount: z.coerce
+    .number<number>()
+    .min(1, {
+      error: validation.minSize({ label: "Door count", size: 1 }),
+    })
+    .max(12, {
+      error: validation.maxSize({
+        label: "Door count",
+        size: 12,
+      }),
+    }),
 });
