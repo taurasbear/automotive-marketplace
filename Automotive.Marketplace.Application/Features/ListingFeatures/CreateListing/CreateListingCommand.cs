@@ -5,6 +5,8 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.CreateList
 
 public sealed record class CreateListingCommand : IRequest
 {
+    public Guid ModelId { get; set; }
+
     public decimal Price { get; set; }
 
     public string? Description { get; set; }
@@ -21,8 +23,6 @@ public sealed record class CreateListingCommand : IRequest
 
     public bool IsSteeringWheelRight { get; set; }
 
-    public Guid ModelId { get; set; }
-
     public string City { get; set; } = string.Empty;
 
     public bool IsUsed { get; set; }
@@ -35,9 +35,9 @@ public sealed record class CreateListingCommand : IRequest
 
     public int DoorCount { get; set; }
 
-    public Guid UserId { get; set; }
-
     public BodyType BodyType { get; set; }
 
     public Drivetrain Drivetrain { get; set; }
+
+    public Guid UserId { get; set; }
 }
