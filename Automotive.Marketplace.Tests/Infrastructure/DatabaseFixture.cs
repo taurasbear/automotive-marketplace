@@ -28,7 +28,7 @@ public class DatabaseFixture<T> : IAsyncLifetime where T : class
 
         var services = new ServiceCollection();
         services.AddDbContext<AutomotiveContext>(options =>
-            options.UseNpgsql(_connectionString));
+            options.UseNpgsql(_connectionString), ServiceLifetime.Transient);
 
         var handlerTypes = typeof(GetAllListingsQueryHandler).Assembly
             .GetTypes()
