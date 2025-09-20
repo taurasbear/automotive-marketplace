@@ -14,6 +14,7 @@ public class CarMappings : Profile
             .ForMember(dest => dest.Drivetrain, opt => opt.MapFrom(src => src.Drivetrain))
             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => new DateTime(src.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc)))
             .ForMember(dest => dest.Fuel, opt => opt.MapFrom(src => src.Fuel))
-            .ForMember(dest => dest.Transmission, opt => opt.MapFrom(src => src.Transmission));
+            .ForMember(dest => dest.Transmission, opt => opt.MapFrom(src => src.Transmission))
+            .ForMember(dest => dest.ModelId, opt => opt.MapFrom(src => src.ModelId));
     }
 }

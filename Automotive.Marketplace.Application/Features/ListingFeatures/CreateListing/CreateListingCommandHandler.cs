@@ -9,14 +9,12 @@ public class CreateListingCommandHandler(IMapper mapper, IRepository repository)
 {
     public async Task Handle(CreateListingCommand request, CancellationToken cancellationToken)
     {
-        var model = await repository.GetByIdAsync<Model>(request.ModelId, cancellationToken);
         var car = mapper.Map<Car>(request);
         var listing = mapper.Map<Listing>(request);
 
-        car.Listings.Add(listing);
-        model.Cars.Add(car);
+        listing.Car = car;
 
-        await repository.UpdateAsync(model, cancellationToken);
+        await repository.CreateAsync(listing, cancellationToken);
 
         return;
     }
