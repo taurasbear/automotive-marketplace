@@ -21,7 +21,6 @@ const TransmissionToggleGroup = ({
 
   const transmissionTypes = transmissionTypesQuery?.data || [];
 
-  // TODO: maybe I could make this into a reusable component?
   return (
     <div className={cn(className)}>
       <ToggleGroup {...props}>
@@ -29,6 +28,7 @@ const TransmissionToggleGroup = ({
           <ToggleGroupItem
             key={transmission.transmissionType}
             value={transmission.transmissionType}
+            className="flex-none"
           >
             {transmission.transmissionType}
           </ToggleGroupItem>

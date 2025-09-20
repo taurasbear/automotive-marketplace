@@ -70,8 +70,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="makeId"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Car make</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Car make*</FormLabel>
                 <FormControl>
                   <MakeSelect
                     isAllMakesEnabled={false}
@@ -87,8 +87,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="modelId"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Car model</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Car model*</FormLabel>
                 <FormControl>
                   <ModelSelect
                     isAllModelsEnabled={false}
@@ -106,8 +106,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="year"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Year</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Year*</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -119,8 +119,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="price"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Car price (€)</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Car price (€)*</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -132,7 +132,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="description"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-4">
+              <FormItem className="col-span-4 flex flex-col justify-start">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea className="max-h-96" {...field} />
@@ -145,8 +145,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="city"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>City</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>City*</FormLabel>
                 <FormControl>
                   <Input placeholder="Kaunas" type="text" {...field} />
                 </FormControl>
@@ -158,7 +158,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="vin"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
+              <FormItem className="col-span-2 flex flex-col justify-start">
                 <FormLabel>VIN</FormLabel>
                 <FormControl>
                   <Input
@@ -176,8 +176,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="power"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Engine power (kw)</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Engine power (kw)*</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -189,8 +189,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="engineSize"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Engine size (ml)</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Engine size (ml)*</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -202,7 +202,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="mileage"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
+              <FormItem className="col-span-2 flex flex-col justify-start">
                 <FormLabel>Mileage (km)</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
@@ -215,7 +215,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="colour"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
+              <FormItem className="col-span-2 flex flex-col justify-start">
                 <FormLabel>Colour</FormLabel>
                 <FormControl>
                   <Input placeholder="Crimson" type="text" {...field} />
@@ -228,8 +228,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="transmission"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Transmission type</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Transmission type*</FormLabel>
                 <FormControl>
                   <TransmissionToggleGroup
                     type="single"
@@ -245,8 +245,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="fuel"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1">
-                <FormLabel>Fuel type</FormLabel>
+              <FormItem className="col-span-1 flex flex-col justify-start">
+                <FormLabel>Fuel type*</FormLabel>
                 <FormControl>
                   <FuelToggleGroup onValueChange={field.onChange} {...field} />
                 </FormControl>
@@ -258,8 +258,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="bodyType"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1">
-                <FormLabel>Body type</FormLabel>
+              <FormItem className="col-span-1 flex flex-col justify-start">
+                <FormLabel>Body type*</FormLabel>
                 <FormControl>
                   <BodyTypeSelect onValueChange={field.onChange} {...field} />
                 </FormControl>
@@ -271,8 +271,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="drivetrain"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Drivetrain</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Drivetrain*</FormLabel>
                 <FormControl>
                   <DrivetrainToggleGroup
                     type="single"
@@ -288,8 +288,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="doorCount"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2">
-                <FormLabel>Door count</FormLabel>
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Door count*</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} max={12} {...field} />
                 </FormControl>
@@ -301,8 +301,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="isSteeringWheelRight"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1">
-                <FormLabel>Steering on right</FormLabel>
+              <FormItem className="col-span-1 col-start-2 flex flex-col items-center justify-start">
+                <FormLabel>Steering wheel on right</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -317,7 +317,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="isUsed"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1">
+              <FormItem className="col-span-1 flex flex-col items-center justify-start">
                 <FormLabel>Used car</FormLabel>
                 <FormControl>
                   <Checkbox
@@ -329,7 +329,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               </FormItem>
             )}
           />
-          <Button className="col-span-4" type="submit">
+          <Button className="col-span-2 col-start-2" type="submit">
             Submit
           </Button>
         </form>
