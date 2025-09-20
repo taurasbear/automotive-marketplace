@@ -58,7 +58,7 @@ const Register = () => {
       }),
     );
 
-    navigate({ to: "/" });
+    await navigate({ to: "/" });
   };
 
   return (

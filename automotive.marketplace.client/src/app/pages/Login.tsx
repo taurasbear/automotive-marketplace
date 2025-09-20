@@ -43,7 +43,7 @@ const Login = () => {
       }),
     );
 
-    navigate({ to: "/" });
+    await navigate({ to: "/" });
   };
 
   return (

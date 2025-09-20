@@ -63,7 +63,6 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          onError={(error) => console.log("error: ", error)}
           className="grid w-full min-w-3xs grid-cols-4 space-y-4 gap-x-12 gap-y-8"
         >
           <FormField

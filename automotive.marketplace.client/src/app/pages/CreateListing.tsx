@@ -1,4 +1,4 @@
-import CreateListingForm from "@/features/createListing/components/CreateListingForm";
+import { CreateListingForm } from "@/features/createListing";
 
 const CreateListing = () => {
   return (

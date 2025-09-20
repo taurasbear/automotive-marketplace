@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: MainPage,
-  loader: async ({ context: { queryClient } }) => {
-    queryClient.prefetchQuery({ ...getAllMakesOptions, retry: false });
+  loader: ({ context: { queryClient } }) => {
+    void queryClient.prefetchQuery({ ...getAllMakesOptions, retry: false });
   },
 });
