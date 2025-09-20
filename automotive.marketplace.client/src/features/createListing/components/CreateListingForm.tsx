@@ -52,8 +52,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
   const { mutateAsync: createListingAsync } = useCreateListing();
 
   const onSubmit = async (formData: z.infer<typeof CreateListingSchema>) => {
-    console.log("formData: ", formData);
     await createListingAsync(formData);
+    form.reset();
   };
 
   const selectedMake = form.watch("makeId");
