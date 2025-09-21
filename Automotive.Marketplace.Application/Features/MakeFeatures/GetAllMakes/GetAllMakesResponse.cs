@@ -1,4 +1,4 @@
-﻿namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+﻿namespace Automotive.Marketplace.Application.Features.MakeFeatures.GetAllMakes;
 
 public sealed record GetAllMakesResponse
 {

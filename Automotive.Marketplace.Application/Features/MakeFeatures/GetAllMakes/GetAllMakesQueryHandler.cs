@@ -4,7 +4,7 @@ using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+namespace Automotive.Marketplace.Application.Features.MakeFeatures.GetAllMakes;
 
 public class GetAllMakesQueryHandler(
     IMapper mapper,
