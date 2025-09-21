@@ -12,7 +12,7 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     await logoutUserAsync();
     dispatch(clearCredentials());
-    navigate({ to: "/login" });
+    await navigate({ to: "/login" });
   };
 
   return (

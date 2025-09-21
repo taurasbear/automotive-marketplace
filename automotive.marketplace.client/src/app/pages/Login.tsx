@@ -8,12 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  LoginSchema,
-  LoginUserCommand,
-  setCredentials,
-  useLoginUser,
-} from "@/features/auth";
+import { LoginSchema, setCredentials, useLoginUser } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
@@ -26,7 +21,7 @@ const Login = () => {
 
   const dispatch = useAppDispatch();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
+  const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -35,12 +30,11 @@ const Login = () => {
   });
 
   const onSubmit = async (formData: z.infer<typeof LoginSchema>) => {
-    const body: LoginUserCommand = {
+    const { data: user } = await loginUserAsync({
       email: formData.email,
       password: formData.password,
-    };
+    });
 
-    const { data: user } = await loginUserAsync(body);
     dispatch(
       setCredentials({
         accessToken: user.accessToken,
@@ -49,7 +43,7 @@ const Login = () => {
       }),
     );
 
-    navigate({ to: "/" });
+    await navigate({ to: "/" });
   };
 
   return (

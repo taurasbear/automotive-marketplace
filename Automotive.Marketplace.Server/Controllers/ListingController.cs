@@ -1,4 +1,5 @@
-﻿using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+﻿using Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Server.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,5 +16,16 @@ public class ListingController(IMediator mediator) : BaseController
     {
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
+    }
+
+    [HttpPost]
+    [Protect]
+    public async Task<ActionResult> Create(
+        [FromBody] CreateListingCommand command,
+        CancellationToken cancellationToken)
+    {
+        command.UserId = UserId;
+        await mediator.Send(command, cancellationToken);
+        return Created();
     }
 }

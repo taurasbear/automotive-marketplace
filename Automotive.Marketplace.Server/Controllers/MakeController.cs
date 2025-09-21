@@ -1,4 +1,4 @@
-﻿using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+﻿using Automotive.Marketplace.Application.Features.MakeFeatures.GetAllMakes;
 using Automotive.Marketplace.Server.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

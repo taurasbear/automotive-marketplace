@@ -1,0 +1,19 @@
+export type CreateListingCommand = {
+  price: number;
+  description?: string;
+  colour?: string;
+  vin?: string;
+  power: number;
+  engineSize: number;
+  mileage: number;
+  isSteeringWheelRight: boolean;
+  modelId: string;
+  city: string;
+  isUsed: boolean;
+  year: number;
+  transmission: string;
+  fuel: string;
+  doorCount: number;
+  bodyType: string;
+  drivetrain: string;
+};

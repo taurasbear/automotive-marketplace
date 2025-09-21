@@ -9,7 +9,7 @@ const loginUser = (body: LoginUserCommand) =>
 
 export const useLoginUser = () =>
   useMutation({
-    mutationFn: (body: LoginUserCommand) => loginUser(body),
+    mutationFn: loginUser,
     meta: {
       successMessage: "Successfully logged in!",
       errorMessage: "Sorry, couldn't log you in. Please try again.",

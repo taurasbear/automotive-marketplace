@@ -1,4 +1,3 @@
-
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Infrastructure.Data.Builders;
@@ -7,7 +6,7 @@ using Automotive.Marketplace.Tests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Automotive.Marketplace.Tests.Features.HandlerTests;
+namespace Automotive.Marketplace.Tests.Features.HandlerTests.ListingHandlerTests;
 
 public class GetAllListingsQueryHandlerTests(
     DatabaseFixture<GetAllListingsQueryHandlerTests> fixture)

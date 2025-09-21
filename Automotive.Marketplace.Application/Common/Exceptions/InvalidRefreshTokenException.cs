@@ -9,13 +9,13 @@ public class InvalidRefreshTokenException : Exception
 
     public InvalidRefreshTokenException(string token) : base("The provided refresh token is invalid or expired.")
     {
-        this.Token = token;
+        Token = token;
     }
 
     public InvalidRefreshTokenException(
         string token,
         Exception? innerException) : base("The provided refresh token is invalid or expired.", innerException)
     {
-        this.Token = token;
+        Token = token;
     }
 }

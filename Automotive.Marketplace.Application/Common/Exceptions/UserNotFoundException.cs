@@ -11,25 +11,25 @@ public class UserNotFoundException : Exception
 
     public UserNotFoundException(string email) : base($"User with email '{email}' was not found.")
     {
-        this.Email = email;
+        Email = email;
     }
 
     public UserNotFoundException(Guid userId) : base($"User with ID '{userId}' was not found.")
     {
-        this.UserId = userId;
+        UserId = userId;
     }
 
     public UserNotFoundException(
         string email,
         Exception? innerException) : base($"User with email '{email}' was not found.", innerException)
     {
-        this.Email = email;
+        Email = email;
     }
 
     public UserNotFoundException(
         Guid userId,
         Exception? innerException) : base($"User with ID '{userId}' was not found.", innerException)
     {
-        this.UserId = userId;
+        UserId = userId;
     }
 }

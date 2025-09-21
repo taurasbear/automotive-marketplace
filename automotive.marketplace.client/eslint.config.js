@@ -40,10 +40,10 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
-      "no-misused-promises": [
+      "@typescript-eslint/no-misused-promises": [
         "error",
         {
-          checkVoidReturn: { attributes: true },
+          checksVoidReturn: { attributes: false },
         },
       ],
       "no-restricted-imports": [

@@ -16,6 +16,7 @@ import { Route as LoginImport } from './app/routes/login'
 import { Route as ListingsImport } from './app/routes/listings'
 import { Route as AboutImport } from './app/routes/about'
 import { Route as IndexImport } from './app/routes/index'
+import { Route as ListingCreateImport } from './app/routes/listing/create'
 
 // Create/Update Routes
 
@@ -46,6 +47,12 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ListingCreateRoute = ListingCreateImport.update({
+  id: '/listing/create',
+  path: '/listing/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/listing/create': {
+      id: '/listing/create'
+      path: '/listing/create'
+      fullPath: '/listing/create'
+      preLoaderRoute: typeof ListingCreateImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -99,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/listing/create': typeof ListingCreateRoute
 }
 
 export interface FileRoutesByTo {
@@ -107,6 +122,7 @@ export interface FileRoutesByTo {
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/listing/create': typeof ListingCreateRoute
 }
 
 export interface FileRoutesById {
@@ -116,14 +132,28 @@ export interface FileRoutesById {
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/listing/create': typeof ListingCreateRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/listings' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/listings'
+    | '/login'
+    | '/register'
+    | '/listing/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/listings' | '/login' | '/register'
-  id: '__root__' | '/' | '/about' | '/listings' | '/login' | '/register'
+  to: '/' | '/about' | '/listings' | '/login' | '/register' | '/listing/create'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/listings'
+    | '/login'
+    | '/register'
+    | '/listing/create'
   fileRoutesById: FileRoutesById
 }
 
@@ -133,6 +163,7 @@ export interface RootRouteChildren {
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ListingCreateRoute: typeof ListingCreateRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -141,6 +172,7 @@ const rootRouteChildren: RootRouteChildren = {
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ListingCreateRoute: ListingCreateRoute,
 }
 
 export const routeTree = rootRoute
@@ -157,7 +189,8 @@ export const routeTree = rootRoute
         "/about",
         "/listings",
         "/login",
-        "/register"
+        "/register",
+        "/listing/create"
       ]
     },
     "/": {
@@ -174,6 +207,9 @@ export const routeTree = rootRoute
     },
     "/register": {
       "filePath": "register.tsx"
+    },
+    "/listing/create": {
+      "filePath": "listing/create.tsx"
     }
   }
 }
