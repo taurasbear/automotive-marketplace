@@ -63,7 +63,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="grid w-full min-w-3xs grid-cols-4 space-y-4 gap-x-12 gap-y-8"
+          className="grid w-full min-w-3xs grid-cols-4 space-y-4 gap-x-6 gap-y-6 md:gap-x-12 md:gap-y-8"
         >
           <FormField
             name="makeId"
@@ -290,7 +290,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               <FormItem className="col-span-2 flex flex-col justify-start">
                 <FormLabel>Door count*</FormLabel>
                 <FormControl>
-                  <Input type="number" min={0} max={12} {...field} />
+                  <Input type="number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -306,6 +306,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="h-5 w-5"
                   />
                 </FormControl>
                 <FormMessage />
@@ -322,6 +323,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="h-5 w-5"
                   />
                 </FormControl>
                 <FormMessage />
