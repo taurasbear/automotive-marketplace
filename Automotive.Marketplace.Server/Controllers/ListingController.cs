@@ -9,7 +9,6 @@ namespace Automotive.Marketplace.Server.Controllers;
 public class ListingController(IMediator mediator) : BaseController
 {
     [HttpGet]
-    [Protect]
     public async Task<ActionResult<IEnumerable<GetAllListingsResponse>>> GetAll(
         [FromQuery] GetAllListingsQuery query,
         CancellationToken cancellationToken)

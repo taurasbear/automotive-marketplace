@@ -8,7 +8,6 @@ namespace Automotive.Marketplace.Server.Controllers;
 public class MakeController(IMediator mediator) : BaseController
 {
     [HttpGet]
-    [Protect]
     public async Task<ActionResult<IEnumerable<GetAllMakesResponse>>> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetAllMakesQuery();
