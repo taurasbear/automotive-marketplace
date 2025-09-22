@@ -15,7 +15,7 @@ const Listings = () => {
     <div className="flex flex-row justify-center">
       <div className="bg-background text-on-background flex w-188 flex-col gap-10">
         {listings.map((l) => (
-          <ListingCard key={l.price} listing={l} />
+          <ListingCard key={l.id} listing={l} />
         ))}
       </div>
     </div>

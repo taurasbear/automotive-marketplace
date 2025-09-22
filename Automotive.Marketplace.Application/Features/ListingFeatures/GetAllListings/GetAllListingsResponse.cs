@@ -2,6 +2,8 @@
 
 public sealed record GetAllListingsResponse
 {
+    public Guid Id { get; set; }
+
     public bool IsUsed { get; set; }
 
     public string Year { get; set; } = string.Empty;
@@ -25,4 +27,13 @@ public sealed record GetAllListingsResponse
     public string City { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
+
+    public List<Image> Images { get; set; } = [];
+
+    public sealed class Image
+    {
+        public string Url { get; set; } = string.Empty;
+
+        public string AltText { get; set; } = string.Empty;
+    }
 }
