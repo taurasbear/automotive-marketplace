@@ -10,6 +10,11 @@ services:
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__AccessTokenExpirationMinutes=${JWT_ACCESSTOKENEXPIRATIONMINUTES}
       - Jwt__RefreshTokenExpirationDays=${JWT_REFRESHTOKENEXPIRATIONDAYS}
+      - MINIO__BUCKETNAME=${MINIO_BUCKETNAME}
+      - MINIO__PRESIGNEDURLEXPIRATIONHOURS=${MINIO_PRESIGNEDURLEXPIRATIONHOURS}
+      - MINIO__SERVERURL=${MINIO_SERVERURL}
+      - MINIO__ACCESSKEY=${MINIO_ACCESSKEY}
+      - MINIO__SECRETKEY=${MINIO_SECRETKEY}
     depends_on:
       - db
     networks:
@@ -48,9 +53,23 @@ services:
     restart: unless-stopped
     networks:
       - app-network
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESSKEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRETKEY}
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_CONSOLE_URL}
+      MINIO_SERVER_URL: ${MINIO_SERVERURL}
+      MINIO_SCHEME: http
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001" --address ":9000"
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
 
 volumes:
   postgres_data:
+  minio_data:

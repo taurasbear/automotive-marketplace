@@ -75,6 +75,12 @@ services:
       - app-network
   nginx:
     restart: no
+  minio:
+    ports:
+        - "9000:9000"
+        - "9001:9001"
+    volumes:
+      - ./minio_data:/data
 
 networks:
   app-network:

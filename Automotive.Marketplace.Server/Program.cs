@@ -52,7 +52,7 @@ string? connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("Development")
     : builder.Configuration.GetConnectionString("Production");
 
-builder.Services.ConfigureInfrastructure(connectionString);
+builder.Services.ConfigureInfrastructure(builder.Configuration, connectionString);
 builder.Services.ConfigureApplication();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
