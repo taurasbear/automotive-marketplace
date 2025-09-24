@@ -34,14 +34,17 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
     resolver: zodResolver(modelFormSchema),
   });
 
-  console.log("model: ", model);
+  const handleSubmit = async (formData: ModelFormData) => {
+    await onSubmit(formData);
+    form.reset();
+  };
 
   return (
     <div className={cn(className)}>
       <Form {...form}>
         <form
           className="grid w-full min-w-3xs gap-x-6 gap-y-6 md:gap-x-12 md:gap-y-8"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
         >
           <FormField
             name="name"
@@ -93,7 +96,11 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
               <FormItem>
                 <FormLabel>Make</FormLabel>
                 <FormControl>
-                  <MakeSelect isAllMakesEnabled={false} {...field} />
+                  <MakeSelect
+                    isAllMakesEnabled={false}
+                    onValueChange={field.onChange}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
