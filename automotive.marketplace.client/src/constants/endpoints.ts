@@ -14,6 +14,11 @@ export const ENDPOINTS = {
   },
   MODEL: {
     GET_BY_MAKE_ID: "/Model/GetByMakeId",
+    GET_BY_ID: "/Model/GetById",
+    GET_ALL: "/Model/GetAll",
+    CREATE: "/Model/Create",
+    DELETE: "/Model/Delete",
+    UPDATE: "/Model/Update",
   },
   ENUM: {
     GET_TRANSMISSIONS_TYPES: "/Enum/GetTransmissionTypes",

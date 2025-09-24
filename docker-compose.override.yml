@@ -16,8 +16,8 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/aspnetapp.pfx
     ports:
-      - "8080"
-      - "8081"
+      - "8090:8080"
+      - "8091:8081"
     volumes:
       - ./Automotive.Marketplace.Server:/app/Automotive.Marketplace.Server
       - ./Automotive.Marketplace.Application:/app/Automotive.Marketplace.Application

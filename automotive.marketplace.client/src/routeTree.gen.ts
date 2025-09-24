@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './app/routes/__root'
 import { Route as RegisterImport } from './app/routes/register'
+import { Route as ModelsImport } from './app/routes/models'
 import { Route as LoginImport } from './app/routes/login'
 import { Route as ListingsImport } from './app/routes/listings'
 import { Route as AboutImport } from './app/routes/about'
@@ -23,6 +24,12 @@ import { Route as ListingCreateImport } from './app/routes/listing/create'
 const RegisterRoute = RegisterImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ModelsRoute = ModelsImport.update({
+  id: '/models',
+  path: '/models',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/models': {
+      id: '/models'
+      path: '/models'
+      fullPath: '/models'
+      preLoaderRoute: typeof ModelsImport
+      parentRoute: typeof rootRoute
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -112,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
+  '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/listing/create': typeof ListingCreateRoute
 }
@@ -121,6 +136,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
+  '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/listing/create': typeof ListingCreateRoute
 }
@@ -131,6 +147,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
+  '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/listing/create': typeof ListingCreateRoute
 }
@@ -142,16 +159,25 @@ export interface FileRouteTypes {
     | '/about'
     | '/listings'
     | '/login'
+    | '/models'
     | '/register'
     | '/listing/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/listings' | '/login' | '/register' | '/listing/create'
+  to:
+    | '/'
+    | '/about'
+    | '/listings'
+    | '/login'
+    | '/models'
+    | '/register'
+    | '/listing/create'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/listings'
     | '/login'
+    | '/models'
     | '/register'
     | '/listing/create'
   fileRoutesById: FileRoutesById
@@ -162,6 +188,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
+  ModelsRoute: typeof ModelsRoute
   RegisterRoute: typeof RegisterRoute
   ListingCreateRoute: typeof ListingCreateRoute
 }
@@ -171,6 +198,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
+  ModelsRoute: ModelsRoute,
   RegisterRoute: RegisterRoute,
   ListingCreateRoute: ListingCreateRoute,
 }
@@ -189,6 +217,7 @@ export const routeTree = rootRoute
         "/about",
         "/listings",
         "/login",
+        "/models",
         "/register",
         "/listing/create"
       ]
@@ -204,6 +233,9 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/models": {
+      "filePath": "models.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
