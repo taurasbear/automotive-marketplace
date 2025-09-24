@@ -26,7 +26,7 @@ const DatePicker = <
   const dateValue = isValidDate(field.value) ? field.value : undefined;
 
   return (
-    <Popover>
+    <Popover modal={true}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
