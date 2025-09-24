@@ -1,5 +1,5 @@
 using AutoMapper;
-using Automotive.Marketplace.Application.Features.ModelFeatures;
+using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelsByMakeId;
 using Automotive.Marketplace.Domain.Entities;
 
 namespace Automotive.Marketplace.Application.Mappings;

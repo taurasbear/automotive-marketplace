@@ -5,7 +5,7 @@ using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Automotive.Marketplace.Application.Features.ModelFeatures;
+namespace Automotive.Marketplace.Application.Features.ModelFeatures.GetModelsByMakeId;
 
 public class GetModelsByMakeIdQueryHandler(
     IMapper mapper,
