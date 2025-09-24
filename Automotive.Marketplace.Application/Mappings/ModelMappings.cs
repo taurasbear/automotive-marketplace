@@ -1,4 +1,5 @@
 using AutoMapper;
+using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelById;
 using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelsByMakeId;
 using Automotive.Marketplace.Domain.Entities;
 
@@ -11,5 +12,7 @@ public class ModelMappings : Profile
         CreateMap<Model, GetModelsByMakeIdResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
+        CreateMap<Model, GetModelByIdResponse>();
     }
 }
