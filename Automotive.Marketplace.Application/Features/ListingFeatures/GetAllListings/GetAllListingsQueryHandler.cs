@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,8 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetAllList
 
 public class GetAllListingsQueryHandler(
     IMapper mapper,
-    IRepository repository) : IRequestHandler<GetAllListingsQuery, IEnumerable<GetAllListingsResponse>>
+    IRepository repository,
+    IImageStorageService imageStorageService) : IRequestHandler<GetAllListingsQuery, IEnumerable<GetAllListingsResponse>>
 {
     public async Task<IEnumerable<GetAllListingsResponse>> Handle(
         GetAllListingsQuery request,
@@ -26,7 +28,22 @@ public class GetAllListingsQueryHandler(
             .Where(listing => request.PriceTo == null || request.PriceTo >= listing.Price)
             .ToListAsync(cancellationToken);
 
-        var response = mapper.Map<IEnumerable<GetAllListingsResponse>>(listings);
+        List<GetAllListingsResponse> response = [];
+        foreach (var listing in listings)
+        {
+            var mappedListing = mapper.Map<GetAllListingsResponse>(listing);
+            foreach (var image in listing.Images)
+            {
+                var imageUrl = await imageStorageService.GetPresignedUrlAsync(image.ObjectKey);
+                var responseImage = new GetAllListingsResponse.Image
+                {
+                    Url = imageUrl,
+                    AltText = image.AltText
+                };
+                mappedListing.Images.Add(responseImage);
+            }
+            response.Add(mappedListing);
+        }
 
         return response;
     }

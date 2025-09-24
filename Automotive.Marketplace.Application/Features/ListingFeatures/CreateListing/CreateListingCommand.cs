@@ -1,5 +1,6 @@
 using Automotive.Marketplace.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 
@@ -40,4 +41,6 @@ public sealed record class CreateListingCommand : IRequest
     public Drivetrain Drivetrain { get; set; }
 
     public Guid UserId { get; set; }
+
+    public List<IFormFile> Images { get; set; } = [];
 }

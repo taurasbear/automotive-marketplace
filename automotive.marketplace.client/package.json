@@ -28,6 +28,7 @@
     "@tanstack/react-router": "^1.117.0",
     "@tanstack/react-router-devtools": "^1.117.0",
     "axios": "^1.8.4",
+    "browser-image-compression": "^1.0.15",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

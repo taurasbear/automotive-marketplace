@@ -16,4 +16,5 @@ export type CreateListingCommand = {
   doorCount: number;
   bodyType: string;
   drivetrain: string;
+  images: Blob[];
 };

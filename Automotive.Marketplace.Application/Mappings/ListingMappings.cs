@@ -10,6 +10,7 @@ public class ListingMapping : Profile
     public ListingMapping()
     {
         CreateMap<Listing, GetAllListingsResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Mileage))
             .ForMember(dest => dest.Power, opt => opt.MapFrom(src => src.Power))
             .ForMember(dest => dest.EngineSize, opt => opt.MapFrom(src => src.EngineSize))
@@ -18,7 +19,8 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.Transmission, opt => opt.MapFrom(src => src.Car.Transmission.ToString()))
             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Car.Year.Year.ToString()))
             .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Car.Model.Name))
-            .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.Car.Model.Make.Name));
+            .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.Car.Model.Make.Name))
+            .ForMember(dest => dest.Images, opt => opt.Ignore());
 
         CreateMap<CreateListingCommand, Listing>()
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
@@ -31,6 +33,7 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.IsSteeringWheelRight, opt => opt.MapFrom(src => src.IsSteeringWheelRight))
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
             .ForMember(dest => dest.IsUsed, opt => opt.MapFrom(src => src.IsUsed))
-            .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.UserId));
+            .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.UserId))
+            .ForMember(dest => dest.Images, opt => opt.Ignore());
     }
 }

@@ -18,9 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useCreateListing } from "../api/useCreateListing";
 import { CreateListingSchema } from "../schemas/createListingSchema";
+import { CreateListingFormData } from "../types/CreateListingFormData";
+import ImageUploadInput from "./ImageUploadInput";
 
 type CreateListingFormProps = {
   className?: string;
@@ -46,12 +47,13 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       bodyType: "",
       drivetrain: "",
       doorCount: 0,
+      images: [],
     },
   });
 
   const { mutateAsync: createListingAsync } = useCreateListing();
 
-  const onSubmit = async (formData: z.infer<typeof CreateListingSchema>) => {
+  const onSubmit = async (formData: CreateListingFormData) => {
     await createListingAsync(formData);
     form.reset();
   };
@@ -135,6 +137,19 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea className="max-h-96" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="images"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Upload your images</FormLabel>
+                <FormControl>
+                  <ImageUploadInput field={field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
