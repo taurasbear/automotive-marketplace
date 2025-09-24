@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Automotive.Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(AutomotiveContext))]
-    [Migration("20250921142542_InitialMigration")]
+    [Migration("20250924140101_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -219,6 +219,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateOnly>("FirstAppearanceDate")
+                        .HasColumnType("date");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -229,6 +232,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<decimal>("TotalRevenue")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -247,6 +253,12 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateOnly>("FirstAppearanceDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDiscontinued")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("MakeId")
                         .HasColumnType("uuid");
