@@ -13,6 +13,7 @@ public class GetAllModelsQueryHandler(
     public async Task<IEnumerable<GetAllModelsResponse>> Handle(GetAllModelsQuery request, CancellationToken cancellationToken)
     {
         var models = await repository.GetAllAsync<Model>(cancellationToken);
+        models = [.. models.OrderByDescending(model => model.FirstAppearanceDate)];
 
         var response = mapper.Map<IEnumerable<GetAllModelsResponse>>(models);
         return response;
