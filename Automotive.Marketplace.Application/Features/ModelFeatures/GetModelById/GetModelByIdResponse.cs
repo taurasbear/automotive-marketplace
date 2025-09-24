@@ -9,4 +9,6 @@ public sealed record GetModelByIdResponse
     public DateOnly FirstAppearanceDate { get; set; }
 
     public bool IsDiscontinued { get; set; }
+
+    public Guid MakeId { get; set; }
 }
