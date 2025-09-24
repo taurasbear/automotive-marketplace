@@ -16,7 +16,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
       <div className="flex flex-shrink-0 py-5">
         <img
           className="aspect-[4/3] object-cover"
-          alt={listing.images[0]?.altText || "Car image"}
+          alt={listing.images[0]?.altText || "2025 Toyota Prius"}
           src={
             listing.images.length > 0
               ? listing.images[0].url
