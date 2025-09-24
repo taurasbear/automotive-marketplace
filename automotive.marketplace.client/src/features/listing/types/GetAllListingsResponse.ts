@@ -1,4 +1,5 @@
 export type GetAllListingsResponse = {
+  id: string;
   isUsed: boolean;
   year: string;
   make: string;
@@ -11,4 +12,10 @@ export type GetAllListingsResponse = {
   transmission: string;
   city: string;
   description: string;
+  images: Image[];
+};
+
+type Image = {
+  url: string;
+  altText: string;
 };
