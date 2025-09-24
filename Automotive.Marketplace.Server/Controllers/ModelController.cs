@@ -5,6 +5,8 @@ using Automotive.Marketplace.Application.Features.ModelFeatures.GetAllModels;
 using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelById;
 using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelsByMakeId;
 using Automotive.Marketplace.Application.Features.ModelFeatures.UpdateModel;
+using Automotive.Marketplace.Domain.Enums;
+using Automotive.Marketplace.Server.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +15,7 @@ namespace Automotive.Marketplace.Server.Controllers;
 public class ModelController(IMediator mediator) : BaseController
 {
     [HttpGet]
+    [Protect(Permission.ViewModels)]
     public async Task<ActionResult<IEnumerable<GetAllMakesResponse>>> GetByMakeId(
         [FromQuery] GetModelsByMakeIdQuery query, CancellationToken cancellationToken)
     {
@@ -21,6 +24,7 @@ public class ModelController(IMediator mediator) : BaseController
     }
 
     [HttpGet]
+    [Protect(Permission.ViewModels)]
     public async Task<ActionResult<GetModelByIdResponse>> GetById([FromQuery] GetModelByIdQuery query, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(query, cancellationToken);
@@ -28,6 +32,7 @@ public class ModelController(IMediator mediator) : BaseController
     }
 
     [HttpGet]
+    [Protect(Permission.ViewModels)]
     public async Task<ActionResult<GetAllModelsResponse>> GetAll(CancellationToken cancellationToken)
     {
         var query = new GetAllModelsQuery();
@@ -36,6 +41,7 @@ public class ModelController(IMediator mediator) : BaseController
     }
 
     [HttpPost]
+    [Protect(Permission.ManageModels, Permission.CreateModels)]
     public async Task<ActionResult> Create([FromBody] CreateModelCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
@@ -43,6 +49,7 @@ public class ModelController(IMediator mediator) : BaseController
     }
 
     [HttpDelete]
+    [Protect(Permission.ManageModels)]
     public async Task<ActionResult> Delete([FromQuery] DeleteModelCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
@@ -50,6 +57,7 @@ public class ModelController(IMediator mediator) : BaseController
     }
 
     [HttpPut]
+    [Protect(Permission.ManageModels)]
     public async Task<ActionResult> Update([FromBody] UpdateModelCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
