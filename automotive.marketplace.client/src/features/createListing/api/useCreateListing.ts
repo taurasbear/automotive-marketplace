@@ -4,7 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import { CreateListingCommand } from "../types/CreateListingCommand";
 
 const createListing = (body: CreateListingCommand) =>
-  axiosClient.post<void>(ENDPOINTS.LISTING.CREATE, body);
+  axiosClient.postForm<void>(ENDPOINTS.LISTING.CREATE, body, {
+    formSerializer: { indexes: null },
+  });
 
 export const useCreateListing = () =>
   useMutation({

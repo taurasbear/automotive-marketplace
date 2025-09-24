@@ -141,4 +141,9 @@ export const CreateListingSchema = z.object({
         size: VALIDATION.DOOR_COUNT.MAX,
       }),
     }),
+  images: z
+    .array(
+      z.instanceof(Blob, { error: "You did not upload a valid image file" }),
+    )
+    .min(1, { error: "You must upload at least one image" }),
 });
