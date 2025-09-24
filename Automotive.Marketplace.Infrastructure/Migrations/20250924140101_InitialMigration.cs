@@ -17,6 +17,8 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    FirstAppearanceDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    TotalRevenue = table.Column<decimal>(type: "numeric", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
@@ -51,6 +53,8 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    FirstAppearanceDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    IsDiscontinued = table.Column<bool>(type: "boolean", nullable: false),
                     MakeId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
