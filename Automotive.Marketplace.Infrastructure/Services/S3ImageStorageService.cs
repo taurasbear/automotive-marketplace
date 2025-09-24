@@ -2,6 +2,7 @@ using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
@@ -11,7 +12,7 @@ public class S3ImageStorageService(IAmazonS3 s3Client, IConfiguration configurat
 {
     private readonly string _bucketName = configuration["MinIO:BucketName"]!;
 
-    public async Task<string> UploadImageAsync(IFormFile file, string fileName)
+    public async Task<ImageUploadResult> UploadImageAsync(IFormFile file, string fileName)
     {
         var safeFileName = WebUtility.HtmlEncode(Path.GetFileName(fileName));
 
@@ -29,7 +30,14 @@ public class S3ImageStorageService(IAmazonS3 s3Client, IConfiguration configurat
             await s3Client.PutObjectAsync(request);
         }
 
-        return safeFileName ?? "";
+        var result = new ImageUploadResult
+        {
+            ObjectKey = safeFileName ?? "",
+            BucketName = _bucketName,
+            FileSize = file.Length,
+        };
+
+        return result;
     }
 
     public async Task<string> GetPresignedUrlAsync(string fileName)

@@ -20,7 +20,7 @@ public class ListingController(IMediator mediator) : BaseController
     [HttpPost]
     [Protect]
     public async Task<ActionResult> Create(
-        [FromBody] CreateListingCommand command,
+        [FromForm] CreateListingCommand command,
         CancellationToken cancellationToken)
     {
         command.UserId = UserId;
