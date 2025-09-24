@@ -1,6 +1,10 @@
 ﻿using Automotive.Marketplace.Application.Features.MakeFeatures.GetAllMakes;
+using Automotive.Marketplace.Application.Features.ModelFeatures.CreateModel;
+using Automotive.Marketplace.Application.Features.ModelFeatures.DeleteModel;
+using Automotive.Marketplace.Application.Features.ModelFeatures.GetAllModels;
 using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelById;
 using Automotive.Marketplace.Application.Features.ModelFeatures.GetModelsByMakeId;
+using Automotive.Marketplace.Application.Features.ModelFeatures.UpdateModel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,5 +25,34 @@ public class ModelController(IMediator mediator) : BaseController
     {
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetAllModelsResponse>> GetAll(CancellationToken cancellationToken)
+    {
+        var query = new GetAllModelsQuery();
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] CreateModelCommand command, CancellationToken cancellationToken)
+    {
+        await mediator.Send(command, cancellationToken);
+        return Created();
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> Delete([FromQuery] DeleteModelCommand command, CancellationToken cancellationToken)
+    {
+        await mediator.Send(command, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut]
+    public async Task<ActionResult> Update([FromBody] UpdateModelCommand command, CancellationToken cancellationToken)
+    {
+        await mediator.Send(command, cancellationToken);
+        return NoContent();
     }
 }
