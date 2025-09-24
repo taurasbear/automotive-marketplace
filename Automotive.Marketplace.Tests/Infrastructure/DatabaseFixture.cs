@@ -28,17 +28,8 @@ public class DatabaseFixture<T> : IAsyncLifetime where T : class
 
         var services = new ServiceCollection();
         services.AddDbContext<AutomotiveContext>(options =>
-            options.UseNpgsql(_connectionString), ServiceLifetime.Transient);
-
-        var handlerTypes = typeof(GetAllListingsQueryHandler).Assembly
-            .GetTypes()
-            .Where(t => t.Name.EndsWith("Handler") && !t.IsAbstract)
-            .ToList();
-
-        foreach (var handlerType in handlerTypes)
-        {
-            services.AddScoped(handlerType);
-        }
+            options.UseLazyLoadingProxies()
+                .UseNpgsql(_connectionString), ServiceLifetime.Transient);
 
         services.AddScoped<IRepository, Repository>();
         services.AddAutoMapper(typeof(GetAllListingsQueryHandler).Assembly);
