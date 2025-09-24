@@ -1,10 +1,14 @@
+using AutoMapper;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Infrastructure.Data.Builders;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Tests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 
 namespace Automotive.Marketplace.Tests.Features.HandlerTests.ListingHandlerTests;
 
@@ -14,6 +18,8 @@ public class GetAllListingsQueryHandlerTests(
 {
     private readonly DatabaseFixture<GetAllListingsQueryHandlerTests> _fixture = fixture;
 
+    private readonly IImageStorageService _imageStorageService = Substitute.For<IImageStorageService>();
+
     public Task InitializeAsync() => Task.CompletedTask;
 
     public async Task DisposeAsync()
@@ -21,12 +27,20 @@ public class GetAllListingsQueryHandlerTests(
         await _fixture.ResetDatabaseAsync();
     }
 
+    private GetAllListingsQueryHandler CreateHandler(IServiceScope scope)
+    {
+        var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+        var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
+        var handler = new GetAllListingsQueryHandler(mapper, repository, _imageStorageService);
+        return handler;
+    }
+
     [Fact]
     public async Task Handle_NoListingsExist_ShouldReturnEmptyList()
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         var query = new GetAllListingsQuery();
@@ -43,7 +57,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 5;
@@ -63,7 +77,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -88,7 +102,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -113,7 +127,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 1;
@@ -138,7 +152,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -162,7 +176,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -187,7 +201,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -212,7 +226,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -237,7 +251,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
@@ -262,7 +276,7 @@ public class GetAllListingsQueryHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = scope.ServiceProvider.GetRequiredService<GetAllListingsQueryHandler>();
+        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         const int expectedCount = 3;
