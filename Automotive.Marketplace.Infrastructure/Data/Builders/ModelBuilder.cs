@@ -12,6 +12,10 @@ public class ModelBuilder
     {
         _faker = new Faker<Model>()
             .RuleFor(model => model.Id, faker => faker.Random.Guid())
+            .RuleFor(
+                model => model.FirstAppearanceDate,
+                faker => faker.Date.BetweenDateOnly(new DateOnly(1970, 1, 1), DateOnly.FromDateTime(DateTime.UtcNow)))
+            .RuleFor(model => model.IsDiscontinued, faker => faker.Random.Bool())
             .RuleFor(model => model.Name, faker => faker.Vehicle.Model());
     }
 

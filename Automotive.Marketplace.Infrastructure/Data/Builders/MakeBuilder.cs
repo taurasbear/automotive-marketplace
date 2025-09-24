@@ -12,6 +12,10 @@ public class MakeBuilder
     {
         _faker = new Faker<Make>()
             .RuleFor(make => make.Id, faker => faker.Random.Guid())
+            .RuleFor(
+                make => make.FirstAppearanceDate,
+                faker => faker.Date.BetweenDateOnly(new DateOnly(1970, 1, 1), DateOnly.FromDateTime(DateTime.UtcNow)))
+            .RuleFor(make => make.TotalRevenue, faker => faker.Random.Decimal(99999, 9999999999))
             .RuleFor(make => make.Name, faker => faker.Vehicle.Manufacturer());
     }
 
