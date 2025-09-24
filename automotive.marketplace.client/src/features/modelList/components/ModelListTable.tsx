@@ -31,33 +31,35 @@ const ModelListTable = ({ className }: ModelListTableProps) => {
   };
 
   return (
-    <Table className={cn(className)}>
-      <TableCaption>A list of models</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>First appearance</TableHead>
-          <TableHead>Discontinued</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {models.map((m) => (
-          <TableRow key={m.id}>
-            <TableCell>{m.name}</TableCell>
-            <TableCell>{m.firstAppearanceDate}</TableCell>
-            <TableCell>{String(m.isDiscontinued)}</TableCell>
-            <TableCell>
-              <ViewModelDialog id={m.id} />
-              <EditModelDialog id={m.id} />
-              <Button variant="secondary" onClick={() => handleDelete(m.id)}>
-                <Trash />
-              </Button>
-            </TableCell>
+    <div className={cn(className)}>
+      <Table>
+        <TableCaption>A list of models</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>First appearance</TableHead>
+            <TableHead>Discontinued</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {models.map((m) => (
+            <TableRow key={m.id}>
+              <TableCell>{m.name}</TableCell>
+              <TableCell>{m.firstAppearanceDate}</TableCell>
+              <TableCell>{String(m.isDiscontinued)}</TableCell>
+              <TableCell>
+                <ViewModelDialog id={m.id} />
+                <EditModelDialog id={m.id} />
+                <Button variant="secondary" onClick={() => handleDelete(m.id)}>
+                  <Trash />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 
