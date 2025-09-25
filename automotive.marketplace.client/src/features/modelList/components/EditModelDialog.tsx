@@ -1,29 +1,19 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
-import { getModelByIdOptions } from "../api/getModelByIdOptions";
 import { useUpdateModel } from "../api/useUpdateModel";
 import { ModelFormData } from "../types/ModelFormData";
-import ModelForm from "./ModelForm";
+import EditModelDialogContent from "./EditModelDialogContent";
 
 type ViewModelDialogProps = {
   id: string;
 };
 
 const EditModelDialog = ({ id }: ViewModelDialogProps) => {
-  const [isEditModelDialogOpen, setIsEditModelDialogOpen] = useState<boolean>();
-
-  const { data: modelQuery } = useSuspenseQuery(getModelByIdOptions({ id }));
-  const model = modelQuery.data;
+  const [isEditModelDialogOpen, setIsEditModelDialogOpen] =
+    useState<boolean>(false);
 
   const { mutateAsync: updateModelAsync } = useUpdateModel();
 
@@ -48,16 +38,7 @@ const EditModelDialog = ({ id }: ViewModelDialogProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit {model.name}</DialogTitle>
-        </DialogHeader>
-        <ModelForm
-          model={{
-            ...model,
-            firstAppearanceDate: new Date(model.firstAppearanceDate),
-          }}
-          onSubmit={handleSubmit}
-        />
+        <EditModelDialogContent id={id} onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   );
