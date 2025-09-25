@@ -1,5 +1,6 @@
 ﻿using Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
+using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ public class ListingController(IMediator mediator) : BaseController
     }
 
     [HttpPost]
-    [Protect]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult> Create(
         [FromForm] CreateListingCommand command,
         CancellationToken cancellationToken)
