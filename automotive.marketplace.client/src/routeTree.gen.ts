@@ -15,6 +15,7 @@ import { Route as RegisterImport } from './app/routes/register'
 import { Route as ModelsImport } from './app/routes/models'
 import { Route as LoginImport } from './app/routes/login'
 import { Route as ListingsImport } from './app/routes/listings'
+import { Route as CarsImport } from './app/routes/cars'
 import { Route as AboutImport } from './app/routes/about'
 import { Route as IndexImport } from './app/routes/index'
 import { Route as ListingCreateImport } from './app/routes/listing/create'
@@ -42,6 +43,12 @@ const LoginRoute = LoginImport.update({
 const ListingsRoute = ListingsImport.update({
   id: '/listings',
   path: '/listings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CarsRoute = CarsImport.update({
+  id: '/cars',
+  path: '/cars',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -79,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/cars': {
+      id: '/cars'
+      path: '/cars'
+      fullPath: '/cars'
+      preLoaderRoute: typeof CarsImport
       parentRoute: typeof rootRoute
     }
     '/listings': {
@@ -124,6 +138,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cars': typeof CarsRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -134,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cars': typeof CarsRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -145,6 +161,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/cars': typeof CarsRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -157,6 +174,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/cars'
     | '/listings'
     | '/login'
     | '/models'
@@ -166,6 +184,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/cars'
     | '/listings'
     | '/login'
     | '/models'
@@ -175,6 +194,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/cars'
     | '/listings'
     | '/login'
     | '/models'
@@ -186,6 +206,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CarsRoute: typeof CarsRoute
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
   ModelsRoute: typeof ModelsRoute
@@ -196,6 +217,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CarsRoute: CarsRoute,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
   ModelsRoute: ModelsRoute,
@@ -215,6 +237,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/cars",
         "/listings",
         "/login",
         "/models",
@@ -227,6 +250,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/cars": {
+      "filePath": "cars.tsx"
     },
     "/listings": {
       "filePath": "listings.tsx"

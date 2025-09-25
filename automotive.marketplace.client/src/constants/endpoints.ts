@@ -20,6 +20,13 @@ export const ENDPOINTS = {
     DELETE: "/Model/Delete",
     UPDATE: "/Model/Update",
   },
+  CAR: {
+    GET_BY_ID: "/Car/GetById",
+    GET_ALL: "/Car/GetAll",
+    CREATE: "/Car/Create",
+    DELETE: "/Car/Delete",
+    UPDATE: "/Car/Update",
+  },
   ENUM: {
     GET_TRANSMISSIONS_TYPES: "/Enum/GetTransmissionTypes",
     GET_FUEL_TYPES: "/Enum/GetFuelTypes",

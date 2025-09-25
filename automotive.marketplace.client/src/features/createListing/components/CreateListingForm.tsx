@@ -1,6 +1,6 @@
 import BodyTypeSelect from "@/components/forms/BodyTypeSelect";
 import DrivetrainToggleGroup from "@/components/forms/DrivetrainToggleGroup";
-import FuelToggleGroup from "@/components/forms/FuelSelect";
+import FuelSelect from "@/components/forms/FuelSelect";
 import MakeSelect from "@/components/forms/MakeSelect";
 import ModelSelect from "@/components/forms/ModelSelect";
 import TransmissionToggleGroup from "@/components/forms/TransmissionToggleGroup";
@@ -262,7 +262,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               <FormItem className="col-span-1 flex flex-col justify-start">
                 <FormLabel>Fuel type*</FormLabel>
                 <FormControl>
-                  <FuelToggleGroup onValueChange={field.onChange} {...field} />
+                  <FuelSelect onValueChange={field.onChange} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

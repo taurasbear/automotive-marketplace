@@ -20,9 +20,8 @@ public class UserSeeder(AutomotiveContext context, IPasswordHasher passwordHashe
 
         var superuser = CreateSuperuser();
         var regularUser = CreateRegularUser();
-        var moderatorUser = CreateModeratorUser();
 
-        await context.AddRangeAsync([superuser, regularUser, moderatorUser], cancellationToken);
+        await context.AddRangeAsync([superuser, regularUser], cancellationToken);
 
         var users = new UserBuilder().Build(3);
         await context.AddRangeAsync(users, cancellationToken);
@@ -64,37 +63,18 @@ public class UserSeeder(AutomotiveContext context, IPasswordHasher passwordHashe
                 new()
                 {
                     Permission = Permission.ViewModels,
+                },
+                new()
+                {
+                    Permission = Permission.ViewCars,
+                },
+                new()
+                {
+                    Permission = Permission.CreateListings,
                 }
             ],
         };
 
         return regularUser;
-    }
-
-    private User CreateModeratorUser()
-    {
-        var moderatorUser = new User
-        {
-            Username = "BearMod",
-            Email = "bear@mod.com",
-            HashedPassword = passwordHasher.Hash("password"),
-            UserPermissions =
-            [
-                new()
-                {
-                    Permission = Permission.ViewListings,
-                },
-                new()
-                {
-                    Permission = Permission.ViewModels,
-                },
-                new()
-                {
-                    Permission = Permission.CreateModels,
-                },
-            ],
-        };
-
-        return moderatorUser;
     }
 }
