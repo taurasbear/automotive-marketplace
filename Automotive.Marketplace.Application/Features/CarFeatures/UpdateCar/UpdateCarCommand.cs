@@ -7,7 +7,7 @@ public sealed record UpdateCarCommand : IRequest
 {
     public Guid Id { get; set; }
 
-    public DateTime Year { get; set; }
+    public int Year { get; set; }
 
     public Fuel Fuel { get; set; }
 

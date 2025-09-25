@@ -38,8 +38,10 @@ public class CarMappings : Profile
             .ForMember(dest => dest.Transmission, opt => opt.MapFrom(src => src.Transmission.ToString()))
             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Year.Year.ToString()));
 
-        CreateMap<CreateCarCommand, Car>();
+        CreateMap<CreateCarCommand, Car>()
+            .ForMember(dest => dest.Year, opt => opt.MapFrom(src => new DateTime(src.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc)));
 
-        CreateMap<UpdateCarCommand, Car>();
+        CreateMap<UpdateCarCommand, Car>()
+            .ForMember(dest => dest.Year, opt => opt.MapFrom(src => new DateTime(src.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc)));
     }
 }
