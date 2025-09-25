@@ -1,7 +1,10 @@
 export const ENDPOINTS = {
   LISTING: {
+    GET_BY_ID: "/Listing/GetById",
     GET_ALL: "/Listing/GetAll",
     CREATE: "/Listing/Create",
+    DELETE: "/Listing/Delete",
+    UPDATE: "/Listing/Update",
   },
   AUTH: {
     REFRESH: "/Auth/Refresh",

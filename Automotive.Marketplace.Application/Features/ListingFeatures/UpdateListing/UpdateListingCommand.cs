@@ -6,8 +6,6 @@ public sealed record UpdateListingCommand : IRequest
 {
     public Guid Id { get; set; }
 
-    public Guid ModelId { get; set; }
-
     public decimal Price { get; set; }
 
     public string? Description { get; set; }
