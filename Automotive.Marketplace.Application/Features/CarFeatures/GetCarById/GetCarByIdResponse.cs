@@ -14,5 +14,7 @@ public sealed record GetCarByIdResponse
 
     public int DoorCount { get; set; }
 
+    public Guid MakeId { get; set; }
+
     public Guid ModelId { get; set; }
 }

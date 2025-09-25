@@ -28,6 +28,7 @@ public class CarMappings : Profile
             .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType.ToString()))
             .ForMember(dest => dest.Drivetrain, opt => opt.MapFrom(src => src.Drivetrain.ToString()))
             .ForMember(dest => dest.DoorCount, opt => opt.MapFrom(src => src.DoorCount.ToString()))
+            .ForMember(dest => dest.MakeId, opt => opt.MapFrom(src => src.Model.MakeId.ToString()))
             .ForMember(dest => dest.ModelId, opt => opt.MapFrom(src => src.ModelId.ToString()));
 
         CreateMap<Car, GetAllCarsResponse>()
