@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { router } from "@/lib/router";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { PiEngine } from "react-icons/pi";
@@ -11,6 +12,11 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ listing }: ListingCardProps) => {
+  console.log("listing: ", listing);
+  const handleClick = async () => {
+    await router.navigate({ to: "/listing/$id", params: { id: listing.id } });
+  };
+
   return (
     <div className="bg-surface border-secondary-border grid w-full grid-cols-2 gap-8 border-1">
       <div className="flex flex-shrink-0 py-5">
@@ -66,7 +72,10 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button className="h-full max-h-12 rounded-3xl text-xl font-bold">
+          <Button
+            className="h-full max-h-12 rounded-3xl text-xl font-bold"
+            onClick={handleClick}
+          >
             Check out
           </Button>
         </div>
