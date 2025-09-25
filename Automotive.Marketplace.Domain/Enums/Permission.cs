@@ -9,4 +9,10 @@ public enum Permission
     CreateModels,
 
     ManageModels,
+
+    ViewCars,
+
+    CreateCars,
+
+    ManageCars
 }
