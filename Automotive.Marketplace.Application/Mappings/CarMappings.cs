@@ -23,7 +23,7 @@ public class CarMappings : Profile
 
         CreateMap<Car, GetCarByIdResponse>()
             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Year.Year.ToString()))
-            .ForMember(dest => dest.FuelType, opt => opt.MapFrom(src => src.Fuel.ToString()))
+            .ForMember(dest => dest.Fuel, opt => opt.MapFrom(src => src.Fuel.ToString()))
             .ForMember(dest => dest.Transmission, opt => opt.MapFrom(src => src.Transmission.ToString()))
             .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.BodyType.ToString()))
             .ForMember(dest => dest.Drivetrain, opt => opt.MapFrom(src => src.Drivetrain.ToString()))

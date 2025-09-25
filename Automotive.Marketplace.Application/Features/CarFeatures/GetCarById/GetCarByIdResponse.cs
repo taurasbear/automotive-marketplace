@@ -4,7 +4,7 @@ public sealed record GetCarByIdResponse
 {
     public string Year { get; set; } = string.Empty;
 
-    public string FuelType { get; set; } = string.Empty;
+    public string Fuel { get; set; } = string.Empty;
 
     public string Transmission { get; set; } = string.Empty;
 
