@@ -5,7 +5,7 @@ namespace Automotive.Marketplace.Application.Features.CarFeatures.CreateCar;
 
 public sealed record CreateCarCommand : IRequest
 {
-    public DateTime Year { get; set; }
+    public int Year { get; set; }
 
     public Fuel Fuel { get; set; }
 
