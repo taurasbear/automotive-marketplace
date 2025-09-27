@@ -3,7 +3,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -22,11 +21,13 @@ const YearSelect = ({ label, onValueChange, className }: YearSelectProps) => {
     <div>
       <Select onValueChange={onValueChange}>
         <SelectTrigger className={cn(className, "w-full")}>
-          <SelectValue placeholder="-" />
+          <div className="grid grid-cols-1 justify-items-start">
+            <label className="text-muted-foreground text-xs">{label}</label>
+            <SelectValue placeholder="-" />
+          </div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>{label}</SelectLabel>
             {years.map((year) => (
               <SelectItem key={year} value={year.toString()}>
                 {year}

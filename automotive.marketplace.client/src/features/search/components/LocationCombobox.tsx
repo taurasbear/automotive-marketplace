@@ -42,20 +42,23 @@ const LocationCombobox = ({
           <Button
             variant="outline"
             role="location-combobox"
-            //aria-expanded={open}
             className={cn(
               className,
               "w-full justify-between bg-transparent font-normal",
             )}
           >
-            {selectedLocation ? (
-              locations.find((location) => location.value === selectedLocation)
-                ?.label
-            ) : (
-              <span className="text-muted-foreground truncate text-sm">
-                Any location
-              </span>
-            )}
+            <div className="grid grid-cols-1 justify-items-start">
+              <label className="text-muted-foreground text-xs">Location</label>
+              {selectedLocation ? (
+                locations.find(
+                  (location) => location.value === selectedLocation,
+                )?.label
+              ) : (
+                <span className="text-muted-foreground truncate text-sm">
+                  Any location
+                </span>
+              )}
+            </div>
             <ChevronDown className="opacity-50" />
           </Button>
         </PopoverTrigger>

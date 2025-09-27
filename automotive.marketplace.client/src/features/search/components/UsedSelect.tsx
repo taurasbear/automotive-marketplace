@@ -21,7 +21,10 @@ const UsedSelect = ({ onValueChange, className }: UsedSelectProps) => {
     <div>
       <Select onValueChange={onValueChange} defaultValue="newused">
         <SelectTrigger className={cn(className, "w-full min-w-3xs")}>
-          <SelectValue />
+          <div className="grid grid-cols-1 justify-items-start">
+            <label className="text-muted-foreground text-xs">Used/New</label>
+            <SelectValue />
+          </div>
         </SelectTrigger>
         <SelectContent>
           {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (

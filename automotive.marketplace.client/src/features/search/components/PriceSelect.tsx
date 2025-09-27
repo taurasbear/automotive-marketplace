@@ -3,7 +3,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -24,11 +23,13 @@ const PriceSelect = ({ label, onValueChange, className }: PriceSelectProps) => {
     <div>
       <Select onValueChange={onValueChange}>
         <SelectTrigger className={cn(className, "flex w-full flex-row")}>
-          <SelectValue placeholder="-" />
+          <div className="grid grid-cols-1 justify-items-start">
+            <label className="text-muted-foreground text-xs">{label}</label>
+            <SelectValue placeholder="-" />
+          </div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>{label}</SelectLabel>
             {prices.map((price) => (
               <SelectItem
                 key={price}

@@ -28,8 +28,11 @@ const MakeSelect = ({
 
   return (
     <Select {...props}>
-      <SelectTrigger className={cn(className, "w-full")}>
-        <SelectValue placeholder="Toyota" />
+      <SelectTrigger className={cn("w-full", className)}>
+        <div className="grid grid-cols-1 justify-items-start">
+          <label className="text-muted-foreground text-xs">Make</label>
+          <SelectValue placeholder="Toyota" />
+        </div>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

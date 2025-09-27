@@ -34,7 +34,10 @@ const ModelSelect = ({
   return (
     <Select {...props}>
       <SelectTrigger className={cn(className, "w-full")}>
-        <SelectValue placeholder="Auris" />
+        <div className="grid grid-cols-1 justify-items-start">
+          <label className="text-muted-foreground text-xs">Model</label>
+          <SelectValue placeholder="Auris" />
+        </div>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
