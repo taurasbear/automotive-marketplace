@@ -14,21 +14,29 @@ interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <>
-      <div className="flex items-center gap-2 p-2 shadow-lg/2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{" "}
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
-        <Link to="/listing/create" className="[&.active]:font-bold">
-          Create listing
-        </Link>
-        <LogoutButton />
+      <div className="shadow-lg/2">
+        <div className="mx-8 flex items-center justify-between py-2 xl:mx-auto xl:max-w-6xl">
+          <div className="space-x-2 truncate">
+            <Link to="/" className="[&.active]:font-bold">
+              Home
+            </Link>{" "}
+            <Link to="/about" className="[&.active]:font-bold">
+              About
+            </Link>
+            <Link to="/listing/create" className="[&.active]:font-bold">
+              Create listing
+            </Link>
+          </div>
+          <div className="">
+            <LogoutButton />
+          </div>
+        </div>
       </div>
       {/* <hr /> */}
-      <Outlet />
-      <TanStackRouterDevtools />
+      <div className="mx-8 xl:mx-auto xl:max-w-6xl">
+        <Outlet />
+        <TanStackRouterDevtools />
+      </div>
     </>
   ),
 });
