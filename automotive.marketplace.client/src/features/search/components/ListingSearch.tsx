@@ -2,25 +2,20 @@ import MakeSelect from "@/components/forms/MakeSelect";
 import ModelSelect from "@/components/forms/ModelSelect";
 import { Button } from "@/components/ui/button";
 import { getSearchParamFromValue } from "@/features/listing/utils/listingSearchUtils";
+import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { SearchParams } from "../types/searchParams";
 import LocationCombobox from "./LocationCombobox";
 import PriceSelect from "./PriceSelect";
 import UsedSelect from "./UsedSelect";
 import YearSelect from "./YearSelect";
 
-export type SearchParams = {
-  makeId?: string;
-  modelId?: string;
-  city?: string;
-  isUsed?: boolean;
-  yearFrom?: number;
-  yearTo?: number;
-  priceFrom?: number;
-  priceTo?: number;
+type ListingSearchProps = {
+  className?: string;
 };
 
-const ListingSearch = () => {
+const ListingSearch = ({ className }: ListingSearchProps) => {
   const [searchParams, setSearchParams] = useState<SearchParams>({});
 
   const updateSearchParam = <K extends keyof SearchParams>(
@@ -32,7 +27,7 @@ const ListingSearch = () => {
   };
 
   return (
-    <div>
+    <div className={cn(className)}>
       <div className="grid grid-cols-6 grid-rows-2">
         <div className="col-span-2">
           <MakeSelect

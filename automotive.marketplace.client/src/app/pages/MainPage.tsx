@@ -2,7 +2,7 @@ import { ListingSearch } from "@/features/search";
 
 const MainPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center pt-64">
+    <div className="mx-auto mt-64 min-h-screen max-w-3xl">
       <ListingSearch />
     </div>
   );
