@@ -13,13 +13,13 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
 
 type MakeSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
-  className?: string;
   isAllMakesEnabled: boolean;
+  className?: string;
 };
 
 const MakeSelect = ({
-  className,
   isAllMakesEnabled,
+  className,
   ...props
 }: MakeSelectProps) => {
   const { data: makesQuery } = useQuery(getAllMakesOptions);
@@ -27,26 +27,22 @@ const MakeSelect = ({
   const makes = makesQuery?.data || [];
 
   return (
-    <div className={cn(className)}>
-      <Select {...props}>
-        <SelectTrigger className="w-full border-0 shadow-none">
-          <SelectValue placeholder="Toyota" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Makes</SelectLabel>
-            {!isAllMakesEnabled || (
-              <SelectItem value="all">All makes</SelectItem>
-            )}
-            {makes.map((make) => (
-              <SelectItem key={make.id} value={make.id}>
-                {make.name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
+    <Select {...props}>
+      <SelectTrigger className={cn(className, "w-full")}>
+        <SelectValue placeholder="Toyota" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Makes</SelectLabel>
+          {!isAllMakesEnabled || <SelectItem value="all">All makes</SelectItem>}
+          {makes.map((make) => (
+            <SelectItem key={make.id} value={make.id}>
+              {make.name}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
 

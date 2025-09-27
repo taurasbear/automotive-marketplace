@@ -7,13 +7,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 type PriceSelectProps = {
   label: string;
   onValueChange: (value: string) => void;
+  className?: string;
 };
 
-const PriceSelect = ({ label, onValueChange }: PriceSelectProps) => {
+const PriceSelect = ({ label, onValueChange, className }: PriceSelectProps) => {
   const prices = [150, 300, 500];
   for (let i = 1000; i <= 5000; i += 500) {
     prices.push(i);
@@ -21,7 +23,7 @@ const PriceSelect = ({ label, onValueChange }: PriceSelectProps) => {
   return (
     <div>
       <Select onValueChange={onValueChange}>
-        <SelectTrigger className="flex w-full flex-row border-0 shadow-none">
+        <SelectTrigger className={cn(className, "flex w-full flex-row")}>
           <SelectValue placeholder="-" />
         </SelectTrigger>
         <SelectContent>

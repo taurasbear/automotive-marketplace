@@ -12,17 +12,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 type LocationComboboxProps = {
   selectedLocation?: string;
   onValueChange: (value: string) => void;
+  className?: string;
 };
 
 const LocationCombobox = ({
   selectedLocation,
   onValueChange,
+  className,
 }: LocationComboboxProps) => {
   const locations = [
     { value: "kaunas", label: "Kaunas" },
@@ -40,7 +43,10 @@ const LocationCombobox = ({
             variant="outline"
             role="location-combobox"
             //aria-expanded={open}
-            className="w-full justify-between border-0 bg-transparent font-normal shadow-none"
+            className={cn(
+              className,
+              "w-full justify-between bg-transparent font-normal",
+            )}
           >
             {selectedLocation ? (
               locations.find((location) => location.value === selectedLocation)

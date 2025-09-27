@@ -32,6 +32,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
         <div className="grid grid-cols-1 divide-y-1 border-b-1 sm:grid-cols-3 sm:divide-x-1 sm:divide-y-0">
           <div className="col-span-1">
             <MakeSelect
+              className="border-0 shadow-none"
               isAllMakesEnabled={true}
               defaultValue="all"
               onValueChange={(value) => updateSearchParam("makeId", value)}
@@ -39,6 +40,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
           </div>
           <div className="col-span-1">
             <ModelSelect
+              className="border-0 shadow-none"
               isAllModelsEnabled={true}
               defaultValue="all"
               selectedMake={searchParams.makeId}
@@ -47,6 +49,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
           </div>
           <div className="col-span-1">
             <LocationCombobox
+              className="border-0 shadow-none"
               selectedLocation={searchParams.city}
               onValueChange={(value) => updateSearchParam("city", value)}
             />
@@ -55,29 +58,34 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
         <div className="grid grid-cols-2 sm:grid-cols-6 sm:divide-x-1">
           <div className="col-span-2 border-b-1 sm:border-b-0">
             <UsedSelect
+              className="border-0 shadow-none"
               onValueChange={(value) => updateSearchParam("isUsed", value)}
             />
           </div>
           <div className="border-r-1 border-b-1 sm:border-b-0">
             <YearSelect
+              className="border-0 shadow-none"
               label="From year"
               onValueChange={(value) => updateSearchParam("yearFrom", value)}
             />
           </div>
           <div className="border-b-1 sm:border-b-0">
             <YearSelect
+              className="border-0 shadow-none"
               label="To year"
               onValueChange={(value) => updateSearchParam("yearTo", value)}
             />
           </div>
           <div className="border-r-1">
             <PriceSelect
+              className="border-0 shadow-none"
               label="From price"
               onValueChange={(value) => updateSearchParam("priceFrom", value)}
             />
           </div>
           <div>
             <PriceSelect
+              className="border-0 shadow-none"
               label="To price"
               onValueChange={(value) => updateSearchParam("priceTo", value)}
             />
