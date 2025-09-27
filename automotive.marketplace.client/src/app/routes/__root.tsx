@@ -14,7 +14,7 @@ interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <>
-      <div className="flex items-center gap-2 p-2">
+      <div className="flex items-center gap-2 p-2 shadow-lg/2">
         <Link to="/" className="[&.active]:font-bold">
           Home
         </Link>{" "}
@@ -26,7 +26,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         </Link>
         <LogoutButton />
       </div>
-      <hr />
+      {/* <hr /> */}
       <Outlet />
       <TanStackRouterDevtools />
     </>
