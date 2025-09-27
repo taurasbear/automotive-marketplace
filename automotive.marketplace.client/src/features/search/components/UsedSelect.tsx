@@ -18,7 +18,7 @@ const UsedSelect = ({ onValueChange }: UsedSelectProps) => {
   return (
     <div>
       <Select onValueChange={onValueChange} defaultValue="newused">
-        <SelectTrigger className="w-full min-w-3xs">
+        <SelectTrigger className="w-full min-w-3xs border-0 shadow-none">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

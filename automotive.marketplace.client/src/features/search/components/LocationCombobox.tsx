@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -12,6 +7,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -40,13 +40,15 @@ const LocationCombobox = ({
             variant="outline"
             role="location-combobox"
             //aria-expanded={open}
-            className="w-full justify-between font-normal"
+            className="w-full justify-between border-0 bg-transparent font-normal shadow-none"
           >
             {selectedLocation ? (
               locations.find((location) => location.value === selectedLocation)
                 ?.label
             ) : (
-              <p className="text-muted-foreground text-sm">Any location</p>
+              <span className="text-muted-foreground truncate text-sm">
+                Any location
+              </span>
             )}
             <ChevronDown className="opacity-50" />
           </Button>

@@ -28,56 +28,60 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
 
   return (
     <div className={cn(className)}>
-      <div className="grid grid-cols-6 grid-rows-2">
-        <div className="col-span-2">
-          <MakeSelect
-            isAllMakesEnabled={true}
-            defaultValue="all"
-            onValueChange={(value) => updateSearchParam("makeId", value)}
-          />
+      <div className="overflow-hidden rounded-2xl border-1">
+        <div className="grid grid-cols-1 divide-y-1 border-b-1 sm:grid-cols-3 sm:divide-x-1 sm:divide-y-0">
+          <div className="col-span-1">
+            <MakeSelect
+              isAllMakesEnabled={true}
+              defaultValue="all"
+              onValueChange={(value) => updateSearchParam("makeId", value)}
+            />
+          </div>
+          <div className="col-span-1">
+            <ModelSelect
+              isAllModelsEnabled={true}
+              defaultValue="all"
+              selectedMake={searchParams.makeId}
+              onValueChange={(value) => updateSearchParam("modelId", value)}
+            />
+          </div>
+          <div className="col-span-1">
+            <LocationCombobox
+              selectedLocation={searchParams.city}
+              onValueChange={(value) => updateSearchParam("city", value)}
+            />
+          </div>
         </div>
-        <div className="col-span-2">
-          <ModelSelect
-            isAllModelsEnabled={true}
-            defaultValue="all"
-            selectedMake={searchParams.makeId}
-            onValueChange={(value) => updateSearchParam("modelId", value)}
-          />
-        </div>
-        <div className="col-span-2">
-          <LocationCombobox
-            selectedLocation={searchParams.city}
-            onValueChange={(value) => updateSearchParam("city", value)}
-          />
-        </div>
-        <div className="col-span-2">
-          <UsedSelect
-            onValueChange={(value) => updateSearchParam("isUsed", value)}
-          />
-        </div>
-        <div>
-          <YearSelect
-            label="From year"
-            onValueChange={(value) => updateSearchParam("yearFrom", value)}
-          />
-        </div>
-        <div>
-          <YearSelect
-            label="To year"
-            onValueChange={(value) => updateSearchParam("yearTo", value)}
-          />
-        </div>
-        <div>
-          <PriceSelect
-            label="From price"
-            onValueChange={(value) => updateSearchParam("priceFrom", value)}
-          />
-        </div>
-        <div>
-          <PriceSelect
-            label="To price"
-            onValueChange={(value) => updateSearchParam("priceTo", value)}
-          />
+        <div className="grid grid-cols-2 sm:grid-cols-6 sm:divide-x-1">
+          <div className="col-span-2 border-b-1 sm:border-b-0">
+            <UsedSelect
+              onValueChange={(value) => updateSearchParam("isUsed", value)}
+            />
+          </div>
+          <div className="border-r-1 border-b-1 sm:border-b-0">
+            <YearSelect
+              label="From year"
+              onValueChange={(value) => updateSearchParam("yearFrom", value)}
+            />
+          </div>
+          <div className="border-b-1 sm:border-b-0">
+            <YearSelect
+              label="To year"
+              onValueChange={(value) => updateSearchParam("yearTo", value)}
+            />
+          </div>
+          <div className="border-r-1">
+            <PriceSelect
+              label="From price"
+              onValueChange={(value) => updateSearchParam("priceFrom", value)}
+            />
+          </div>
+          <div>
+            <PriceSelect
+              label="To price"
+              onValueChange={(value) => updateSearchParam("priceTo", value)}
+            />
+          </div>
         </div>
       </div>
       <div className="flex justify-end pt-2">

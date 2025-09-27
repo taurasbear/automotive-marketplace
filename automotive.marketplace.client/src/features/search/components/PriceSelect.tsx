@@ -1,11 +1,11 @@
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
-  SelectGroup,
-  SelectLabel,
 } from "@/components/ui/select";
 
 type PriceSelectProps = {
@@ -21,7 +21,7 @@ const PriceSelect = ({ label, onValueChange }: PriceSelectProps) => {
   return (
     <div>
       <Select onValueChange={onValueChange}>
-        <SelectTrigger className="flex w-full flex-row">
+        <SelectTrigger className="flex w-full flex-row border-0 shadow-none">
           <SelectValue placeholder="-" />
         </SelectTrigger>
         <SelectContent>
