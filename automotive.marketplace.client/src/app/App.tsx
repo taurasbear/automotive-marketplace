@@ -5,7 +5,7 @@ import { RouterProvider } from "@tanstack/react-router";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <RouterProvider router={router} />
       <Toaster />
     </ThemeProvider>
