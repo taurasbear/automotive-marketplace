@@ -14,11 +14,13 @@ import { useQuery } from "@tanstack/react-query";
 
 type MakeSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
   isAllMakesEnabled: boolean;
+  label?: string;
   className?: string;
 };
 
 const MakeSelect = ({
   isAllMakesEnabled,
+  label,
   className,
   ...props
 }: MakeSelectProps) => {
@@ -30,7 +32,7 @@ const MakeSelect = ({
     <Select {...props}>
       <SelectTrigger className={cn("w-full", className)}>
         <div className="grid grid-cols-1 justify-items-start">
-          <label className="text-muted-foreground text-xs">Make</label>
+          <label className="text-muted-foreground text-xs">{label}</label>
           <SelectValue placeholder="Toyota" />
         </div>
       </SelectTrigger>
