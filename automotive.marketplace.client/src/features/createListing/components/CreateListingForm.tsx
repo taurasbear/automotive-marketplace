@@ -40,6 +40,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       makeId: "",
       modelId: "",
       city: "",
+      colour: "",
       isUsed: false,
       year: 0,
       transmission: "",
