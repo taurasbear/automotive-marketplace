@@ -28,7 +28,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
 
   return (
     <div className={cn(className)}>
-      <div className="overflow-hidden rounded-2xl border-1">
+      <div className="bg-primary-foreground overflow-hidden rounded-2xl border-1">
         <div className="grid grid-cols-1 divide-y-1 border-b-1 sm:grid-cols-3 sm:divide-x-1 sm:divide-y-0">
           <div className="col-span-1">
             <MakeSelect
@@ -92,9 +92,9 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end pt-2">
+      <div className="flex justify-end pt-4">
         <Link to="/listings" search={searchParams}>
-          <Button>Search</Button>
+          <Button className="px-8 py-5 text-lg">Search</Button>
         </Link>
       </div>
     </div>
