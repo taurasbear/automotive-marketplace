@@ -33,6 +33,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
           <div className="col-span-1">
             <MakeSelect
               className="min-h-15 border-0 shadow-none"
+              label="Make"
               isAllMakesEnabled={true}
               defaultValue="all"
               onValueChange={(value) => updateSearchParam("makeId", value)}
@@ -43,6 +44,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
               className="min-h-15 border-0 shadow-none"
               isAllModelsEnabled={true}
               defaultValue="all"
+              label="Model"
               selectedMake={searchParams.makeId}
               onValueChange={(value) => updateSearchParam("modelId", value)}
             />
