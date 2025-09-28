@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -12,17 +7,25 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 type LocationComboboxProps = {
   selectedLocation?: string;
   onValueChange: (value: string) => void;
+  className?: string;
 };
 
 const LocationCombobox = ({
   selectedLocation,
   onValueChange,
+  className,
 }: LocationComboboxProps) => {
   const locations = [
     { value: "kaunas", label: "Kaunas" },
@@ -39,15 +42,23 @@ const LocationCombobox = ({
           <Button
             variant="outline"
             role="location-combobox"
-            //aria-expanded={open}
-            className="w-full justify-between font-normal"
-          >
-            {selectedLocation ? (
-              locations.find((location) => location.value === selectedLocation)
-                ?.label
-            ) : (
-              <p className="text-muted-foreground text-sm">Any location</p>
+            className={cn(
+              className,
+              "w-full justify-between bg-transparent font-normal",
             )}
+          >
+            <div className="grid grid-cols-1 justify-items-start">
+              <label className="text-muted-foreground text-xs">Location</label>
+              {selectedLocation ? (
+                locations.find(
+                  (location) => location.value === selectedLocation,
+                )?.label
+              ) : (
+                <span className="text-muted-foreground truncate text-sm">
+                  Any location
+                </span>
+              )}
+            </div>
             <ChevronDown className="opacity-50" />
           </Button>
         </PopoverTrigger>

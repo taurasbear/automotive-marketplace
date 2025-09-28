@@ -13,15 +13,15 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
 
 type ModelSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
-  className?: string;
   selectedMake?: string;
   isAllModelsEnabled: boolean;
+  className?: string;
 };
 
 const ModelSelect = ({
-  className,
   selectedMake,
   isAllModelsEnabled,
+  className,
   ...props
 }: ModelSelectProps) => {
   const { data: modelsQuery } = useQuery({
@@ -32,26 +32,27 @@ const ModelSelect = ({
   const models = modelsQuery?.data || [];
 
   return (
-    <div className={cn(className)}>
-      <Select {...props}>
-        <SelectTrigger className="w-full">
+    <Select {...props}>
+      <SelectTrigger className={cn(className, "w-full")}>
+        <div className="grid grid-cols-1 justify-items-start">
+          <label className="text-muted-foreground text-xs">Model</label>
           <SelectValue placeholder="Auris" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Models</SelectLabel>
-            {!isAllModelsEnabled || (
-              <SelectItem value="all">All models</SelectItem>
-            )}
-            {models.map((model) => (
-              <SelectItem key={model.id} value={model.id}>
-                {model.name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
+        </div>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Models</SelectLabel>
+          {!isAllModelsEnabled || (
+            <SelectItem value="all">All models</SelectItem>
+          )}
+          {models.map((model) => (
+            <SelectItem key={model.id} value={model.id}>
+              {model.name}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
 

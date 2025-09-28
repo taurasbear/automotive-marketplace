@@ -1,10 +1,6 @@
-import { LogoutButton } from "@/features/auth";
+import Header from "@/components/layout/header/Header";
 import { QueryClient } from "@tanstack/react-query";
-import {
-  createRootRouteWithContext,
-  Link,
-  Outlet,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 interface RouterContext {
@@ -14,21 +10,11 @@ interface RouterContext {
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <>
-      <div className="flex items-center gap-2 p-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>{" "}
-        <Link to="/about" className="[&.active]:font-bold">
-          About
-        </Link>
-        <Link to="/listing/create" className="[&.active]:font-bold">
-          Create listing
-        </Link>
-        <LogoutButton />
+      <Header />
+      <div className="mx-8 xl:mx-auto xl:max-w-6xl">
+        <Outlet />
+        <TanStackRouterDevtools />
       </div>
-      <hr />
-      <Outlet />
-      <TanStackRouterDevtools />
     </>
   ),
 });
