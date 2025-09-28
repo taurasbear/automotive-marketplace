@@ -144,7 +144,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Colour")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -155,7 +154,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("EngineSize")
@@ -191,7 +189,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Vin")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
