@@ -66,7 +66,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="grid w-full min-w-3xs grid-cols-4 space-y-4 gap-x-6 gap-y-6 md:gap-x-12 md:gap-y-8"
+          className="grid w-full min-w-3xs grid-cols-2 space-y-4 gap-x-6 gap-y-6 md:grid-cols-6 md:gap-x-12 md:gap-y-12"
         >
           <FormField
             name="makeId"
@@ -134,7 +134,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="description"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-4 flex flex-col justify-start">
+              <FormItem className="col-span-2 flex flex-col justify-start md:col-span-4">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea className="max-h-96" {...field} />
@@ -148,7 +148,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Upload your images</FormLabel>
+                <FormLabel>Vehicle images*</FormLabel>
                 <FormControl>
                   <ImageUploadInput field={field} />
                 </FormControl>
@@ -255,7 +255,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="drivetrain"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-2 flex flex-col justify-start">
+              <FormItem className="col-span-1 flex flex-col justify-start md:col-span-2">
                 <FormLabel>Drivetrain*</FormLabel>
                 <FormControl>
                   <DrivetrainToggleGroup
@@ -315,7 +315,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="isSteeringWheelRight"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1 col-start-2 flex flex-col items-center justify-start">
+              <FormItem className="col-span-1 flex flex-col items-center justify-start">
                 <FormLabel>Steering wheel on right</FormLabel>
                 <FormControl>
                   <Checkbox
@@ -332,7 +332,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             name="isUsed"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1 flex flex-col items-center justify-start">
+              <FormItem className="col-span-1 flex flex-col items-center justify-evenly">
                 <FormLabel>Used car</FormLabel>
                 <FormControl>
                   <Checkbox
@@ -345,7 +345,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               </FormItem>
             )}
           />
-          <Button className="col-span-2 col-start-2" type="submit">
+          <Button className="col-span-2 md:col-start-3" type="submit">
             Submit
           </Button>
         </form>

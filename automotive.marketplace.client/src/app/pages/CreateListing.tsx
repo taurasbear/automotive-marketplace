@@ -2,8 +2,9 @@ import { CreateListingForm } from "@/features/createListing";
 
 const CreateListing = () => {
   return (
-    <div className="flex flex-col items-center py-24">
-      <CreateListingForm className="w-full max-w-sm md:max-w-xl" />
+    <div className="my-24 flex flex-col items-center space-y-12">
+      <h1 className="text-xl font-semibold">Create your own listing</h1>
+      <CreateListingForm className="border-border w-full rounded-2xl border-1 p-4" />
     </div>
   );
 };
