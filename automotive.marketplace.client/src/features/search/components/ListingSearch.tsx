@@ -28,7 +28,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
 
   return (
     <div className={cn(className)}>
-      <div className="bg-primary-foreground overflow-hidden rounded-2xl border-1">
+      <div className="bg-background overflow-hidden rounded-2xl border-1">
         <div className="grid grid-cols-1 divide-y-1 border-b-1 sm:grid-cols-3 sm:divide-x-1 sm:divide-y-0">
           <div className="col-span-1">
             <MakeSelect
