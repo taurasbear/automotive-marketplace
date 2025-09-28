@@ -169,23 +169,18 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             )}
           />
           <FormField
-            name="vin"
+            name="mileage"
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>VIN</FormLabel>
+                <FormLabel>Mileage (km)*</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="1G1JC524417418958"
-                    type="text"
-                    {...field}
-                  />
+                  <Input type="number" min={0} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
           <FormField
             name="power"
             control={form.control}
@@ -207,32 +202,6 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 <FormLabel>Engine size (ml)*</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="mileage"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Mileage (km)</FormLabel>
-                <FormControl>
-                  <Input type="number" min={0} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="colour"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Colour</FormLabel>
-                <FormControl>
-                  <Input placeholder="Crimson" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -306,6 +275,36 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 <FormLabel>Door count*</FormLabel>
                 <FormControl>
                   <Input type="number" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="vin"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>VIN</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="1G1JC524417418958"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="colour"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Colour</FormLabel>
+                <FormControl>
+                  <Input placeholder="Crimson" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
