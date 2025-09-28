@@ -18,7 +18,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
   };
 
   return (
-    <div className="bg-card border-secondary-border grid w-full grid-cols-2 gap-8 border-1">
+    <div className="bg-card border-border grid w-full grid-cols-2 gap-8 border-1">
       <div className="flex flex-shrink-0 py-5">
         <img
           className="aspect-[4/3] object-cover"
