@@ -18,7 +18,7 @@ export const getSearchParamFromValue = <K extends keyof SearchParams>(
       {
         new: false,
         used: true,
-        newused: null,
+        newUsed: null,
       }[value as CarConditionKey] ?? null;
 
     return isUsedValue;
