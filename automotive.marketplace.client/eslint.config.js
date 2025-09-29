@@ -57,11 +57,13 @@ export default tseslint.config(
                 "@/features/*/types/*",
                 "@/features/*/state/*",
                 "@/features/*/schemas/*",
+                "@/features/*/utils/*",
                 "**/features/*/api/*",
                 "**/features/*/components/*",
                 "**/features/*/types/*",
                 "**/features/*/state/*",
                 "**/features/*/schemas/*",
+                "**/features/*/utils/*",
               ],
               message:
                 "Import from feature barrel files (index.ts) instead of internal modules.",
