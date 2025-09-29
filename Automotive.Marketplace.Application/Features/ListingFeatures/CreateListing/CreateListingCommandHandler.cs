@@ -35,7 +35,7 @@ public class CreateListingCommandHandler(
                 OriginalFileName = imageFile.FileName,
                 ContentType = imageFile.ContentType,
                 FileSize = imageUploadResult.FileSize,
-                AltText = $"{car.Year} {make.Name} {model.Name}"
+                AltText = $"{car.Year.Year} {make.Name} {model.Name}"
             };
 
             await repository.CreateAsync(image, cancellationToken);
