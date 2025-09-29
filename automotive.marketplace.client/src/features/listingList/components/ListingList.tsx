@@ -13,8 +13,9 @@ const ListingList = ({ listingSearchQuery }: ListingListProps) => {
   );
 
   const listings = listingsQuery.data;
+
   return (
-    <div className="bg-background text-on-background flex w-188 flex-col gap-10">
+    <div className="bg-background text-on-background flex w-204 flex-col gap-10">
       {listings.map((l) => (
         <ListingCard key={l.id} listing={l} />
       ))}

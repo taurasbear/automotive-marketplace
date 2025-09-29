@@ -12,7 +12,6 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ listing }: ListingCardProps) => {
-  console.log("listing: ", listing);
   const handleClick = async () => {
     await router.navigate({ to: "/listing/$id", params: { id: listing.id } });
   };
