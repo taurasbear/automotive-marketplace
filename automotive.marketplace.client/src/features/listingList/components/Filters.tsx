@@ -1,11 +1,10 @@
 import {
+  getSearchParams,
+  getSearchValues,
   ListingSearchParams,
   ListingSearchStateValues,
 } from "@/features/search";
-import {
-  getSearchParams,
-  getSearchValues,
-} from "@/features/search/utils/listingSearchUtils";
+
 import BasicFilters from "./BasicFilters";
 import ModelFilter from "./ModelFilter";
 import RangeFilters from "./RangeFilters";

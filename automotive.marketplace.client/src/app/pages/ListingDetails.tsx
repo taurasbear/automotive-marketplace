@@ -1,5 +1,5 @@
 import { Route } from "@/app/routes/listing/$id";
-import ListingDetailsContent from "@/features/listingDetails/components/ListingDetailsContent";
+import { ListingDetailsContent } from "@/features/listingDetails";
 
 const ListingDetails = () => {
   const { id } = Route.useParams();

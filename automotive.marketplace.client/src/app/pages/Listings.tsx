@@ -1,6 +1,5 @@
 import { Route } from "@/app/routes/listings";
-import Filters from "@/features/listingList/components/Filters";
-import ListingList from "@/features/listingList/components/ListingList";
+import { Filters, ListingList } from "@/features/listingList";
 
 const Listings = () => {
   const searchParams = Route.useSearch();

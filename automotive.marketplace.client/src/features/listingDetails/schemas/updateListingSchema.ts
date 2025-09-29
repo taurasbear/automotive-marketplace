@@ -1,4 +1,4 @@
-import { CreateListingSchema } from "@/features/createListing/schemas/createListingSchema";
+import { CreateListingSchema } from "@/features/createListing";
 import z from "zod";
 
 export const UpdateListingSchema = z.object({
