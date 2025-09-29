@@ -1,8 +1,6 @@
 import MakeSelect from "@/components/forms/MakeSelect";
 import ModelSelect from "@/components/forms/ModelSelect";
-import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { SearchStateValues } from "../types/searchStateValues";
 import LocationCombobox from "./LocationCombobox";
 import PriceSelect from "./PriceSelect";
@@ -10,24 +8,19 @@ import UsedSelect from "./UsedSelect";
 import YearSelect from "./YearSelect";
 
 type ListingSearchFiltersProps = {
+  searchValues: SearchStateValues;
+  updateSearchValue: <K extends keyof SearchStateValues>(
+    key: K,
+    value: string,
+  ) => void;
   className?: string;
 };
 
-const ListingSearchFilters = ({ className }: ListingSearchFiltersProps) => {
-  const [searchValues, setSearchValues] = useState<SearchStateValues>({
-    makeId: UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
-    modelId: UI_CONSTANTS.SELECT.ALL_MODELS.VALUE,
-    city: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
-    isUsed: "newUsed",
-  });
-
-  const updateSearchValue = <K extends keyof SearchStateValues>(
-    key: K,
-    value: string,
-  ) => {
-    setSearchValues((prev) => ({ ...prev, [key]: value }));
-  };
-
+const ListingSearchFilters = ({
+  searchValues,
+  updateSearchValue,
+  className,
+}: ListingSearchFiltersProps) => {
   return (
     <div
       className={cn(
