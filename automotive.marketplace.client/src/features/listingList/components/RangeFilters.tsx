@@ -1,5 +1,5 @@
-import PriceSelect from "@/features/search/components/PriceSelect";
-import YearSelect from "@/features/search/components/YearSelect";
+import PriceSelect from "@/components/forms/select/PriceSelect";
+import YearSelect from "@/components/forms/select/YearSelect";
 
 const RangeFilters = () => {
   return (

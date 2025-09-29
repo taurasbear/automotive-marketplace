@@ -1,11 +1,11 @@
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
 import { cn } from "@/lib/utils";
+import LocationCombobox from "../../../components/forms/select/LocationCombobox";
+import PriceSelect from "../../../components/forms/select/PriceSelect";
+import UsedSelect from "../../../components/forms/select/UsedSelect";
+import YearSelect from "../../../components/forms/select/YearSelect";
 import { SearchStateValues } from "../types/searchStateValues";
-import LocationCombobox from "./LocationCombobox";
-import PriceSelect from "./PriceSelect";
-import UsedSelect from "./UsedSelect";
-import YearSelect from "./YearSelect";
 
 type ListingSearchFiltersProps = {
   searchValues: SearchStateValues;

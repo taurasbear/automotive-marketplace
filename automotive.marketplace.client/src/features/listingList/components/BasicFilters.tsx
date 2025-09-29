@@ -1,6 +1,6 @@
+import LocationCombobox from "@/components/forms/select/LocationCombobox";
 import MakeSelect from "@/components/forms/select/MakeSelect";
-import LocationCombobox from "@/features/search/components/LocationCombobox";
-import UsedSelect from "@/features/search/components/UsedSelect";
+import UsedSelect from "@/components/forms/select/UsedSelect";
 import type { ValueOf } from "type-fest";
 import { BasicFilter } from "../types/basicFilter";
 
