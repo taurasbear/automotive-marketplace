@@ -1,8 +1,8 @@
-import BodyTypeSelect from "@/components/forms/BodyTypeSelect";
 import DrivetrainToggleGroup from "@/components/forms/DrivetrainToggleGroup";
-import FuelSelect from "@/components/forms/FuelSelect";
-import MakeSelect from "@/components/forms/MakeSelect";
-import ModelSelect from "@/components/forms/ModelSelect";
+import BodyTypeSelect from "@/components/forms/select/BodyTypeSelect";
+import FuelSelect from "@/components/forms/select/FuelSelect";
+import MakeSelect from "@/components/forms/select/MakeSelect";
+import ModelSelect from "@/components/forms/select/ModelSelect";
 import TransmissionToggleGroup from "@/components/forms/TransmissionToggleGroup";
 import { Button } from "@/components/ui/button";
 import {

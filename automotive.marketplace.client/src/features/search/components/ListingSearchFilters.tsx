@@ -1,5 +1,5 @@
-import MakeSelect from "@/components/forms/MakeSelect";
-import ModelSelect from "@/components/forms/ModelSelect";
+import MakeSelect from "@/components/forms/select/MakeSelect";
+import ModelSelect from "@/components/forms/select/ModelSelect";
 import { cn } from "@/lib/utils";
 import { SearchStateValues } from "../types/searchStateValues";
 import LocationCombobox from "./LocationCombobox";

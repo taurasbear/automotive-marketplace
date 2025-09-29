@@ -1,5 +1,5 @@
 import DatePicker from "@/components/common/DatePicker";
-import MakeSelect from "@/components/forms/MakeSelect";
+import MakeSelect from "@/components/forms/select/MakeSelect";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

@@ -1,4 +1,4 @@
-import MakeSelect from "@/components/forms/MakeSelect";
+import MakeSelect from "@/components/forms/select/MakeSelect";
 import LocationCombobox from "@/features/search/components/LocationCombobox";
 import UsedSelect from "@/features/search/components/UsedSelect";
 import type { ValueOf } from "type-fest";
