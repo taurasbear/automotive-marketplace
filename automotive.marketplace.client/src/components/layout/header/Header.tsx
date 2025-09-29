@@ -1,7 +1,7 @@
 import { LogoutButton } from "@/features/auth";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../../ui/button";
-import ThemeToggle from "../ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   return (
