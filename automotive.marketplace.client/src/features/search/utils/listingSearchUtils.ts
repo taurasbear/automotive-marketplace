@@ -31,3 +31,23 @@ export const getSearchParams = (
     priceTo: Number(searchValues.priceTo),
   };
 };
+
+export const getSearchValues = (
+  searchParams: SearchParams,
+): SearchStateValues => {
+  const isUsedValue =
+    (Object.keys(isUsedMapping) as Array<keyof typeof isUsedMapping>).find(
+      (key) => isUsedMapping[key] === searchParams.isUsed,
+    ) ?? "newUsed";
+
+  return {
+    makeId: searchParams.makeId ?? UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
+    modelId: searchParams.modelId ?? UI_CONSTANTS.SELECT.ALL_MODELS.VALUE,
+    city: searchParams.city ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
+    isUsed: isUsedValue,
+    yearFrom: String(searchParams.yearFrom),
+    yearTo: String(searchParams.yearTo),
+    priceFrom: String(searchParams.priceFrom),
+    priceTo: String(searchParams.priceTo),
+  };
+};
