@@ -1,36 +1,33 @@
-import { CarConditionKey } from "@/constants/carConditions";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { SearchParams } from "@/features/search";
+import { SearchStateValues } from "../types/searchStateValues";
 
-export const getSearchParamFromValue = <K extends keyof SearchParams>(
-  key: K,
-  value: string,
-) => {
-  if (key === "makeId") {
-    return value === "all" ? undefined : value;
-  }
+const isUsedMapping = {
+  new: false,
+  used: true,
+  newUsed: undefined,
+};
 
-  if (key === "city") {
-    return value === "any" ? undefined : value;
-  }
-
-  if (key === "isUsed") {
-    const isUsedValue =
-      {
-        new: false,
-        used: true,
-        newUsed: null,
-      }[value as CarConditionKey] ?? null;
-
-    return isUsedValue;
-  }
-  if (
-    key === "priceFrom" ||
-    key === "priceTo" ||
-    key === "yearFrom" ||
-    key === "yearTo"
-  ) {
-    return Number(value);
-  }
-
-  return value;
+export const getSearchParams = (
+  searchValues: SearchStateValues,
+): SearchParams => {
+  return {
+    makeId:
+      searchValues.makeId === UI_CONSTANTS.SELECT.ALL_MAKES.VALUE
+        ? undefined
+        : searchValues.makeId,
+    modelId:
+      searchValues.modelId === UI_CONSTANTS.SELECT.ALL_MODELS.VALUE
+        ? undefined
+        : searchValues.modelId,
+    city:
+      searchValues.city === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+        ? undefined
+        : searchValues.city,
+    isUsed: isUsedMapping[searchValues.isUsed],
+    yearFrom: Number(searchValues.yearFrom),
+    yearTo: Number(searchValues.yearTo),
+    priceFrom: Number(searchValues.priceFrom),
+    priceTo: Number(searchValues.priceTo),
+  };
 };

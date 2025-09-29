@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SearchStateValues } from "../types/searchStateValues";
+import { getSearchParams } from "../utils/listingSearchUtils";
 import ListingSearchFilters from "./ListingSearchFilters";
 
 type ListingSearchProps = {
@@ -39,7 +40,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
         className="w-full"
       />
       <div className="flex justify-end pt-4">
-        <Link to="/listings">
+        <Link to="/listings" search={() => getSearchParams(searchValues)}>
           <Button className="px-8 py-5 text-lg">Search</Button>
         </Link>
       </div>
