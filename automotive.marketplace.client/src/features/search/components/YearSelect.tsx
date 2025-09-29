@@ -7,36 +7,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { SelectRootProps } from "@/types/ui/selectRootProps";
 
-const years = Array.from({ length: 2025 - 1950 + 1 }, (_, i) => 1950 + i);
+const years = Array.from(
+  { length: new Date().getUTCFullYear() - 1950 + 1 },
+  (_, i) => 1950 + i,
+);
 
-type YearSelectProps = {
+type YearSelectProps = SelectRootProps & {
   label: string;
-  onValueChange: (value: string) => void;
   className?: string;
 };
 
-const YearSelect = ({ label, onValueChange, className }: YearSelectProps) => {
+const YearSelect = ({ label, className, ...props }: YearSelectProps) => {
   return (
-    <div>
-      <Select onValueChange={onValueChange}>
-        <SelectTrigger className={cn("w-full", className)}>
-          <div className="grid grid-cols-1 justify-items-start">
-            <label className="text-muted-foreground text-xs">{label}</label>
-            <SelectValue placeholder="-" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {years.map((year) => (
-              <SelectItem key={year} value={year.toString()}>
-                {year}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
+    <Select {...props}>
+      <SelectTrigger className={cn("w-full", className)}>
+        <div className="grid grid-cols-1 justify-items-start">
+          <label className="text-muted-foreground text-xs">{label}</label>
+          <SelectValue placeholder="-" />
+        </div>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {years.map((year) => (
+            <SelectItem key={year} value={year.toString()}>
+              {year}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
 

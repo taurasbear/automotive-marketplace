@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
@@ -45,7 +46,9 @@ const ModelSelect = ({
         <SelectGroup>
           <SelectLabel>Models</SelectLabel>
           {!isAllModelsEnabled || (
-            <SelectItem value="all">All models</SelectItem>
+            <SelectItem value={UI_CONSTANTS.SELECT.ALL_MODELS.VALUE}>
+              {UI_CONSTANTS.SELECT.ALL_MODELS.LABEL}
+            </SelectItem>
           )}
           {models.map((model) => (
             <SelectItem key={model.id} value={model.id}>

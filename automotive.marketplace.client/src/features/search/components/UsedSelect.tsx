@@ -10,31 +10,41 @@ import {
   CarConditionKey,
 } from "@/constants/carConditions";
 import { cn } from "@/lib/utils";
+import { SelectRootProps } from "@/types/ui/selectRootProps";
 
-type UsedSelectProps = {
+type UsedSelectProps = Omit<SelectRootProps, "value" | "onValueChange"> & {
+  value: CarConditionKey;
+  defaultValue?: CarConditionKey;
   onValueChange: (value: CarConditionKey) => void;
   className?: string;
 };
 
-const UsedSelect = ({ onValueChange, className }: UsedSelectProps) => {
+const UsedSelect = ({
+  value,
+  defaultValue,
+  onValueChange,
+  className,
+}: UsedSelectProps) => {
   return (
-    <div>
-      <Select onValueChange={onValueChange} defaultValue="newused">
-        <SelectTrigger className={cn("w-full min-w-3xs", className)}>
-          <div className="grid grid-cols-1 justify-items-start">
-            <label className="text-muted-foreground text-xs">Used/New</label>
-            <SelectValue />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (
-            <SelectItem key={conditionKey} value={conditionKey}>
-              {conditionName}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select
+      value={value}
+      onValueChange={onValueChange}
+      defaultValue={defaultValue}
+    >
+      <SelectTrigger className={cn("w-full min-w-3xs", className)}>
+        <div className="grid grid-cols-1 justify-items-start">
+          <label className="text-muted-foreground text-xs">Used/New</label>
+          <SelectValue />
+        </div>
+      </SelectTrigger>
+      <SelectContent>
+        {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (
+          <SelectItem key={conditionKey} value={conditionKey}>
+            {conditionName}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 };
 

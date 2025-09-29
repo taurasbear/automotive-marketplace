@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
@@ -39,7 +40,11 @@ const MakeSelect = ({
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Makes</SelectLabel>
-          {!isAllMakesEnabled || <SelectItem value="all">All makes</SelectItem>}
+          {!isAllMakesEnabled || (
+            <SelectItem value={UI_CONSTANTS.SELECT.ALL_MAKES.VALUE}>
+              {UI_CONSTANTS.SELECT.ALL_MAKES.LABEL}
+            </SelectItem>
+          )}
           {makes.map((make) => (
             <SelectItem key={make.id} value={make.id}>
               {make.name}
