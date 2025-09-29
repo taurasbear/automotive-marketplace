@@ -1,7 +1,7 @@
 import MakeSelect from "@/components/forms/MakeSelect";
 import ModelSelect from "@/components/forms/ModelSelect";
 import { Button } from "@/components/ui/button";
-import { getSearchParamFromValue } from "@/features/listing/utils/listingSearchUtils";
+import { getSearchParamFromValue } from "@/features/listingList/utils/listingSearchUtils";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
