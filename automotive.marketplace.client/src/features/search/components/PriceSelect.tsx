@@ -16,10 +16,10 @@ type PriceSelectProps = SelectRootProps & {
 
 const PriceSelect = ({ label, className, ...props }: PriceSelectProps) => {
   const prices = [150, 300, 500];
-  for (let i = 1000; i <= 5000; i += 500) {
+  for (let i = 1000; i < 5000; i += 500) {
     prices.push(i);
   }
-  for (let i = 5000; i <= 10000; i += 1000) {
+  for (let i = 5000; i < 10000; i += 1000) {
     prices.push(i);
   }
   for (let i = 10000; i <= 100000; i += 2500) {
