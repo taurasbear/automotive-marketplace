@@ -43,8 +43,8 @@ const LocationCombobox = ({
             variant="outline"
             role="location-combobox"
             className={cn(
-              className,
               "w-full justify-between bg-transparent font-normal",
+              className,
             )}
           >
             <div className="grid grid-cols-1 justify-items-start">

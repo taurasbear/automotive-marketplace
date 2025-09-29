@@ -20,7 +20,7 @@ const UsedSelect = ({ onValueChange, className }: UsedSelectProps) => {
   return (
     <div>
       <Select onValueChange={onValueChange} defaultValue="newused">
-        <SelectTrigger className={cn(className, "w-full min-w-3xs")}>
+        <SelectTrigger className={cn("w-full min-w-3xs", className)}>
           <div className="grid grid-cols-1 justify-items-start">
             <label className="text-muted-foreground text-xs">Used/New</label>
             <SelectValue />
