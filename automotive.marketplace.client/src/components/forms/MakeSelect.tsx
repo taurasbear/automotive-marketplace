@@ -9,10 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import * as SelectPrimitive from "@radix-ui/react-select";
+import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
 
-type MakeSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
+type MakeSelectProps = SelectRootProps & {
   isAllMakesEnabled: boolean;
   label?: string;
   className?: string;

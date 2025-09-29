@@ -9,10 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import * as SelectPrimitive from "@radix-ui/react-select";
+import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
 
-type FuelSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
+type FuelSelectProps = SelectRootProps & {
   className?: string;
 };
 
