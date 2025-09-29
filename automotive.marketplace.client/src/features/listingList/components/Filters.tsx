@@ -1,5 +1,7 @@
-import { ListingSearchParams } from "@/features/search";
-import { SearchStateValues } from "@/features/search/types/searchStateValues";
+import {
+  ListingSearchParams,
+  ListingSearchStateValues,
+} from "@/features/search";
 import {
   getSearchParams,
   getSearchValues,
@@ -16,7 +18,7 @@ type FiltersProps = {
 const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
   const searchValues = getSearchValues(searchParams);
 
-  const handleFilterChange = async <K extends keyof SearchStateValues>(
+  const handleFilterChange = async <K extends keyof ListingSearchStateValues>(
     key: K,
     value: string,
   ) => {

@@ -3,7 +3,7 @@ import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { SearchStateValues } from "../types/searchStateValues";
+import { ListingSearchStateValues } from "../types/listingSearchStateValues";
 import { getSearchParams } from "../utils/listingSearchUtils";
 import ListingSearchFilters from "./ListingSearchFilters";
 
@@ -12,14 +12,14 @@ type ListingSearchProps = {
 };
 
 const ListingSearch = ({ className }: ListingSearchProps) => {
-  const [searchValues, setSearchValues] = useState<SearchStateValues>({
+  const [searchValues, setSearchValues] = useState<ListingSearchStateValues>({
     makeId: UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
     modelId: UI_CONSTANTS.SELECT.ALL_MODELS.VALUE,
     city: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: "newUsed",
   });
 
-  const updateSearchValue = <K extends keyof SearchStateValues>(
+  const updateSearchValue = <K extends keyof ListingSearchStateValues>(
     key: K,
     value: string,
   ) => {

@@ -1,6 +1,6 @@
 import { CarConditionKey } from "@/constants/carConditions";
 
-export type SearchStateValues = {
+export type ListingSearchStateValues = {
   makeId: string;
   modelId: string;
   city: string;

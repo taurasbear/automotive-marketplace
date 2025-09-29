@@ -1,6 +1,6 @@
 import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { ListingSearchParams } from "@/features/search";
-import { SearchStateValues } from "../types/searchStateValues";
+import { ListingSearchStateValues } from "../types/listingSearchStateValues";
 
 const isUsedMapping = {
   new: false,
@@ -9,7 +9,7 @@ const isUsedMapping = {
 };
 
 export const getSearchParams = (
-  searchValues: SearchStateValues,
+  searchValues: ListingSearchStateValues,
 ): ListingSearchParams => {
   return {
     makeId:
@@ -34,7 +34,7 @@ export const getSearchParams = (
 
 export const getSearchValues = (
   searchParams: ListingSearchParams,
-): SearchStateValues => {
+): ListingSearchStateValues => {
   const isUsedValue =
     (Object.keys(isUsedMapping) as Array<keyof typeof isUsedMapping>).find(
       (key) => isUsedMapping[key] === searchParams.isUsed,

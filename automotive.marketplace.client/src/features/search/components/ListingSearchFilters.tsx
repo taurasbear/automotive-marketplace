@@ -5,11 +5,11 @@ import LocationCombobox from "../../../components/forms/select/LocationCombobox"
 import PriceSelect from "../../../components/forms/select/PriceSelect";
 import UsedSelect from "../../../components/forms/select/UsedSelect";
 import YearSelect from "../../../components/forms/select/YearSelect";
-import { SearchStateValues } from "../types/searchStateValues";
+import { ListingSearchStateValues } from "../types/listingSearchStateValues";
 
 type ListingSearchFiltersProps = {
-  searchValues: SearchStateValues;
-  updateSearchValue: <K extends keyof SearchStateValues>(
+  searchValues: ListingSearchStateValues;
+  updateSearchValue: <K extends keyof ListingSearchStateValues>(
     key: K,
     value: string,
   ) => void;
