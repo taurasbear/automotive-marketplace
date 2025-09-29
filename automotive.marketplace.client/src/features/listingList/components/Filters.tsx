@@ -1,4 +1,4 @@
-import { SearchParams } from "@/features/search";
+import { ListingSearchParams } from "@/features/search";
 import { SearchStateValues } from "@/features/search/types/searchStateValues";
 import {
   getSearchParams,
@@ -9,8 +9,8 @@ import ModelFilter from "./ModelFilter";
 import RangeFilters from "./RangeFilters";
 
 type FiltersProps = {
-  searchParams: SearchParams;
-  onSearchParamChange: (searchParams: SearchParams) => Promise<void>;
+  searchParams: ListingSearchParams;
+  onSearchParamChange: (searchParams: ListingSearchParams) => Promise<void>;
 };
 
 const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
