@@ -14,7 +14,7 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 
     public int? MinYear { get; set; }
 
-    public int? YearTo { get; set; }
+    public int? MaxYear { get; set; }
 
     public int? PriceFrom { get; set; }
 

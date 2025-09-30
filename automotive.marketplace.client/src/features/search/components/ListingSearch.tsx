@@ -18,7 +18,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
     city: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: "newUsed",
     minYear: "",
-    yearTo: "",
+    maxYear: "",
     priceFrom: "",
     priceTo: "",
   });

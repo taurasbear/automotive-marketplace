@@ -80,9 +80,9 @@ const ListingSearchFilters = ({
         <div className="border-b-1 sm:border-b-0">
           <YearSelect
             className="min-h-15 border-0 shadow-none"
-            label="To year"
-            value={searchValues.yearTo}
-            onValueChange={(value) => updateSearchValue("yearTo", value)}
+            label="Max year"
+            value={searchValues.maxYear}
+            onValueChange={(value) => updateSearchValue("maxYear", value)}
           />
         </div>
         <div className="border-r-1">

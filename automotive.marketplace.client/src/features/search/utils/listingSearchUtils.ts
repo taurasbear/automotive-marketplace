@@ -27,7 +27,7 @@ export const getSearchParams = (
         : searchValues.city,
     isUsed: isUsedMapping[searchValues.isUsed],
     minYear: Number(searchValues.minYear),
-    yearTo: Number(searchValues.yearTo),
+    maxYear: Number(searchValues.maxYear),
     priceFrom: Number(searchValues.priceFrom),
     priceTo: Number(searchValues.priceTo),
   };
@@ -47,7 +47,7 @@ export const getSearchValues = (
     city: searchParams.city ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: isUsedValue,
     minYear: String(searchParams.minYear),
-    yearTo: String(searchParams.yearTo),
+    maxYear: String(searchParams.maxYear),
     priceFrom: String(searchParams.priceFrom),
     priceTo: String(searchParams.priceTo),
   };

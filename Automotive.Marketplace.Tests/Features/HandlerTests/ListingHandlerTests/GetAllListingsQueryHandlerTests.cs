@@ -212,7 +212,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount, carYear: inRangeCarYear);
         _ = await SeedListingsAsync(context, otherCount, carYear: outOfRangeCarYear);
 
-        var query = new GetAllListingsQuery { YearTo = inRangeCarYear.Year };
+        var query = new GetAllListingsQuery { MaxYear = inRangeCarYear.Year };
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);

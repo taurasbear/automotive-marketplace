@@ -4,7 +4,7 @@ export type GetAllListingsQuery = {
   city?: string;
   isUsed?: boolean;
   minYear?: number;
-  yearTo?: number;
+  maxYear?: number;
   priceFrom?: number;
   priceTo?: number;
 };
