@@ -1,6 +1,6 @@
 export type GetAllListingsQuery = {
   makeId?: string;
-  modelId?: string;
+  models?: string[];
   city?: string;
   isUsed?: boolean;
   yearFrom?: number;

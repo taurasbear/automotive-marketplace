@@ -19,7 +19,7 @@ public class GetAllListingsQueryHandler(
         var listings = await repository
             .AsQueryable<Listing>()
             .Where(listing => request.MakeId == null || request.MakeId == listing.Car.Model.MakeId)
-            .Where(listing => request.ModelId == null || request.ModelId == listing.Car.ModelId)
+            .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Car.ModelId))
             .Where(listing => request.City == null || request.City.ToLower() == listing.City.ToLower())
             .Where(listing => request.IsUsed == null || request.IsUsed == listing.IsUsed)
             .Where(listing => request.YearFrom == null || request.YearFrom <= listing.Car.Year.Year)

@@ -6,7 +6,7 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 {
     public Guid? MakeId { get; set; }
 
-    public Guid? ModelId { get; set; }
+    public ICollection<Guid> Models { get; set; } = [];
 
     public string? City { get; set; }
 
