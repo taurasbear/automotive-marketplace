@@ -19,7 +19,7 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
 
   const handleFilterChange = async <K extends keyof ListingSearchStateValues>(
     key: K,
-    value: string,
+    value: string | string[],
   ) => {
     const updatedSearchValues = { ...searchValues, [key]: value };
     const updatedSearchParams = getSearchParams(updatedSearchValues);
@@ -29,7 +29,7 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
 
   return (
     <div className="columns-1">
-      <div className="bg-card p-4">
+      <div className="bg-secondary dark:bg-card p-4">
         <BasicFilters
           filters={{
             makeId: searchValues.makeId,
@@ -39,10 +39,16 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
           onFilterChange={handleFilterChange}
         />
       </div>
-      <div className="bg-background p-4">
-        <ModelFilter />
-      </div>
-      <div className="bg-secondary p-4">
+      {searchParams.makeId && (
+        <div className="bg-background p-4">
+          <ModelFilter
+            makeId={searchValues.makeId}
+            filteredModels={searchValues.models}
+            onFilterChange={(value) => handleFilterChange("models", value)}
+          />
+        </div>
+      )}
+      <div className="bg-secondary dark:bg-card p-4">
         <RangeFilters />
       </div>
     </div>
