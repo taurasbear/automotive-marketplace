@@ -12,7 +12,7 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 
     public bool? IsUsed { get; set; }
 
-    public int? YearFrom { get; set; }
+    public int? MinYear { get; set; }
 
     public int? YearTo { get; set; }
 

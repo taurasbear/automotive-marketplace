@@ -5,7 +5,7 @@ export type ListingSearchStateValues = {
   models: string[];
   city: string;
   isUsed: CarConditionKey;
-  yearFrom: string;
+  minYear: string;
   yearTo: string;
   priceFrom: string;
   priceTo: string;

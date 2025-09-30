@@ -72,9 +72,9 @@ const ListingSearchFilters = ({
         <div className="border-r-1 border-b-1 sm:border-b-0">
           <YearSelect
             className="min-h-15 border-0 shadow-none"
-            label="From year"
-            value={searchValues.yearFrom}
-            onValueChange={(value) => updateSearchValue("yearFrom", value)}
+            label="Min year"
+            value={searchValues.minYear}
+            onValueChange={(value) => updateSearchValue("minYear", value)}
           />
         </div>
         <div className="border-b-1 sm:border-b-0">

@@ -3,7 +3,7 @@ export type GetAllListingsQuery = {
   models?: string[];
   city?: string;
   isUsed?: boolean;
-  yearFrom?: number;
+  minYear?: number;
   yearTo?: number;
   priceFrom?: number;
   priceTo?: number;

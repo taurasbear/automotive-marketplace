@@ -9,7 +9,7 @@ export const ListingSearchSchema = z.object({
     .catch(undefined),
   city: z.string().optional().catch(undefined),
   isUsed: z.boolean().optional().catch(undefined),
-  yearFrom: z.coerce.number().positive().optional().catch(undefined),
+  minYear: z.coerce.number().positive().optional().catch(undefined),
   yearTo: z.coerce.number().positive().optional().catch(undefined),
   priceFrom: z.coerce.number().positive().optional().catch(undefined),
   priceTo: z.coerce.number().positive().optional().catch(undefined),
