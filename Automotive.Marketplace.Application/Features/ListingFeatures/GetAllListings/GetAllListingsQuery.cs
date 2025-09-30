@@ -18,5 +18,5 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 
     public int? MinPrice { get; set; }
 
-    public int? PriceTo { get; set; }
+    public int? MaxPrice { get; set; }
 };

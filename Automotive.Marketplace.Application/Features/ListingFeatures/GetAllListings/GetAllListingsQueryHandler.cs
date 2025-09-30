@@ -25,7 +25,7 @@ public class GetAllListingsQueryHandler(
             .Where(listing => request.MinYear == null || request.MinYear <= listing.Car.Year.Year)
             .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Car.Year.Year)
             .Where(listing => request.MinPrice == null || request.MinPrice <= listing.Price)
-            .Where(listing => request.PriceTo == null || request.PriceTo >= listing.Price)
+            .Where(listing => request.MaxPrice == null || request.MaxPrice >= listing.Price)
             .ToListAsync(cancellationToken);
 
         List<GetAllListingsResponse> response = [];

@@ -96,9 +96,9 @@ const ListingSearchFilters = ({
         <div>
           <PriceSelect
             className="min-h-15 border-0 shadow-none"
-            label="To price"
-            value={searchValues.priceTo}
-            onValueChange={(value) => updateSearchValue("priceTo", value)}
+            label="Max price"
+            value={searchValues.maxPrice}
+            onValueChange={(value) => updateSearchValue("maxPrice", value)}
           />
         </div>
       </div>

@@ -20,7 +20,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
     minYear: "",
     maxYear: "",
     minPrice: "",
-    priceTo: "",
+    maxPrice: "",
   });
 
   const updateSearchValue = <K extends keyof ListingSearchStateValues>(

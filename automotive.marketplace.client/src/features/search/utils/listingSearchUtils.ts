@@ -29,7 +29,7 @@ export const getSearchParams = (
     minYear: Number(searchValues.minYear),
     maxYear: Number(searchValues.maxYear),
     minPrice: Number(searchValues.minPrice),
-    priceTo: Number(searchValues.priceTo),
+    maxPrice: Number(searchValues.maxPrice),
   };
 };
 
@@ -49,6 +49,6 @@ export const getSearchValues = (
     minYear: String(searchParams.minYear),
     maxYear: String(searchParams.maxYear),
     minPrice: String(searchParams.minPrice),
-    priceTo: String(searchParams.priceTo),
+    maxPrice: String(searchParams.maxPrice),
   };
 };

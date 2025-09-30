@@ -6,5 +6,5 @@ export type GetAllListingsQuery = {
   minYear?: number;
   maxYear?: number;
   minPrice?: number;
-  priceTo?: number;
+  maxPrice?: number;
 };

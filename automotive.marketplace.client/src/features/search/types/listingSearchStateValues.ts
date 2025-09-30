@@ -8,5 +8,5 @@ export type ListingSearchStateValues = {
   minYear: string;
   maxYear: string;
   minPrice: string;
-  priceTo: string;
+  maxPrice: string;
 };

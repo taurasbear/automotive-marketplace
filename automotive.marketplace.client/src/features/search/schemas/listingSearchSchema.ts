@@ -12,5 +12,5 @@ export const ListingSearchSchema = z.object({
   minYear: z.coerce.number().positive().optional().catch(undefined),
   maxYear: z.coerce.number().positive().optional().catch(undefined),
   minPrice: z.coerce.number().positive().optional().catch(undefined),
-  priceTo: z.coerce.number().positive().optional().catch(undefined),
+  maxPrice: z.coerce.number().positive().optional().catch(undefined),
 });
