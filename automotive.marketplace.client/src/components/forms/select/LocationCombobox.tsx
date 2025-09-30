@@ -39,7 +39,7 @@ const LocationCombobox = ({
   return (
     <div>
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger aria-label="Location" asChild>
           <Button
             variant="outline"
             role="location-combobox"

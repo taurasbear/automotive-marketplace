@@ -27,7 +27,10 @@ const PriceSelect = ({ label, className, ...props }: PriceSelectProps) => {
   }
   return (
     <Select {...props}>
-      <SelectTrigger className={cn("flex w-full flex-row", className)}>
+      <SelectTrigger
+        className={cn("flex w-full flex-row", className)}
+        aria-label={label}
+      >
         <div className="grid grid-cols-1 justify-items-start">
           <span className="text-muted-foreground text-xs">{label}</span>
           <SelectValue placeholder="-" />

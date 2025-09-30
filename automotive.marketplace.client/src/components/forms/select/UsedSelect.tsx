@@ -31,7 +31,10 @@ const UsedSelect = ({
       onValueChange={onValueChange}
       defaultValue={defaultValue}
     >
-      <SelectTrigger className={cn("w-full min-w-3xs", className)}>
+      <SelectTrigger
+        className={cn("w-full min-w-3xs", className)}
+        aria-label="Used, new or both"
+      >
         <div className="grid grid-cols-1 justify-items-start">
           <span className="text-muted-foreground text-xs">Used/New</span>
           <SelectValue />
