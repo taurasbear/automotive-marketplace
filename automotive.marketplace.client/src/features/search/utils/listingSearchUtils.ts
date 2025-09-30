@@ -17,7 +17,8 @@ export const getSearchParams = (
         ? undefined
         : searchValues.makeId,
     models:
-      searchValues.models[0] === UI_CONSTANTS.SELECT.ALL_MODELS.VALUE
+      searchValues.models[0] === UI_CONSTANTS.SELECT.ALL_MODELS.VALUE ||
+      searchValues.models.length === 0
         ? undefined
         : searchValues.models,
     city:
