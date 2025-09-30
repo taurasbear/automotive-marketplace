@@ -16,10 +16,10 @@ export const getSearchParams = (
       searchValues.makeId === UI_CONSTANTS.SELECT.ALL_MAKES.VALUE
         ? undefined
         : searchValues.makeId,
-    modelId:
-      searchValues.modelId === UI_CONSTANTS.SELECT.ALL_MODELS.VALUE
+    models:
+      searchValues.models[0] === UI_CONSTANTS.SELECT.ALL_MODELS.VALUE
         ? undefined
-        : searchValues.modelId,
+        : searchValues.models,
     city:
       searchValues.city === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
         ? undefined
@@ -42,7 +42,7 @@ export const getSearchValues = (
 
   return {
     makeId: searchParams.makeId ?? UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
-    modelId: searchParams.modelId ?? UI_CONSTANTS.SELECT.ALL_MODELS.VALUE,
+    models: searchParams.models ?? [],
     city: searchParams.city ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: isUsedValue,
     yearFrom: String(searchParams.yearFrom),

@@ -1,5 +1,6 @@
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import LocationCombobox from "../../../components/forms/select/LocationCombobox";
 import PriceSelect from "../../../components/forms/select/PriceSelect";
@@ -11,7 +12,7 @@ type ListingSearchFiltersProps = {
   searchValues: ListingSearchStateValues;
   updateSearchValue: <K extends keyof ListingSearchStateValues>(
     key: K,
-    value: string,
+    value: string | string[],
   ) => void;
   className?: string;
 };
@@ -45,8 +46,10 @@ const ListingSearchFilters = ({
             defaultValue="all"
             label="Model"
             selectedMake={searchValues.makeId}
-            value={searchValues.modelId}
-            onValueChange={(value) => updateSearchValue("modelId", value)}
+            value={
+              searchValues.models[0] ?? UI_CONSTANTS.SELECT.ALL_MODELS.VALUE
+            }
+            onValueChange={(value) => updateSearchValue("models", [value])}
           />
         </div>
         <div className="col-span-1">

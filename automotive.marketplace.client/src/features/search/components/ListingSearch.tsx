@@ -14,14 +14,18 @@ type ListingSearchProps = {
 const ListingSearch = ({ className }: ListingSearchProps) => {
   const [searchValues, setSearchValues] = useState<ListingSearchStateValues>({
     makeId: UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
-    modelId: UI_CONSTANTS.SELECT.ALL_MODELS.VALUE,
+    models: [UI_CONSTANTS.SELECT.ALL_MODELS.VALUE],
     city: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: "newUsed",
+    yearFrom: "",
+    yearTo: "",
+    priceFrom: "",
+    priceTo: "",
   });
 
   const updateSearchValue = <K extends keyof ListingSearchStateValues>(
     key: K,
-    value: string,
+    value: string | string[],
   ) => {
     setSearchValues((prev) => ({ ...prev, [key]: value }));
   };

@@ -3,7 +3,10 @@ import { z } from "zod";
 
 export const ListingSearchSchema = z.object({
   makeId: z.string().regex(VALIDATION.GUID.REGEX).optional().catch(undefined),
-  modelId: z.string().regex(VALIDATION.GUID.REGEX).optional().catch(undefined),
+  models: z
+    .array(z.string().regex(VALIDATION.GUID.REGEX).catch(""))
+    .optional()
+    .catch(undefined),
   city: z.string().optional().catch(undefined),
   isUsed: z.boolean().optional().catch(undefined),
   yearFrom: z.coerce.number().positive().optional().catch(undefined),
