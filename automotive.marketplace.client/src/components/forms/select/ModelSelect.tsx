@@ -29,7 +29,8 @@ const ModelSelect = ({
 }: ModelSelectProps) => {
   const { data: modelsQuery } = useQuery({
     ...getModelsByMakeIdOptions({ makeId: selectedMake! }),
-    enabled: selectedMake !== UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
+    enabled:
+      selectedMake !== UI_CONSTANTS.SELECT.ALL_MAKES.VALUE && !!selectedMake,
   });
 
   const models = modelsQuery?.data || [];
