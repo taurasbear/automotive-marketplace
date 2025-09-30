@@ -27,4 +27,12 @@ axiosClient.interceptors.response.use(
   (error: AxiosError) => handleAxiosError(error),
 );
 
+axiosClient.defaults.paramsSerializer = {
+  indexes: null,
+};
+
+axiosClient.defaults.formSerializer = {
+  indexes: null,
+};
+
 export default axiosClient;
