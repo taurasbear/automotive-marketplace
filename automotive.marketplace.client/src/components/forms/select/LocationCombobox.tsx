@@ -49,7 +49,7 @@ const LocationCombobox = ({
             )}
           >
             <div className="grid grid-cols-1 justify-items-start">
-              <label className="text-muted-foreground text-xs">Location</label>
+              <span className="text-muted-foreground text-xs">Location</span>
               {value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE ? (
                 <span className="text-muted-foreground truncate text-sm">
                   {UI_CONSTANTS.SELECT.ANY_LOCATION.LABEL}

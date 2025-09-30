@@ -22,9 +22,9 @@ type YearSelectProps = SelectRootProps & {
 const YearSelect = ({ label, className, ...props }: YearSelectProps) => {
   return (
     <Select {...props}>
-      <SelectTrigger className={cn("w-full", className)}>
+      <SelectTrigger className={cn("w-full", className)} aria-label={label}>
         <div className="grid grid-cols-1 justify-items-start">
-          <label className="text-muted-foreground text-xs">{label}</label>
+          <span className="text-muted-foreground text-xs">{label}</span>
           <SelectValue placeholder="-" />
         </div>
       </SelectTrigger>

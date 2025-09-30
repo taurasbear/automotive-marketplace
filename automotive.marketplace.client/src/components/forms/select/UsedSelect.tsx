@@ -33,7 +33,7 @@ const UsedSelect = ({
     >
       <SelectTrigger className={cn("w-full min-w-3xs", className)}>
         <div className="grid grid-cols-1 justify-items-start">
-          <label className="text-muted-foreground text-xs">Used/New</label>
+          <span className="text-muted-foreground text-xs">Used/New</span>
           <SelectValue />
         </div>
       </SelectTrigger>
