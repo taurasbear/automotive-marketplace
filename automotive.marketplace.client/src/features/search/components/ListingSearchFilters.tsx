@@ -88,9 +88,9 @@ const ListingSearchFilters = ({
         <div className="border-r-1">
           <PriceSelect
             className="min-h-15 border-0 shadow-none"
-            label="From price"
-            value={searchValues.priceFrom}
-            onValueChange={(value) => updateSearchValue("priceFrom", value)}
+            label="Min price"
+            value={searchValues.minPrice}
+            onValueChange={(value) => updateSearchValue("minPrice", value)}
           />
         </div>
         <div>

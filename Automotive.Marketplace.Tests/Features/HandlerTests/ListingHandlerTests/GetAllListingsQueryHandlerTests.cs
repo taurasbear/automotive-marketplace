@@ -222,7 +222,7 @@ public class GetAllListingsQueryHandlerTests(
     }
 
     [Fact]
-    public async Task Handle_FilterByPriceFrom_ShouldReturnFilteredListings()
+    public async Task Handle_FilterByMinPrice_ShouldReturnFilteredListings()
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
@@ -237,7 +237,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount, carPrice: inRangeCarPrice);
         _ = await SeedListingsAsync(context, otherCount, carPrice: outOfRangeCarPrice);
 
-        var query = new GetAllListingsQuery { PriceFrom = Decimal.ToInt32(inRangeCarPrice) };
+        var query = new GetAllListingsQuery { MinPrice = Decimal.ToInt32(inRangeCarPrice) };
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);

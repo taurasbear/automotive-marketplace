@@ -19,7 +19,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
     isUsed: "newUsed",
     minYear: "",
     maxYear: "",
-    priceFrom: "",
+    minPrice: "",
     priceTo: "",
   });
 

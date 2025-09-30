@@ -28,7 +28,7 @@ export const getSearchParams = (
     isUsed: isUsedMapping[searchValues.isUsed],
     minYear: Number(searchValues.minYear),
     maxYear: Number(searchValues.maxYear),
-    priceFrom: Number(searchValues.priceFrom),
+    minPrice: Number(searchValues.minPrice),
     priceTo: Number(searchValues.priceTo),
   };
 };
@@ -48,7 +48,7 @@ export const getSearchValues = (
     isUsed: isUsedValue,
     minYear: String(searchParams.minYear),
     maxYear: String(searchParams.maxYear),
-    priceFrom: String(searchParams.priceFrom),
+    minPrice: String(searchParams.minPrice),
     priceTo: String(searchParams.priceTo),
   };
 };

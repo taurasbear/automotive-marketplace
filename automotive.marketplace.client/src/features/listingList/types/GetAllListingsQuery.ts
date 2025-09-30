@@ -5,6 +5,6 @@ export type GetAllListingsQuery = {
   isUsed?: boolean;
   minYear?: number;
   maxYear?: number;
-  priceFrom?: number;
+  minPrice?: number;
   priceTo?: number;
 };
