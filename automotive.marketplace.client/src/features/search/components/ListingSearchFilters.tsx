@@ -3,7 +3,7 @@ import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
 import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
-import { rangeUtils } from "@/utils/rangeUtils";
+import { getPriceRange, getYearRange } from "@/utils/rangeUtils";
 import LocationCombobox from "../../../components/forms/select/LocationCombobox";
 import UsedSelect from "../../../components/forms/select/UsedSelect";
 import { ListingSearchStateValues } from "../types/listingSearchStateValues";
@@ -66,7 +66,7 @@ const ListingSearchFilters = ({
         </div>
         <div className="border-r-1 border-b-1 sm:border-b-0">
           <BasicSelect
-            options={rangeUtils.getYearRange()}
+            options={getYearRange()}
             className="min-h-15 rounded-none border-0 border-l shadow-none sm:border-b-1 sm:border-l-0"
             label="Min year"
             value={searchValues.minYear}
@@ -75,7 +75,7 @@ const ListingSearchFilters = ({
         </div>
         <div className="border-b-1 sm:border-b-0">
           <BasicSelect
-            options={rangeUtils.getYearRange()}
+            options={getYearRange()}
             className="min-h-15 rounded-none border-0 border-r shadow-none sm:border-r-0 sm:border-b-1"
             label="Max year"
             value={searchValues.maxYear}
@@ -84,7 +84,7 @@ const ListingSearchFilters = ({
         </div>
         <div className="border-r-1">
           <BasicSelect
-            options={rangeUtils.getPriceRange()}
+            options={getPriceRange()}
             suffix="€"
             className="min-h-15 rounded-none rounded-bl-md border-0 border-b border-l shadow-none sm:rounded-bl-none sm:border-l-0"
             label="Min price"
@@ -94,7 +94,7 @@ const ListingSearchFilters = ({
         </div>
         <div>
           <BasicSelect
-            options={rangeUtils.getPriceRange()}
+            options={getPriceRange()}
             suffix="€"
             className="min-h-15 rounded-none rounded-br-md border-0 border-r border-b shadow-none"
             label="Max price"
