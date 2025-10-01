@@ -80,9 +80,7 @@ Tests run in a separate container using `TestContainers` NuGet package. Each tes
 
 ### Auth
 
-- Auth is implemented using **Refresh** and **Access** JWTs (JSON Web Tokens)
-- Access tokens are short-lived while Refresh tokens have a long lifespan
-- If a request is rejected because of the lack of an access token, Axios middleware will try to refresh it using the refresh token and hitting the `/auth/refresh/` endpoint.
+Auth is implemented using **Refresh** and **Access** JWTs (JSON Web Tokens). Access tokens are short-lived while Refresh tokens have a long lifespan. If a request is rejected because of the lack of an access token, Axios middleware will try to refresh it using the refresh token and hitting the `/auth/refresh/` endpoint.
 
 ### Use-case diagram
 
