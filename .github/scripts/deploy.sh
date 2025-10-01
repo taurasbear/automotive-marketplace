@@ -28,6 +28,9 @@ mkdir -p ~/automotive-marketplace/nginx/logs
 echo ${DOCKER_GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_REPOSITORY_OWNER} --password-stdin
 
 cd ~/automotive-marketplace
-docker-compose pull
+
 docker-compose down
+docker system prune -f
+
+docker-compose pull
 docker-compose up -d
