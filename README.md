@@ -23,24 +23,6 @@
 
 </div>
 
-## Table of Contents
-
-- [About](#about)
-- [Long-term personal project](#long-term-personal-project)
-  - [Tech Stack](#tech-stack)
-  - [Goals](#goals)
-  - [Project Highlights](#project-highlights)
-  - [Design Patterns](#design-patterns)
-  - [Planned Improvements](#planned-improvements)
-- [Architecture](#architecture)
-  - [Overview](#overview)
-  - [Use-case Diagram](#use-case-diagram)
-  - [Entity-relationship Diagram](#entity-relationship-diagram)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-- [Contacts](#contacts)
-
 ## About
 
 A web app for users to purchase or sell automobiles. It provides features for **browsing**, **searching** and **filtering** car listings by make, model, etc. Moreover, users who want to sell their vehicles can **create listings** for them.
@@ -57,8 +39,6 @@ A web app for users to purchase or sell automobiles. It provides features for **
 
 In the beginning, I set out to build something that would give me hands-on experience in developing with scalability and maintenance in mind while also giving CI/CD a try. To achieve this, I chose to use containerization[^1] - specifically **Docker Compose** in order to have a consistent environment which would make it easy to deploy.
 
-### Tech stack
-
 ### Achievements
 
 - Got real experience with CI/CD and deployment
@@ -72,9 +52,9 @@ In the beginning, I set out to build something that would give me hands-on exper
 - CI/CD implemented with GitHub Actions - [cd-cd.yml](/.github/workflows/ci-cd.yml)
 - Deployed on a [DigitalOcean's Droplet](https://www.digitalocean.com/products/droplets)
 - Project management using [GitHub Projects](https://github.com/users/taurasbear/projects/1)
-- Fully implemented JWT Auth
-- BE testing implemented with real databases
-- Use of a Amazon S3 compatible image storage service
+- Fully implemented **JWT Auth**
+- **BE testing** implemented with real databases
+- Use of a **Amazon S3** compatible image storage service
 - Fully containerized development environment (including debugging)
 - Let's Encrypt for certification generation
 - Nginx as a reverse-proxy and web server
