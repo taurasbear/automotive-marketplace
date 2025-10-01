@@ -1,11 +1,11 @@
+import BasicSelect from "@/components/forms/select/BasicSelect";
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
 import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
+import { rangeUtils } from "@/utils/rangeUtils";
 import LocationCombobox from "../../../components/forms/select/LocationCombobox";
-import PriceSelect from "../../../components/forms/select/PriceSelect";
 import UsedSelect from "../../../components/forms/select/UsedSelect";
-import YearSelect from "../../../components/forms/select/YearSelect";
 import { ListingSearchStateValues } from "../types/listingSearchStateValues";
 
 type ListingSearchFiltersProps = {
@@ -65,7 +65,8 @@ const ListingSearchFilters = ({
           />
         </div>
         <div className="border-r-1 border-b-1 sm:border-b-0">
-          <YearSelect
+          <BasicSelect
+            options={rangeUtils.getYearRange()}
             className="min-h-15 rounded-none border-0 border-l shadow-none sm:border-b-1 sm:border-l-0"
             label="Min year"
             value={searchValues.minYear}
@@ -73,7 +74,8 @@ const ListingSearchFilters = ({
           />
         </div>
         <div className="border-b-1 sm:border-b-0">
-          <YearSelect
+          <BasicSelect
+            options={rangeUtils.getYearRange()}
             className="min-h-15 rounded-none border-0 border-r shadow-none sm:border-r-0 sm:border-b-1"
             label="Max year"
             value={searchValues.maxYear}
@@ -81,7 +83,9 @@ const ListingSearchFilters = ({
           />
         </div>
         <div className="border-r-1">
-          <PriceSelect
+          <BasicSelect
+            options={rangeUtils.getPriceRange()}
+            suffix="€"
             className="min-h-15 rounded-none rounded-bl-md border-0 border-b border-l shadow-none sm:rounded-bl-none sm:border-l-0"
             label="Min price"
             value={searchValues.minPrice}
@@ -89,7 +93,9 @@ const ListingSearchFilters = ({
           />
         </div>
         <div>
-          <PriceSelect
+          <BasicSelect
+            options={rangeUtils.getPriceRange()}
+            suffix="€"
             className="min-h-15 rounded-none rounded-br-md border-0 border-r border-b shadow-none"
             label="Max price"
             value={searchValues.maxPrice}
