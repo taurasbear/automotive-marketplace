@@ -14,26 +14,26 @@ type BasicFiltersProps = {
 
 const BasicFilters = ({ filters, onFilterChange }: BasicFiltersProps) => {
   return (
-    <div className="border-border bg-background grid grid-cols-1 space-y-0 divide-y-1 rounded-2xl border-1 p-0">
+    <div className="border-border grid grid-cols-1 space-y-0 divide-y-1 rounded-md border-1 p-0">
       <div>
         <MakeSelect
           isAllMakesEnabled={true}
           label="Make"
-          className="min-h-15 border-0 bg-transparent shadow-none"
+          className="shadow-non min-h-15 rounded-b-none border-0"
           value={filters.makeId}
           onValueChange={(value) => onFilterChange("makeId", value)}
         />
       </div>
       <div>
         <UsedSelect
-          className="min-h-15 border-0 shadow-none"
+          className="min-h-15 rounded-none border-0 shadow-none"
           value={filters.isUsed}
           onValueChange={(value) => onFilterChange("isUsed", value)}
         />
       </div>
       <div>
         <LocationCombobox
-          className="min-h-15 border-0 shadow-none"
+          className="min-h-15 rounded-t-none border-0 shadow-none"
           value={filters.city}
           onValueChange={(value) => onFilterChange("city", value)}
         />
