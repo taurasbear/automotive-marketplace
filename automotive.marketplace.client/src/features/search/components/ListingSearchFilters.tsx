@@ -23,7 +23,7 @@ const ListingSearchFilters = ({
   className,
 }: ListingSearchFiltersProps) => {
   return (
-    <div className={cn(className)}>
+    <div className={cn("rounded-md", className)}>
       <div className="border-input divide-input grid grid-cols-1 divide-y-1 border-b sm:grid-cols-3 sm:divide-x-1 sm:divide-y-0">
         <div className="col-span-1">
           <MakeSelect

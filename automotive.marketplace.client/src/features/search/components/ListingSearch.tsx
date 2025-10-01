@@ -41,7 +41,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
       <ListingSearchFilters
         searchValues={searchValues}
         updateSearchValue={updateSearchValue}
-        className="w-full"
+        className="bg-background w-full"
       />
       <div className="flex justify-end pt-4">
         <Link to="/listings" search={() => getSearchParams(searchValues)}>
