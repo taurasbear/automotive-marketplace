@@ -6,8 +6,8 @@ const Listings = () => {
   const navigate = Route.useNavigate();
 
   return (
-    <div className="mt-12 flex w-full items-start justify-start space-x-12">
-      <div className="mt-48 mb-24 flex-1">
+    <div className="mt-12 mb-24 flex w-full items-start justify-start space-x-12">
+      <div className="mt-48 flex-1">
         <Filters
           searchParams={searchParams}
           onSearchParamChange={(searchParams) =>
