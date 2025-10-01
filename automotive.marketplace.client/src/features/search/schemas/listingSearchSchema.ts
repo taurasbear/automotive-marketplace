@@ -13,4 +13,8 @@ export const ListingSearchSchema = z.object({
   maxYear: z.coerce.number().positive().optional().catch(undefined),
   minPrice: z.coerce.number().positive().optional().catch(undefined),
   maxPrice: z.coerce.number().positive().optional().catch(undefined),
+  minMileage: z.coerce.number().positive().optional().catch(undefined),
+  maxMileage: z.coerce.number().positive().optional().catch(undefined),
+  minPower: z.coerce.number().positive().optional().catch(undefined),
+  maxPower: z.coerce.number().positive().optional().catch(undefined),
 });

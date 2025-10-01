@@ -1,4 +1,5 @@
 import { UI_CONSTANTS } from "@/constants/uiConstants";
+import { ListingFilterStateValues } from "@/features/listingList";
 import { ListingSearchParams } from "@/features/search";
 import { ListingSearchStateValues } from "../types/listingSearchStateValues";
 
@@ -8,7 +9,20 @@ const isUsedMapping = {
   newUsed: undefined,
 };
 
-export const getSearchParams = (
+export const mapFilterValuesToSearchParams = (
+  searchValues: ListingFilterStateValues,
+): ListingSearchParams => {
+  const searchParams = mapSearchValuesToSearchParams(searchValues);
+  return {
+    ...searchParams,
+    minMileage: Number(searchValues.minMileage),
+    maxMileage: Number(searchValues.maxMileage),
+    minPower: Number(searchValues.minPower),
+    maxPower: Number(searchValues.maxPower),
+  };
+};
+
+export const mapSearchValuesToSearchParams = (
   searchValues: ListingSearchStateValues,
 ): ListingSearchParams => {
   return {
@@ -33,7 +47,21 @@ export const getSearchParams = (
   };
 };
 
-export const getSearchValues = (
+export const mapSearchParamsToFilterValues = (
+  searchParams: ListingSearchParams,
+): ListingFilterStateValues => {
+  const filterValues = mapSearchParamsToSearchValues(searchParams);
+
+  return {
+    ...filterValues,
+    minMileage: searchParams.minMileage?.toString() || "",
+    maxMileage: searchParams.maxMileage?.toString() || "",
+    minPower: searchParams.minPower?.toString() || "",
+    maxPower: searchParams.maxPower?.toString() || "",
+  };
+};
+
+export const mapSearchParamsToSearchValues = (
   searchParams: ListingSearchParams,
 ): ListingSearchStateValues => {
   const isUsedValue =
@@ -46,9 +74,9 @@ export const getSearchValues = (
     models: searchParams.models ?? [],
     city: searchParams.city ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: isUsedValue,
-    minYear: String(searchParams.minYear),
-    maxYear: String(searchParams.maxYear),
-    minPrice: String(searchParams.minPrice),
-    maxPrice: String(searchParams.maxPrice),
+    minYear: searchParams.minYear?.toString() || "",
+    maxYear: searchParams.maxYear?.toString() || "",
+    minPrice: searchParams.minPrice?.toString() || "",
+    maxPrice: searchParams.maxPrice?.toString() || "",
   };
 };

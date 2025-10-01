@@ -1,10 +1,10 @@
 import {
-  getSearchParams,
-  getSearchValues,
   ListingSearchParams,
-  ListingSearchStateValues,
+  mapFilterValuesToSearchParams,
+  mapSearchParamsToFilterValues,
 } from "@/features/search";
 
+import { ListingFilterStateValues } from "../types/listingFilterStateValues";
 import BasicFilters from "./BasicFilters";
 import ModelFilter from "./ModelFilter";
 import RangeFilters from "./RangeFilters";
@@ -15,14 +15,15 @@ type FiltersProps = {
 };
 
 const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
-  const searchValues = getSearchValues(searchParams);
+  const filterValues = mapSearchParamsToFilterValues(searchParams);
 
-  const handleFilterChange = async <K extends keyof ListingSearchStateValues>(
+  const handleFilterChange = async <K extends keyof ListingFilterStateValues>(
     key: K,
     value: string | string[],
   ) => {
-    const updatedSearchValues = { ...searchValues, [key]: value };
-    const updatedSearchParams = getSearchParams(updatedSearchValues);
+    const updatedFilterValues = { ...filterValues, [key]: value };
+    const updatedSearchParams =
+      mapFilterValuesToSearchParams(updatedFilterValues);
 
     await onSearchParamChange(updatedSearchParams);
   };
@@ -32,9 +33,9 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
       <div className="bg-secondary dark:bg-card p-4">
         <BasicFilters
           filters={{
-            makeId: searchValues.makeId,
-            isUsed: searchValues.isUsed,
-            city: searchValues.city,
+            makeId: filterValues.makeId,
+            isUsed: filterValues.isUsed,
+            city: filterValues.city,
           }}
           onFilterChange={handleFilterChange}
         />
@@ -42,14 +43,26 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
       {searchParams.makeId && (
         <div className="bg-background p-4">
           <ModelFilter
-            makeId={searchValues.makeId}
-            filteredModels={searchValues.models}
+            makeId={filterValues.makeId}
+            filteredModels={filterValues.models}
             onFilterChange={(value) => handleFilterChange("models", value)}
           />
         </div>
       )}
       <div className="bg-secondary dark:bg-card p-4">
-        <RangeFilters />
+        <RangeFilters
+          filters={{
+            minYear: filterValues.minYear,
+            maxYear: filterValues.maxYear,
+            minPrice: filterValues.minPrice,
+            maxPrice: filterValues.maxPrice,
+            minMileage: filterValues.minMileage,
+            maxMileage: filterValues.maxMileage,
+            minPower: filterValues.minPower,
+            maxPower: filterValues.maxPower,
+          }}
+          onFilterChange={handleFilterChange}
+        />
       </div>
     </div>
   );
