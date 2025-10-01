@@ -14,7 +14,7 @@ type BasicFiltersProps = {
 
 const BasicFilters = ({ filters, onFilterChange }: BasicFiltersProps) => {
   return (
-    <div className="border-border grid grid-cols-1 space-y-0 divide-y-1 rounded-md border-1 p-0">
+    <div className="border-border bg-background grid grid-cols-1 space-y-0 divide-y-1 rounded-md border-1 p-0">
       <div>
         <MakeSelect
           isAllMakesEnabled={true}
