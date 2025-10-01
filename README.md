@@ -2,12 +2,24 @@
   <h1 style="font-family: 'Montserrat', Arial, Helvetica, sans-serif; font-weight: 700; letter-spacing: 2px;">
     Automotive<br>Marketplace
   </h1>
-</div>
-
-<div align="center">
+<br>
 
 [![Deployed App][deployed-app-shield]][deployed-app-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+
+<br>
+
+[![React][React.js]][React-url]
+[![TypeScript][TypeScript]][TypeScript-url]
+[![Tailwind][tailwindcss]][Tailwind-url]
+[![ASP.NET Core][ASP.NET Core]][ASP.NET-Core-url]
+[![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+[![Docker][Docker]][Docker-url]
+[![Vite][Vite]][vite-url]
+
+</div>
+
+<div align="center">
 
 </div>
 
@@ -37,6 +49,8 @@ A web app for users to purchase or sell automobiles. It provides features for **
 
 <img width="1920" height="964" alt="Web app main page" src="https://github.com/user-attachments/assets/5d3887ee-fc63-4063-9b67-711fb35d2c7f" />
 
+<br><br>
+
 <img width="1920" height="996" alt="Listing search results" src="https://github.com/user-attachments/assets/684b51e2-63b7-43ca-b8d9-20a3159e9ec8" />
 
 ### Reason behind project
@@ -44,14 +58,6 @@ A web app for users to purchase or sell automobiles. It provides features for **
 In the beginning, I set out to build something that would give me hands-on experience in developing with scalability and maintenance in mind while also giving CI/CD a try. To achieve this, I chose to use containerization[^1] - specifically **Docker Compose** in order to have a consistent environment which would make it easy to deploy.
 
 ### Tech stack
-
-[![React][React.js]][React-url]
-[![TypeScript][TypeScript]][TypeScript-url]
-[![Tailwind][tailwindcss]][Tailwind-url]
-[![ASP.NET Core][ASP.NET Core]][ASP.NET-Core-url]
-[![PostgreSQL][PostgreSQL]][PostgreSQL-url]
-[![Docker][Docker]][Docker-url]
-[![Vite][Vite]][vite-url]
 
 ### Achievements
 
