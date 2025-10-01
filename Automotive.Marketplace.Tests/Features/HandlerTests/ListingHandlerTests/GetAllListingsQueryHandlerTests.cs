@@ -113,7 +113,7 @@ public class GetAllListingsQueryHandlerTests(
 
         var modelId = matchingListings.First().Car.ModelId;
 
-        var query = new GetAllListingsQuery { ModelId = modelId };
+        var query = new GetAllListingsQuery { Models = [modelId] };
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
