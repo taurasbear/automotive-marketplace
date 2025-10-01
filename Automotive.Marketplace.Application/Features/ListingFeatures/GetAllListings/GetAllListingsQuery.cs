@@ -19,4 +19,12 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
     public int? MinPrice { get; set; }
 
     public int? MaxPrice { get; set; }
+
+    public int? MinMileage { get; set; }
+
+    public int? MaxMileage { get; set; }
+
+    public int? MinPower { get; set; }
+
+    public int? MaxPower { get; set; }
 };

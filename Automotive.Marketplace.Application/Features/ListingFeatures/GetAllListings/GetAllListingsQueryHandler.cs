@@ -26,6 +26,10 @@ public class GetAllListingsQueryHandler(
             .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Car.Year.Year)
             .Where(listing => request.MinPrice == null || request.MinPrice <= listing.Price)
             .Where(listing => request.MaxPrice == null || request.MaxPrice >= listing.Price)
+            .Where(listing => request.MinMileage == null || request.MinMileage <= listing.Mileage)
+            .Where(listing => request.MaxMileage == null || request.MaxMileage >= listing.Mileage)
+            .Where(listing => request.MinPower == null || request.MinPower <= listing.Power)
+            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Power)
             .ToListAsync(cancellationToken);
 
         List<GetAllListingsResponse> response = [];
