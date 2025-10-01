@@ -33,7 +33,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
   return (
     <div
       className={cn(
-        "bg-secondary border-border mx-auto mt-64 rounded-sm border-1 p-4",
+        "bg-secondary border-border rounded-sm border-1 p-4",
         className,
       )}
     >
