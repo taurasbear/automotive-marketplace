@@ -8,11 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
-import * as SelectPrimitive from "@radix-ui/react-select";
+import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
 
-type ModelSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
+type ModelSelectProps = SelectRootProps & {
   selectedMake?: string;
   isAllModelsEnabled: boolean;
   label?: string;
@@ -28,16 +29,17 @@ const ModelSelect = ({
 }: ModelSelectProps) => {
   const { data: modelsQuery } = useQuery({
     ...getModelsByMakeIdOptions({ makeId: selectedMake! }),
-    enabled: !!selectedMake,
+    enabled:
+      selectedMake !== UI_CONSTANTS.SELECT.ALL_MAKES.VALUE && !!selectedMake,
   });
 
   const models = modelsQuery?.data || [];
 
   return (
     <Select {...props}>
-      <SelectTrigger className={cn(className, "w-full")}>
+      <SelectTrigger className={cn("w-full", className)} aria-label={label}>
         <div className="grid grid-cols-1 justify-items-start">
-          <label className="text-muted-foreground text-xs">{label}</label>
+          <span className="text-muted-foreground text-xs">{label}</span>
           <SelectValue placeholder="Auris" />
         </div>
       </SelectTrigger>
@@ -45,7 +47,9 @@ const ModelSelect = ({
         <SelectGroup>
           <SelectLabel>Models</SelectLabel>
           {!isAllModelsEnabled || (
-            <SelectItem value="all">All models</SelectItem>
+            <SelectItem value={UI_CONSTANTS.SELECT.ALL_MODELS.VALUE}>
+              {UI_CONSTANTS.SELECT.ALL_MODELS.LABEL}
+            </SelectItem>
           )}
           {models.map((model) => (
             <SelectItem key={model.id} value={model.id}>

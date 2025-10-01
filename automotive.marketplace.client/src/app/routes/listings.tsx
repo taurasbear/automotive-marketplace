@@ -1,5 +1,5 @@
 import Listings from "@/app/pages/Listings";
-import { getAllListingsOptions } from "@/features/listing";
+import { getAllListingsOptions } from "@/features/listingList";
 import { ListingSearchSchema } from "@/features/search";
 import { createFileRoute } from "@tanstack/react-router";
 

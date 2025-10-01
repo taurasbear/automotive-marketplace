@@ -1,11 +1,11 @@
 import { LogoutButton } from "@/features/auth";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../../ui/button";
-import ThemeToggle from "../ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   return (
-    <div className="shadow-lg/2">
+    <div className="dark:bg-secondary shadow-lg/2 dark:shadow-lg/4 dark:shadow-rose-600">
       <div className="mx-8 flex items-center justify-between py-2 xl:mx-auto xl:max-w-6xl">
         <div className="space-x-2 truncate">
           <Link to="/" className="[&.active]:font-bold">

@@ -8,11 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
-import * as SelectPrimitive from "@radix-ui/react-select";
+import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
 
-type MakeSelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & {
+type MakeSelectProps = SelectRootProps & {
   isAllMakesEnabled: boolean;
   label?: string;
   className?: string;
@@ -30,16 +31,20 @@ const MakeSelect = ({
 
   return (
     <Select {...props}>
-      <SelectTrigger className={cn("w-full", className)}>
+      <SelectTrigger className={cn("w-full", className)} aria-label={label}>
         <div className="grid grid-cols-1 justify-items-start">
-          <label className="text-muted-foreground text-xs">{label}</label>
+          <span className="text-muted-foreground text-xs">{label}</span>
           <SelectValue placeholder="Toyota" />
         </div>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Makes</SelectLabel>
-          {!isAllMakesEnabled || <SelectItem value="all">All makes</SelectItem>}
+          {!isAllMakesEnabled || (
+            <SelectItem value={UI_CONSTANTS.SELECT.ALL_MAKES.VALUE}>
+              {UI_CONSTANTS.SELECT.ALL_MAKES.LABEL}
+            </SelectItem>
+          )}
           {makes.map((make) => (
             <SelectItem key={make.id} value={make.id}>
               {make.name}
