@@ -2,6 +2,7 @@ using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Infrastructure.Interfaces;
+using Automotive.Marketplace.Server.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -43,10 +44,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services
+    .AddControllers(options => options.Filters.Add<ValidationExceptionFilter>())
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 string? connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("Development")
