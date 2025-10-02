@@ -2,6 +2,8 @@ using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Infrastructure.Interfaces;
+using Automotive.Marketplace.Server.Filters;
+using Automotive.Marketplace.Server.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +13,9 @@ using System.Text.Json.Serialization;
 var AllowClientOrigins = "allowClientOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddCors(options =>
 {
@@ -43,10 +48,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services
+    .AddControllers(options =>
+    {
+        options.Filters.Add<ValidationExceptionFilter>();
+        options.Filters.Add<NotFoundExceptionFilter>();
+        options.Filters.Add<UnauthorizedExceptionFilter>();
+        options.Filters.Add<UnprocessableEntityExceptionFilter>();
+    })
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 string? connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("Development")
@@ -64,6 +74,8 @@ builder.Services.AddLogging(logging =>
 });
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
