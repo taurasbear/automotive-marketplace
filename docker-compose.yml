@@ -59,7 +59,6 @@ services:
       MINIO_ROOT_USER: ${MINIO_ACCESSKEY}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRETKEY}
       MINIO_BROWSER_REDIRECT_URL: ${MINIO_CONSOLE_URL}
-      MINIO_SERVER_URL: ${MINIO_SERVERURL}
       MINIO_SCHEME: http
     volumes:
       - minio_data:/data
