@@ -6,7 +6,7 @@ const Listings = () => {
   const navigate = Route.useNavigate();
 
   return (
-    <div className="mt-12 mb-24 flex w-full items-start justify-start space-x-12">
+    <div className="mt-12 mb-24 flex w-full flex-col items-start justify-start space-x-12 md:flex-row">
       <div className="mt-48 flex-1">
         <Filters
           searchParams={searchParams}
