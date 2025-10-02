@@ -1,23 +1,21 @@
 import { Route } from "@/app/routes/listings";
-import { getAllListingsOptions, ListingCard } from "@/features/listing";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { Filters, ListingList } from "@/features/listingList";
 
 const Listings = () => {
   const searchParams = Route.useSearch();
-
-  const { data: listingsQuery } = useSuspenseQuery(
-    getAllListingsOptions(searchParams),
-  );
-
-  const listings = listingsQuery.data;
+  const navigate = Route.useNavigate();
 
   return (
-    <div className="flex flex-row justify-center">
-      <div className="bg-background text-on-background flex w-188 flex-col gap-10">
-        {listings.map((l) => (
-          <ListingCard key={l.id} listing={l} />
-        ))}
+    <div className="mt-12 mb-24 flex w-full items-start justify-start space-x-12">
+      <div className="mt-48 flex-1">
+        <Filters
+          searchParams={searchParams}
+          onSearchParamChange={(searchParams) =>
+            navigate({ search: searchParams })
+          }
+        />
       </div>
+      <ListingList listingSearchQuery={searchParams} />
     </div>
   );
 };

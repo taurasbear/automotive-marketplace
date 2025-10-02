@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Automotive.Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(AutomotiveContext))]
-    [Migration("20250924140101_InitialMigration")]
+    [Migration("20250928153643_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -147,7 +147,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Colour")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -158,7 +157,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("EngineSize")
@@ -194,7 +192,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Vin")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

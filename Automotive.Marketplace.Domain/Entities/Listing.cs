@@ -4,15 +4,15 @@ public class Listing : BaseEntity
 {
     public decimal Price { get; set; }
 
-    public string Description { get; set; } = string.Empty;
-
     public string City { get; set; } = string.Empty;
 
     public Status Status { get; set; }
 
-    public string Vin { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
-    public string Colour { get; set; } = string.Empty;
+    public string? Vin { get; set; }
+
+    public string? Colour { get; set; }
 
     public bool IsUsed { get; set; }
 

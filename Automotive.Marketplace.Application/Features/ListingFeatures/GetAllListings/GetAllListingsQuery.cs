@@ -6,17 +6,25 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 {
     public Guid? MakeId { get; set; }
 
-    public Guid? ModelId { get; set; }
+    public ICollection<Guid> Models { get; set; } = [];
 
     public string? City { get; set; }
 
     public bool? IsUsed { get; set; }
 
-    public int? YearFrom { get; set; }
+    public int? MinYear { get; set; }
 
-    public int? YearTo { get; set; }
+    public int? MaxYear { get; set; }
 
-    public int? PriceFrom { get; set; }
+    public int? MinPrice { get; set; }
 
-    public int? PriceTo { get; set; }
+    public int? MaxPrice { get; set; }
+
+    public int? MinMileage { get; set; }
+
+    public int? MaxMileage { get; set; }
+
+    public int? MinPower { get; set; }
+
+    public int? MaxPower { get; set; }
 };

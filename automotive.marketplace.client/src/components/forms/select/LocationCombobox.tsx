@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -12,17 +7,26 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
+import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 type LocationComboboxProps = {
-  selectedLocation?: string;
+  value: string;
   onValueChange: (value: string) => void;
+  className?: string;
 };
 
 const LocationCombobox = ({
-  selectedLocation,
+  value,
   onValueChange,
+  className,
 }: LocationComboboxProps) => {
   const locations = [
     { value: "kaunas", label: "Kaunas" },
@@ -35,19 +39,25 @@ const LocationCombobox = ({
   return (
     <div>
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger aria-label="Location" asChild>
           <Button
             variant="outline"
             role="location-combobox"
-            //aria-expanded={open}
-            className="w-full justify-between font-normal"
-          >
-            {selectedLocation ? (
-              locations.find((location) => location.value === selectedLocation)
-                ?.label
-            ) : (
-              <p className="text-muted-foreground text-sm">Any location</p>
+            className={cn(
+              "w-full justify-between bg-transparent font-normal",
+              className,
             )}
+          >
+            <div className="grid grid-cols-1 justify-items-start">
+              <span className="text-muted-foreground text-xs">Location</span>
+              {value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE ? (
+                <span className="truncate text-sm">
+                  {UI_CONSTANTS.SELECT.ANY_LOCATION.LABEL}
+                </span>
+              ) : (
+                locations.find((location) => location.value === value)?.label
+              )}
+            </div>
             <ChevronDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -63,7 +73,9 @@ const LocationCombobox = ({
                     value={location.value.toString()}
                     onSelect={(newLocation) => {
                       onValueChange(
-                        newLocation == selectedLocation ? "any" : newLocation,
+                        newLocation === value
+                          ? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+                          : newLocation,
                       );
                       setIsPopoverOpen(false);
                     }}
