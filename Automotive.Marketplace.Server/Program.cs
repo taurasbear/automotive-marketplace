@@ -65,6 +65,8 @@ builder.Services.AddLogging(logging =>
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
