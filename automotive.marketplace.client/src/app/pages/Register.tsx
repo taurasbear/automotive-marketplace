@@ -11,20 +11,17 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   RegisterSchema,
-  setAccessToken,
   setCredentials,
-  useRefreshToken,
   useRegisterUser,
 } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const Register = () => {
   const { mutateAsync: registerUserAsync } = useRegisterUser();
-  const { mutateAsync: refreshAsync } = useRefreshToken();
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -37,11 +34,6 @@ const Register = () => {
       password: "",
     },
   });
-
-  const handleOnRefreshToken = async () => {
-    const { data: user } = await refreshAsync();
-    dispatch(setAccessToken({ accessToken: user.accessToken }));
-  };
 
   const onSubmit = async (formData: z.infer<typeof RegisterSchema>) => {
     const { data: user } = await registerUserAsync({
@@ -122,9 +114,11 @@ const Register = () => {
           </Button>
         </form>
       </Form>
-      <Button className="m-4" onClick={void handleOnRefreshToken}>
-        Refresh token(temporary)
-      </Button>
+      <Link to="/login">
+        <Button variant="link" className="m-4">
+          Already have an account?
+        </Button>
+      </Link>
     </div>
   );
 };

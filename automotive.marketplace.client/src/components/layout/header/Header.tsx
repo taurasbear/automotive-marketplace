@@ -1,9 +1,12 @@
-import { LogoutButton } from "@/features/auth";
+import { LogoutButton, RegisterButton } from "@/features/auth";
+import { useAppSelector } from "@/hooks/redux";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../../ui/button";
 import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
+  const { userId } = useAppSelector((state) => state.auth);
+
   return (
     <div className="dark:bg-secondary shadow-lg/2 dark:shadow-lg/4 dark:shadow-rose-600">
       <div className="mx-8 flex items-center justify-between py-2 xl:mx-auto xl:max-w-6xl">
@@ -17,7 +20,7 @@ const Header = () => {
             <Button variant="link">Sell your car</Button>
           </Link>
           <ThemeToggle />
-          <LogoutButton />
+          {userId ? <LogoutButton /> : <RegisterButton />}
         </div>
       </div>
     </div>
