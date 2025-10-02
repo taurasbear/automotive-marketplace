@@ -81,6 +81,19 @@ const EditListingForm = ({
             )}
           />
           <FormField
+            name="power"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="col-span-2 flex flex-col justify-start">
+                <FormLabel>Engine power (kw)*</FormLabel>
+                <FormControl>
+                  <Input type="number" min={0} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
             name="city"
             control={form.control}
             render={({ field }) => (
@@ -123,19 +136,6 @@ const EditListingForm = ({
                     {...field}
                     value={field.value ?? ""}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="power"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Engine power (kw)*</FormLabel>
-                <FormControl>
-                  <Input type="number" min={0} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -189,7 +189,7 @@ const EditListingForm = ({
             name="isSteeringWheelRight"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1 col-start-2 flex flex-col items-center justify-start">
+              <FormItem className="col-span-2 flex flex-col items-center justify-start">
                 <FormLabel>Steering wheel on right</FormLabel>
                 <FormControl>
                   <Checkbox
@@ -206,7 +206,7 @@ const EditListingForm = ({
             name="isUsed"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1 flex flex-col items-center justify-start">
+              <FormItem className="col-span-2 flex flex-col items-center justify-start">
                 <FormLabel>Used car</FormLabel>
                 <FormControl>
                   <Checkbox
