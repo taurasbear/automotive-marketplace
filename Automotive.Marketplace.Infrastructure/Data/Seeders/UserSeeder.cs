@@ -33,6 +33,7 @@ public class UserSeeder(AutomotiveContext context, IPasswordHasher passwordHashe
     {
         var superuser = new User
         {
+            Id = Guid.Parse("019981b1-4595-7347-a777-8ba34a4c8952"),
             Username = "Bear",
             Email = "bear@bear.com",
             HashedPassword = passwordHasher.Hash("password"),
