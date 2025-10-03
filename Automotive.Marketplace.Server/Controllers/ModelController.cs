@@ -15,7 +15,6 @@ namespace Automotive.Marketplace.Server.Controllers;
 public class ModelController(IMediator mediator) : BaseController
 {
     [HttpGet]
-    [Protect(Permission.ViewModels)]
     public async Task<ActionResult<IEnumerable<GetAllMakesResponse>>> GetByMakeId(
         [FromQuery] GetModelsByMakeIdQuery query, CancellationToken cancellationToken)
     {
