@@ -55,6 +55,7 @@ In the beginning, I set out to build something that would give me hands-on exper
 - Fully implemented **JWT Auth**
 - **BE testing** implemented with real databases
 - Use of a **Amazon S3** compatible image storage service
+- Modern FE using packages such as Tanstack Query and Router, Axios, ShadCN, Zod, etc.
 - Fully containerized development environment (including debugging)
 - Let's Encrypt for certification generation
 - Nginx as a reverse-proxy and web server
@@ -120,7 +121,7 @@ The project's CI/CD pipeline is implemented using GitHub Actions and consists of
 
 ### Setup
 
-1. Create a `.env` file at the project root:
+1. Create an `.env` file at the root of the project:
 
 ```dotenv
 DEV_DOCKER_DB_CONNECTION_STRING=Host=container-service-name;Port=db-port;Database=db-name;Username=your-username;Password=your-password
@@ -142,18 +143,13 @@ MINIO_ACCESSKEY=admin-username
 MINIO_SECRETKEY=admin-password
 ```
 
-2. To launch up, run execute the following command:
+2. To launch up, run the following command:
 
 ```sh
 docker compose --env-file .env up -d
 ```
 
 3. To get image downloads/uploads to work, you will need to go to `localhost:[minio-port]` and create an image bucket with the name you've chosen in `.env`
-
-### Planned improvements
-
-- Implement better BE validation
-- Increase test coverage
 
 ## Contacts
 
