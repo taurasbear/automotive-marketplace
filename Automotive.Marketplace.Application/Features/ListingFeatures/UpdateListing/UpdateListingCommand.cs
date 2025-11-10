@@ -4,9 +4,9 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.UpdateList
 
 public sealed record UpdateListingCommand : IRequest
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
-    public decimal Price { get; set; }
+    public required decimal Price { get; set; }
 
     public string? Description { get; set; }
 
@@ -14,17 +14,17 @@ public sealed record UpdateListingCommand : IRequest
 
     public string? Vin { get; set; }
 
-    public int Power { get; set; }
+    public required int Power { get; set; }
 
     public int EngineSize { get; set; }
 
-    public int Mileage { get; set; }
+    public required int Mileage { get; set; }
 
-    public bool IsSteeringWheelRight { get; set; }
+    public required bool IsSteeringWheelRight { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public required string City { get; set; } = string.Empty;
 
-    public bool IsUsed { get; set; }
+    public required bool IsUsed { get; set; }
 
-    public int Year { get; set; }
+    public required int Year { get; set; }
 };

@@ -44,7 +44,7 @@ public class ModelController(IMediator mediator) : BaseController
     public async Task<ActionResult> Create([FromBody] CreateModelCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
-        return Created();
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpDelete]

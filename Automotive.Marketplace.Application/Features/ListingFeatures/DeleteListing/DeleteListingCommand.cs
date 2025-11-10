@@ -4,5 +4,5 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.DeleteList
 
 public sealed record DeleteListingCommand : IRequest
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 };

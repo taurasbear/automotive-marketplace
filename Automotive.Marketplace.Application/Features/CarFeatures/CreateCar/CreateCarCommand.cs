@@ -5,17 +5,17 @@ namespace Automotive.Marketplace.Application.Features.CarFeatures.CreateCar;
 
 public sealed record CreateCarCommand : IRequest
 {
-    public int Year { get; set; }
+    public required int Year { get; set; }
 
-    public Fuel Fuel { get; set; }
+    public required Fuel Fuel { get; set; }
 
-    public Transmission Transmission { get; set; }
+    public required Transmission Transmission { get; set; }
 
-    public BodyType BodyType { get; set; }
+    public required BodyType BodyType { get; set; }
 
-    public Drivetrain Drivetrain { get; set; }
+    public required Drivetrain Drivetrain { get; set; }
 
-    public int DoorCount { get; set; }
+    public required int DoorCount { get; set; }
 
-    public Guid ModelId { get; set; }
+    public required Guid ModelId { get; set; }
 };

@@ -6,9 +6,9 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.CreateList
 
 public sealed record class CreateListingCommand : IRequest
 {
-    public Guid ModelId { get; set; }
+    public required Guid ModelId { get; set; }
 
-    public decimal Price { get; set; }
+    public required decimal Price { get; set; }
 
     public string? Description { get; set; }
 
@@ -16,31 +16,31 @@ public sealed record class CreateListingCommand : IRequest
 
     public string? Vin { get; set; }
 
-    public int Power { get; set; }
+    public required int Power { get; set; }
 
-    public int EngineSize { get; set; }
+    public required int EngineSize { get; set; }
 
-    public int Mileage { get; set; }
+    public required int Mileage { get; set; }
 
-    public bool IsSteeringWheelRight { get; set; }
+    public required bool IsSteeringWheelRight { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public required string City { get; set; } = string.Empty;
 
-    public bool IsUsed { get; set; }
+    public required bool IsUsed { get; set; }
 
-    public int Year { get; set; }
+    public required int Year { get; set; }
 
-    public Transmission Transmission { get; set; }
+    public required Transmission Transmission { get; set; }
 
-    public Fuel Fuel { get; set; }
+    public required Fuel Fuel { get; set; }
 
-    public int DoorCount { get; set; }
+    public required int DoorCount { get; set; }
 
-    public BodyType BodyType { get; set; }
+    public required BodyType BodyType { get; set; }
 
-    public Drivetrain Drivetrain { get; set; }
+    public required Drivetrain Drivetrain { get; set; }
 
-    public Guid UserId { get; set; }
+    public required Guid UserId { get; set; }
 
     public List<IFormFile> Images { get; set; } = [];
 }

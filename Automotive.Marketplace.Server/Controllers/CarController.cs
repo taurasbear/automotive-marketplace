@@ -35,7 +35,7 @@ public class CarController(IMediator mediator) : BaseController
     public async Task<ActionResult> Create([FromBody] CreateCarCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
-        return Created();
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpDelete]

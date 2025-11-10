@@ -38,7 +38,7 @@ public class ListingController(IMediator mediator) : BaseController
     {
         command.UserId = UserId;
         await mediator.Send(command, cancellationToken);
-        return Created();
+        return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpDelete]
