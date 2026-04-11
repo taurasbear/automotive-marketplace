@@ -15,6 +15,7 @@ import { Route as RegisterImport } from './app/routes/register'
 import { Route as ModelsImport } from './app/routes/models'
 import { Route as LoginImport } from './app/routes/login'
 import { Route as ListingsImport } from './app/routes/listings'
+import { Route as InboxImport } from './app/routes/inbox'
 import { Route as CarsImport } from './app/routes/cars'
 import { Route as AboutImport } from './app/routes/about'
 import { Route as IndexImport } from './app/routes/index'
@@ -44,6 +45,12 @@ const LoginRoute = LoginImport.update({
 const ListingsRoute = ListingsImport.update({
   id: '/listings',
   path: '/listings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const InboxRoute = InboxImport.update({
+  id: '/inbox',
+  path: '/inbox',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ListingsImport
       parentRoute: typeof rootRoute
     }
+    '/inbox': {
+      id: '/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof InboxImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -153,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cars': typeof CarsRoute
+  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -165,6 +180,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cars': typeof CarsRoute
+  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -178,6 +194,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cars': typeof CarsRoute
+  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -192,6 +209,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cars'
+    | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
@@ -203,6 +221,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cars'
+    | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
@@ -214,6 +233,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cars'
+    | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
@@ -227,6 +247,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CarsRoute: typeof CarsRoute
+  InboxRoute: typeof InboxRoute
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
   ModelsRoute: typeof ModelsRoute
@@ -239,6 +260,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CarsRoute: CarsRoute,
+  InboxRoute: InboxRoute,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
   ModelsRoute: ModelsRoute,
@@ -260,6 +282,7 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/cars",
+        "/inbox",
         "/listings",
         "/login",
         "/models",
@@ -276,6 +299,9 @@ export const routeTree = rootRoute
     },
     "/cars": {
       "filePath": "cars.tsx"
+    },
+    "/inbox": {
+      "filePath": "inbox.tsx"
     },
     "/listings": {
       "filePath": "listings.tsx"
