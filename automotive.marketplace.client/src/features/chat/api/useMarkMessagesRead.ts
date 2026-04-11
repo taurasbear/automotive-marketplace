@@ -11,7 +11,9 @@ export const useMarkMessagesRead = () => {
   return useMutation({
     mutationFn: markMessagesRead,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: chatKeys.conversations() });
+      void queryClient.invalidateQueries({
+        queryKey: chatKeys.conversations(),
+      });
     },
   });
 };
