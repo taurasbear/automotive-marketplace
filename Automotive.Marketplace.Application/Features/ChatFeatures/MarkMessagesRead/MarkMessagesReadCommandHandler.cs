@@ -22,8 +22,9 @@ public class MarkMessagesReadCommandHandler(IRepository repository)
         foreach (var message in unreadMessages)
         {
             message.IsRead = true;
-            await repository.UpdateAsync(message, cancellationToken);
         }
+
+        await repository.SaveChangesAsync(cancellationToken);
 
         var totalUnreadCount = await repository.AsQueryable<Message>()
             .Where(m => !m.IsRead

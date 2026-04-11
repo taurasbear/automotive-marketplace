@@ -2,7 +2,7 @@ using MediatR;
 
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.SendMessage;
 
-public class SendMessageCommand : IRequest<SendMessageResponse>
+public sealed record SendMessageCommand : IRequest<SendMessageResponse>
 {
     public Guid ConversationId { get; set; }
 

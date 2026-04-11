@@ -2,7 +2,7 @@ using MediatR;
 
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConversation;
 
-public class GetOrCreateConversationCommand : IRequest<GetOrCreateConversationResponse>
+public sealed record GetOrCreateConversationCommand : IRequest<GetOrCreateConversationResponse>
 {
     public Guid BuyerId { get; set; }
 

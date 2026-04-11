@@ -1,6 +1,6 @@
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.SendMessage;
 
-public class SendMessageResponse
+public sealed record SendMessageResponse
 {
     public Guid Id { get; set; }
 

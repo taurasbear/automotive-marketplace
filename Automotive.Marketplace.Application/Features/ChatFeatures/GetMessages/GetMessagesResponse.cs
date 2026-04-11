@@ -1,12 +1,12 @@
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.GetMessages;
 
-public class GetMessagesResponse
+public sealed record GetMessagesResponse
 {
     public Guid ConversationId { get; set; }
 
     public List<MessageDto> Messages { get; set; } = [];
 
-    public class MessageDto
+    public sealed record MessageDto
     {
         public Guid Id { get; set; }
 

@@ -1,6 +1,6 @@
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConversation;
 
-public class GetOrCreateConversationResponse
+public sealed record GetOrCreateConversationResponse
 {
     public Guid ConversationId { get; set; }
 }

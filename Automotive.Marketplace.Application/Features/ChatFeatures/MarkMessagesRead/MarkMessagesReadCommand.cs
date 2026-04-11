@@ -2,7 +2,7 @@ using MediatR;
 
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.MarkMessagesRead;
 
-public class MarkMessagesReadCommand : IRequest<MarkMessagesReadResponse>
+public sealed record MarkMessagesReadCommand : IRequest<MarkMessagesReadResponse>
 {
     public Guid ConversationId { get; set; }
 

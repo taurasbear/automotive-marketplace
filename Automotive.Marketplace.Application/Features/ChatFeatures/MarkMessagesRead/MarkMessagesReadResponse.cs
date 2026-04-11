@@ -1,6 +1,6 @@
 namespace Automotive.Marketplace.Application.Features.ChatFeatures.MarkMessagesRead;
 
-public class MarkMessagesReadResponse
+public sealed record MarkMessagesReadResponse
 {
     public int TotalUnreadCount { get; set; }
 }
