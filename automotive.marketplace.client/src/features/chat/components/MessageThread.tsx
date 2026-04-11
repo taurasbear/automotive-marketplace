@@ -26,6 +26,7 @@ const MessageThread = ({
   const { sendMessage } = useChatHub();
   const { mutate: markRead } = useMarkMessagesRead();
   const [input, setInput] = useState("");
+  const [sendError, setSendError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,8 +43,11 @@ const MessageThread = ({
     try {
       sendMessage({ conversationId: conversation.id, content: trimmed });
       setInput("");
-    } catch {
-      // message not sent — input preserved so user can retry
+      setSendError(null);
+    } catch (err) {
+      setSendError(
+        err instanceof Error ? err.message : "Failed to send message.",
+      );
     }
   };
 
@@ -80,12 +84,18 @@ const MessageThread = ({
         })}
         <div ref={bottomRef} />
       </div>
+      {sendError && (
+        <p className="text-destructive px-3 pb-1 text-xs">{sendError}</p>
+      )}
       <div className="border-border flex items-center gap-2 border-t p-3">
         <input
           className="border-input bg-background focus:ring-ring flex-1 rounded-full border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
           placeholder={`Message ${conversation.counterpartUsername}...`}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setSendError(null);
+          }}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
         <Button size="sm" onClick={handleSend} disabled={!input.trim()}>
