@@ -40,6 +40,8 @@ public sealed record GetListingByIdResponse
 
     public string Seller { get; set; } = string.Empty;
 
+    public Guid SellerId { get; set; }
+
     public List<Image> Images { get; set; } = [];
 
     public sealed class Image
