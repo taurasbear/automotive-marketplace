@@ -65,11 +65,12 @@ export const useChatHub = () => {
       conversationId: string;
       content: string;
     }) => {
-      void connectionRef.current?.invoke(
-        "SendMessage",
-        conversationId,
-        content,
-      );
+      if (
+        connectionRef.current?.state !== signalR.HubConnectionState.Connected
+      ) {
+        throw new Error("Not connected. Please wait and try again.");
+      }
+      void connectionRef.current.invoke("SendMessage", conversationId, content);
     },
     [],
   );

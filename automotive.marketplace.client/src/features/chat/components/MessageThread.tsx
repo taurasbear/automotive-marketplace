@@ -34,13 +34,17 @@ const MessageThread = ({
 
   useEffect(() => {
     markRead(conversation.id);
-  }, [conversation.id, markRead]);
+  }, [messages.length, conversation.id, markRead]);
 
   const handleSend = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    sendMessage({ conversationId: conversation.id, content: trimmed });
-    setInput("");
+    try {
+      sendMessage({ conversationId: conversation.id, content: trimmed });
+      setInput("");
+    } catch {
+      // message not sent — input preserved so user can retry
+    }
   };
 
   return (
