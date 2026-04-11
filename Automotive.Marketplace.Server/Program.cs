@@ -3,6 +3,7 @@ using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Infrastructure.Interfaces;
 using Automotive.Marketplace.Server.Filters;
+using Automotive.Marketplace.Server.Hubs;
 using Automotive.Marketplace.Server.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,17 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/chat"))
+                context.Token = accessToken;
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services
@@ -72,6 +84,8 @@ builder.Services.AddLogging(logging =>
     logging.AddConsole();
     logging.AddDebug();
 });
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -111,6 +125,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.MapFallbackToFile("/index.html");
 
