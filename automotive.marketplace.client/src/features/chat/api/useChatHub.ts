@@ -1,9 +1,9 @@
-import * as signalR from "@microsoft/signalr";
-import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
 import { chatKeys } from "@/api/queryKeys/chatKeys";
 import { selectAccessToken } from "@/features/auth";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import * as signalR from "@microsoft/signalr";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useRef } from "react";
 import { setUnreadCount } from "../state/chatSlice";
 import type { GetMessagesResponse } from "../types/GetMessagesResponse";
 import type { Message } from "../types/Message";
@@ -22,7 +22,7 @@ export const useChatHub = () => {
 
     isOwner.current = true;
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("/hubs/chat", { accessTokenFactory: () => accessToken })
+      .withUrl("/api/hubs/chat", { accessTokenFactory: () => accessToken })
       .withAutomaticReconnect()
       .build();
 
