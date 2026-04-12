@@ -17,4 +17,6 @@ public sealed record SendMessageResponse
     public Guid RecipientId { get; set; }
 
     public int RecipientUnreadCount { get; set; }
+
+    public bool IsRead { get; set; } = false;
 }

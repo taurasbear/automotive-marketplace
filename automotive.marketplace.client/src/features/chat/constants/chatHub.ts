@@ -13,5 +13,3 @@ export type ReceiveMessagePayload = {
   sentAt: string;
   isRead: boolean;
 };
-
-export type UpdateUnreadCountPayload = number;

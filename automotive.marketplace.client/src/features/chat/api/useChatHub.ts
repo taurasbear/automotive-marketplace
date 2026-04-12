@@ -67,7 +67,6 @@ export const useChatHub = () => {
 
     connection.on(HUB_METHODS.UPDATE_UNREAD_COUNT, (count: number) => {
       dispatch(setUnreadCount(count));
-      void queryClient.invalidateQueries({ queryKey: chatKeys.unreadCount() });
     });
 
     connectionRef.current = connection;
