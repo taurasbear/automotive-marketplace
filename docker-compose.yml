@@ -34,7 +34,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGPORT: 5433
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     networks:
       - app-network
   nginx:
