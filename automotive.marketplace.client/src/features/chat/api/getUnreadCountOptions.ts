@@ -3,7 +3,7 @@ import { ENDPOINTS } from "@/constants/endpoints";
 import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
 
-type GetUnreadCountResponse = {
+export type GetUnreadCountResponse = {
   unreadCount: number;
 };
 

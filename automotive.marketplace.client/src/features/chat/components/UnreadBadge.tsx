@@ -1,8 +1,14 @@
+import { selectAccessToken } from "@/features/auth";
+import { useAppSelector } from "@/hooks/redux";
 import { useQuery } from "@tanstack/react-query";
 import { getUnreadCountOptions } from "../api/getUnreadCountOptions";
 
 const UnreadBadge = () => {
-  const { data: unreadQuery } = useQuery(getUnreadCountOptions());
+  const accessToken = useAppSelector(selectAccessToken);
+  const { data: unreadQuery } = useQuery({
+    ...getUnreadCountOptions(),
+    enabled: !!accessToken,
+  });
   const count = unreadQuery?.data.unreadCount ?? 0;
   if (count === 0) return null;
   return (

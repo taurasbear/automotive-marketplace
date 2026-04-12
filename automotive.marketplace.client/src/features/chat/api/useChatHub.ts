@@ -3,8 +3,10 @@ import { selectAccessToken } from "@/features/auth";
 import { useAppSelector } from "@/hooks/redux";
 import queryClient from "@/lib/tanstack-query/queryClient";
 import * as signalR from "@microsoft/signalr";
+import type { AxiosResponse } from "axios";
 import { useCallback, useEffect, useRef } from "react";
 import { HUB_METHODS } from "../constants/chatHub";
+import type { GetUnreadCountResponse } from "../api/getUnreadCountOptions";
 import type { GetMessagesResponse } from "../types/GetMessagesResponse";
 import type { ReceiveMessagePayload } from "../types/ReceiveMessagePayload";
 
@@ -45,14 +47,11 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.conversations(),
         });
-        void queryClient.invalidateQueries({
-          queryKey: chatKeys.unreadCount(),
-        });
       },
     );
 
     connection.on(HUB_METHODS.UPDATE_UNREAD_COUNT, (count: number) => {
-      queryClient.setQueryData<{ data: { unreadCount: number } }>(
+      queryClient.setQueryData<AxiosResponse<GetUnreadCountResponse>>(
         chatKeys.unreadCount(),
         (old) => {
           if (!old) return old;
