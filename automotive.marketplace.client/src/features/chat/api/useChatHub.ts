@@ -1,14 +1,12 @@
 import { chatKeys } from "@/api/queryKeys/chatKeys";
 import { selectAccessToken } from "@/features/auth";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/hooks/redux";
 import queryClient from "@/lib/tanstack-query/queryClient";
 import * as signalR from "@microsoft/signalr";
-import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
-import { getUnreadCountOptions } from "./getUnreadCountOptions";
-import { HUB_METHODS, type ReceiveMessagePayload } from "../constants/chatHub";
-import { setUnreadCount } from "../state/chatSlice";
+import { HUB_METHODS } from "../constants/chatHub";
 import type { GetMessagesResponse } from "../types/GetMessagesResponse";
+import type { ReceiveMessagePayload } from "../types/ReceiveMessagePayload";
 
 const apiBase =
   (import.meta.env.VITE_APP_API_URL as string) ||
@@ -19,19 +17,7 @@ const connectionRef = { current: null as signalR.HubConnection | null };
 
 export const useChatHub = () => {
   const accessToken = useAppSelector(selectAccessToken);
-  const dispatch = useAppDispatch();
   const isOwner = useRef(false);
-
-  const { data: unreadQuery } = useQuery({
-    ...getUnreadCountOptions(),
-    enabled: !!accessToken,
-  });
-
-  useEffect(() => {
-    if (unreadQuery?.data.unreadCount !== undefined) {
-      dispatch(setUnreadCount(unreadQuery.data.unreadCount));
-    }
-  }, [unreadQuery?.data.unreadCount, dispatch]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -66,7 +52,13 @@ export const useChatHub = () => {
     );
 
     connection.on(HUB_METHODS.UPDATE_UNREAD_COUNT, (count: number) => {
-      dispatch(setUnreadCount(count));
+      queryClient.setQueryData<{ data: { unreadCount: number } }>(
+        chatKeys.unreadCount(),
+        (old) => {
+          if (!old) return old;
+          return { ...old, data: { unreadCount: count } };
+        },
+      );
     });
 
     connectionRef.current = connection;
@@ -78,7 +70,7 @@ export const useChatHub = () => {
         connectionRef.current = null;
       }
     };
-  }, [accessToken, dispatch]);
+  }, [accessToken]);
 
   const sendMessage = useCallback(
     ({
