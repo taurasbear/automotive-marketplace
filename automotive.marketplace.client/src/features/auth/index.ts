@@ -1,3 +1,4 @@
+export { applyAuthResponse } from "./utils/applyAuthResponse";
 export { useLoginUser } from "./api/useLoginUser";
 export { useRefreshToken } from "./api/useRefreshToken";
 export { useRegisterUser } from "./api/useRegisterUser";

@@ -1,8 +1,8 @@
 import { ENDPOINTS } from "@/constants/endpoints";
 import {
+  applyAuthResponse,
   clearCredentials,
   RefreshTokenResponse,
-  setCredentials,
 } from "@/features/auth";
 import axiosClient from "@/lib/axios/axiosClient";
 import { store } from "@/lib/redux/store";
@@ -47,23 +47,20 @@ const refreshTokenAndRetry = async (
       ENDPOINTS.AUTH.REFRESH,
     );
 
-    store.dispatch(
-      setCredentials({
-        accessToken: user.accessToken,
-        userId: user.userId,
-        permissions: user.permissions,
-      }),
-    );
+    applyAuthResponse(user);
 
     const retryRequest = createRetryRequest(originalRequest);
     setTimeout(() => void processFailedQueue(), 0);
 
     return retryRequest;
   } catch (error) {
+    const status = (error as AxiosError).response?.status;
     await clearSession(error as AxiosError);
     if (!isRedirecting) {
       isRedirecting = true;
-      toast.error("Session has ended");
+      if (status === 422) {
+        toast.error("Session has ended");
+      }
       await router.navigate({ to: "/login" });
       isRedirecting = false;
     }

@@ -1,8 +1,8 @@
 import { ENDPOINTS } from "@/constants/endpoints";
 import {
+  applyAuthResponse,
   clearCredentials,
   RefreshTokenResponse,
-  setCredentials,
 } from "@/features/auth";
 import Header from "@/components/layout/header/Header";
 import { useChatHub } from "@/features/chat";
@@ -39,13 +39,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         const { data } = await authClient.post<RefreshTokenResponse>(
           ENDPOINTS.AUTH.REFRESH,
         );
-        store.dispatch(
-          setCredentials({
-            accessToken: data.accessToken,
-            userId: data.userId,
-            permissions: data.permissions,
-          }),
-        );
+        applyAuthResponse(data);
       } catch {
         store.dispatch(clearCredentials());
       }
