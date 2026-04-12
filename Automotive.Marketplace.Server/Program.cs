@@ -66,7 +66,6 @@ builder.Services
         options.Filters.Add<ValidationExceptionFilter>();
         options.Filters.Add<NotFoundExceptionFilter>();
         options.Filters.Add<UnauthorizedExceptionFilter>();
-        options.Filters.Add<UnprocessableEntityExceptionFilter>();
     })
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 

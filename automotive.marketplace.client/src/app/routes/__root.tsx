@@ -39,7 +39,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         const { data } = await authClient.post<RefreshTokenResponse>(
           ENDPOINTS.AUTH.REFRESH,
         );
-        applyAuthResponse(data);
+        applyAuthResponse(store.dispatch, data);
       } catch {
         store.dispatch(clearCredentials());
       }

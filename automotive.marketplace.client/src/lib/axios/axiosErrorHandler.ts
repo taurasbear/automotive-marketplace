@@ -47,24 +47,23 @@ const refreshTokenAndRetry = async (
       ENDPOINTS.AUTH.REFRESH,
     );
 
-    applyAuthResponse(user);
+    applyAuthResponse(store.dispatch, user);
 
     const retryRequest = createRetryRequest(originalRequest);
     setTimeout(() => void processFailedQueue(), 0);
 
     return retryRequest;
   } catch (error) {
-    const status = (error as AxiosError).response?.status;
+    const errorData = (error as AxiosError<{ type?: string }>).response?.data;
     await clearSession(error as AxiosError);
     if (!isRedirecting) {
       isRedirecting = true;
-      if (status === 422) {
+      if (errorData?.type === "InvalidToken") {
         toast.error("Session has ended");
       }
       await router.navigate({ to: "/login" });
       isRedirecting = false;
     }
-
     return Promise.reject(error as AxiosError);
   }
 };
