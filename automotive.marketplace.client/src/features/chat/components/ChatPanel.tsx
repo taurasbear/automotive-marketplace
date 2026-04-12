@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import type { ConversationSummary } from "../types/ConversationSummary";
 import MessageThread from "./MessageThread";
@@ -20,13 +21,15 @@ const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
         <p className="flex-1 text-sm font-semibold">
           {conversation.counterpartUsername}
         </p>
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={onClose}
-          className="text-muted-foreground hover:text-foreground text-lg leading-none"
           aria-label="Close chat"
+          className="text-muted-foreground hover:text-foreground h-auto p-1 leading-none"
         >
           ✕
-        </button>
+        </Button>
       </div>
       <div className="flex-1 overflow-hidden">
         <MessageThread conversation={conversation} showListingCard={false} />

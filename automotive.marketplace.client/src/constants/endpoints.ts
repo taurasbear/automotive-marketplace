@@ -41,5 +41,6 @@ export const ENDPOINTS = {
     GET_CONVERSATIONS: "/Chat/GetConversations",
     GET_MESSAGES: "/Chat/GetMessages",
     MARK_MESSAGES_READ: "/Chat/MarkMessagesRead",
+    GET_UNREAD_COUNT: "/Chat/GetUnreadCount",
   },
 } as const;
