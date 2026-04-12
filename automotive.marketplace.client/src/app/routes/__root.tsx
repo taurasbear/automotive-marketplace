@@ -31,6 +31,7 @@ const RootLayout = () => {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
+  staleTime: Infinity,
   loader: async () => {
     const { auth } = store.getState();
     if (auth.userId && !auth.accessToken) {
