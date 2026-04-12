@@ -4,9 +4,9 @@ public sealed record GetMessagesResponse
 {
     public Guid ConversationId { get; set; }
 
-    public List<MessageDto> Messages { get; set; } = [];
+    public List<Message> Messages { get; set; } = [];
 
-    public sealed record MessageDto
+    public sealed record Message
     {
         public Guid Id { get; set; }
 

@@ -8,7 +8,7 @@ public class ChatMappings : Profile
 {
     public ChatMappings()
     {
-        CreateMap<Message, GetMessagesResponse.MessageDto>()
+        CreateMap<Message, GetMessagesResponse.Message>()
             .ForMember(dest => dest.SenderUsername, opt => opt.MapFrom(src => src.Sender.Username));
     }
 }

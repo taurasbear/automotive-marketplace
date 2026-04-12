@@ -24,7 +24,7 @@ public class GetMessagesQueryHandler(IRepository repository, IMapper mapper)
 
         var messages = conversation.Messages
             .OrderBy(m => m.SentAt)
-            .Select(m => mapper.Map<GetMessagesResponse.MessageDto>(m))
+            .Select(m => mapper.Map<GetMessagesResponse.Message>(m))
             .ToList();
 
         return new GetMessagesResponse

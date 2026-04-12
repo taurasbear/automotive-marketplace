@@ -1,6 +1,7 @@
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetConversations;
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetMessages;
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConversation;
+using Automotive.Marketplace.Application.Features.ChatFeatures.GetUnreadCount;
 using Automotive.Marketplace.Application.Features.ChatFeatures.MarkMessagesRead;
 using Automotive.Marketplace.Server.Hubs;
 using MediatR;
@@ -53,5 +54,14 @@ public class ChatController(IMediator mediator, IHubContext<ChatHub> hubContext)
             .Group($"user-{UserId}")
             .SendAsync("UpdateUnreadCount", result.TotalUnreadCount, cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetUnreadCountResponse>> GetUnreadCount(
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetUnreadCountQuery { UserId = UserId }, cancellationToken);
+        return Ok(result);
     }
 }
