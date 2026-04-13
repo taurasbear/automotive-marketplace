@@ -6,7 +6,4 @@ public sealed record GetAllModelsResponse
 
     public string Name { get; set; } = string.Empty;
 
-    public DateOnly FirstAppearanceDate { get; set; }
-
-    public bool IsDiscontinued { get; set; }
 }

@@ -8,9 +8,5 @@ public sealed record UpdateModelCommand : IRequest
 
     public string Name { get; set; } = string.Empty;
 
-    public DateOnly FirstAppearanceDate { get; set; }
-
-    public bool IsDiscontinued { get; set; }
-
     public Guid MakeId { get; set; }
 };
