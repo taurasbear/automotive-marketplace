@@ -24,11 +24,10 @@ const ViewModelDialogContent = ({ id }: ViewModelDialogContentProps) => {
       </DialogHeader>
       <div className="grid gap-4">
         <h3>{model.name}</h3>
-        <p>First appeared: {model.firstAppearanceDate}</p>
-        {model.isDiscontinued ? (
-          <p>Has been discontinued</p>
-        ) : (
-          <p>Has not been discontinued</p>
+        <p>Created by: {model.createdBy}</p>
+        <p>Created at: {new Date(model.createdAt).toLocaleString()}</p>
+        {model.modifiedAt && (
+          <p>Last modified by: {model.modifiedBy} on {new Date(model.modifiedAt).toLocaleString()}</p>
         )}
       </div>
     </>

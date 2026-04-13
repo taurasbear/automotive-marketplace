@@ -23,7 +23,6 @@ const EditModelDialogContent = ({
       <ModelForm
         model={{
           ...model,
-          firstAppearanceDate: new Date(model.firstAppearanceDate),
         }}
         onSubmit={onSubmit}
       />

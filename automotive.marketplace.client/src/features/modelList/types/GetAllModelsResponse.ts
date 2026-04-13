@@ -1,6 +1,8 @@
 export type GetAllModelsResponse = {
   id: string;
   name: string;
-  firstAppearanceDate: string;
-  isDiscontinued: boolean;
+  createdAt: string;
+  modifiedAt: string | null;
+  createdBy: string;
+  modifiedBy: string;
 };

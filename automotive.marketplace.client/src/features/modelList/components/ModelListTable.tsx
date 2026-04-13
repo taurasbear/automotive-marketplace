@@ -37,8 +37,8 @@ const ModelListTable = ({ className }: ModelListTableProps) => {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>First appearance</TableHead>
-            <TableHead>Discontinued</TableHead>
+            <TableHead>Created by</TableHead>
+            <TableHead>Created at</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -46,8 +46,8 @@ const ModelListTable = ({ className }: ModelListTableProps) => {
           {models.map((m) => (
             <TableRow key={m.id}>
               <TableCell>{m.name}</TableCell>
-              <TableCell>{m.firstAppearanceDate}</TableCell>
-              <TableCell>{String(m.isDiscontinued)}</TableCell>
+              <TableCell>{m.createdBy}</TableCell>
+              <TableCell>{new Date(m.createdAt).toLocaleDateString()}</TableCell>
               <TableCell>
                 <ViewModelDialog id={m.id} />
                 <EditModelDialog id={m.id} />
