@@ -373,3 +373,4 @@ automotive.marketplace.client/obj/Debug//package.g.props
 # Rider
 .idea
 .superpowers/
+.worktrees/
