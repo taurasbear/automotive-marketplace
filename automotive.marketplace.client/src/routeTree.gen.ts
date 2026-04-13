@@ -8,151 +8,74 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './app/routes/__root'
+import { Route as RegisterRouteImport } from './app/routes/register'
+import { Route as ModelsRouteImport } from './app/routes/models'
+import { Route as LoginRouteImport } from './app/routes/login'
+import { Route as ListingsRouteImport } from './app/routes/listings'
+import { Route as InboxRouteImport } from './app/routes/inbox'
+import { Route as CarsRouteImport } from './app/routes/cars'
+import { Route as AboutRouteImport } from './app/routes/about'
+import { Route as IndexRouteImport } from './app/routes/index'
+import { Route as ListingCreateRouteImport } from './app/routes/listing/create'
+import { Route as ListingIdRouteImport } from './app/routes/listing/$id'
 
-import { Route as rootRoute } from './app/routes/__root'
-import { Route as RegisterImport } from './app/routes/register'
-import { Route as ModelsImport } from './app/routes/models'
-import { Route as LoginImport } from './app/routes/login'
-import { Route as ListingsImport } from './app/routes/listings'
-import { Route as CarsImport } from './app/routes/cars'
-import { Route as AboutImport } from './app/routes/about'
-import { Route as IndexImport } from './app/routes/index'
-import { Route as ListingCreateImport } from './app/routes/listing/create'
-import { Route as ListingIdImport } from './app/routes/listing/$id'
-
-// Create/Update Routes
-
-const RegisterRoute = RegisterImport.update({
+const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ModelsRoute = ModelsImport.update({
+const ModelsRoute = ModelsRouteImport.update({
   id: '/models',
   path: '/models',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const LoginRoute = LoginImport.update({
+const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ListingsRoute = ListingsImport.update({
+const ListingsRoute = ListingsRouteImport.update({
   id: '/listings',
   path: '/listings',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const CarsRoute = CarsImport.update({
+const InboxRoute = InboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarsRoute = CarsRouteImport.update({
   id: '/cars',
   path: '/cars',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AboutRoute = AboutImport.update({
+const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ListingCreateRoute = ListingCreateImport.update({
+const ListingCreateRoute = ListingCreateRouteImport.update({
   id: '/listing/create',
   path: '/listing/create',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ListingIdRoute = ListingIdImport.update({
+const ListingIdRoute = ListingIdRouteImport.update({
   id: '/listing/$id',
   path: '/listing/$id',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
-    '/cars': {
-      id: '/cars'
-      path: '/cars'
-      fullPath: '/cars'
-      preLoaderRoute: typeof CarsImport
-      parentRoute: typeof rootRoute
-    }
-    '/listings': {
-      id: '/listings'
-      path: '/listings'
-      fullPath: '/listings'
-      preLoaderRoute: typeof ListingsImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/models': {
-      id: '/models'
-      path: '/models'
-      fullPath: '/models'
-      preLoaderRoute: typeof ModelsImport
-      parentRoute: typeof rootRoute
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterImport
-      parentRoute: typeof rootRoute
-    }
-    '/listing/$id': {
-      id: '/listing/$id'
-      path: '/listing/$id'
-      fullPath: '/listing/$id'
-      preLoaderRoute: typeof ListingIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/listing/create': {
-      id: '/listing/create'
-      path: '/listing/create'
-      fullPath: '/listing/create'
-      preLoaderRoute: typeof ListingCreateImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cars': typeof CarsRoute
+  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -160,11 +83,11 @@ export interface FileRoutesByFullPath {
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cars': typeof CarsRoute
+  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -172,12 +95,12 @@ export interface FileRoutesByTo {
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/cars': typeof CarsRoute
+  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
@@ -185,13 +108,13 @@ export interface FileRoutesById {
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
     | '/cars'
+    | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
@@ -203,6 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cars'
+    | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
@@ -214,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/cars'
+    | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
@@ -222,11 +147,11 @@ export interface FileRouteTypes {
     | '/listing/create'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CarsRoute: typeof CarsRoute
+  InboxRoute: typeof InboxRoute
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
   ModelsRoute: typeof ModelsRoute
@@ -235,10 +160,86 @@ export interface RootRouteChildren {
   ListingCreateRoute: typeof ListingCreateRoute
 }
 
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/models': {
+      id: '/models'
+      path: '/models'
+      fullPath: '/models'
+      preLoaderRoute: typeof ModelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/listings': {
+      id: '/listings'
+      path: '/listings'
+      fullPath: '/listings'
+      preLoaderRoute: typeof ListingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inbox': {
+      id: '/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof InboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cars': {
+      id: '/cars'
+      path: '/cars'
+      fullPath: '/cars'
+      preLoaderRoute: typeof CarsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/listing/create': {
+      id: '/listing/create'
+      path: '/listing/create'
+      fullPath: '/listing/create'
+      preLoaderRoute: typeof ListingCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/listing/$id': {
+      id: '/listing/$id'
+      path: '/listing/$id'
+      fullPath: '/listing/$id'
+      preLoaderRoute: typeof ListingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CarsRoute: CarsRoute,
+  InboxRoute: InboxRoute,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
   ModelsRoute: ModelsRoute,
@@ -246,55 +247,6 @@ const rootRouteChildren: RootRouteChildren = {
   ListingIdRoute: ListingIdRoute,
   ListingCreateRoute: ListingCreateRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/about",
-        "/cars",
-        "/listings",
-        "/login",
-        "/models",
-        "/register",
-        "/listing/$id",
-        "/listing/create"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
-    },
-    "/cars": {
-      "filePath": "cars.tsx"
-    },
-    "/listings": {
-      "filePath": "listings.tsx"
-    },
-    "/login": {
-      "filePath": "login.tsx"
-    },
-    "/models": {
-      "filePath": "models.tsx"
-    },
-    "/register": {
-      "filePath": "register.tsx"
-    },
-    "/listing/$id": {
-      "filePath": "listing/$id.tsx"
-    },
-    "/listing/create": {
-      "filePath": "listing/create.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

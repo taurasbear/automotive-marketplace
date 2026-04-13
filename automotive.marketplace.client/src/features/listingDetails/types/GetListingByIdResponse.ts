@@ -18,6 +18,7 @@ export type GetListingByIdResponse = {
   bodyType: string;
   drivetrain: string;
   seller: string;
+  sellerId: string;
   images: Image[];
 };
 

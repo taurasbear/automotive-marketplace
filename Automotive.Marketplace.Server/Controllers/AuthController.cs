@@ -1,4 +1,5 @@
-﻿using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
+﻿using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Application.Features.AuthFeatures.LoginUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.LogoutUser;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RefreshToken;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
@@ -68,7 +69,7 @@ public class AuthController(IMediator mediator) : BaseController
 
         if (string.IsNullOrWhiteSpace(refreshToken))
         {
-            return Unauthorized("Invalid refresh token.");
+            throw new MissingRefreshTokenException();
         }
 
         var command = new RefreshTokenCommand { RefreshToken = refreshToken };

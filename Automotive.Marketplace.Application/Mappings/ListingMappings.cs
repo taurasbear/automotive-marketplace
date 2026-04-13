@@ -71,6 +71,7 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.BodyType, opt => opt.MapFrom(src => src.Car.BodyType.ToString()))
             .ForMember(dest => dest.Drivetrain, opt => opt.MapFrom(src => src.Car.Drivetrain.ToString()))
             .ForMember(dest => dest.Seller, opt => opt.MapFrom(src => src.Seller.Username))
+            .ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => src.SellerId))
             .ForMember(dest => dest.Images, opt => opt.Ignore());
     }
 }

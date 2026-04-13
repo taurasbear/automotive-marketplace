@@ -1,5 +1,6 @@
 import { PERMISSIONS } from "@/constants/permissions";
 import { LogoutButton, RegisterButton } from "@/features/auth";
+import { UnreadBadge } from "@/features/chat";
 import { useAppSelector } from "@/hooks/redux";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../../ui/button";
@@ -30,6 +31,14 @@ const Header = () => {
           <Link to="/listing/create">
             <Button variant="link">Sell your car</Button>
           </Link>
+          {userId && (
+            <Link to="/inbox">
+              <Button variant="link" className="relative">
+                Inbox
+                <UnreadBadge />
+              </Button>
+            </Link>
+          )}
           <ThemeToggle />
           {userId ? <LogoutButton /> : <RegisterButton />}
         </div>

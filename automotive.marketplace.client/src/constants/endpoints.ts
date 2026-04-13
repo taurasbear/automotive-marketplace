@@ -36,4 +36,11 @@ export const ENDPOINTS = {
     GET_BODY_TYPES: "/Enum/GetBodyTypes",
     GET_DRIVETRAIN_TYPES: "/Enum/GetDrivetrainTypes",
   },
+  CHAT: {
+    GET_OR_CREATE_CONVERSATION: "/Chat/GetOrCreateConversation",
+    GET_CONVERSATIONS: "/Chat/GetConversations",
+    GET_MESSAGES: "/Chat/GetMessages",
+    MARK_MESSAGES_READ: "/Chat/MarkMessagesRead",
+    GET_UNREAD_COUNT: "/Chat/GetUnreadCount",
+  },
 } as const;

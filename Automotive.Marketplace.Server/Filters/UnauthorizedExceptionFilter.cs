@@ -19,5 +19,25 @@ public class UnauthorizedExceptionFilter : IExceptionFilter
             context.Result = new UnauthorizedObjectResult(errorResponse);
             context.ExceptionHandled = true;
         }
+        else if (context.Exception is MissingRefreshTokenException)
+        {
+            var errorResponse = new ErrorResponse
+            {
+                Message = "No refresh token was provided.",
+                Type = "MissingToken"
+            };
+            context.Result = new UnauthorizedObjectResult(errorResponse);
+            context.ExceptionHandled = true;
+        }
+        else if (context.Exception is InvalidRefreshTokenException)
+        {
+            var errorResponse = new ErrorResponse
+            {
+                Message = "The provided refresh token is invalid or expired.",
+                Type = "InvalidToken"
+            };
+            context.Result = new UnauthorizedObjectResult(errorResponse);
+            context.ExceptionHandled = true;
+        }
     }
 }
