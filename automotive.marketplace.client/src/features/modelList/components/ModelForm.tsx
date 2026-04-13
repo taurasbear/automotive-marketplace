@@ -1,7 +1,5 @@
-import DatePicker from "@/components/common/DatePicker";
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -27,8 +25,6 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
   const form = useForm({
     defaultValues: {
       name: model.name,
-      firstAppearanceDate: model.firstAppearanceDate,
-      isDiscontinued: model.isDiscontinued,
       makeId: model.makeId,
     },
     resolver: zodResolver(modelFormSchema),
@@ -54,36 +50,6 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
                 <FormLabel>Model name</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="firstAppearanceDate"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First appearance date</FormLabel>
-                <FormControl>
-                  <DatePicker field={field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="isDiscontinued"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Is discontinued</FormLabel>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="h-5 w-5"
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

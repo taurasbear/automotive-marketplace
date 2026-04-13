@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { format } from "date-fns";
 import { useState } from "react";
 import { useCreateModel } from "../api/useCreateModel";
 import { ModelFormData } from "../types/ModelFormData";
@@ -21,7 +20,6 @@ const CreateModelDialog = () => {
   const handleSubmit = async (formData: ModelFormData) => {
     await createModelAsync({
       ...formData,
-      firstAppearanceDate: format(formData.firstAppearanceDate, "yyyy-MM-dd"),
     });
 
     setIsCreateModelDialogOpen(false);
@@ -42,8 +40,6 @@ const CreateModelDialog = () => {
         <ModelForm
           model={{
             name: "",
-            firstAppearanceDate: new Date(),
-            isDiscontinued: false,
             makeId: "",
           }}
           onSubmit={handleSubmit}

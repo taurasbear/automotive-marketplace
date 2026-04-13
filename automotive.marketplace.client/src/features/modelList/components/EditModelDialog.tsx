@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { format } from "date-fns";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useUpdateModel } from "../api/useUpdateModel";
@@ -21,7 +20,6 @@ const EditModelDialog = ({ id }: ViewModelDialogProps) => {
     await updateModelAsync({
       ...formData,
       id,
-      firstAppearanceDate: format(formData.firstAppearanceDate, "yyyy-MM-dd"),
     });
 
     setIsEditModelDialogOpen(false);
