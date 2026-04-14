@@ -9,6 +9,7 @@ The codebase is transitioning from a `Car` entity (per-listing vehicle instance)
 ## 1. Domain Model
 
 ### `Variant` entity
+
 - `IsSelectable` renamed to `IsCustom` (bool, default `false`). `false` = standard factory variant (shown in dropdowns). `true` = custom/modified variant (hidden from dropdowns).
 - `MinYear`/`MaxYear` replaced with a single `Year` (int). Year ranges are impractical when users create variants one-at-a-time; sourcing from an external API was evaluated and rejected (US-market-only, 2015–2020 free tier, classification mismatch with European cars).
 - FKs: `ModelId`, `FuelId`, `TransmissionId`, `BodyTypeId`.
@@ -16,11 +17,13 @@ The codebase is transitioning from a `Car` entity (per-listing vehicle instance)
 - Nav: `virtual ICollection<Listing> Listings`.
 
 ### `Listing` entity
+
 - `Year` removed — it now lives on `Variant`.
 - `Drivetrain` enum property removed; replaced with `Guid DrivetrainId` + `virtual Drivetrain Drivetrain`.
 - `VariantId` FK (replacing `CarId`).
 
 ### New entity: `Drivetrain` (in `Domain/Entities/`)
+
 ```csharp
 public class Drivetrain : BaseEntity {
     public string Name { get; set; } = string.Empty;
@@ -29,6 +32,7 @@ public class Drivetrain : BaseEntity {
 ```
 
 ### 4 translation entities (one per lookup table)
+
 Each follows the same pattern:
 
 ```csharp
@@ -47,6 +51,7 @@ Each corresponding lookup entity gains: `public virtual ICollection<{Type}Transl
 The existing `Name` property on each lookup entity is the canonical English name (kept for backward compatibility). Translation records supplement with additional languages. The API currently returns `Name` directly; when full i18n is needed, callers will query the translation table by `LanguageCode`.
 
 ### Removed
+
 - `Car.cs` entity (deleted).
 - `Drivetrain` C# enum (`Domain/Enums/Drivetrain.cs` deleted — was already removed for the other 3 types).
 
@@ -55,6 +60,7 @@ The existing `Name` property on each lookup entity is the canonical English name
 ## 2. Infrastructure
 
 ### EF Configurations
+
 - Remove `CarConfiguration.cs`.
 - Add `VariantConfiguration`: FK to Model, Fuel, Transmission, BodyType.
 - Add `DrivetrainConfiguration`: FK from Listing.
@@ -62,11 +68,13 @@ The existing `Name` property on each lookup entity is the canonical English name
 - Update `ListingConfiguration`: add `DrivetrainId` FK, add `Year`, remove Drivetrain enum string conversion.
 
 ### `AutomotiveContext`
+
 - Replace `DbSet<Car> Cars` with `DbSet<Variant> Variants`.
 - Add `DbSet<Drivetrain> Drivetrains`.
 - Add `DbSet<FuelTranslation>`, `DbSet<TransmissionTranslation>`, `DbSet<BodyTypeTranslation>`, `DbSet<DrivetrainTranslation>`.
 
 ### Seeders (seeding reference data in source code is conventional for stable lookup tables)
+
 - `FuelSeeder`: seeds Fuel records with `"en"` and `"lt"` translations.
 - `TransmissionSeeder`: same pattern.
 - `BodyTypeSeeder`: same pattern.
@@ -75,6 +83,7 @@ The existing `Name` property on each lookup entity is the canonical English name
 - `ListingSeeder`: updated to use `VariantId` + `DrivetrainId` (no `Year` — it's on Variant now).
 
 ### Builders
+
 - `CarBuilder` removed; new `VariantBuilder` takes its place.
 - `ListingBuilder` updated: `WithCar(Guid)` → `WithVariant(Guid)`, add `WithDrivetrain(Guid)`, add `WithYear(int)`.
 
@@ -83,35 +92,44 @@ The existing `Name` property on each lookup entity is the canonical English name
 ## 3. Application Layer
 
 ### Enum Features (GetBodyTypes / GetFuelTypes / GetTransmissionTypes / GetDrivetrainTypes)
+
 - Handlers query from DB (`repository.AsQueryable<Fuel>()` etc.) instead of `Enum.GetValues()`.
 - Responses include `Id` (Guid) and `Name` (string) so the frontend can pass `Id` back in commands.
 
 ### Car Features → Variant Features
+
 - `CarFeatures/` folder converted to `VariantFeatures/`: CreateVariant, DeleteVariant, GetAllVariants, GetVariantById, UpdateVariant.
+- `CarController` → `VariantController` (same endpoints, updated commands/queries).
+- `Permission` enum values: `ViewCars` → `ViewVariants`, `CreateCars` → `CreateVariants`, `ManageCars` → `ManageVariants`.
 - GetVariantsByModel query added for the listing creation dropdown (returns variants where `IsCustom == false`, filtered by ModelId and optionally `Year`).
 
 ### `CreateListingCommand`
+
 - `VariantId` (Guid?) — optional.
 - If `VariantId` is null, the following are required: `ModelId`, `FuelId`, `TransmissionId`, `BodyTypeId`, `DoorCount`, `PowerKw`, `EngineSizeMl`, `Year`, `IsCustom` (bool, default false).
 - Always required: `DrivetrainId` (Guid), plus all listing fields (Price, Description, Colour, Vin, Mileage, IsSteeringWheelRight, City, IsUsed, UserId, Images).
 
 ### `CreateListingCommandHandler` — find-or-create logic
+
 1. If `VariantId` provided → use it directly.
 2. If `VariantId` null:
    - If `IsCustom == true` → always create new `Variant` (no lookup).
    - If `IsCustom == false` → search for exact match on (ModelId, FuelId, TransmissionId, BodyTypeId, DoorCount, PowerKw, EngineSizeMl, Year). Use if found; create if not.
 
 ### Mappings
+
 - `CarMappings` → `VariantMappings`.
 - `ListingMappings` updated: all `src.Car.*` references updated to `src.Variant.*`, `src.Variant.Year` used for year display.
 - `EnumMappings` updated to map from entities (not C# enums).
 
 ### Filters in `GetAllListingsQueryHandler`
+
 - `MinYear` / `MaxYear` → filter on `listing.Variant.Year`.
 - `MinPower` / `MaxPower` → filter on `listing.Variant.PowerKw`.
 - Make/Model filters → `listing.Variant.Model.*`.
 
 ### Responses
+
 - `GetAllListingsResponse` / `GetListingByIdResponse`: `Power` → `PowerKw`, `EngineSize` → `EngineSizeMl`, year read from `listing.Variant.Year`.
 
 ---
@@ -127,10 +145,26 @@ The existing `Name` property on each lookup entity is the canonical English name
 
 ## 5. Frontend
 
+### Admin UI (Variants page — replaces Cars page)
+- `Cars.tsx` → `Variants.tsx` page with `VariantListTable` + `CreateVariantDialog`.
+- `carList/` feature folder → `variantList/` with updated types, API calls, components, and schema:
+  - Form fields: `ModelId` (Make → Model cascade), `Year`, `FuelId`, `TransmissionId`, `BodyTypeId`, `DoorCount`, `PowerKw`, `EngineSizeMl`, `IsCustom`.
+  - `CreateCarCommand` → `CreateVariantCommand`; `UpdateCarCommand` → `UpdateVariantCommand`; etc.
+  - `GetAllCarsResponse` → `GetAllVariantsResponse`; `GetCarByIdResponse` → `GetVariantByIdResponse`.
+- `carKeys` query key → `variantKeys`.
+- Route `/cars` → `/variants`.
+
+### `Permission` enum
+- `ViewCars` → `ViewVariants`, `CreateCars` → `CreateVariants`, `ManageCars` → `ManageVariants`.
+
+### Listing form (`CreateListing.tsx`)
+- Selector flow: Make → Model → Year → Variant dropdown (filtered by ModelId, non-custom only).
+- If no matching variant: show full variant spec fields + `IsCustom` toggle.
+- `DrivetrainId` selector added.
+
+### Type updates
 - `GetBodyTypesResponse`, `GetFuelTypesResponse`, `GetTransmissionTypesResponse`, `GetDrivetrainTypesResponse`: add `id` field (Guid string).
-- Add `GetVariantsResponse` type for variant dropdown.
-- Car-related types updated or removed (CarFormData, GetAllCarsResponse, GetCarByIdResponse → Variant equivalents).
-- `CreateListing.tsx` form: updated to new command shape (VariantId selector + fallback full-spec fields).
+- Remove Car-related types; add `GetVariantsResponse` type.
 
 ---
 
