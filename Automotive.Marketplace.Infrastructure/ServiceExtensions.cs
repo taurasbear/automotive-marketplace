@@ -27,7 +27,11 @@ public static class ServiceExtensions
         services.AddScoped<IDevelopmentSeeder, UserSeeder>();
         services.AddScoped<IDevelopmentSeeder, MakeSeeder>();
         services.AddScoped<IDevelopmentSeeder, ModelSeeder>();
-        services.AddScoped<IDevelopmentSeeder, CarSeeder>();
+        services.AddScoped<IDevelopmentSeeder, FuelSeeder>();
+        services.AddScoped<IDevelopmentSeeder, TransmissionSeeder>();
+        services.AddScoped<IDevelopmentSeeder, BodyTypeSeeder>();
+        services.AddScoped<IDevelopmentSeeder, DrivetrainSeeder>();
+        services.AddScoped<IDevelopmentSeeder, VariantSeeder>();
         services.AddScoped<IDevelopmentSeeder, ListingSeeder>();
 
         var minioServerURL = configuration["MinIO:ServerURL"];

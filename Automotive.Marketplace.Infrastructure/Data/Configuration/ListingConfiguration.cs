@@ -1,4 +1,5 @@
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,9 +9,13 @@ public class ListingConfiguration : IEntityTypeConfiguration<Listing>
 {
     public void Configure(EntityTypeBuilder<Listing> builder)
     {
-        builder.HasOne(listing => listing.Car)
-            .WithMany(car => car.Listings)
-            .HasForeignKey(listing => listing.CarId);
+        builder.HasOne(listing => listing.Variant)
+            .WithMany(variant => variant.Listings)
+            .HasForeignKey(listing => listing.VariantId);
+
+        builder.HasOne(listing => listing.Drivetrain)
+            .WithMany()
+            .HasForeignKey(listing => listing.DrivetrainId);
 
         builder.HasOne(listing => listing.Seller)
             .WithMany(user => user.Listings)

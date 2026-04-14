@@ -8,5 +8,5 @@ public class Model : BaseEntity
 
     public virtual Make Make { get; set; } = null!;
 
-    public virtual ICollection<Car> Cars { get; set; } = [];
+    public virtual ICollection<Variant> Variants { get; set; } = [];
 }
