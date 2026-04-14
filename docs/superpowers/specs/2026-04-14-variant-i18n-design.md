@@ -171,5 +171,5 @@ The existing `Name` property on each lookup entity is the canonical English name
 ## Out of Scope
 
 - Full UI language switching (language selector, translated display in components).
-- Admin UI for managing variants/lookup tables.
 - API endpoint for reading translations by language code (translations are in DB, ready for future use).
+- Admin UI for managing lookup tables (Fuel, Transmission, BodyType, Drivetrain) — seeded in code, not user-editable.
