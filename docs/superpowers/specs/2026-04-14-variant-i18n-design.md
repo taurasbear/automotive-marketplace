@@ -10,13 +10,13 @@ The codebase is transitioning from a `Car` entity (per-listing vehicle instance)
 
 ### `Variant` entity
 - `IsSelectable` renamed to `IsCustom` (bool, default `false`). `false` = standard factory variant (shown in dropdowns). `true` = custom/modified variant (hidden from dropdowns).
-- `MinYear` and `MaxYear` changed from `DateTime` to `int` (production year range).
+- `MinYear`/`MaxYear` replaced with a single `Year` (int). Year ranges are impractical when users create variants one-at-a-time; sourcing from an external API was evaluated and rejected (US-market-only, 2015–2020 free tier, classification mismatch with European cars).
 - FKs: `ModelId`, `FuelId`, `TransmissionId`, `BodyTypeId`.
 - Fields: `PowerKw` (int), `EngineSizeMl` (int), `DoorCount` (int).
 - Nav: `virtual ICollection<Listing> Listings`.
 
 ### `Listing` entity
-- `Year` (int) re-added — seller's specific model year.
+- `Year` removed — it now lives on `Variant`.
 - `Drivetrain` enum property removed; replaced with `Guid DrivetrainId` + `virtual Drivetrain Drivetrain`.
 - `VariantId` FK (replacing `CarId`).
 
@@ -71,8 +71,8 @@ The existing `Name` property on each lookup entity is the canonical English name
 - `TransmissionSeeder`: same pattern.
 - `BodyTypeSeeder`: same pattern.
 - `DrivetrainSeeder`: same pattern (FWD, RWD, AWD with Lithuanian display names).
-- `VariantSeeder` (replaces `CarSeeder`): uses Bogus to generate variants per model, referencing seeded Fuel/Transmission/BodyType/DoorCount IDs.
-- `ListingSeeder`: updated to use `VariantId` + `DrivetrainId` + `Year`.
+- `VariantSeeder` (replaces `CarSeeder`): uses Bogus to generate variants per model, referencing seeded Fuel/Transmission/BodyType/DoorCount IDs, with a random `Year` int.
+- `ListingSeeder`: updated to use `VariantId` + `DrivetrainId` (no `Year` — it's on Variant now).
 
 ### Builders
 - `CarBuilder` removed; new `VariantBuilder` takes its place.
@@ -88,31 +88,31 @@ The existing `Name` property on each lookup entity is the canonical English name
 
 ### Car Features → Variant Features
 - `CarFeatures/` folder converted to `VariantFeatures/`: CreateVariant, DeleteVariant, GetAllVariants, GetVariantById, UpdateVariant.
-- GetVariantsByModel query added for the listing creation dropdown (returns variants where `IsCustom == false`, filtered by ModelId + Year — i.e. where `MinYear <= Year <= MaxYear`).
+- GetVariantsByModel query added for the listing creation dropdown (returns variants where `IsCustom == false`, filtered by ModelId and optionally `Year`).
 
 ### `CreateListingCommand`
 - `VariantId` (Guid?) — optional.
-- If `VariantId` is null, the following are required: `ModelId`, `FuelId`, `TransmissionId`, `BodyTypeId`, `DoorCount`, `PowerKw`, `EngineSizeMl`, `MinYear`, `MaxYear`, `IsCustom` (bool, default false).
-- Always required: `DrivetrainId` (Guid), `Year` (int), plus all listing fields (Price, Description, Colour, Vin, Mileage, IsSteeringWheelRight, City, IsUsed, UserId, Images).
+- If `VariantId` is null, the following are required: `ModelId`, `FuelId`, `TransmissionId`, `BodyTypeId`, `DoorCount`, `PowerKw`, `EngineSizeMl`, `Year`, `IsCustom` (bool, default false).
+- Always required: `DrivetrainId` (Guid), plus all listing fields (Price, Description, Colour, Vin, Mileage, IsSteeringWheelRight, City, IsUsed, UserId, Images).
 
 ### `CreateListingCommandHandler` — find-or-create logic
 1. If `VariantId` provided → use it directly.
 2. If `VariantId` null:
    - If `IsCustom == true` → always create new `Variant` (no lookup).
-   - If `IsCustom == false` → search for exact match on (ModelId, FuelId, TransmissionId, BodyTypeId, DoorCount, PowerKw, EngineSizeMl, MinYear, MaxYear). Use if found; create if not.
+   - If `IsCustom == false` → search for exact match on (ModelId, FuelId, TransmissionId, BodyTypeId, DoorCount, PowerKw, EngineSizeMl, Year). Use if found; create if not.
 
 ### Mappings
 - `CarMappings` → `VariantMappings`.
-- `ListingMappings` updated: all `src.Car.*` references updated to `src.Variant.*`, `src.Year` used for listing year.
+- `ListingMappings` updated: all `src.Car.*` references updated to `src.Variant.*`, `src.Variant.Year` used for year display.
 - `EnumMappings` updated to map from entities (not C# enums).
 
 ### Filters in `GetAllListingsQueryHandler`
-- `MinYear` / `MaxYear` → filter on `listing.Year`.
+- `MinYear` / `MaxYear` → filter on `listing.Variant.Year`.
 - `MinPower` / `MaxPower` → filter on `listing.Variant.PowerKw`.
 - Make/Model filters → `listing.Variant.Model.*`.
 
 ### Responses
-- `GetAllListingsResponse` / `GetListingByIdResponse`: `Power` → `PowerKw`, `EngineSize` → `EngineSizeMl`, use `listing.Year` for year.
+- `GetAllListingsResponse` / `GetListingByIdResponse`: `Power` → `PowerKw`, `EngineSize` → `EngineSizeMl`, year read from `listing.Variant.Year`.
 
 ---
 
@@ -120,7 +120,7 @@ The existing `Name` property on each lookup entity is the canonical English name
 
 - `CarBuilder` references replaced with `VariantBuilder`.
 - `CreateListingCommandHandlerTests`: updated to new command shape (both VariantId path and full-spec find-or-create path tested).
-- `GetAllListingsQueryHandlerTests`: seeding updated to use VariantBuilder + DrivetrainBuilder; Year filter tests use `listing.Year`.
+- `GetAllListingsQueryHandlerTests`: seeding updated to use VariantBuilder (no separate Year field on listing).
 - `DatabaseFixture`: no structural change beyond context DbSets reflecting new entities.
 
 ---
