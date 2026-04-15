@@ -45,7 +45,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<PiEngine className="h-8 w-8" />}
               title={"Engine"}
-              stat={`${listing.engineSize / 1000} l ${listing.power} kW`}
+              stat={`${listing.engineSizeMl / 1000} l ${listing.powerKw} kW`}
             />
           </div>
           <div className="flex justify-self-end">

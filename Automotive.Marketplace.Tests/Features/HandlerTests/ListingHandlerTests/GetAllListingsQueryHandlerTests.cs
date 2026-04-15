@@ -350,18 +350,21 @@ public class GetAllListingsQueryHandlerTests(
         response.TransmissionName.Should().Be(transmission.Name);
     }
 
-    [Fact]
-    public async Task Handle_NonAvailableListings_ShouldNotBeReturned()
+    [Theory]
+    [InlineData(Status.Removed)]
+    [InlineData(Status.Bought)]
+    [InlineData(Status.OnHold)]
+    public async Task Handle_NonAvailableListings_ShouldNotBeReturned(Status nonAvailableStatus)
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+        var handler = CreateHandler(scope);
 
         const int availableCount = 2;
-        const int removedCount = 3;
+        const int nonAvailableCount = 3;
         await SeedListingsAsync(context, availableCount);
-        await SeedListingsAsync(context, removedCount, status: Status.Removed);
+        await SeedListingsAsync(context, nonAvailableCount, status: nonAvailableStatus);
 
         var query = new GetAllListingsQuery();
 

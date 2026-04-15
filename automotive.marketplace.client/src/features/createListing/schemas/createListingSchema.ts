@@ -35,41 +35,12 @@ export const CreateListingSchema = z.object({
     .refine((val) => !val || VALIDATION.VIN.REGEX.test(val), {
       message: "VIN code must have 17 characters and not include I, O, or Q",
     }),
-  power: z.coerce
-    .number<number>()
-    .int()
-    .min(VALIDATION.POWER.MIN, {
-      error: validation.minSize({
-        label: "Power",
-        size: VALIDATION.POWER.MIN,
-        unit: "kW",
-      }),
-    })
-    .max(VALIDATION.POWER.MAX, {
-      error: validation.maxSize({
-        label: "Power",
-        size: VALIDATION.POWER.MAX,
-        unit: "kw",
-      }),
-    }),
-  engineSize: z.coerce
-    .number<number>()
-    .int()
-    .min(
-      VALIDATION.ENGINE_SIZE.MIN,
-      validation.minSize({
-        label: "Engine size",
-        size: VALIDATION.ENGINE_SIZE.MIN,
-        unit: "ml",
-      }),
-    )
-    .max(VALIDATION.ENGINE_SIZE.MAX, {
-      error: validation.maxSize({
-        label: "Engine size",
-        size: VALIDATION.ENGINE_SIZE.MAX,
-        unit: "ml",
-      }),
-    }),
+  powerKw: z.coerce.number<number>().int().max(VALIDATION.POWER.MAX, {
+    error: validation.maxSize({ label: "Engine power", size: VALIDATION.POWER.MAX, unit: "kW" }),
+  }).optional(),
+  engineSizeMl: z.coerce.number<number>().int().max(VALIDATION.ENGINE_SIZE.MAX, {
+    error: validation.maxSize({ label: "Engine size", size: VALIDATION.ENGINE_SIZE.MAX, unit: "ml" }),
+  }).optional(),
   mileage: z.coerce
     .number<number>()
     .int()
@@ -91,9 +62,12 @@ export const CreateListingSchema = z.object({
   makeId: z
     .string()
     .regex(VALIDATION.GUID.REGEX, { error: "Please select a make" }),
-  modelId: z
+  modelId: z.string().optional(),
+  variantId: z
     .string()
-    .regex(VALIDATION.GUID.REGEX, { error: "Please select a model" }),
+    .regex(VALIDATION.GUID.REGEX)
+    .optional()
+    .or(z.literal("")),
   city: z
     .string()
     .nonempty({ error: "City cannot be empty" })
@@ -104,46 +78,39 @@ export const CreateListingSchema = z.object({
       }),
     }),
   isUsed: z.boolean(),
-  year: z.coerce
-    .number<number>()
-    .min(VALIDATION.YEAR.MIN, {
-      error: validation.minSize({ label: "Year", size: VALIDATION.YEAR.MIN }),
-    })
-    .max(new Date().getFullYear(), {
-      error: validation.maxSize({
-        label: "Year",
-        size: new Date().getFullYear(),
-      }),
-    }),
-  transmission: z.string().nonempty({
-    error: "Please select a transmission type",
-  }),
-  fuel: z.string().nonempty({
-    error: "Please select a fuel type",
-  }),
-  bodyType: z.string().nonempty({
-    error: "Please select a body type",
-  }),
-  drivetrain: z.string().nonempty({
+  isCustom: z.boolean().optional(),
+  year: z.coerce.number<number>().int().optional(),
+  transmissionId: z.string().optional(),
+  fuelId: z.string().optional(),
+  bodyTypeId: z.string().optional(),
+  drivetrainId: z.string().regex(VALIDATION.GUID.REGEX, {
     error: "Please select a drivetrain type",
   }),
-  doorCount: z.coerce
-    .number<number>()
-    .min(VALIDATION.DOOR_COUNT.MIN, {
-      error: validation.minSize({
-        label: "Door count",
-        size: VALIDATION.DOOR_COUNT.MIN,
-      }),
-    })
-    .max(VALIDATION.DOOR_COUNT.MAX, {
-      error: validation.maxSize({
-        label: "Door count",
-        size: VALIDATION.DOOR_COUNT.MAX,
-      }),
-    }),
+  doorCount: z.coerce.number<number>().int().max(VALIDATION.DOOR_COUNT.MAX, {
+    error: validation.maxSize({ label: "Door count", size: VALIDATION.DOOR_COUNT.MAX }),
+  }).optional(),
   images: z
     .array(
       z.instanceof(Blob, { error: "You did not upload a valid image file" }),
     )
     .min(1, { error: "You must upload at least one image" }),
+}).superRefine((data, ctx) => {
+  if (!data.variantId) {
+    if (!data.modelId || !VALIDATION.GUID.REGEX.test(data.modelId))
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["modelId"], message: "Please select a model" });
+    if (!data.fuelId || !VALIDATION.GUID.REGEX.test(data.fuelId))
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["fuelId"], message: "Please select a fuel type" });
+    if (!data.transmissionId || !VALIDATION.GUID.REGEX.test(data.transmissionId))
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["transmissionId"], message: "Please select a transmission" });
+    if (!data.bodyTypeId || !VALIDATION.GUID.REGEX.test(data.bodyTypeId))
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["bodyTypeId"], message: "Please select a body type" });
+    if (!data.doorCount || data.doorCount < VALIDATION.DOOR_COUNT.MIN)
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["doorCount"], message: "Enter door count" });
+    if (!data.powerKw || data.powerKw < VALIDATION.POWER.MIN)
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["powerKw"], message: "Enter engine power" });
+    if (!data.engineSizeMl || data.engineSizeMl < VALIDATION.ENGINE_SIZE.MIN)
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["engineSizeMl"], message: "Enter engine size" });
+    if (!data.year || data.year < VALIDATION.YEAR.MIN)
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["year"], message: "Enter year" });
+  }
 });

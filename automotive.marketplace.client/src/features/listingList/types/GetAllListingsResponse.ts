@@ -6,8 +6,8 @@ export type GetAllListingsResponse = {
   model: string;
   mileage: number;
   price: number;
-  engineSize: number;
-  power: number;
+  engineSizeMl: number;
+  powerKw: number;
   fuelType: string;
   transmission: string;
   city: string;

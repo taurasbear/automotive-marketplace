@@ -9,17 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/routes/__root'
+import { Route as VariantsRouteImport } from './app/routes/variants'
 import { Route as RegisterRouteImport } from './app/routes/register'
 import { Route as ModelsRouteImport } from './app/routes/models'
 import { Route as LoginRouteImport } from './app/routes/login'
 import { Route as ListingsRouteImport } from './app/routes/listings'
 import { Route as InboxRouteImport } from './app/routes/inbox'
-import { Route as CarsRouteImport } from './app/routes/cars'
 import { Route as AboutRouteImport } from './app/routes/about'
 import { Route as IndexRouteImport } from './app/routes/index'
 import { Route as ListingCreateRouteImport } from './app/routes/listing/create'
 import { Route as ListingIdRouteImport } from './app/routes/listing/$id'
 
+const VariantsRoute = VariantsRouteImport.update({
+  id: '/variants',
+  path: '/variants',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -43,11 +48,6 @@ const ListingsRoute = ListingsRouteImport.update({
 const InboxRoute = InboxRouteImport.update({
   id: '/inbox',
   path: '/inbox',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CarsRoute = CarsRouteImport.update({
-  id: '/cars',
-  path: '/cars',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -74,24 +74,24 @@ const ListingIdRoute = ListingIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/cars': typeof CarsRoute
   '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
+  '/variants': typeof VariantsRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/cars': typeof CarsRoute
   '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
+  '/variants': typeof VariantsRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
 }
@@ -99,12 +99,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/cars': typeof CarsRoute
   '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
+  '/variants': typeof VariantsRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
 }
@@ -113,36 +113,36 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/cars'
     | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
     | '/register'
+    | '/variants'
     | '/listing/$id'
     | '/listing/create'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/cars'
     | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
     | '/register'
+    | '/variants'
     | '/listing/$id'
     | '/listing/create'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/cars'
     | '/inbox'
     | '/listings'
     | '/login'
     | '/models'
     | '/register'
+    | '/variants'
     | '/listing/$id'
     | '/listing/create'
   fileRoutesById: FileRoutesById
@@ -150,18 +150,25 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  CarsRoute: typeof CarsRoute
   InboxRoute: typeof InboxRoute
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
   ModelsRoute: typeof ModelsRoute
   RegisterRoute: typeof RegisterRoute
+  VariantsRoute: typeof VariantsRoute
   ListingIdRoute: typeof ListingIdRoute
   ListingCreateRoute: typeof ListingCreateRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/variants': {
+      id: '/variants'
+      path: '/variants'
+      fullPath: '/variants'
+      preLoaderRoute: typeof VariantsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -195,13 +202,6 @@ declare module '@tanstack/react-router' {
       path: '/inbox'
       fullPath: '/inbox'
       preLoaderRoute: typeof InboxRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cars': {
-      id: '/cars'
-      path: '/cars'
-      fullPath: '/cars'
-      preLoaderRoute: typeof CarsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -238,12 +238,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  CarsRoute: CarsRoute,
   InboxRoute: InboxRoute,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
   ModelsRoute: ModelsRoute,
   RegisterRoute: RegisterRoute,
+  VariantsRoute: VariantsRoute,
   ListingIdRoute: ListingIdRoute,
   ListingCreateRoute: ListingCreateRoute,
 }
