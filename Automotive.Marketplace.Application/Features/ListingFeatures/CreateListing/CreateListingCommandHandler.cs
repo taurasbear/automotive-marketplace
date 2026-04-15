@@ -1,46 +1,95 @@
-using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
-using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
+using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 
-public class CreateListingCommandHandler(
-    IMapper mapper,
-    IRepository repository,
-    IImageStorageService imageStorageService) : IRequestHandler<CreateListingCommand>
+public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
+    : IRequestHandler<CreateListingCommand, CreateListingResponse>
 {
-    public async Task Handle(CreateListingCommand request, CancellationToken cancellationToken)
+    public async Task<CreateListingResponse> Handle(CreateListingCommand request, CancellationToken cancellationToken)
     {
-        var car = mapper.Map<Car>(request);
-        var listing = mapper.Map<Listing>(request);
+        Guid variantId;
 
-        listing.Car = car;
+        if (request.VariantId.HasValue)
+        {
+            await repository.GetByIdAsync<Variant>(request.VariantId.Value, cancellationToken);
+            variantId = request.VariantId.Value;
+        }
+        else if (request.IsCustom)
+        {
+            var customVariant = new Variant
+            {
+                Id = Guid.NewGuid(),
+                ModelId = request.ModelId,
+                Year = request.Year,
+                FuelId = request.FuelId,
+                TransmissionId = request.TransmissionId,
+                BodyTypeId = request.BodyTypeId,
+                IsCustom = true,
+                DoorCount = request.DoorCount,
+                PowerKw = request.PowerKw,
+                EngineSizeMl = request.EngineSizeMl,
+            };
+            await repository.CreateAsync(customVariant, cancellationToken);
+            variantId = customVariant.Id;
+        }
+        else
+        {
+            var existing = await repository
+                .AsQueryable<Variant>()
+                .FirstOrDefaultAsync(v =>
+                    v.ModelId == request.ModelId &&
+                    v.Year == request.Year &&
+                    v.FuelId == request.FuelId &&
+                    v.TransmissionId == request.TransmissionId &&
+                    v.BodyTypeId == request.BodyTypeId &&
+                    !v.IsCustom,
+                    cancellationToken);
+
+            if (existing != null)
+            {
+                variantId = existing.Id;
+            }
+            else
+            {
+                var newVariant = new Variant
+                {
+                    Id = Guid.NewGuid(),
+                    ModelId = request.ModelId,
+                    Year = request.Year,
+                    FuelId = request.FuelId,
+                    TransmissionId = request.TransmissionId,
+                    BodyTypeId = request.BodyTypeId,
+                    IsCustom = false,
+                    DoorCount = request.DoorCount,
+                    PowerKw = request.PowerKw,
+                    EngineSizeMl = request.EngineSizeMl,
+                };
+                await repository.CreateAsync(newVariant, cancellationToken);
+                variantId = newVariant.Id;
+            }
+        }
+
+        var listing = new Listing
+        {
+            Id = Guid.NewGuid(),
+            Price = request.Price,
+            Mileage = request.Mileage,
+            Description = request.Description,
+            SellerId = request.SellerId,
+            VariantId = variantId,
+            DrivetrainId = request.DrivetrainId,
+            IsUsed = request.IsUsed,
+            City = request.City,
+            Status = Status.Available,
+        };
 
         await repository.CreateAsync(listing, cancellationToken);
 
-        foreach (var imageFile in request.Images)
-        {
-            var uniqueFileName = $"{Guid.NewGuid()}_{imageFile.FileName}";
-            var imageUploadResult = await imageStorageService.UploadImageAsync(imageFile, uniqueFileName);
-
-            var model = await repository.GetByIdAsync<Model>(car.ModelId, cancellationToken);
-            var make = model.Make;
-            var image = new Image
-            {
-                ListingId = listing.Id,
-                BucketName = imageUploadResult.BucketName,
-                ObjectKey = imageUploadResult.ObjectKey,
-                OriginalFileName = imageFile.FileName,
-                ContentType = imageFile.ContentType,
-                FileSize = imageUploadResult.FileSize,
-                AltText = $"{car.Year.Year} {make.Name} {model.Name}"
-            };
-
-            await repository.CreateAsync(image, cancellationToken);
-        }
-
-        return;
+        return mapper.Map<CreateListingResponse>(listing);
     }
 }

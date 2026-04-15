@@ -86,7 +86,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount);
         _ = await SeedListingsAsync(context, otherCount);
 
-        var makeId = matchingListings.First().Car.Model.MakeId;
+        var makeId = matchingListings.First().Variant.Model.MakeId;
 
         var query = new GetAllListingsQuery { MakeId = makeId };
 
@@ -111,7 +111,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount);
         _ = await SeedListingsAsync(context, otherCount);
 
-        var modelId = matchingListings.First().Car.ModelId;
+        var modelId = matchingListings.First().Variant.ModelId;
 
         var query = new GetAllListingsQuery { Models = [modelId] };
 
@@ -286,7 +286,7 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount, isCarUsed: isCarUsed);
         _ = await SeedListingsAsync(context, otherCount, isCarUsed: !isCarUsed);
 
-        var makeId = matchingListings.First().Car.Model.MakeId;
+        var makeId = matchingListings.First().Variant.Model.MakeId;
 
         var query = new GetAllListingsQuery { MakeId = makeId, IsUsed = isCarUsed };
 
@@ -309,23 +309,31 @@ public class GetAllListingsQueryHandlerTests(
         var model = new ModelBuilder()
             .WithMake(make.Id)
             .Build();
+        var fuel = new FuelBuilder().Build();
+        var transmission = new TransmissionBuilder().Build();
+        var bodyType = new BodyTypeBuilder().Build();
+        var drivetrain = new DrivetrainBuilder().Build();
 
-        var carBuilder = new CarBuilder()
-            .WithModel(model.Id);
+        var variantBuilder = new VariantBuilder()
+            .WithModel(model.Id)
+            .WithFuel(fuel.Id)
+            .WithTransmission(transmission.Id)
+            .WithBodyType(bodyType.Id);
 
         if (carYear.HasValue)
         {
-            carBuilder.WithYear(carYear.Value);
+            variantBuilder.WithYear(carYear.Value.Year);
         }
 
-        var cars = carBuilder.Build(count);
+        var variants = variantBuilder.Build(count);
 
         List<Listing> listings = [];
-        foreach (var car in cars)
+        foreach (var variant in variants)
         {
             var listingBuilder = new ListingBuilder()
                 .WithSeller(seller.Id)
-                .WithCar(car.Id);
+                .WithVariant(variant.Id)
+                .WithDrivetrain(drivetrain.Id);
 
             if (isCarUsed.HasValue)
             {
@@ -345,7 +353,11 @@ public class GetAllListingsQueryHandlerTests(
         await context.AddAsync(seller);
         await context.AddAsync(make);
         await context.AddAsync(model);
-        await context.AddRangeAsync(cars);
+        await context.AddAsync(fuel);
+        await context.AddAsync(transmission);
+        await context.AddAsync(bodyType);
+        await context.AddAsync(drivetrain);
+        await context.AddRangeAsync(variants);
         await context.AddRangeAsync(listings);
         await context.SaveChangesAsync();
 

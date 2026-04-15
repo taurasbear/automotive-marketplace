@@ -73,8 +73,12 @@ public class MarkMessagesReadCommandHandlerTests(
         var buyer = new UserBuilder().Build();
         var make = new MakeBuilder().Build();
         var model = new ModelBuilder().WithMake(make.Id).Build();
-        var car = new CarBuilder().WithModel(model.Id).Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithCar(car.Id).Build();
+        var fuel = new FuelBuilder().Build();
+        var transmission = new TransmissionBuilder().Build();
+        var bodyType = new BodyTypeBuilder().Build();
+        var drivetrain = new DrivetrainBuilder().Build();
+        var variant = new VariantBuilder().WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
         var conversation = new ConversationBuilder()
             .WithBuyer(buyer.Id)
             .WithListing(listing.Id)
@@ -91,7 +95,7 @@ public class MarkMessagesReadCommandHandlerTests(
             .WithIsRead(false)
             .Build();
 
-        await context.AddRangeAsync(seller, buyer, make, model, car, listing,
+        await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, variant, listing,
             conversation, msg1, msg2);
         await context.SaveChangesAsync();
 

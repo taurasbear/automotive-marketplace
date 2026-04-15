@@ -23,5 +23,9 @@ public class VariantConfiguration : IEntityTypeConfiguration<Variant>
         builder.HasOne(v => v.BodyType)
             .WithMany()
             .HasForeignKey(v => v.BodyTypeId);
+
+        builder.HasIndex(v => new { v.ModelId, v.Year, v.FuelId, v.TransmissionId, v.BodyTypeId })
+               .IsUnique()
+               .HasFilter("\"IsCustom\" = false");
     }
 }

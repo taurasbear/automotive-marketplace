@@ -23,7 +23,7 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
         foreach (var conversation in conversations)
         {
             var listing = conversation.Listing;
-            var car = listing.Car;
+            var variant = listing.Variant;
             var counterpart = conversation.BuyerId == request.UserId
                 ? listing.Seller
                 : conversation.Buyer;
@@ -44,7 +44,7 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
             {
                 Id = conversation.Id,
                 ListingId = listing.Id,
-                ListingTitle = $"{car.Year.Year} {car.Model.Make.Name} {car.Model.Name}",
+                ListingTitle = $"{variant.Year} {variant.Model.Make.Name} {variant.Model.Name}",
                 ListingThumbnailUrl = thumbnailUrl,
                 ListingPrice = listing.Price,
                 CounterpartId = counterpart.Id,

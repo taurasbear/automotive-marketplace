@@ -769,9 +769,11 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
                     b.HasIndex("FuelId");
 
-                    b.HasIndex("ModelId");
-
                     b.HasIndex("TransmissionId");
+
+                    b.HasIndex("ModelId", "Year", "FuelId", "TransmissionId", "BodyTypeId")
+                        .IsUnique()
+                        .HasFilter("\"IsCustom\" = false");
 
                     b.ToTable("Variants");
                 });
