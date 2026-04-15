@@ -3,6 +3,7 @@ using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Infrastructure.Data.Builders;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Tests.Infrastructure;
@@ -297,39 +298,120 @@ public class GetAllListingsQueryHandlerTests(
         result.Count().Should().Be(expectedCount);
     }
 
+    [Fact]
+    public async Task Handle_SingleListing_ShouldReturnCorrectVariantFields()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        const int expectedYear = 2020;
+        var make = new MakeBuilder().Build();
+        var model = new ModelBuilder().WithMake(make.Id).Build();
+        var fuel = new FuelBuilder().Build();
+        var transmission = new TransmissionBuilder().Build();
+        var bodyType = new BodyTypeBuilder().Build();
+        var drivetrain = new DrivetrainBuilder().Build();
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain);
+
+        var variant = new VariantBuilder()
+            .WithModel(model.Id)
+            .WithFuel(fuel.Id)
+            .WithTransmission(transmission.Id)
+            .WithBodyType(bodyType.Id)
+            .WithYear(expectedYear)
+            .Build();
+        await context.AddAsync(variant);
+
+        var seller = new UserBuilder().Build();
+        await context.AddAsync(seller);
+
+        var listing = new ListingBuilder()
+            .WithSeller(seller.Id)
+            .WithVariant(variant.Id)
+            .WithDrivetrain(drivetrain.Id)
+            .Build();
+        await context.AddAsync(listing);
+        await context.SaveChangesAsync();
+
+        var query = new GetAllListingsQuery();
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        var response = result.Single();
+        response.VariantId.Should().Be(variant.Id);
+        response.Year.Should().Be(expectedYear);
+        response.MakeName.Should().Be(make.Name);
+        response.ModelName.Should().Be(model.Name);
+        response.FuelName.Should().Be(fuel.Name);
+        response.TransmissionName.Should().Be(transmission.Name);
+    }
+
+    [Fact]
+    public async Task Handle_NonAvailableListings_ShouldNotBeReturned()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        const int availableCount = 2;
+        const int removedCount = 3;
+        await SeedListingsAsync(context, availableCount);
+        await SeedListingsAsync(context, removedCount, status: Status.Removed);
+
+        var query = new GetAllListingsQuery();
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Count().Should().Be(availableCount);
+        result.Should().OnlyContain(r => r.Status == nameof(Status.Available));
+    }
+
     private async static Task<List<Listing>> SeedListingsAsync(
         AutomotiveContext context,
         int count,
         bool? isCarUsed = null,
         DateTime? carYear = null,
-        decimal? carPrice = null)
+        decimal? carPrice = null,
+        Status? status = null)
     {
         var seller = new UserBuilder().Build();
         var make = new MakeBuilder().Build();
         var model = new ModelBuilder()
             .WithMake(make.Id)
             .Build();
-        var fuel = new FuelBuilder().Build();
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
 
-        var variantBuilder = new VariantBuilder()
-            .WithModel(model.Id)
-            .WithFuel(fuel.Id)
-            .WithTransmission(transmission.Id)
-            .WithBodyType(bodyType.Id);
-
-        if (carYear.HasValue)
-        {
-            variantBuilder.WithYear(carYear.Value.Year);
-        }
-
-        var variants = variantBuilder.Build(count);
+        await context.AddRangeAsync(seller, make, model, transmission, bodyType, drivetrain);
 
         List<Listing> listings = [];
-        foreach (var variant in variants)
+        for (int i = 0; i < count; i++)
         {
+            var fuel = new FuelBuilder().Build();
+            await context.AddAsync(fuel);
+
+            var variantBuilder = new VariantBuilder()
+                .WithModel(model.Id)
+                .WithFuel(fuel.Id)
+                .WithTransmission(transmission.Id)
+                .WithBodyType(bodyType.Id);
+
+            if (carYear.HasValue)
+            {
+                variantBuilder.WithYear(carYear.Value.Year);
+            }
+
+            var variant = variantBuilder.Build();
+            await context.AddAsync(variant);
+
             var listingBuilder = new ListingBuilder()
                 .WithSeller(seller.Id)
                 .WithVariant(variant.Id)
@@ -345,19 +427,14 @@ public class GetAllListingsQueryHandlerTests(
                 listingBuilder.WithPrice(carPrice.Value);
             }
 
-            var listing = listingBuilder.Build();
+            if (status.HasValue)
+            {
+                listingBuilder.With(l => l.Status, status.Value);
+            }
 
-            listings.Add(listing);
+            listings.Add(listingBuilder.Build());
         }
 
-        await context.AddAsync(seller);
-        await context.AddAsync(make);
-        await context.AddAsync(model);
-        await context.AddAsync(fuel);
-        await context.AddAsync(transmission);
-        await context.AddAsync(bodyType);
-        await context.AddAsync(drivetrain);
-        await context.AddRangeAsync(variants);
         await context.AddRangeAsync(listings);
         await context.SaveChangesAsync();
 

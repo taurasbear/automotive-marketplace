@@ -2,6 +2,7 @@
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,7 @@ public class GetAllListingsQueryHandler(
                 .ThenInclude(v => v.Transmission)
             .Include(l => l.Seller)
             .Include(l => l.Images)
+            .Where(listing => listing.Status == Status.Available)
             .Where(listing => request.MakeId == null || request.MakeId == listing.Variant.Model.MakeId)
             .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Variant.ModelId))
             .Where(listing => request.City == null || request.City.ToLower() == listing.City.ToLower())

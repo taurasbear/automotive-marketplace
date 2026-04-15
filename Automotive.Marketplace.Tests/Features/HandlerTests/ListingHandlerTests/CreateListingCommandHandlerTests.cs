@@ -254,7 +254,7 @@ public class CreateListingCommandHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var context = _fixture.ServiceProvider.GetRequiredService<AutomotiveContext>();
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
         var (_, _, fuel, transmission, bodyType, drivetrain, user) = await SeedRequiredEntitiesAsync(context);
@@ -291,7 +291,7 @@ public class CreateListingCommandHandlerTests(
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
-        var context = _fixture.ServiceProvider.GetRequiredService<AutomotiveContext>();
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
         var (_, model, fuel, transmission, bodyType, drivetrain, _) = await SeedRequiredEntitiesAsync(context);
