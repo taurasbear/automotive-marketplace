@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { variantFormSchema } from "../schemas/variantFormSchema";
 import { VariantFormData } from "../types/VariantFormData";
@@ -38,6 +39,10 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
   };
 
   const selectedMake = form.watch("makeId");
+
+  useEffect(() => {
+    form.setValue("modelId", "");
+  }, [selectedMake]);
 
   return (
     <div className={cn(className)}>

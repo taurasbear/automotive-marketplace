@@ -4,8 +4,8 @@ export type UpdateListingCommand = {
   description?: string;
   colour?: string;
   vin?: string;
-  powerKw?: number;
-  engineSizeMl?: number;
+  powerKw: number;
+  engineSizeMl: number;
   mileage: number;
   isSteeringWheelRight: boolean;
   city: string;
