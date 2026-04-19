@@ -1,4 +1,4 @@
-import { getTransmissionTypesOptions } from "@/api/enum/getTransmissionTypesOptions";
+import { getAllTransmissionsOptions } from "@/api/enum/getAllTransmissionsOptions";
 import { toggleVariants } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
@@ -15,22 +15,20 @@ const TransmissionToggleGroup = ({
   className,
   ...props
 }: TransmissionToggleGroupProps) => {
-  const { data: transmissionTypesQuery } = useQuery(
-    getTransmissionTypesOptions,
-  );
+  const { data: transmissionsQuery } = useQuery(getAllTransmissionsOptions);
 
-  const transmissionTypes = transmissionTypesQuery?.data || [];
+  const transmissions = transmissionsQuery?.data || [];
 
   return (
     <div className={cn(className)}>
       <ToggleGroup {...props}>
-        {transmissionTypes.map((transmission) => (
+        {transmissions.map((transmission) => (
           <ToggleGroupItem
-            key={transmission.transmissionType}
-            value={transmission.transmissionType}
+            key={transmission.id}
+            value={transmission.id}
             className="flex-none"
           >
-            {transmission.transmissionType}
+            {transmission.name}
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
