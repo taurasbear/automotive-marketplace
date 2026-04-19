@@ -18,8 +18,18 @@ const EditVariantDialog = ({ variant, makeId }: EditVariantDialogProps) => {
   const { mutateAsync: updateVariantAsync } = useUpdateVariant();
 
   const handleSubmit = async (formData: VariantFormData) => {
-    const { makeId: _, ...command } = formData;
-    await updateVariantAsync({ id: variant.id, ...command });
+    await updateVariantAsync({
+      id: variant.id,
+      modelId: formData.modelId,
+      year: formData.year,
+      fuelId: formData.fuelId,
+      transmissionId: formData.transmissionId,
+      bodyTypeId: formData.bodyTypeId,
+      doorCount: formData.doorCount,
+      powerKw: formData.powerKw,
+      engineSizeMl: formData.engineSizeMl,
+      isCustom: formData.isCustom,
+    });
     setIsOpen(false);
   };
 

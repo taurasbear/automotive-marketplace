@@ -1,4 +1,4 @@
-import { getAllFuelsOptions } from "@/api/enum/getAllFuelsOptions";
+import { getFuelTypesOptions } from "@/api/enum/getFuelTypesOptions";
 import {
   Select,
   SelectContent,
@@ -17,9 +17,9 @@ type FuelSelectProps = SelectRootProps & {
 };
 
 const FuelSelect = ({ className, ...props }: FuelSelectProps) => {
-  const { data: fuelsQuery } = useQuery(getAllFuelsOptions);
+  const { data: fuelTypesQuery } = useQuery(getFuelTypesOptions);
 
-  const fuels = fuelsQuery?.data || [];
+  const fuelTypes = fuelTypesQuery?.data || [];
 
   return (
     <div className={cn(className)}>
@@ -30,9 +30,9 @@ const FuelSelect = ({ className, ...props }: FuelSelectProps) => {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Fuel types</SelectLabel>
-            {fuels.map((fuel) => (
-              <SelectItem key={fuel.id} value={fuel.id}>
-                {fuel.name}
+            {fuelTypes.map((fuel) => (
+              <SelectItem key={fuel.fuelType} value={fuel.fuelType}>
+                {fuel.fuelType}
               </SelectItem>
             ))}
           </SelectGroup>

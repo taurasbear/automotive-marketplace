@@ -22,8 +22,17 @@ const CreateVariantDialog = ({ modelId, makeId }: CreateVariantDialogProps) => {
   const { mutateAsync: createVariantAsync } = useCreateVariant();
 
   const handleSubmit = async (formData: VariantFormData) => {
-    const { makeId: _, ...command } = formData;
-    await createVariantAsync(command);
+    await createVariantAsync({
+      modelId: formData.modelId,
+      year: formData.year,
+      fuelId: formData.fuelId,
+      transmissionId: formData.transmissionId,
+      bodyTypeId: formData.bodyTypeId,
+      doorCount: formData.doorCount,
+      powerKw: formData.powerKw,
+      engineSizeMl: formData.engineSizeMl,
+      isCustom: formData.isCustom,
+    });
     setIsOpen(false);
   };
 
