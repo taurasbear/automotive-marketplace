@@ -39,13 +39,11 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
   };
 
   const selectedMake = form.watch("makeId");
-  const isMounted = useRef(false);
+  const prevMakeId = useRef(variant.makeId);
 
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
+    if (selectedMake === prevMakeId.current) return;
+    prevMakeId.current = selectedMake;
     form.setValue("modelId", "");
   }, [selectedMake]);
 
