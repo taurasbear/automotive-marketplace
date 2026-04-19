@@ -1,4 +1,4 @@
-import { getBodyTypesOptions } from "@/api/enum/getBodyTypesOptions";
+import { getAllBodyTypesOptions } from "@/api/enum/getAllBodyTypesOptions";
 import {
   Select,
   SelectContent,
@@ -17,7 +17,7 @@ type BodytypeSelectProps = SelectRootProps & {
 };
 
 const BodyTypeSelect = ({ className, ...props }: BodytypeSelectProps) => {
-  const { data: bodyTypesQuery } = useQuery(getBodyTypesOptions);
+  const { data: bodyTypesQuery } = useQuery(getAllBodyTypesOptions);
 
   const bodyTypes = bodyTypesQuery?.data || [];
 
@@ -31,8 +31,8 @@ const BodyTypeSelect = ({ className, ...props }: BodytypeSelectProps) => {
           <SelectGroup>
             <SelectLabel>Body types</SelectLabel>
             {bodyTypes.map((body) => (
-              <SelectItem key={body.bodyType} value={body.bodyType}>
-                {body.bodyType}
+              <SelectItem key={body.id} value={body.id}>
+                {body.name}
               </SelectItem>
             ))}
           </SelectGroup>
