@@ -35,8 +35,8 @@ const EditListingForm = ({
       description: listing.description,
       colour: listing.colour,
       vin: listing.vin,
-      power: listing.power,
-      engineSize: listing.engineSize,
+      powerKw: listing.powerKw,
+      engineSizeMl: listing.engineSizeMl,
       mileage: listing.mileage,
       isSteeringWheelRight: listing.isSteeringWheelRight,
       city: listing.city,
@@ -81,7 +81,7 @@ const EditListingForm = ({
             )}
           />
           <FormField
-            name="power"
+            name="powerKw"
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
@@ -142,7 +142,7 @@ const EditListingForm = ({
             )}
           />
           <FormField
-            name="engineSize"
+            name="engineSizeMl"
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">

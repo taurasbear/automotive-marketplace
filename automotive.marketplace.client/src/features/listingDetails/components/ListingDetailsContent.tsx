@@ -137,7 +137,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       Engine
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.engineSize} ml, {listing.power} kw
+                      {listing.engineSizeMl} ml, {listing.powerKw} kw
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
