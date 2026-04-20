@@ -12,10 +12,10 @@ export type GetAllListingsResponse = {
   transmission: string;
   city: string;
   description: string;
-  images: Image[];
+  thumbnail: Thumbnail | null;
 };
 
-type Image = {
+type Thumbnail = {
   url: string;
   altText: string;
 };

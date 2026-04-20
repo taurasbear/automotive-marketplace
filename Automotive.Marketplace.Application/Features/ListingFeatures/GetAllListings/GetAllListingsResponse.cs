@@ -1,3 +1,5 @@
+using Automotive.Marketplace.Application.Models;
+
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 
 public sealed record GetAllListingsResponse
@@ -17,5 +19,5 @@ public sealed record GetAllListingsResponse
     public string TransmissionName { get; set; } = string.Empty;
     public Guid SellerId { get; set; }
     public string SellerName { get; set; } = string.Empty;
-    public string? ThumbnailUrl { get; set; }
+    public ImageDto? Thumbnail { get; set; }
 }

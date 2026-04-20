@@ -8,7 +8,7 @@ public sealed record ConversationSummaryResponse
 
     public string ListingTitle { get; set; } = string.Empty;
 
-    public string? ListingThumbnailUrl { get; set; }
+    public Automotive.Marketplace.Application.Models.ImageDto? ListingThumbnail { get; set; }
 
     public decimal ListingPrice { get; set; }
 

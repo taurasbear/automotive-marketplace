@@ -1,10 +1,10 @@
-import BodyTypeSelect from "@/components/forms/select/BodyTypeSelect";
 import DrivetrainToggleGroup from "@/components/forms/DrivetrainToggleGroup";
+import BodyTypeSelect from "@/components/forms/select/BodyTypeSelect";
 import FuelSelect from "@/components/forms/select/FuelSelect";
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
-import TransmissionToggleGroup from "@/components/forms/TransmissionToggleGroup";
 import VariantSelect from "@/components/forms/select/VariantSelect";
+import TransmissionToggleGroup from "@/components/forms/TransmissionToggleGroup";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -137,7 +137,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
           />
 
           {/* Variant */}
-          <FormItem className="col-span-2 flex flex-col justify-start md:col-span-6">
+          <FormItem className="col-span-2 flex flex-col justify-start">
             <FormLabel>Variant</FormLabel>
             <FormControl>
               <VariantSelect
@@ -175,10 +175,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                   <FormItem className="col-span-1 flex flex-col justify-start">
                     <FormLabel>Fuel type*</FormLabel>
                     <FormControl>
-                      <FuelSelect
-                        onValueChange={field.onChange}
-                        {...field}
-                      />
+                      <FuelSelect onValueChange={field.onChange} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -433,4 +430,3 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
 };
 
 export default CreateListingForm;
-

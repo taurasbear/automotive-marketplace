@@ -39,7 +39,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
       id: res.data.conversationId,
       listingId: id,
       listingTitle: `${listing.year} ${listing.make} ${listing.model}`,
-      listingThumbnailUrl: listing.images[0]?.url ?? null,
+      listingThumbnail: listing.images[0] ?? null,
       listingPrice: listing.price,
       counterpartId: listing.sellerId,
       counterpartUsername: listing.seller,

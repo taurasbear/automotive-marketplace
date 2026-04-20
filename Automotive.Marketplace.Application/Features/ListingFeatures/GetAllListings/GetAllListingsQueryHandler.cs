@@ -50,7 +50,11 @@ public class GetAllListingsQueryHandler(
             var firstImage = listing.Images.FirstOrDefault();
             if (firstImage != null)
             {
-                mappedListing.ThumbnailUrl = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey);
+                mappedListing.Thumbnail = new Automotive.Marketplace.Application.Models.ImageDto
+                {
+                    Url = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey),
+                    AltText = firstImage.AltText
+                };
             }
             response.Add(mappedListing);
         }

@@ -23,7 +23,7 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.SellerName, opt => opt.MapFrom((src, dest) => src.Seller != null ? src.Seller.Username ?? string.Empty : string.Empty))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? string.Empty))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForMember(dest => dest.ThumbnailUrl, opt => opt.Ignore());
+            .ForMember(dest => dest.Thumbnail, opt => opt.Ignore());
 
         CreateMap<UpdateListingCommand, Listing>()
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
@@ -50,6 +50,6 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.SellerName, opt => opt.MapFrom((src, dest) => src.Seller != null ? src.Seller.Username ?? string.Empty : string.Empty))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? string.Empty))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForMember(dest => dest.ImageUrls, opt => opt.Ignore());
+            .ForMember(dest => dest.Images, opt => opt.Ignore());
     }
 }

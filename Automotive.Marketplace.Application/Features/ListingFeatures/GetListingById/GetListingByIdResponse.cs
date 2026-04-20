@@ -22,5 +22,5 @@ public sealed record GetListingByIdResponse
     public int EngineSizeMl { get; set; }
     public Guid SellerId { get; set; }
     public string SellerName { get; set; } = string.Empty;
-    public IEnumerable<string> ImageUrls { get; set; } = [];
+    public IEnumerable<Automotive.Marketplace.Application.Models.ImageDto> Images { get; set; } = [];
 }

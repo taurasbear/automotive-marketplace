@@ -35,12 +35,16 @@ public class GetListingByIdQueryHandler(
 
         var response = mapper.Map<GetListingByIdResponse>(listing);
 
-        var imageUrls = new List<string>();
+        var images = new List<Automotive.Marketplace.Application.Models.ImageDto>();
         foreach (var image in listing.Images)
         {
-            imageUrls.Add(await imageStorageService.GetPresignedUrlAsync(image.ObjectKey));
+            images.Add(new Automotive.Marketplace.Application.Models.ImageDto
+            {
+                Url = await imageStorageService.GetPresignedUrlAsync(image.ObjectKey),
+                AltText = image.AltText
+            });
         }
-        response.ImageUrls = imageUrls;
+        response.Images = images;
 
         return response;
     }

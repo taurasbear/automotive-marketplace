@@ -45,7 +45,13 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
                 Id = conversation.Id,
                 ListingId = listing.Id,
                 ListingTitle = $"{variant.Year} {variant.Model.Make.Name} {variant.Model.Name}",
-                ListingThumbnailUrl = thumbnailUrl,
+                ListingThumbnail = thumbnailUrl is not null
+                    ? new Automotive.Marketplace.Application.Models.ImageDto
+                      {
+                          Url = thumbnailUrl,
+                          AltText = firstImage!.AltText
+                      }
+                    : null,
                 ListingPrice = listing.Price,
                 CounterpartId = counterpart.Id,
                 CounterpartUsername = counterpart.Username,

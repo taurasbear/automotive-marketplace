@@ -58,7 +58,7 @@ const MessageThread = ({
           listingId={conversation.listingId}
           listingTitle={conversation.listingTitle}
           listingPrice={conversation.listingPrice}
-          listingThumbnailUrl={conversation.listingThumbnailUrl}
+          listingThumbnail={conversation.listingThumbnail}
         />
       )}
       <ActionBar />
