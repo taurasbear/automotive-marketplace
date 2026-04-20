@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './app/routes/__root'
 import { Route as VariantsRouteImport } from './app/routes/variants'
 import { Route as RegisterRouteImport } from './app/routes/register'
 import { Route as ModelsRouteImport } from './app/routes/models'
+import { Route as MakesRouteImport } from './app/routes/makes'
 import { Route as LoginRouteImport } from './app/routes/login'
 import { Route as ListingsRouteImport } from './app/routes/listings'
 import { Route as InboxRouteImport } from './app/routes/inbox'
@@ -33,6 +34,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ModelsRoute = ModelsRouteImport.update({
   id: '/models',
   path: '/models',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MakesRoute = MakesRouteImport.update({
+  id: '/makes',
+  path: '/makes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
+  '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/variants': typeof VariantsRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
+  '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/variants': typeof VariantsRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
+  '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/variants': typeof VariantsRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/listings'
     | '/login'
+    | '/makes'
     | '/models'
     | '/register'
     | '/variants'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/listings'
     | '/login'
+    | '/makes'
     | '/models'
     | '/register'
     | '/variants'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/listings'
     | '/login'
+    | '/makes'
     | '/models'
     | '/register'
     | '/variants'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   InboxRoute: typeof InboxRoute
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
+  MakesRoute: typeof MakesRoute
   ModelsRoute: typeof ModelsRoute
   RegisterRoute: typeof RegisterRoute
   VariantsRoute: typeof VariantsRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/models'
       fullPath: '/models'
       preLoaderRoute: typeof ModelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/makes': {
+      id: '/makes'
+      path: '/makes'
+      fullPath: '/makes'
+      preLoaderRoute: typeof MakesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   InboxRoute: InboxRoute,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
+  MakesRoute: MakesRoute,
   ModelsRoute: ModelsRoute,
   RegisterRoute: RegisterRoute,
   VariantsRoute: VariantsRoute,
