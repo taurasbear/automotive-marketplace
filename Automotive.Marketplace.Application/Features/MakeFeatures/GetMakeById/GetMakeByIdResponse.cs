@@ -1,6 +1,6 @@
-﻿namespace Automotive.Marketplace.Application.Features.MakeFeatures.GetAllMakes;
+namespace Automotive.Marketplace.Application.Features.MakeFeatures.GetMakeById;
 
-public sealed record GetAllMakesResponse
+public sealed record GetMakeByIdResponse
 {
     public Guid Id { get; set; }
 

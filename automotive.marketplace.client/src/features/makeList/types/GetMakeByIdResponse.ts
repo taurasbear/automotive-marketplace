@@ -1,4 +1,4 @@
-export type GetAllMakesResponse = {
+export type GetMakeByIdResponse = {
   id: string;
   name: string;
   createdAt: string;
