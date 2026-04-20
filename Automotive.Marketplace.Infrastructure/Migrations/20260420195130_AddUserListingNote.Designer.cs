@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Automotive.Marketplace.Infrastructure.Migrations
 {
     [DbContext(typeof(AutomotiveContext))]
-    [Migration("20260420194745_AddUserListingNote")]
+    [Migration("20260420195130_AddUserListingNote")]
     partial class AddUserListingNote
     {
         /// <inheritdoc />
@@ -693,7 +693,8 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");

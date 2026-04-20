@@ -11,6 +11,9 @@ public class UserListingNoteConfiguration : IEntityTypeConfiguration<UserListing
         builder.HasIndex(note => new { note.UserId, note.ListingId })
             .IsUnique();
 
+        builder.Property(note => note.Content)
+            .HasMaxLength(2000);
+
         builder.HasOne(note => note.Listing)
             .WithMany()
             .HasForeignKey(note => note.ListingId)
