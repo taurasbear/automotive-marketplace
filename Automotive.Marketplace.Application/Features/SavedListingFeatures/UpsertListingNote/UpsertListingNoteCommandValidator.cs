@@ -12,5 +12,8 @@ public sealed class UpsertListingNoteCommandValidator : AbstractValidator<Upsert
 
         RuleFor(command => command.ListingId)
             .NotEmpty();
+
+        RuleFor(command => command.UserId)
+            .NotEmpty();
     }
 }

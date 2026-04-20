@@ -31,6 +31,8 @@ public class UpsertListingNoteCommandHandler(IRepository repository)
         if (existingNote is not null)
         {
             existingNote.Content = request.Content;
+            existingNote.ModifiedAt = DateTime.UtcNow;
+            existingNote.ModifiedBy = request.UserId.ToString();
             await repository.UpdateAsync(existingNote, cancellationToken);
         }
         else
@@ -40,7 +42,9 @@ public class UpsertListingNoteCommandHandler(IRepository repository)
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 ListingId = request.ListingId,
-                Content = request.Content
+                Content = request.Content,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = request.UserId.ToString()
             };
             await repository.CreateAsync(newNote, cancellationToken);
         }
