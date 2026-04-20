@@ -11,8 +11,8 @@ public class UpdateModelCommandHandler(
 {
     public async Task Handle(UpdateModelCommand request, CancellationToken cancellationToken)
     {
-        var model = mapper.Map<Model>(request);
-
+        var model = await repository.GetByIdAsync<Model>(request.Id, cancellationToken);
+        mapper.Map(request, model);
         await repository.UpdateAsync(model, cancellationToken);
     }
 }

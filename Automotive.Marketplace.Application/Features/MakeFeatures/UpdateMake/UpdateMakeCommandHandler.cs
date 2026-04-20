@@ -11,7 +11,8 @@ public class UpdateMakeCommandHandler(
 {
     public async Task Handle(UpdateMakeCommand request, CancellationToken cancellationToken)
     {
-        var make = mapper.Map<Make>(request);
+        var make = await repository.GetByIdAsync<Make>(request.Id, cancellationToken);
+        mapper.Map(request, make);
         await repository.UpdateAsync(make, cancellationToken);
     }
 }
