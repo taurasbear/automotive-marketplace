@@ -418,9 +418,25 @@ public class GetAllListingsQueryHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        await SeedListingsAsync(context, 1);
+        var listings = await SeedListingsAsync(context, 1);
+        var listing = listings.First();
 
-        var query = new GetAllListingsQuery { UserId = Guid.NewGuid() };
+        var userA = new UserBuilder().Build();
+        var userB = new UserBuilder().Build();
+        await context.AddRangeAsync(userA, userB);
+
+        var like = new UserListingLike
+        {
+            Id = Guid.NewGuid(),
+            UserId = userA.Id,
+            ListingId = listing.Id,
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = userA.Id.ToString()
+        };
+        await context.AddAsync(like);
+        await context.SaveChangesAsync();
+
+        var query = new GetAllListingsQuery { UserId = userB.Id };
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);

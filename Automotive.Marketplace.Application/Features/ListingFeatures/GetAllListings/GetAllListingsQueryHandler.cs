@@ -42,7 +42,7 @@ public class GetAllListingsQueryHandler(
             .Where(listing => request.MinPower == null || request.MinPower <= listing.Variant.PowerKw)
             .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Variant.PowerKw);
 
-        if (request.UserId.HasValue)
+        if (request.UserId.HasValue && request.UserId.Value != Guid.Empty)
         {
             query = query.Include(l => l.LikeUsers);
         }
