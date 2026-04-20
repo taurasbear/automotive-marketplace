@@ -13,6 +13,7 @@ export type GetAllListingsResponse = {
   city: string;
   description: string;
   thumbnail: Thumbnail | null;
+  isLiked: boolean;
 };
 
 type Thumbnail = {
