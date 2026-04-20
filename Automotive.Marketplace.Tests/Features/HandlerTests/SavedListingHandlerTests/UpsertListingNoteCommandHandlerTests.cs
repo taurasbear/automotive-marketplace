@@ -120,7 +120,7 @@ public class UpsertListingNoteCommandHandlerTests(
             .WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
         var listing = new ListingBuilder()
             .WithSeller(user.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
-        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id };
+        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
 
         await context.AddRangeAsync(user, make, model, fuel, transmission, bodyType, drivetrain, variant, listing, like);
         await context.SaveChangesAsync();

@@ -81,10 +81,7 @@ public class ToggleLikeCommandHandlerTests(
 
         var (user, listing) = await SeedUserAndListingAsync(context);
         var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
-        var note = new UserListingNote
-        {
-            Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, Content = "Great car!"
-        };
+        var note = new UserListingNoteBuilder().WithUser(user.Id).WithListing(listing.Id).WithContent("Great car!").Build();
         await context.AddRangeAsync(like, note);
         await context.SaveChangesAsync();
 
