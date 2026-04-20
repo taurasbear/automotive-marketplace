@@ -4,3 +4,4 @@ export { useDeleteListingNote } from "./api/useDeleteListingNote";
 export { getSavedListingsOptions } from "./api/getSavedListingsOptions";
 export type { SavedListing } from "./types/SavedListing";
 export type { ToggleLikeResponse } from "./types/ToggleLikeResponse";
+export { default as SavedListingsPage } from "./components/SavedListingsPage";

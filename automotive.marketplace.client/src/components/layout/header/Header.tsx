@@ -44,6 +44,11 @@ const Header = () => {
               </Button>
             </Link>
           )}
+          {userId && (
+            <Link to="/saved">
+              <Button variant="link">Saved</Button>
+            </Link>
+          )}
           <ThemeToggle />
           {userId ? <LogoutButton /> : <RegisterButton />}
         </div>
