@@ -32,8 +32,10 @@ docker compose --env-file .env up -d
 
 ## Project-Specific Skills
 
-See `.superpowers/skills/` for patterns on:
+See `.agents/skills/` for patterns on:
+
 - `be-cqrs-feature` — adding a new backend CQRS feature
 - `be-handler-tests` — writing handler integration tests
 - `fe-feature-structure` — frontend feature directory layout
 - `fe-api-calls` — query options and mutation hooks
+- `be-query-response-classes` - how to write query and response classes
