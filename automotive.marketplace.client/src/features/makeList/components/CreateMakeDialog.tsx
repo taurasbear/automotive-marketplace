@@ -12,7 +12,7 @@ import { MakeFormData } from "../types/MakeFormData";
 import MakeForm from "./MakeForm";
 
 const CreateMakeDialog = () => {
-  const [isOpen, setIsOpen] = useState<boolean>();
+  const [isOpen, setIsOpen] = useState(false);
   const { mutateAsync: createMakeAsync } = useCreateMake();
 
   const handleSubmit = async (formData: MakeFormData) => {

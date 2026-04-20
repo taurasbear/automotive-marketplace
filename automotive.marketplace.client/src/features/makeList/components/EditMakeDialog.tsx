@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useUpdateMake } from "../api/useUpdateMake";
 import { MakeFormData } from "../types/MakeFormData";
 import EditMakeDialogContent from "./EditMakeDialogContent";
@@ -27,7 +27,9 @@ const EditMakeDialog = ({ id }: EditMakeDialogProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <EditMakeDialogContent id={id} onSubmit={handleSubmit} />
+        <Suspense fallback={<p className="text-sm text-muted-foreground">Loading…</p>}>
+          <EditMakeDialogContent id={id} onSubmit={handleSubmit} />
+        </Suspense>
       </DialogContent>
     </Dialog>
   );
