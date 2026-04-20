@@ -18,6 +18,11 @@ const Header = () => {
           </Link>{" "}
         </div>
         <div className="flex items-center space-x-2 truncate">
+          {permissions.includes(PERMISSIONS.ViewMakes) && (
+            <Link to="/makes">
+              <Button variant="link">Makes</Button>
+            </Link>
+          )}
           {permissions.includes(PERMISSIONS.ViewModels) && (
             <Link to="/models">
               <Button variant="link">Models</Button>
