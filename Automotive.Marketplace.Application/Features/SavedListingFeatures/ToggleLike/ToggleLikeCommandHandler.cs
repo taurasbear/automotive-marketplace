@@ -37,7 +37,9 @@ public class ToggleLikeCommandHandler(IRepository repository)
         {
             Id = Guid.NewGuid(),
             UserId = request.UserId,
-            ListingId = request.ListingId
+            ListingId = request.ListingId,
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = request.UserId.ToString()
         };
 
         await repository.CreateAsync(newLike, cancellationToken);
