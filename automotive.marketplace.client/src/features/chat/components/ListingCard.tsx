@@ -4,20 +4,20 @@ type ListingCardProps = {
   listingId: string;
   listingTitle: string;
   listingPrice: number;
-  listingThumbnailUrl: string | null;
+  listingThumbnail: { url: string; altText: string } | null;
 };
 
 const ListingCard = ({
   listingId,
   listingTitle,
   listingPrice,
-  listingThumbnailUrl,
+  listingThumbnail,
 }: ListingCardProps) => (
   <div className="border-border bg-muted/40 flex items-center gap-3 border-b px-4 py-2">
-    {listingThumbnailUrl && (
+    {listingThumbnail && (
       <img
-        src={listingThumbnailUrl}
-        alt={listingTitle}
+        src={listingThumbnail.url}
+        alt={listingThumbnail.altText || listingTitle}
         className="h-10 w-14 rounded object-cover"
       />
     )}

@@ -30,6 +30,24 @@ export const ENDPOINTS = {
     DELETE: "/Car/Delete",
     UPDATE: "/Car/Update",
   },
+  VARIANT: {
+    GET_BY_MODEL_ID: "/Variant/GetByModelId",
+    CREATE: "/Variant/Create",
+    UPDATE: "/Variant/Update",
+    DELETE: "/Variant/Delete",
+  },
+  FUEL: {
+    GET_ALL: "/Fuel/GetAll",
+  },
+  TRANSMISSION: {
+    GET_ALL: "/Transmission/GetAll",
+  },
+  BODY_TYPE: {
+    GET_ALL: "/BodyType/GetAll",
+  },
+  DRIVETRAIN: {
+    GET_ALL: "/Drivetrain/GetAll",
+  },
   ENUM: {
     GET_TRANSMISSIONS_TYPES: "/Enum/GetTransmissionTypes",
     GET_FUEL_TYPES: "/Enum/GetFuelTypes",

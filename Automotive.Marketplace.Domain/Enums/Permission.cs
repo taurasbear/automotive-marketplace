@@ -14,9 +14,9 @@ public enum Permission
 
     ManageModels,
 
-    ViewCars,
+    ViewVariants,
 
-    CreateCars,
+    CreateVariants,
 
-    ManageCars
+    ManageVariants
 }

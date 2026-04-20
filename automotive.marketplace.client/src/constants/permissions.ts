@@ -5,7 +5,7 @@ export const PERMISSIONS = {
   ViewModels: "ViewModels",
   CreateModels: "CreateModels",
   ManageModels: "ManageModels",
-  ViewCars: "ViewCars",
-  CreateCars: "CreateCars",
-  ManageCars: "ManageCars",
+  ViewVariants: "ViewVariants",
+  CreateVariants: "CreateVariants",
+  ManageVariants: "ManageVariants",
 } as const;

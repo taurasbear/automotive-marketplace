@@ -39,7 +39,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
       id: res.data.conversationId,
       listingId: id,
       listingTitle: `${listing.year} ${listing.make} ${listing.model}`,
-      listingThumbnailUrl: listing.images[0]?.url ?? null,
+      listingThumbnail: listing.images[0] ?? null,
       listingPrice: listing.price,
       counterpartId: listing.sellerId,
       counterpartUsername: listing.seller,
@@ -137,7 +137,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       Engine
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.engineSize} ml, {listing.power} kw
+                      {listing.engineSizeMl} ml, {listing.powerKw} kw
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">

@@ -5,8 +5,8 @@ export type GetListingByIdResponse = {
   description?: string;
   colour?: string;
   vin?: string;
-  power: number;
-  engineSize: number;
+  powerKw: number;
+  engineSizeMl: number;
   mileage: number;
   isSteeringWheelRight: boolean;
   city: string;

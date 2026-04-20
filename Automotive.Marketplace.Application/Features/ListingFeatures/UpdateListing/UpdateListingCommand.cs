@@ -14,9 +14,9 @@ public sealed record UpdateListingCommand : IRequest
 
     public string? Vin { get; set; }
 
-    public int Power { get; set; }
+    public int PowerKw { get; set; }
 
-    public int EngineSize { get; set; }
+    public int EngineSizeMl { get; set; }
 
     public int Mileage { get; set; }
 

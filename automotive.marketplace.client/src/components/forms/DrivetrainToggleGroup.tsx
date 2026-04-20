@@ -1,4 +1,4 @@
-import { getDrivetrainTypesOptions } from "@/api/enum/getDrivetrainTypesOptions";
+import { getAllDrivetrainsOptions } from "@/api/enum/getAllDrivetrainsOptions";
 import { toggleVariants } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
@@ -15,19 +15,19 @@ const DrivetrainToggleGroup = ({
   className,
   ...props
 }: DrivetrainToggleGroupProps) => {
-  const { data: drivetrainTypesQuery } = useQuery(getDrivetrainTypesOptions);
+  const { data: drivetrainsQuery } = useQuery(getAllDrivetrainsOptions);
 
-  const drivetrainTypes = drivetrainTypesQuery?.data || [];
+  const drivetrains = drivetrainsQuery?.data || [];
 
   return (
     <div className={cn(className)}>
       <ToggleGroup {...props}>
-        {drivetrainTypes.map((drivetrain) => (
+        {drivetrains.map((drivetrain) => (
           <ToggleGroupItem
-            key={drivetrain.drivetrainType}
-            value={drivetrain.drivetrainType}
+            key={drivetrain.id}
+            value={drivetrain.id}
           >
-            {drivetrain.drivetrainType}
+            {drivetrain.name}
           </ToggleGroupItem>
         ))}
       </ToggleGroup>

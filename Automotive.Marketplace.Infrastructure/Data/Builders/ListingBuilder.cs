@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using Bogus;
 
 namespace Automotive.Marketplace.Infrastructure.Data.Builders;
@@ -11,20 +12,16 @@ public class ListingBuilder
     public ListingBuilder()
     {
         _faker = new Faker<Listing>()
-            .RuleFor(listing => listing.Id, faker => faker.Random.Guid())
-            .RuleFor(listing => listing.Price, faker => faker.Random.Decimal(100, 50000))
-            .RuleFor(listing => listing.Description, faker => faker.Lorem.Sentences(2))
-            .RuleFor(listing => listing.City, faker => faker.Address.City())
+            .RuleFor(listing => listing.Id, f => f.Random.Guid())
+            .RuleFor(listing => listing.Price, f => f.Random.Decimal(100, 50000))
+            .RuleFor(listing => listing.Description, f => f.Lorem.Sentences(2))
+            .RuleFor(listing => listing.City, f => f.Address.City())
             .RuleFor(listing => listing.Status, Status.Available)
-            .RuleFor(listing => listing.Id, faker => faker.Random.Guid())
-            .RuleFor(listing => listing.Vin, faker => faker.Vehicle.Vin())
-            .RuleFor(listing => listing.Colour, faker => faker.Commerce.Color())
-            .RuleFor(listing => listing.IsUsed, faker => faker.Random.Bool())
-            .RuleFor(listing => listing.Power, faker => faker.Random.Int(40, 500))
-            .RuleFor(listing => listing.EngineSize, faker => faker.Random.Int(800, 3000))
-            .RuleFor(listing => listing.Mileage, faker => faker.Random.Int(10000, 400000))
-            .RuleFor(listing => listing.IsSteeringWheelRight, faker => faker.Random.Bool())
-            .RuleFor(listing => listing.EngineSize, faker => faker.Random.Int(800, 3000));
+            .RuleFor(listing => listing.Vin, f => f.Vehicle.Vin())
+            .RuleFor(listing => listing.Colour, f => f.Commerce.Color())
+            .RuleFor(listing => listing.IsUsed, f => f.Random.Bool())
+            .RuleFor(listing => listing.Mileage, f => f.Random.Int(10000, 400000))
+            .RuleFor(listing => listing.IsSteeringWheelRight, f => f.Random.Bool());
     }
 
     public ListingBuilder WithPrice(decimal price)
@@ -33,7 +30,7 @@ public class ListingBuilder
         return this;
     }
 
-    public ListingBuilder Withlisting(Guid listingId)
+    public ListingBuilder WithListing(Guid listingId)
     {
         _faker.RuleFor(listing => listing.Id, listingId);
         return this;
@@ -51,9 +48,15 @@ public class ListingBuilder
         return this;
     }
 
-    public ListingBuilder WithCar(Guid carId)
+    public ListingBuilder WithVariant(Guid variantId)
     {
-        _faker.RuleFor(listing => listing.CarId, carId);
+        _faker.RuleFor(listing => listing.VariantId, variantId);
+        return this;
+    }
+
+    public ListingBuilder WithDrivetrain(Guid drivetrainId)
+    {
+        _faker.RuleFor(listing => listing.DrivetrainId, drivetrainId);
         return this;
     }
 

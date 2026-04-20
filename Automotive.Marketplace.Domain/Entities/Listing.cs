@@ -1,4 +1,6 @@
-﻿namespace Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
+
+namespace Automotive.Marketplace.Domain.Entities;
 
 public class Listing : BaseEntity
 {
@@ -16,17 +18,17 @@ public class Listing : BaseEntity
 
     public bool IsUsed { get; set; }
 
-    public int Power { get; set; }
-
-    public int EngineSize { get; set; }
-
     public int Mileage { get; set; }
 
     public bool IsSteeringWheelRight { get; set; }
 
-    public Guid CarId { get; set; }
+    public Guid DrivetrainId { get; set; }
 
-    public virtual Car Car { get; set; } = null!;
+    public virtual Drivetrain Drivetrain { get; set; } = null!;
+
+    public Guid VariantId { get; set; }
+
+    public virtual Variant Variant { get; set; } = null!;
 
     public Guid SellerId { get; set; }
 

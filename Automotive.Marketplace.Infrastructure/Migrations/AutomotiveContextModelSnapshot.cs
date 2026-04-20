@@ -25,15 +25,11 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("BodyType")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -42,19 +38,41 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("DoorCount")
-                        .HasColumnType("integer");
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Drivetrain")
+                    b.Property<string>("ModifiedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Fuel")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ModelId")
+                    b.HasKey("Id");
+
+                    b.ToTable("BodyTypes");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyTypeTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<Guid>("BodyTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -63,18 +81,16 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Transmission")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Year")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ModelId");
+                    b.HasIndex("BodyTypeId", "LanguageCode")
+                        .IsUnique();
 
-                    b.ToTable("Cars");
+                    b.ToTable("BodyTypeTranslations");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Conversation", b =>
@@ -114,6 +130,142 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Drivetrain", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Drivetrains");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.DrivetrainTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DrivetrainId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DrivetrainId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("DrivetrainTranslations");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Fuel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fuels");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.FuelTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("FuelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FuelId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("FuelTranslations");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Image", b =>
@@ -175,9 +327,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CarId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("text");
@@ -195,8 +344,8 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("EngineSize")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("DrivetrainId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsSteeringWheelRight")
                         .HasColumnType("boolean");
@@ -214,9 +363,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Power")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
@@ -227,14 +373,19 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Vin")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("DrivetrainId");
 
                     b.HasIndex("SellerId");
+
+                    b.HasIndex("VariantId");
 
                     b.ToTable("Listings");
                 });
@@ -390,6 +541,74 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Transmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Transmissions");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.TransmissionTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TransmissionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TransmissionId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("TransmissionTranslations");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -497,15 +716,77 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("UserPermissions");
                 });
 
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Variant", b =>
                 {
-                    b.HasOne("Automotive.Marketplace.Domain.Entities.Model", "Model")
-                        .WithMany("Cars")
-                        .HasForeignKey("ModelId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BodyTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("DoorCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EngineSizeMl")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("FuelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsCustom")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ModelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PowerKw")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TransmissionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BodyTypeId");
+
+                    b.HasIndex("FuelId");
+
+                    b.HasIndex("TransmissionId");
+
+                    b.HasIndex("ModelId", "Year", "FuelId", "TransmissionId", "BodyTypeId")
+                        .IsUnique()
+                        .HasFilter("\"IsCustom\" = false");
+
+                    b.ToTable("Variants");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyTypeTranslation", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.BodyType", "BodyType")
+                        .WithMany("Translations")
+                        .HasForeignKey("BodyTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Model");
+                    b.Navigation("BodyType");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Conversation", b =>
@@ -527,6 +808,28 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("Listing");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.DrivetrainTranslation", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Drivetrain", "Drivetrain")
+                        .WithMany("Translations")
+                        .HasForeignKey("DrivetrainId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drivetrain");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.FuelTranslation", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Fuel", "Fuel")
+                        .WithMany("Translations")
+                        .HasForeignKey("FuelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fuel");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Image", b =>
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Listing", "Listing")
@@ -540,9 +843,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Listing", b =>
                 {
-                    b.HasOne("Automotive.Marketplace.Domain.Entities.Car", "Car")
-                        .WithMany("Listings")
-                        .HasForeignKey("CarId")
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Drivetrain", "Drivetrain")
+                        .WithMany()
+                        .HasForeignKey("DrivetrainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -552,9 +855,17 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Car");
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Variant", "Variant")
+                        .WithMany("Listings")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Drivetrain");
 
                     b.Navigation("Seller");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Message", b =>
@@ -598,6 +909,17 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.TransmissionTranslation", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Transmission", "Transmission")
+                        .WithMany("Translations")
+                        .HasForeignKey("TransmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transmission");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserListingLike", b =>
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Listing", "Listing")
@@ -628,14 +950,59 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Car", b =>
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Variant", b =>
                 {
-                    b.Navigation("Listings");
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.BodyType", "BodyType")
+                        .WithMany()
+                        .HasForeignKey("BodyTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Fuel", "Fuel")
+                        .WithMany()
+                        .HasForeignKey("FuelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Model", "Model")
+                        .WithMany("Variants")
+                        .HasForeignKey("ModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Transmission", "Transmission")
+                        .WithMany()
+                        .HasForeignKey("TransmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BodyType");
+
+                    b.Navigation("Fuel");
+
+                    b.Navigation("Model");
+
+                    b.Navigation("Transmission");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyType", b =>
+                {
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Conversation", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Drivetrain", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Fuel", b =>
+                {
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Listing", b =>
@@ -650,7 +1017,12 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Model", b =>
                 {
-                    b.Navigation("Cars");
+                    b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Transmission", b =>
+                {
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.User", b =>
@@ -658,6 +1030,11 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("Listings");
 
                     b.Navigation("UserPermissions");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Variant", b =>
+                {
+                    b.Navigation("Listings");
                 });
 #pragma warning restore 612, 618
         }

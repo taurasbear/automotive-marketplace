@@ -2,7 +2,7 @@ export type ConversationSummary = {
   id: string;
   listingId: string;
   listingTitle: string;
-  listingThumbnailUrl: string | null;
+  listingThumbnail: { url: string; altText: string } | null;
   listingPrice: number;
   counterpartId: string;
   counterpartUsername: string;

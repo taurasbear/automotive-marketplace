@@ -23,9 +23,9 @@ const Header = () => {
               <Button variant="link">Models</Button>
             </Link>
           )}
-          {permissions.includes(PERMISSIONS.ViewCars) && (
-            <Link to="/cars">
-              <Button variant="link">Cars</Button>
+          {permissions.includes(PERMISSIONS.ViewVariants) && (
+            <Link to="/variants">
+              <Button variant="link">Variants</Button>
             </Link>
           )}
           <Link to="/listing/create">

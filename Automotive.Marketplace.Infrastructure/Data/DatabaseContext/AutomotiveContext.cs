@@ -1,4 +1,4 @@
-﻿using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Infrastructure.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +6,23 @@ namespace Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 
 public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<Car> Cars { get; set; }
+    public DbSet<Variant> Variants { get; set; }
+
+    public DbSet<Drivetrain> Drivetrains { get; set; }
+
+    public DbSet<Fuel> Fuels { get; set; }
+
+    public DbSet<Transmission> Transmissions { get; set; }
+
+    public DbSet<BodyType> BodyTypes { get; set; }
+
+    public DbSet<FuelTranslation> FuelTranslations { get; set; }
+
+    public DbSet<TransmissionTranslation> TransmissionTranslations { get; set; }
+
+    public DbSet<BodyTypeTranslation> BodyTypeTranslations { get; set; }
+
+    public DbSet<DrivetrainTranslation> DrivetrainTranslations { get; set; }
 
     public DbSet<Image> Images { get; set; }
 
@@ -28,6 +44,6 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(VariantConfiguration).Assembly);
     }
 }

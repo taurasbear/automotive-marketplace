@@ -36,8 +36,7 @@ public class ListingController(IMediator mediator) : BaseController
         [FromForm] CreateListingCommand command,
         CancellationToken cancellationToken)
     {
-        command.UserId = UserId;
-        await mediator.Send(command, cancellationToken);
+        await mediator.Send(command with { SellerId = UserId }, cancellationToken);
         return Created();
     }
 

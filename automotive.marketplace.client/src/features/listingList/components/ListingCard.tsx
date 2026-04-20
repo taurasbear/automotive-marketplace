@@ -15,16 +15,16 @@ const ListingCard = ({ listing }: ListingCardProps) => {
   const handleClick = async () => {
     await router.navigate({ to: "/listing/$id", params: { id: listing.id } });
   };
-
+  console.log("listing: ", listing);
   return (
     <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
       <div className="flex flex-shrink-0 py-5">
         <img
           className="aspect-[4/3] object-cover"
-          alt={listing.images[0]?.altText || "2025 Toyota Prius"}
+          alt={listing.thumbnail?.altText || "2025 Toyota Prius"}
           src={
-            listing.images.length > 0
-              ? listing.images[0].url
+            listing.thumbnail
+              ? listing.thumbnail.url
               : "https://imgs.search.brave.com/_avFlFDyXU8SS34ve__STsLcC6LfrFsy76XnfAbI4Vo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNDU5/NDQ1ODUxL3Bob3Rv/L3RveW90YS1wcml1/cy5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9OGRDdF9lSGxP/YzhMcUxEQllYME42/N0FpZFNNd2lRT0ZT/LVhzMUxYcnBjQT0"
           }
         />
@@ -45,7 +45,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<PiEngine className="h-8 w-8" />}
               title={"Engine"}
-              stat={`${listing.engineSize / 1000} l ${listing.power} kW`}
+              stat={`${listing.engineSizeMl / 1000} l ${listing.powerKw} kW`}
             />
           </div>
           <div className="flex justify-self-end">

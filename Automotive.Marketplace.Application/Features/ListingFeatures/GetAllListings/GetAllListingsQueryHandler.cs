@@ -2,6 +2,7 @@
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,33 +19,42 @@ public class GetAllListingsQueryHandler(
     {
         var listings = await repository
             .AsQueryable<Listing>()
-            .Where(listing => request.MakeId == null || request.MakeId == listing.Car.Model.MakeId)
-            .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Car.ModelId))
+            .Include(l => l.Variant)
+                .ThenInclude(v => v.Model)
+                    .ThenInclude(m => m.Make)
+            .Include(l => l.Variant)
+                .ThenInclude(v => v.Fuel)
+            .Include(l => l.Variant)
+                .ThenInclude(v => v.Transmission)
+            .Include(l => l.Seller)
+            .Include(l => l.Images)
+            .Where(listing => listing.Status == Status.Available)
+            .Where(listing => request.MakeId == null || request.MakeId == listing.Variant.Model.MakeId)
+            .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Variant.ModelId))
             .Where(listing => request.City == null || request.City.ToLower() == listing.City.ToLower())
             .Where(listing => request.IsUsed == null || request.IsUsed == listing.IsUsed)
-            .Where(listing => request.MinYear == null || request.MinYear <= listing.Car.Year.Year)
-            .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Car.Year.Year)
+            .Where(listing => request.MinYear == null || request.MinYear <= listing.Variant.Year)
+            .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Variant.Year)
             .Where(listing => request.MinPrice == null || request.MinPrice <= listing.Price)
             .Where(listing => request.MaxPrice == null || request.MaxPrice >= listing.Price)
             .Where(listing => request.MinMileage == null || request.MinMileage <= listing.Mileage)
             .Where(listing => request.MaxMileage == null || request.MaxMileage >= listing.Mileage)
-            .Where(listing => request.MinPower == null || request.MinPower <= listing.Power)
-            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Power)
+            .Where(listing => request.MinPower == null || request.MinPower <= listing.Variant.PowerKw)
+            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Variant.PowerKw)
             .ToListAsync(cancellationToken);
 
         List<GetAllListingsResponse> response = [];
         foreach (var listing in listings)
         {
             var mappedListing = mapper.Map<GetAllListingsResponse>(listing);
-            foreach (var image in listing.Images)
+            var firstImage = listing.Images.FirstOrDefault();
+            if (firstImage != null)
             {
-                var imageUrl = await imageStorageService.GetPresignedUrlAsync(image.ObjectKey);
-                var responseImage = new GetAllListingsResponse.Image
+                mappedListing.Thumbnail = new Automotive.Marketplace.Application.Models.ImageDto
                 {
-                    Url = imageUrl,
-                    AltText = image.AltText
+                    Url = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey),
+                    AltText = firstImage.AltText
                 };
-                mappedListing.Images.Add(responseImage);
             }
             response.Add(mappedListing);
         }

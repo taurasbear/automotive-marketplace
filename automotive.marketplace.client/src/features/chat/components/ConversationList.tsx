@@ -33,10 +33,10 @@ const ConversationList = ({ selectedId, onSelect }: ConversationListProps) => {
           }`}
         >
           <div className="flex items-start gap-3">
-            {c.listingThumbnailUrl ? (
+            {c.listingThumbnail ? (
               <img
-                src={c.listingThumbnailUrl}
-                alt={c.listingTitle}
+                src={c.listingThumbnail.url}
+                alt={c.listingThumbnail.altText || c.listingTitle}
                 className="mt-0.5 h-10 w-14 shrink-0 rounded object-cover"
               />
             ) : (
