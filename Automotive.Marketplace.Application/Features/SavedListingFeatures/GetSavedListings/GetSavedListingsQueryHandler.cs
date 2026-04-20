@@ -16,6 +16,7 @@ public class GetSavedListingsQueryHandler(IRepository repository, IImageStorageS
         var likes = await repository
             .AsQueryable<UserListingLike>()
             .Where(like => like.UserId == request.UserId)
+            .OrderByDescending(like => like.CreatedAt)
             .Include(like => like.Listing)
                 .ThenInclude(listing => listing.Variant)
                     .ThenInclude(variant => variant.Model)

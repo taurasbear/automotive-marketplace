@@ -4,5 +4,5 @@ namespace Automotive.Marketplace.Application.Features.SavedListingFeatures.GetSa
 
 public sealed record GetSavedListingsQuery : IRequest<IEnumerable<GetSavedListingsResponse>>
 {
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 }
