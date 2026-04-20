@@ -8,5 +8,8 @@ public sealed class DeleteListingNoteCommandValidator : AbstractValidator<Delete
     {
         RuleFor(command => command.ListingId)
             .NotEmpty();
+        
+        RuleFor(command => command.UserId)
+            .NotEmpty();
     }
 }

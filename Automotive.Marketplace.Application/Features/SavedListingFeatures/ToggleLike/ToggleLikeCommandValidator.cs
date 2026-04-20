@@ -8,5 +8,8 @@ public sealed class ToggleLikeCommandValidator : AbstractValidator<ToggleLikeCom
     {
         RuleFor(command => command.ListingId)
             .NotEmpty();
+        
+        RuleFor(command => command.UserId)
+            .NotEmpty();
     }
 }
