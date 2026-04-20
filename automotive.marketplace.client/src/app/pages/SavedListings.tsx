@@ -1,4 +1,5 @@
-import { SavedListingsPage } from "@/features/savedListings";
+// eslint-disable-next-line no-restricted-imports
+import SavedListingsPage from "@/features/savedListings/components/SavedListingsPage";
 
 const SavedListings = () => {
   return <SavedListingsPage />;

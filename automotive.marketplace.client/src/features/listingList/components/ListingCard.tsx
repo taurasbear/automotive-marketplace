@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { selectAccessToken } from "@/features/auth";
-import { useToggleLike } from "@/features/savedListings";
+// eslint-disable-next-line no-restricted-imports
+import { useToggleLike } from "@/features/savedListings/api/useToggleLike";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { IoLocationOutline } from "react-icons/io5";

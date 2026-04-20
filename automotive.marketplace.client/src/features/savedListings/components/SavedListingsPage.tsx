@@ -2,7 +2,7 @@ import { selectAccessToken } from "@/features/auth";
 import { useAppSelector } from "@/hooks/redux";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { getSavedListingsOptions } from "@/features/savedListings";
+import { getSavedListingsOptions } from "../api/getSavedListingsOptions";
 import SavedListingRow from "./SavedListingRow";
 
 const SavedListingsPage = () => {
