@@ -48,6 +48,9 @@ public class UpsertListingNoteCommandHandlerTests(
             .FirstOrDefaultAsync(n => n.UserId == user.Id && n.ListingId == listing.Id);
         noteInDb.Should().NotBeNull();
         noteInDb!.Content.Should().Be("Nice car!");
+        noteInDb.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+        noteInDb.CreatedBy.Should().Be(user.Id.ToString());
+        noteInDb.ModifiedAt.Should().BeNull();
     }
 
     [Fact]
@@ -59,10 +62,11 @@ public class UpsertListingNoteCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         var (user, listing) = await SeedUserWithLikeAsync(context);
-        var note = new UserListingNote
-        {
-            Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, Content = "Old note"
-        };
+        var note = new UserListingNoteBuilder()
+            .WithUser(user.Id)
+            .WithListing(listing.Id)
+            .WithContent("Old note")
+            .Build();
         await context.AddAsync(note);
         await context.SaveChangesAsync();
 
@@ -79,6 +83,8 @@ public class UpsertListingNoteCommandHandlerTests(
             .AsNoTracking()
             .FirstOrDefaultAsync(n => n.UserId == user.Id && n.ListingId == listing.Id);
         noteInDb!.Content.Should().Be("Updated note");
+        noteInDb.ModifiedAt.Should().NotBeNull();
+        noteInDb.ModifiedBy.Should().Be(user.Id.ToString());
     }
 
     [Fact]
