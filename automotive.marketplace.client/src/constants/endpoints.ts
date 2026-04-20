@@ -14,6 +14,10 @@ export const ENDPOINTS = {
   },
   MAKE: {
     GET_ALL: "/Make/GetAll",
+    GET_BY_ID: "/Make/GetById",
+    CREATE: "/Make/Create",
+    UPDATE: "/Make/Update",
+    DELETE: "/Make/Delete",
   },
   MODEL: {
     GET_BY_MAKE_ID: "/Model/GetByMakeId",

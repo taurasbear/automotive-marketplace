@@ -1,4 +1,8 @@
 export type GetAllMakesResponse = {
   id: string;
   name: string;
+  createdAt: string;
+  modifiedAt: string | null;
+  createdBy: string;
+  modifiedBy: string;
 };
