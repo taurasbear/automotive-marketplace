@@ -1,4 +1,5 @@
 using AutoMapper;
+using Automotive.Marketplace.Application.Features.MakeFeatures.CreateMake;
 using Automotive.Marketplace.Application.Features.MakeFeatures.GetAllMakes;
 using Automotive.Marketplace.Application.Features.MakeFeatures.GetMakeById;
 using Automotive.Marketplace.Domain.Entities;
@@ -11,5 +12,6 @@ public class MakeMappings : Profile
     {
         CreateMap<Make, GetAllMakesResponse>();
         CreateMap<Make, GetMakeByIdResponse>();
+        CreateMap<CreateMakeCommand, Make>();
     }
 }
