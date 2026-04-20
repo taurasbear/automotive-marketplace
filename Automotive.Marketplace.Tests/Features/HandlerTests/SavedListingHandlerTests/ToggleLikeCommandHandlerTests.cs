@@ -55,7 +55,7 @@ public class ToggleLikeCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         var (user, listing) = await SeedUserAndListingAsync(context);
-        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id };
+        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
         await context.AddAsync(like);
         await context.SaveChangesAsync();
 
@@ -80,7 +80,7 @@ public class ToggleLikeCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
         var (user, listing) = await SeedUserAndListingAsync(context);
-        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id };
+        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
         var note = new UserListingNote
         {
             Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, Content = "Great car!"
@@ -95,6 +95,9 @@ public class ToggleLikeCommandHandlerTests(
 
         // Assert
         result.IsLiked.Should().BeFalse();
+        var likeInDb = await context.Set<UserListingLike>()
+            .FirstOrDefaultAsync(l => l.UserId == user.Id && l.ListingId == listing.Id);
+        likeInDb.Should().BeNull();
         var noteInDb = await context.Set<UserListingNote>()
             .FirstOrDefaultAsync(n => n.UserId == user.Id && n.ListingId == listing.Id);
         noteInDb.Should().BeNull();
