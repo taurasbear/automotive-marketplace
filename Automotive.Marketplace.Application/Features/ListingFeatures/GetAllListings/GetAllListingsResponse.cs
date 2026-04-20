@@ -20,4 +20,5 @@ public sealed record GetAllListingsResponse
     public Guid SellerId { get; set; }
     public string SellerName { get; set; } = string.Empty;
     public ImageDto? Thumbnail { get; set; }
+    public bool IsLiked { get; set; }
 }

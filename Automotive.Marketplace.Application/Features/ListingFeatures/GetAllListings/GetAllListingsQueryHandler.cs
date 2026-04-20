@@ -28,6 +28,7 @@ public class GetAllListingsQueryHandler(
                 .ThenInclude(v => v.Transmission)
             .Include(l => l.Seller)
             .Include(l => l.Images)
+            .Include(l => l.LikeUsers)
             .Where(listing => listing.Status == Status.Available)
             .Where(listing => request.MakeId == null || request.MakeId == listing.Variant.Model.MakeId)
             .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Variant.ModelId))
@@ -55,6 +56,10 @@ public class GetAllListingsQueryHandler(
                     Url = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey),
                     AltText = firstImage.AltText
                 };
+            }
+            if (request.UserId.HasValue && request.UserId.Value != Guid.Empty)
+            {
+                mappedListing.IsLiked = listing.LikeUsers.Any(u => u.Id == request.UserId.Value);
             }
             response.Add(mappedListing);
         }
