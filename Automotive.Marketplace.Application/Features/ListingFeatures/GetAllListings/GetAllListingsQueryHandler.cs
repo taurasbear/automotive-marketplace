@@ -17,7 +17,7 @@ public class GetAllListingsQueryHandler(
         GetAllListingsQuery request,
         CancellationToken cancellationToken)
     {
-        var listings = await repository
+        var query = repository
             .AsQueryable<Listing>()
             .Include(l => l.Variant)
                 .ThenInclude(v => v.Model)
@@ -28,7 +28,6 @@ public class GetAllListingsQueryHandler(
                 .ThenInclude(v => v.Transmission)
             .Include(l => l.Seller)
             .Include(l => l.Images)
-            .Include(l => l.LikeUsers)
             .Where(listing => listing.Status == Status.Available)
             .Where(listing => request.MakeId == null || request.MakeId == listing.Variant.Model.MakeId)
             .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Variant.ModelId))
@@ -41,8 +40,14 @@ public class GetAllListingsQueryHandler(
             .Where(listing => request.MinMileage == null || request.MinMileage <= listing.Mileage)
             .Where(listing => request.MaxMileage == null || request.MaxMileage >= listing.Mileage)
             .Where(listing => request.MinPower == null || request.MinPower <= listing.Variant.PowerKw)
-            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Variant.PowerKw)
-            .ToListAsync(cancellationToken);
+            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Variant.PowerKw);
+
+        if (request.UserId.HasValue)
+        {
+            query = query.Include(l => l.LikeUsers);
+        }
+
+        var listings = await query.ToListAsync(cancellationToken);
 
         List<GetAllListingsResponse> response = [];
         foreach (var listing in listings)

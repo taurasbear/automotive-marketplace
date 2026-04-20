@@ -376,6 +376,93 @@ public class GetAllListingsQueryHandlerTests(
         result.Should().OnlyContain(r => r.Status == nameof(Status.Available));
     }
 
+    [Fact]
+    public async Task Handle_WithMatchingUserId_ShouldReturnIsLikedTrue()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var listings = await SeedListingsAsync(context, 1);
+        var listing = listings.First();
+
+        var user = new UserBuilder().Build();
+        await context.AddAsync(user);
+
+        var like = new UserListingLike
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            ListingId = listing.Id,
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = user.Id.ToString()
+        };
+        await context.AddAsync(like);
+        await context.SaveChangesAsync();
+
+        var query = new GetAllListingsQuery { UserId = user.Id };
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Single().IsLiked.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_WithNonMatchingUserId_ShouldReturnIsLikedFalse()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        await SeedListingsAsync(context, 1);
+
+        var query = new GetAllListingsQuery { UserId = Guid.NewGuid() };
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Single().IsLiked.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task Handle_WithNullUserId_ShouldReturnIsLikedFalse()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var listings = await SeedListingsAsync(context, 1);
+        var listing = listings.First();
+
+        var user = new UserBuilder().Build();
+        await context.AddAsync(user);
+
+        var like = new UserListingLike
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            ListingId = listing.Id,
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = user.Id.ToString()
+        };
+        await context.AddAsync(like);
+        await context.SaveChangesAsync();
+
+        var query = new GetAllListingsQuery { UserId = null };
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Single().IsLiked.Should().BeFalse();
+    }
+
     private async static Task<List<Listing>> SeedListingsAsync(
         AutomotiveContext context,
         int count,

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 
@@ -28,5 +29,6 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 
     public int? MaxPower { get; set; }
 
+    [BindNever]
     public Guid? UserId { get; set; }
 };
