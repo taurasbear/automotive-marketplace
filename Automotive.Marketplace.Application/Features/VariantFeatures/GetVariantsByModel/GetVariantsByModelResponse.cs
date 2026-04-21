@@ -4,7 +4,6 @@ public sealed record GetVariantsByModelResponse
 {
     public Guid Id { get; set; }
     public Guid ModelId { get; set; }
-    public int Year { get; set; }
     public Guid FuelId { get; set; }
     public string FuelName { get; set; } = string.Empty;
     public Guid TransmissionId { get; set; }

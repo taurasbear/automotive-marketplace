@@ -24,7 +24,6 @@ const CreateVariantDialog = ({ modelId, makeId }: CreateVariantDialogProps) => {
   const handleSubmit = async (formData: VariantFormData) => {
     await createVariantAsync({
       modelId: formData.modelId,
-      year: formData.year,
       fuelId: formData.fuelId,
       transmissionId: formData.transmissionId,
       bodyTypeId: formData.bodyTypeId,
@@ -49,7 +48,6 @@ const CreateVariantDialog = ({ modelId, makeId }: CreateVariantDialogProps) => {
           variant={{
             makeId,
             modelId,
-            year: new Date().getFullYear(),
             fuelId: "",
             transmissionId: "",
             bodyTypeId: "",

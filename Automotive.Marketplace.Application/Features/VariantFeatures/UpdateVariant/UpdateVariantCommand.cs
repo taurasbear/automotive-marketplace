@@ -5,7 +5,6 @@ namespace Automotive.Marketplace.Application.Features.VariantFeatures.UpdateVari
 public sealed record UpdateVariantCommand(
     Guid Id,
     Guid ModelId,
-    int Year,
     Guid FuelId,
     Guid TransmissionId,
     Guid BodyTypeId,

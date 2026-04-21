@@ -65,4 +65,10 @@ export const ENDPOINTS = {
     MARK_MESSAGES_READ: "/Chat/MarkMessagesRead",
     GET_UNREAD_COUNT: "/Chat/GetUnreadCount",
   },
+  SAVED_LISTING: {
+    TOGGLE_LIKE: "/SavedListing/ToggleLike",
+    GET_ALL: "/SavedListing/GetAll",
+    UPSERT_NOTE: "/SavedListing/UpsertNote",
+    DELETE_NOTE: "/SavedListing/DeleteNote",
+  },
 } as const;

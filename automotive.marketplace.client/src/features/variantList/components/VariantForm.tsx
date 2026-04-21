@@ -91,19 +91,6 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             )}
           />
           <FormField
-            name="year"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Year*</FormLabel>
-                <FormControl>
-                  <Input type="number" min={1900} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
             name="fuelId"
             control={form.control}
             render={({ field }) => (

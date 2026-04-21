@@ -2,8 +2,6 @@
 
 public class Variant : BaseEntity
 {
-    public int Year { get; set; }
-
     public bool IsCustom { get; set; }
 
     public int DoorCount { get; set; }

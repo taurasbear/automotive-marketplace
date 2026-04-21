@@ -27,4 +27,6 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
     public int? MinPower { get; set; }
 
     public int? MaxPower { get; set; }
+
+    public Guid? UserId { get; set; }
 };
