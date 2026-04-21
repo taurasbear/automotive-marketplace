@@ -319,12 +319,42 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             </div>
           </div>
 
-          {/* Row 4: Drivetrain full width, then Price / Mileage / City */}
+          {/* Row 5: Colour, VIN, Drivetrain */}
+          <FormField
+            name="colour"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="flex flex-col justify-start">
+                <FormLabel>Colour</FormLabel>
+                <FormControl>
+                  <Input placeholder="Crimson" type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="vin"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="flex flex-col justify-start">
+                <FormLabel>VIN</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="1G1JC524417418958"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             name="drivetrainId"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="col-span-1 flex flex-col justify-start md:col-span-3">
+              <FormItem className="flex flex-col justify-start">
                 <FormLabel>Drivetrain*</FormLabel>
                 <FormControl>
                   <DrivetrainToggleGroup
@@ -337,6 +367,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               </FormItem>
             )}
           />
+          {/* Row 4: Price, Mileage, City */}
           <FormField
             name="price"
             control={form.control}
@@ -371,38 +402,6 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 <FormLabel>City*</FormLabel>
                 <FormControl>
                   <Input placeholder="Kaunas" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Row 5: Colour, VIN */}
-          <FormField
-            name="colour"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex flex-col justify-start">
-                <FormLabel>Colour</FormLabel>
-                <FormControl>
-                  <Input placeholder="Crimson" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="vin"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex flex-col justify-start">
-                <FormLabel>VIN</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="1G1JC524417418958"
-                    type="text"
-                    {...field}
-                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

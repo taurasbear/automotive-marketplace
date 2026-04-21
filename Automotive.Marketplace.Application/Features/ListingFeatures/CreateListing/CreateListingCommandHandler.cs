@@ -1,4 +1,5 @@
 using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using AutoMapper;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 
-public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
+public class CreateListingCommandHandler(IRepository repository, IMapper mapper, IImageStorageService imageStorageService)
     : IRequestHandler<CreateListingCommand, CreateListingResponse>
 {
     public async Task<CreateListingResponse> Handle(CreateListingCommand request, CancellationToken cancellationToken)
@@ -78,6 +79,9 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
             Year = request.Year,
             Mileage = request.Mileage,
             Description = request.Description,
+            Vin = request.Vin,
+            Colour = request.Colour,
+            IsSteeringWheelRight = request.IsSteeringWheelRight,
             SellerId = request.SellerId,
             VariantId = variantId,
             DrivetrainId = request.DrivetrainId,
@@ -87,6 +91,35 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
         };
 
         await repository.CreateAsync(listing, cancellationToken);
+
+        var model = await repository
+            .AsQueryable<Model>()
+            .Include(m => m.Make)
+            .FirstOrDefaultAsync(m => m.Id == request.ModelId, cancellationToken);
+
+        var altText = model != null
+            ? $"{request.Year} {model.Make.Name} {model.Name}"
+            : $"{request.Year} listing";
+
+        foreach (var imageFile in request.Images)
+        {
+            var uniqueFileName = $"{Guid.NewGuid()}_{imageFile.FileName}";
+            var uploadResult = await imageStorageService.UploadImageAsync(imageFile, uniqueFileName);
+
+            var image = new Image
+            {
+                Id = Guid.NewGuid(),
+                ListingId = listing.Id,
+                BucketName = uploadResult.BucketName,
+                ObjectKey = uploadResult.ObjectKey,
+                OriginalFileName = imageFile.FileName,
+                ContentType = imageFile.ContentType,
+                FileSize = uploadResult.FileSize,
+                AltText = altText,
+            };
+
+            await repository.CreateAsync(image, cancellationToken);
+        }
 
         return mapper.Map<CreateListingResponse>(listing);
     }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Infrastructure.Data.Builders;
@@ -9,6 +10,7 @@ using Automotive.Marketplace.Tests.Infrastructure;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using ModelBuilder = Automotive.Marketplace.Infrastructure.Data.Builders.ModelBuilder;
 
 namespace Automotive.Marketplace.Tests.Features.HandlerTests.ListingHandlerTests;
@@ -30,7 +32,8 @@ public class CreateListingCommandHandlerTests(
     {
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
-        return new CreateListingCommandHandler(repository, mapper);
+        var imageStorageService = Substitute.For<IImageStorageService>();
+        return new CreateListingCommandHandler(repository, mapper, imageStorageService);
     }
 
     // Path 1: VariantId provided → uses existing variant directly
@@ -71,7 +74,11 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 100,
             EngineSizeMl: 1600,
             IsUsed: true,
-            City: "Test City"
+            City: "Test City",
+            Colour: null,
+            Vin: null,
+            IsSteeringWheelRight: true,
+            Images: []
         );
 
         // Act
@@ -116,7 +123,11 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 150,
             EngineSizeMl: 3000,
             IsUsed: false,
-            City: "Another city"
+            City: "Another city",
+            Colour: null,
+            Vin: null,
+            IsSteeringWheelRight: true,
+            Images: []
         );
 
         // Act
@@ -164,7 +175,11 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 110,
             EngineSizeMl: 2000,
             IsUsed: true,
-            City: "Super cool city"
+            City: "Super cool city",
+            Colour: null,
+            Vin: null,
+            IsSteeringWheelRight: true,
+            Images: []
         );
 
         // Act
@@ -231,7 +246,11 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 90,
             EngineSizeMl: 1400,
             IsUsed: true,
-            City: "Old city"
+            City: "Old city",
+            Colour: null,
+            Vin: null,
+            IsSteeringWheelRight: true,
+            Images: []
         );
 
         // Act
@@ -275,7 +294,11 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 110,
             EngineSizeMl: 2000,
             IsUsed: true,
-            City: "Test city"
+            City: "Test city",
+            Colour: null,
+            Vin: null,
+            IsSteeringWheelRight: true,
+            Images: []
         );
 
         // Act
@@ -312,7 +335,11 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 110,
             EngineSizeMl: 2000,
             IsUsed: true,
-            City: "Test city"
+            City: "Test city",
+            Colour: null,
+            Vin: null,
+            IsSteeringWheelRight: true,
+            Images: []
         );
 
         // Act

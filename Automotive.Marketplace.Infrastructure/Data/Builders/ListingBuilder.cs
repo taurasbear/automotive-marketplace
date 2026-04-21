@@ -20,6 +20,7 @@ public class ListingBuilder
             .RuleFor(listing => listing.Vin, f => f.Vehicle.Vin())
             .RuleFor(listing => listing.Colour, f => f.Commerce.Color())
             .RuleFor(listing => listing.IsUsed, f => f.Random.Bool())
+            .RuleFor(listing => listing.Year, f => f.Random.Int(1990, 2025))
             .RuleFor(listing => listing.Mileage, f => f.Random.Int(10000, 400000))
             .RuleFor(listing => listing.IsSteeringWheelRight, f => f.Random.Bool());
     }
