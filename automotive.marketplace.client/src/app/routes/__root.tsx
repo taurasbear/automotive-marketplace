@@ -16,6 +16,12 @@ type RouterContext = {
   queryClient: QueryClient;
 };
 
+// Child route loaders can await this to ensure auth is resolved before fetching
+let _resolveAuthReady!: () => void;
+export const authReady = new Promise<void>((resolve) => {
+  _resolveAuthReady = resolve;
+});
+
 const RootLayout = () => {
   useChatHub();
   return (
@@ -44,5 +50,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         store.dispatch(clearCredentials());
       }
     }
+    _resolveAuthReady();
   },
 });

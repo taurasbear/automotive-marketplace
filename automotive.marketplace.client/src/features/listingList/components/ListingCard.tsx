@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button";
+import { selectAccessToken } from "@/features/auth";
+// eslint-disable-next-line no-restricted-imports
+import { useToggleLike } from "@/features/savedListings/api/useToggleLike";
+import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { PiEngine } from "react-icons/pi";
 import { TbManualGearbox } from "react-icons/tb";
+import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
 import ListingCardBadge from "./ListingCardBadge";
 
@@ -12,29 +17,53 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ listing }: ListingCardProps) => {
+  const accessToken = useAppSelector(selectAccessToken);
+  const toggleLike = useToggleLike();
+
   const handleClick = async () => {
     await router.navigate({ to: "/listing/$id", params: { id: listing.id } });
   };
-  console.log("listing: ", listing);
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleLike.mutate({ listingId: listing.id });
+  };
+
   return (
     <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
-      <div className="flex flex-shrink-0 py-5">
+      <div className="group relative flex flex-shrink-0 py-5">
         <img
           className="aspect-[4/3] object-cover"
-          alt={listing.thumbnail?.altText || "2025 Toyota Prius"}
+          alt={listing.thumbnail?.altText || "Listing image"}
           src={
             listing.thumbnail
               ? listing.thumbnail.url
               : "https://imgs.search.brave.com/_avFlFDyXU8SS34ve__STsLcC6LfrFsy76XnfAbI4Vo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNDU5/NDQ1ODUxL3Bob3Rv/L3RveW90YS1wcml1/cy5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9OGRDdF9lSGxP/YzhMcUxEQllYME42/N0FpZFNNd2lRT0ZT/LVhzMUxYcnBjQT0"
           }
         />
+        {accessToken && (
+          <button
+            onClick={handleLikeClick}
+            className={`absolute top-7 left-2 flex h-9 w-9 items-center justify-center rounded-full transition-opacity ${
+              listing.isLiked
+                ? "bg-red-500 opacity-100"
+                : "bg-black/50 opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            {listing.isLiked ? (
+              <IoHeart className="h-5 w-5 text-white" />
+            ) : (
+              <IoHeartOutline className="h-5 w-5 text-white" />
+            )}
+          </button>
+        )}
       </div>
       <div className="flex min-w-0 flex-grow flex-col justify-between pt-4 pr-4 pb-2">
         <div className="truncate">
           <p className="truncate font-sans text-xs">
             {listing.isUsed ? "Used" : "New"}
           </p>
-          <p className="font-sans text-xl">{`${listing.year} ${listing.make} ${listing.model}`}</p>
+          <p className="font-sans text-xl">{`${listing.year} ${listing.makeName} ${listing.modelName}`}</p>
           <p className="font-sans text-xs">{listing.mileage} km</p>
           <p className="font-sans text-3xl font-bold">
             {listing.price.toFixed(0)} €
@@ -52,14 +81,14 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
               title={"Fuel Type"}
-              stat={listing.fuelType}
+              stat={listing.fuelName}
             />
           </div>
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<TbManualGearbox className="h-8 w-8" />}
               title={"Gear Box"}
-              stat={listing.transmission}
+              stat={listing.transmissionName}
             />
           </div>
           <div className="flex justify-self-end">

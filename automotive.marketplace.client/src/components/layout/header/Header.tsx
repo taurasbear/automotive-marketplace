@@ -3,6 +3,7 @@ import { LogoutButton, RegisterButton } from "@/features/auth";
 import { UnreadBadge } from "@/features/chat";
 import { useAppSelector } from "@/hooks/redux";
 import { Link } from "@tanstack/react-router";
+import { IoHeart } from "react-icons/io5";
 import { Button } from "../../ui/button";
 import ThemeToggle from "./ThemeToggle";
 
@@ -41,6 +42,13 @@ const Header = () => {
               <Button variant="link" className="relative">
                 Inbox
                 <UnreadBadge />
+              </Button>
+            </Link>
+          )}
+          {userId && (
+            <Link to="/saved" title="Saved listings">
+              <Button variant="ghost" size="icon">
+                <IoHeart className="h-5 w-5 text-red-500" />
               </Button>
             </Link>
           )}

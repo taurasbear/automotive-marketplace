@@ -14,6 +14,8 @@ const ListingList = ({ listingSearchQuery }: ListingListProps) => {
 
   const listings = listingsQuery.data;
 
+  console.log("listings: ", listings);
+
   return (
     <div className="bg-background text-on-background flex w-204 flex-col gap-10">
       {listings.map((l) => (

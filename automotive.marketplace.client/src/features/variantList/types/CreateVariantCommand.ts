@@ -1,6 +1,5 @@
 export type CreateVariantCommand = {
   modelId: string;
-  year: number;
   fuelId: string;
   transmissionId: string;
   bodyTypeId: string;

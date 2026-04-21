@@ -13,7 +13,6 @@ public class UpdateVariantCommandHandler(IRepository repository, IMapper mapper)
         var variant = await repository.GetByIdAsync<Variant>(request.Id, cancellationToken);
 
         variant.ModelId = request.ModelId;
-        variant.Year = request.Year;
         variant.FuelId = request.FuelId;
         variant.TransmissionId = request.TransmissionId;
         variant.BodyTypeId = request.BodyTypeId;

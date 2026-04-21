@@ -379,6 +379,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<string>("Vin")
                         .HasColumnType("text");
 
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DrivetrainId");
@@ -682,6 +685,47 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("UserListingLike");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserListingNote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ListingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListingId");
+
+                    b.HasIndex("UserId", "ListingId")
+                        .IsUnique();
+
+                    b.ToTable("UserListingNotes");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserPermission", b =>
                 {
                     b.Property<Guid>("Id")
@@ -760,9 +804,6 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<Guid>("TransmissionId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BodyTypeId");
@@ -771,7 +812,7 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
                     b.HasIndex("TransmissionId");
 
-                    b.HasIndex("ModelId", "Year", "FuelId", "TransmissionId", "BodyTypeId")
+                    b.HasIndex("ModelId", "FuelId", "TransmissionId", "BodyTypeId")
                         .IsUnique()
                         .HasFilter("\"IsCustom\" = false");
 
@@ -921,6 +962,25 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserListingLike", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Listing", "Listing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Listing");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserListingNote", b =>
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Listing", "Listing")
                         .WithMany()

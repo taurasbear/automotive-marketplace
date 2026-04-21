@@ -19,5 +19,8 @@ public sealed record GetAllListingsResponse
     public string TransmissionName { get; set; } = string.Empty;
     public Guid SellerId { get; set; }
     public string SellerName { get; set; } = string.Empty;
+    public int PowerKw { get; set; }
+    public int EngineSizeMl { get; set; }
     public ImageDto? Thumbnail { get; set; }
+    public bool IsLiked { get; set; }
 }

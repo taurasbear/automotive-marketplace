@@ -17,6 +17,7 @@ public class ListingController(IMediator mediator) : BaseController
         [FromQuery] GetAllListingsQuery query,
         CancellationToken cancellationToken)
     {
+        query.UserId = UserId != Guid.Empty ? UserId : null;
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }

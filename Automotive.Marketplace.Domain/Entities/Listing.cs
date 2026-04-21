@@ -18,6 +18,8 @@ public class Listing : BaseEntity
 
     public bool IsUsed { get; set; }
 
+    public int Year { get; set; }
+
     public int Mileage { get; set; }
 
     public bool IsSteeringWheelRight { get; set; }

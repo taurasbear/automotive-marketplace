@@ -30,6 +30,12 @@ docker compose --env-file .env up -d
 
 **Testing:** xUnit + TestContainers (real PostgreSQL per test class) + Respawn (state reset between tests) + Bogus builders + NSubstitute + FluentAssertions.
 
+## Agent Preferences
+
+When requesting input from the user, **always use dropdown select options** via the `ask_user` tool's `choices` parameter instead of asking the user to write a follow-up prompt. This provides a better UX and ensures responses are captured properly.
+
+Prefer multiple choice (with choices array) over freeform input whenever possible.
+
 ## Project-Specific Skills
 
 See `.agents/skills/` for patterns on:

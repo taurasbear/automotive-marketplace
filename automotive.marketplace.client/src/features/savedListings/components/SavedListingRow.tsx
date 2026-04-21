@@ -1,0 +1,66 @@
+import { useState } from "react";
+import { IoHeart } from "react-icons/io5";
+import { useToggleLike } from "../api/useToggleLike";
+import type { SavedListing } from "../types/SavedListing";
+import NoteEditor from "./NoteEditor";
+
+interface SavedListingRowProps {
+  listing: SavedListing;
+}
+
+const SavedListingRow = ({ listing }: SavedListingRowProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const toggleLike = useToggleLike();
+
+  const handleUnlike = () => {
+    toggleLike.mutate({ listingId: listing.listingId });
+  };
+
+  return (
+    <div
+      className="border-border hover:bg-muted/50 flex gap-4 border-b p-4 transition-colors"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Thumbnail */}
+      <div className="h-20 w-28 flex-shrink-0 overflow-hidden rounded">
+        {listing.thumbnail ? (
+          <img
+            src={listing.thumbnail.url}
+            alt={listing.thumbnail.altText}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="bg-muted flex h-full w-full items-center justify-center text-xs">
+            No image
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex items-start justify-between">
+          <div className="min-w-0">
+            <p className="truncate font-medium">{listing.title}</p>
+            <p className="text-muted-foreground text-sm">
+              {listing.price.toLocaleString()} € · {listing.city} ·{" "}
+              {listing.mileage.toLocaleString()} km · {listing.fuelName} ·{" "}
+              {listing.transmissionName}
+            </p>
+          </div>
+          <button
+            onClick={handleUnlike}
+            className="ml-2 flex-shrink-0 text-red-500 transition-opacity hover:opacity-70"
+            title="Remove from saved"
+          >
+            <IoHeart className="h-5 w-5" />
+          </button>
+        </div>
+
+        <NoteEditor listing={listing} isExpanded={isHovered} />
+      </div>
+    </div>
+  );
+};
+
+export default SavedListingRow;

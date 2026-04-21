@@ -17,7 +17,7 @@ public class GetAllListingsQueryHandler(
         GetAllListingsQuery request,
         CancellationToken cancellationToken)
     {
-        var listings = await repository
+        var query = repository
             .AsQueryable<Listing>()
             .Include(l => l.Variant)
                 .ThenInclude(v => v.Model)
@@ -33,15 +33,21 @@ public class GetAllListingsQueryHandler(
             .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Variant.ModelId))
             .Where(listing => request.City == null || request.City.ToLower() == listing.City.ToLower())
             .Where(listing => request.IsUsed == null || request.IsUsed == listing.IsUsed)
-            .Where(listing => request.MinYear == null || request.MinYear <= listing.Variant.Year)
-            .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Variant.Year)
+            .Where(listing => request.MinYear == null || request.MinYear <= listing.Year)
+            .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Year)
             .Where(listing => request.MinPrice == null || request.MinPrice <= listing.Price)
             .Where(listing => request.MaxPrice == null || request.MaxPrice >= listing.Price)
             .Where(listing => request.MinMileage == null || request.MinMileage <= listing.Mileage)
             .Where(listing => request.MaxMileage == null || request.MaxMileage >= listing.Mileage)
             .Where(listing => request.MinPower == null || request.MinPower <= listing.Variant.PowerKw)
-            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Variant.PowerKw)
-            .ToListAsync(cancellationToken);
+            .Where(listing => request.MaxPower == null || request.MaxPower >= listing.Variant.PowerKw);
+
+        if (request.UserId.HasValue && request.UserId.Value != Guid.Empty)
+        {
+            query = query.Include(l => l.LikeUsers);
+        }
+
+        var listings = await query.ToListAsync(cancellationToken);
 
         List<GetAllListingsResponse> response = [];
         foreach (var listing in listings)
@@ -55,6 +61,10 @@ public class GetAllListingsQueryHandler(
                     Url = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey),
                     AltText = firstImage.AltText
                 };
+            }
+            if (request.UserId.HasValue && request.UserId.Value != Guid.Empty)
+            {
+                mappedListing.IsLiked = listing.LikeUsers.Any(u => u.Id == request.UserId.Value);
             }
             response.Add(mappedListing);
         }

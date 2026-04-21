@@ -9,17 +9,6 @@ export const variantFormSchema = z.object({
   modelId: z
     .string()
     .regex(VALIDATION.GUID.REGEX, { error: "Please select a model" }),
-  year: z.coerce
-    .number<number>()
-    .min(VALIDATION.YEAR.MIN, {
-      error: validation.minSize({ label: "Year", size: VALIDATION.YEAR.MIN }),
-    })
-    .max(new Date().getFullYear(), {
-      error: validation.maxSize({
-        label: "Year",
-        size: new Date().getFullYear(),
-      }),
-    }),
   fuelId: z
     .string()
     .regex(VALIDATION.GUID.REGEX, { error: "Please select a fuel type" }),

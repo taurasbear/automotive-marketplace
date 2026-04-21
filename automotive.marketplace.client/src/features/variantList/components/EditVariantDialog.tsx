@@ -21,7 +21,6 @@ const EditVariantDialog = ({ variant, makeId }: EditVariantDialogProps) => {
     await updateVariantAsync({
       id: variant.id,
       modelId: formData.modelId,
-      year: formData.year,
       fuelId: formData.fuelId,
       transmissionId: formData.transmissionId,
       bodyTypeId: formData.bodyTypeId,
