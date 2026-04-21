@@ -22,5 +22,8 @@ public sealed record GetListingByIdResponse
     public int EngineSizeMl { get; set; }
     public Guid SellerId { get; set; }
     public string SellerName { get; set; } = string.Empty;
+    public string? Colour { get; set; }
+    public string? Vin { get; set; }
+    public bool IsSteeringWheelRight { get; set; }
     public IEnumerable<Automotive.Marketplace.Application.Models.ImageDto> Images { get; set; } = [];
 }

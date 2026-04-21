@@ -21,8 +21,8 @@ const ImageUploadInput = ({ field }: ImageUploadInputProps) => {
       );
 
       const compressedImages = await Promise.all(compressionPromises);
-
-      field.onChange(compressedImages);
+      const existing = field.value ?? [];
+      field.onChange([...existing, ...compressedImages]);
     }
   };
 

@@ -24,6 +24,12 @@ public class ListingBuilder
             .RuleFor(listing => listing.IsSteeringWheelRight, f => f.Random.Bool());
     }
 
+    public ListingBuilder WithYear(int year)
+    {
+        _faker.RuleFor(listing => listing.Year, year);
+        return this;
+    }
+
     public ListingBuilder WithPrice(decimal price)
     {
         _faker.RuleFor(listing => listing.Price, price);

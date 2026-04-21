@@ -17,13 +17,12 @@ const EditVariantDialogContent = ({
   return (
     <div>
       <DialogHeader>
-        <DialogTitle>Edit variant ({variant.year})</DialogTitle>
+        <DialogTitle>Edit variant</DialogTitle>
       </DialogHeader>
       <VariantForm
         variant={{
           makeId,
           modelId: variant.modelId,
-          year: variant.year,
           fuelId: variant.fuelId,
           transmissionId: variant.transmissionId,
           bodyTypeId: variant.bodyTypeId,

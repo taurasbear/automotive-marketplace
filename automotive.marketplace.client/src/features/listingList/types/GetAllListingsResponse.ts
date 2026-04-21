@@ -1,15 +1,15 @@
 export type GetAllListingsResponse = {
   id: string;
   isUsed: boolean;
-  year: string;
-  make: string;
-  model: string;
+  year: number;
+  makeName: string;
+  modelName: string;
   mileage: number;
   price: number;
   engineSizeMl: number;
   powerKw: number;
-  fuelType: string;
-  transmission: string;
+  fuelName: string;
+  transmissionName: string;
   city: string;
   description: string;
   thumbnail: Thumbnail | null;

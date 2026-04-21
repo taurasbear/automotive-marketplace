@@ -1,6 +1,6 @@
 export type GetListingByIdResponse = {
-  make: string;
-  model: string;
+  makeName: string;
+  modelName: string;
   price: number;
   description?: string;
   colour?: string;
@@ -12,12 +12,12 @@ export type GetListingByIdResponse = {
   city: string;
   isUsed: boolean;
   year: number;
-  transmission: string;
-  fuel: string;
+  transmissionName: string;
+  fuelName: string;
   doorCount: number;
-  bodyType: string;
-  drivetrain: string;
-  seller: string;
+  bodyTypeName: string;
+  drivetrainName: string;
+  sellerName: string;
   sellerId: string;
   images: Image[];
 };

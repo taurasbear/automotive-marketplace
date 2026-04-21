@@ -55,7 +55,7 @@ public class GetSavedListingsQueryHandler(IRepository repository, IImageStorageS
             result.Add(new GetSavedListingsResponse
             {
                 ListingId = listing.Id,
-                Title = $"{variant.Year} {variant.Model.Make.Name} {variant.Model.Name}",
+                Title = $"{listing.Year} {variant.Model.Make.Name} {variant.Model.Name}",
                 Price = listing.Price,
                 City = listing.City,
                 Mileage = listing.Mileage,

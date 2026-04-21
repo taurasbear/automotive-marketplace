@@ -63,7 +63,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           <p className="truncate font-sans text-xs">
             {listing.isUsed ? "Used" : "New"}
           </p>
-          <p className="font-sans text-xl">{`${listing.year} ${listing.make} ${listing.model}`}</p>
+          <p className="font-sans text-xl">{`${listing.year} ${listing.makeName} ${listing.modelName}`}</p>
           <p className="font-sans text-xs">{listing.mileage} km</p>
           <p className="font-sans text-3xl font-bold">
             {listing.price.toFixed(0)} €
@@ -81,14 +81,14 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
               title={"Fuel Type"}
-              stat={listing.fuelType}
+              stat={listing.fuelName}
             />
           </div>
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<TbManualGearbox className="h-8 w-8" />}
               title={"Gear Box"}
-              stat={listing.transmission}
+              stat={listing.transmissionName}
             />
           </div>
           <div className="flex justify-self-end">

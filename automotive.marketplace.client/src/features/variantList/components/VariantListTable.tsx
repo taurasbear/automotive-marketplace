@@ -48,7 +48,6 @@ const VariantListTable = ({
         <TableCaption>A list of variants</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Year</TableHead>
             <TableHead>Fuel</TableHead>
             <TableHead>Transmission</TableHead>
             <TableHead>Body type</TableHead>
@@ -62,7 +61,6 @@ const VariantListTable = ({
         <TableBody>
           {variants.map((v) => (
             <TableRow key={v.id}>
-              <TableCell>{v.year}</TableCell>
               <TableCell>{v.fuelName}</TableCell>
               <TableCell>{v.transmissionName}</TableCell>
               <TableCell>{v.bodyTypeName}</TableCell>

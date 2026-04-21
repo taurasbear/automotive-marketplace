@@ -17,7 +17,7 @@ public class GetVariantsByModelQueryHandler(IRepository repository, IMapper mapp
             .Include(v => v.Fuel)
             .Include(v => v.Transmission)
             .Include(v => v.BodyType)
-            .OrderBy(v => v.Year)
+            .OrderBy(v => v.Id)
             .ToListAsync(cancellationToken);
 
         return mapper.Map<IEnumerable<GetVariantsByModelResponse>>(variants);

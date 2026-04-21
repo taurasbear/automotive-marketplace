@@ -38,11 +38,11 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
     setChatConversation({
       id: res.data.conversationId,
       listingId: id,
-      listingTitle: `${listing.year} ${listing.make} ${listing.model}`,
+      listingTitle: `${listing.year} ${listing.makeName} ${listing.modelName}`,
       listingThumbnail: listing.images[0] ?? null,
       listingPrice: listing.price,
       counterpartId: listing.sellerId,
-      counterpartUsername: listing.seller,
+      counterpartUsername: listing.sellerName,
       lastMessage: null,
       lastMessageAt: new Date().toISOString(),
       unreadCount: 0,
@@ -63,7 +63,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
               className="aspect-video w-full rounded-lg object-cover shadow-lg"
               alt={
                 listing.images[0]?.altText ||
-                `${listing.year} ${listing.make} ${listing.model}`
+                `${listing.year} ${listing.makeName} ${listing.modelName}`
               }
               src={
                 listing.images.length > 0
@@ -84,7 +84,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h1 className="text-3xl font-bold">
-                    {listing.year} {listing.make} {listing.model}
+                    {listing.year} {listing.makeName} {listing.modelName}
                   </h1>
                   <p className="text-primary mt-2 text-3xl font-semibold">
                     {listing.price.toFixed(2)} €
@@ -145,26 +145,26 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       Transmission
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.transmission}
+                      {listing.transmissionName}
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
                       Drivetrain
                     </dt>
-                    <dd className="text-right text-sm">{listing.drivetrain}</dd>
+                    <dd className="text-right text-sm">{listing.drivetrainName}</dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
                       Fuel Type
                     </dt>
-                    <dd className="text-right text-sm">{listing.fuel}</dd>
+                    <dd className="text-right text-sm">{listing.fuelName}</dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
                       Body Type
                     </dt>
-                    <dd className="text-right text-sm">{listing.bodyType}</dd>
+                    <dd className="text-right text-sm">{listing.bodyTypeName}</dd>
                   </div>
                   {listing.colour && (
                     <div className="grid grid-cols-2 px-6 py-3">
@@ -205,7 +205,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       Seller
                     </dt>
                     <dd className="text-right text-sm font-semibold">
-                      {listing.seller}
+                      {listing.sellerName}
                     </dd>
                   </div>
                 </dl>

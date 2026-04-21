@@ -1,7 +1,6 @@
 export type Variant = {
   id: string;
   modelId: string;
-  year: number;
   fuelId: string;
   fuelName: string;
   transmissionId: string;

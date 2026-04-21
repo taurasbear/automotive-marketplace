@@ -12,17 +12,10 @@ public class VariantBuilder
     {
         _faker = new Faker<Variant>()
             .RuleFor(v => v.Id, f => f.Random.Guid())
-            .RuleFor(v => v.Year, f => f.Random.Int(1980, 2025))
             .RuleFor(v => v.PowerKw, f => f.Random.Int(40, 500))
             .RuleFor(v => v.EngineSizeMl, f => f.Random.Int(800, 6000))
             .RuleFor(v => v.DoorCount, f => f.Random.Int(2, 6))
             .RuleFor(v => v.IsCustom, _ => false);
-    }
-
-    public VariantBuilder WithYear(int year)
-    {
-        _faker.RuleFor(v => v.Year, year);
-        return this;
     }
 
     public VariantBuilder WithModel(Guid modelId)

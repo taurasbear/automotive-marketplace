@@ -61,7 +61,7 @@ public class CreateListingCommandHandlerTests(
             SellerId: user.Id,
             VariantId: existingVariant.Id,
             ModelId: model.Id,
-            Year: existingVariant.Year,
+            Year: 2020,
             FuelId: fuel.Id,
             TransmissionId: transmission.Id,
             BodyTypeId: bodyType.Id,
@@ -205,7 +205,6 @@ public class CreateListingCommandHandlerTests(
 
         var preExistingVariant = new VariantBuilder()
             .WithModel(model.Id)
-            .WithYear(2019)
             .WithFuel(fuel.Id)
             .WithTransmission(transmission.Id)
             .WithBodyType(bodyType.Id)

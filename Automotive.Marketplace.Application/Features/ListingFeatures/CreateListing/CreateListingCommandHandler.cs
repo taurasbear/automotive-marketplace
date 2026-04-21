@@ -25,7 +25,6 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
             {
                 Id = Guid.NewGuid(),
                 ModelId = request.ModelId,
-                Year = request.Year,
                 FuelId = request.FuelId,
                 TransmissionId = request.TransmissionId,
                 BodyTypeId = request.BodyTypeId,
@@ -43,7 +42,6 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
                 .AsQueryable<Variant>()
                 .FirstOrDefaultAsync(v =>
                     v.ModelId == request.ModelId &&
-                    v.Year == request.Year &&
                     v.FuelId == request.FuelId &&
                     v.TransmissionId == request.TransmissionId &&
                     v.BodyTypeId == request.BodyTypeId &&
@@ -60,7 +58,6 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
                 {
                     Id = Guid.NewGuid(),
                     ModelId = request.ModelId,
-                    Year = request.Year,
                     FuelId = request.FuelId,
                     TransmissionId = request.TransmissionId,
                     BodyTypeId = request.BodyTypeId,
@@ -78,6 +75,7 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper)
         {
             Id = Guid.NewGuid(),
             Price = request.Price,
+            Year = request.Year,
             Mileage = request.Mileage,
             Description = request.Description,
             SellerId = request.SellerId,

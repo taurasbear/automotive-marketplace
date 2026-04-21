@@ -320,7 +320,6 @@ public class GetAllListingsQueryHandlerTests(
             .WithFuel(fuel.Id)
             .WithTransmission(transmission.Id)
             .WithBodyType(bodyType.Id)
-            .WithYear(expectedYear)
             .Build();
         await context.AddAsync(variant);
 
@@ -331,6 +330,7 @@ public class GetAllListingsQueryHandlerTests(
             .WithSeller(seller.Id)
             .WithVariant(variant.Id)
             .WithDrivetrain(drivetrain.Id)
+            .WithYear(expectedYear)
             .Build();
         await context.AddAsync(listing);
         await context.SaveChangesAsync();
@@ -510,11 +510,6 @@ public class GetAllListingsQueryHandlerTests(
                 .WithTransmission(transmission.Id)
                 .WithBodyType(bodyType.Id);
 
-            if (carYear.HasValue)
-            {
-                variantBuilder.WithYear(carYear.Value.Year);
-            }
-
             var variant = variantBuilder.Build();
             await context.AddAsync(variant);
 
@@ -522,6 +517,11 @@ public class GetAllListingsQueryHandlerTests(
                 .WithSeller(seller.Id)
                 .WithVariant(variant.Id)
                 .WithDrivetrain(drivetrain.Id);
+
+            if (carYear.HasValue)
+            {
+                listingBuilder.WithYear(carYear.Value.Year);
+            }
 
             if (isCarUsed.HasValue)
             {

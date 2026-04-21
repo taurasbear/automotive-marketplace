@@ -19,7 +19,6 @@ const ViewVariantDialogContent = ({
         <DialogDescription>Read-only view</DialogDescription>
       </DialogHeader>
       <div className="grid gap-4">
-        <p>Year: {variant.year}</p>
         <p>Fuel: {variant.fuelName}</p>
         <p>Transmission: {variant.transmissionName}</p>
         <p>Body type: {variant.bodyTypeName}</p>
