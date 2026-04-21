@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUpsertListingNote } from "../api/useUpsertListingNote";
 import { useDeleteListingNote } from "../api/useDeleteListingNote";
 import type { SavedListing } from "../types/SavedListing";
@@ -9,26 +9,44 @@ interface NoteEditorProps {
   isExpanded: boolean;
 }
 
+const DEBOUNCE_MS = 800;
+
 const NoteEditor = ({ listing, isExpanded }: NoteEditorProps) => {
   const [text, setText] = useState(listing.noteContent ?? "");
   const [isEditing, setIsEditing] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const latestTextRef = useRef(text);
 
   const upsertNote = useUpsertListingNote();
   const deleteNote = useDeleteListingNote();
 
-  const handleBlur = () => {
-    setIsEditing(false);
-    setShowPicker(false);
-
-    const trimmed = text.trim();
+  const save = (value: string) => {
+    const trimmed = value.trim();
     if (trimmed === "" && listing.noteContent) {
       deleteNote.mutate({ listingId: listing.listingId });
     } else if (trimmed !== "" && trimmed !== listing.noteContent) {
       upsertNote.mutate({ listingId: listing.listingId, content: trimmed });
     }
   };
+
+  const scheduleSave = (value: string) => {
+    latestTextRef.current = value;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => save(value), DEBOUNCE_MS);
+  };
+
+  // Flush on unmount so navigating away doesn't lose unsaved text
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        save(latestTextRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChipInsert = (chip: string) => {
     const textarea = textareaRef.current;
@@ -65,8 +83,10 @@ const NoteEditor = ({ listing, isExpanded }: NoteEditorProps) => {
               ref={textareaRef}
               className="bg-transparent w-full resize-none text-sm outline-none"
               value={text}
-              onChange={(e) => setText(e.target.value)}
-              onBlur={handleBlur}
+              onChange={(e) => {
+                  setText(e.target.value);
+                  scheduleSave(e.target.value);
+                }}
               rows={3}
               autoFocus
             />

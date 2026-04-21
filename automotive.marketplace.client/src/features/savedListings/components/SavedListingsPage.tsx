@@ -31,7 +31,7 @@ const SavedListingsPage = () => {
   }
 
   return (
-    <div className="py-6">
+    <div className="mx-auto max-w-2xl py-6">
       <h1 className="mb-4 text-2xl font-bold">Saved Listings</h1>
       <div className="border-border divide-border divide-y rounded border">
         {listings.map((listing) => (
