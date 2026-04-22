@@ -35,8 +35,7 @@ export const CompareSearchModal = ({
 
   const handleCompare = (selectedId: string) => {
     onClose();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    void router.navigate({ to: "/compare", search: { a: currentListingId, b: selectedId } } as any);
+    void router.navigate({ to: "/compare", search: { a: currentListingId, b: selectedId } });
   };
 
   return (
