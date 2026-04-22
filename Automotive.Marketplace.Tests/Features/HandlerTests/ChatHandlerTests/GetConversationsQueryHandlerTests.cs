@@ -35,7 +35,7 @@ public class GetConversationsQueryHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (buyer, _, conversation) = await SeedConversationAsync(context);
+        var (buyer, _, conversation, _) = await SeedConversationAsync(context);
 
         // Act
         var result = (await handler.Handle(
@@ -54,7 +54,7 @@ public class GetConversationsQueryHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (_, seller, conversation) = await SeedConversationAsync(context);
+        var (_, seller, conversation, _) = await SeedConversationAsync(context);
 
         // Act
         var result = (await handler.Handle(
@@ -80,8 +80,51 @@ public class GetConversationsQueryHandlerTests(
         result.Should().BeEmpty();
     }
 
-    private static async Task<(User buyer, User seller, Conversation conversation)> SeedConversationAsync(
-        AutomotiveContext context)
+    [Fact]
+    public async Task Handle_BuyerHasLikedListing_ShouldReturnBuyerHasLikedTrue()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (buyer, seller, conversation, listing) = await SeedConversationAsync(context);
+
+        var like = new UserListingLikeBuilder()
+            .WithUser(buyer.Id)
+            .WithListing(listing.Id)
+            .Build();
+        await context.AddAsync(like);
+        await context.SaveChangesAsync();
+
+        var result = (await handler.Handle(
+            new GetConversationsQuery { UserId = seller.Id },
+            CancellationToken.None)).ToList();
+
+        result.Should().ContainSingle();
+        result[0].BuyerHasLiked.Should().BeTrue();
+        result[0].BuyerId.Should().Be(buyer.Id);
+        result[0].SellerId.Should().Be(seller.Id);
+    }
+
+    [Fact]
+    public async Task Handle_BuyerHasNotLikedListing_ShouldReturnBuyerHasLikedFalse()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (_, seller, _, _) = await SeedConversationAsync(context);
+
+        var result = (await handler.Handle(
+            new GetConversationsQuery { UserId = seller.Id },
+            CancellationToken.None)).ToList();
+
+        result.Should().ContainSingle();
+        result[0].BuyerHasLiked.Should().BeFalse();
+    }
+
+    private static async Task<(User buyer, User seller, Conversation conversation, Listing listing)>
+        SeedConversationAsync(AutomotiveContext context)
     {
         var seller = new UserBuilder().Build();
         var buyer = new UserBuilder().Build();
@@ -101,6 +144,6 @@ public class GetConversationsQueryHandlerTests(
         await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, variant, listing, conversation);
         await context.SaveChangesAsync();
 
-        return (buyer, seller, conversation);
+        return (buyer, seller, conversation, listing);
     }
 }

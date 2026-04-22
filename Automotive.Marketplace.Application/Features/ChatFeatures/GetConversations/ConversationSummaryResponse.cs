@@ -21,4 +21,10 @@ public sealed record ConversationSummaryResponse
     public DateTime LastMessageAt { get; set; }
 
     public int UnreadCount { get; set; }
+
+    public Guid BuyerId { get; set; }
+
+    public Guid SellerId { get; set; }
+
+    public bool BuyerHasLiked { get; set; }
 }
