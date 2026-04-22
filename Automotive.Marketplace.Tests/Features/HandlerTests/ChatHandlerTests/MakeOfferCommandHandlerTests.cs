@@ -58,6 +58,13 @@ public class MakeOfferCommandHandlerTests(
         savedMessage.Should().NotBeNull();
         savedMessage!.MessageType.Should().Be(MessageType.Offer);
         savedMessage.OfferId.Should().Be(result.Offer.Id);
+
+        var savedConversation = await context.Conversations.FindAsync(conversation.Id);
+        await context.Entry(savedConversation!).ReloadAsync();
+        savedConversation!.LastMessageAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(1));
+
+        result.Offer.ListingPrice.Should().Be(listing.Price);
+        result.Offer.PercentageOff.Should().Be(20.00m);  // listing.Price=15000, offerAmount=15000*0.8=12000, discount=20%
     }
 
     [Fact]
@@ -87,6 +94,8 @@ public class MakeOfferCommandHandlerTests(
 
         result.Offer.Id.Should().NotBeEmpty();
         result.Offer.Status.Should().Be(OfferStatus.Pending);
+        result.SenderId.Should().Be(seller.Id);
+        result.RecipientId.Should().Be(buyer.Id);
     }
 
     [Fact]
@@ -128,7 +137,9 @@ public class MakeOfferCommandHandlerTests(
 
         var act = () => handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>();
+        await act.Should()
+            .ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>()
+            .Where(ex => ex.Errors.ContainsKey("Amount"));
     }
 
     [Fact]
@@ -149,7 +160,9 @@ public class MakeOfferCommandHandlerTests(
 
         var act = () => handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>();
+        await act.Should()
+            .ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>()
+            .Where(ex => ex.Errors.ContainsKey("Amount"));
     }
 
     [Fact]
@@ -172,7 +185,9 @@ public class MakeOfferCommandHandlerTests(
 
         var act = () => handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>();
+        await act.Should()
+            .ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>()
+            .Where(ex => ex.Errors.ContainsKey("ListingId"));
     }
 
     [Fact]
@@ -201,7 +216,30 @@ public class MakeOfferCommandHandlerTests(
 
         var act = () => handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>();
+        await act.Should()
+            .ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>()
+            .Where(ex => ex.Errors.ContainsKey("ConversationId"));
+    }
+
+    [Fact]
+    public async Task Handle_ThirdPartyInitiator_ShouldThrowUnauthorizedException()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (_, _, conversation, listing) = await SeedConversationAsync(context);
+
+        var command = new MakeOfferCommand
+        {
+            ConversationId = conversation.Id,
+            InitiatorId = Guid.NewGuid(), // not buyer or seller
+            Amount = listing.Price * 0.8m
+        };
+
+        var act = () => handler.Handle(command, CancellationToken.None);
+
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
     }
 
     private static async Task<(User buyer, User seller, Conversation conversation, Listing listing)>

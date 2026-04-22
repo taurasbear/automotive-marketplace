@@ -21,6 +21,10 @@ public class MakeOfferCommandHandler(IRepository repository)
         var listing = conversation.Listing;
         var isSeller = listing.SellerId == request.InitiatorId;
 
+        if (!isSeller && conversation.BuyerId != request.InitiatorId)
+            throw new UnauthorizedAccessException(
+                "Only the buyer or seller of this conversation may make an offer.");
+
         if (isSeller)
         {
             var buyerHasLiked = await repository.AsQueryable<UserListingLike>()
