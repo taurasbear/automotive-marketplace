@@ -69,7 +69,7 @@ const Compare = () => {
       <CompareSearchModal
         open={swapSlot !== null}
         onClose={() => setSwapSlot(null)}
-        excludeIds={swapSlot === "a" ? [b] : [a]}
+        excludeIds={swapSlot === "a" ? [b] : swapSlot === "b" ? [a] : []}
         onSelect={(id) => {
           const slot = swapSlot;
           setSwapSlot(null);

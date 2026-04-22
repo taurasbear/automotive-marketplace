@@ -3,6 +3,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Compare from "./Compare";
 import type { GetListingComparisonResponse } from "@/features/compareListings/types/GetListingComparisonResponse";
+import { router } from "@/lib/router";
+import type { SavedListing } from "@/features/savedListings/types/SavedListing";
 
 // Mock the route to supply search params
 vi.mock("@/app/routes/compare", () => ({
@@ -17,14 +19,11 @@ vi.mock("@/lib/router", () => ({
 }));
 
 vi.mock("@/hooks/redux", () => ({
-  useAppSelector: vi.fn().mockReturnValue(null),
+  useAppSelector: (...args: unknown[]) => useAppSelectorMock(...args),
 }));
 
 vi.mock("@/features/savedListings/api/getSavedListingsOptions", () => ({
-  getSavedListingsOptions: vi.fn().mockReturnValue({
-    queryKey: ["saved-listings"],
-    queryFn: async () => ({ data: [] }),
-  }),
+  getSavedListingsOptions: getSavedListingsOptionsMock,
 }));
 
 vi.mock("@/features/compareListings/api/searchListingsOptions", () => ({
@@ -82,8 +81,25 @@ const mockComparison: GetListingComparisonResponse = {
   },
 };
 
+const mockSavedListing: SavedListing = {
+  listingId: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+  title: "2022 Volkswagen Golf",
+  price: 20000,
+  city: "Kaunas",
+  mileage: 15000,
+  fuelName: "Petrol",
+  transmissionName: "Automatic",
+  thumbnail: null,
+  noteContent: null,
+};
+
 const { getListingComparisonOptionsMock } = vi.hoisted(() => ({
   getListingComparisonOptionsMock: vi.fn(),
+}));
+
+const { useAppSelectorMock, getSavedListingsOptionsMock } = vi.hoisted(() => ({
+  useAppSelectorMock: vi.fn(),
+  getSavedListingsOptionsMock: vi.fn(),
 }));
 
 // Mock the API options so useQuery returns our fixture
@@ -105,6 +121,11 @@ beforeEach(() => {
     queryKey: ["listing", "comparison", _a, _b],
     queryFn: async () => ({ data: mockComparison }),
   }));
+  useAppSelectorMock.mockReturnValue(null);
+  getSavedListingsOptionsMock.mockReturnValue({
+    queryKey: ["saved-listings"],
+    queryFn: async () => ({ data: [] }),
+  });
 });
 
 describe("Compare page", () => {
@@ -151,7 +172,7 @@ describe("Compare page", () => {
 });
 
 describe("Compare page — swap orchestration", () => {
-  it("opens the modal targeting slot A when the Change listing A button is clicked", async () => {
+  it("opens the modal when the Change listing A button is clicked", async () => {
     render(<Compare />, { wrapper: createWrapper() });
 
     await waitFor(() => {
@@ -167,7 +188,7 @@ describe("Compare page — swap orchestration", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
-  it("opens the modal targeting slot B when the Change listing B button is clicked", async () => {
+  it("opens the modal when the Change listing B button is clicked", async () => {
     render(<Compare />, { wrapper: createWrapper() });
 
     await waitFor(() => {
@@ -175,6 +196,8 @@ describe("Compare page — swap orchestration", () => {
         screen.getByRole("button", { name: "Change listing B" }),
       ).toBeInTheDocument();
     });
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Change listing B" }));
 
@@ -197,6 +220,39 @@ describe("Compare page — swap orchestration", () => {
 
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  });
+
+  it("navigates with the selected listing replacing slot A when a listing is chosen", async () => {
+    useAppSelectorMock.mockReturnValue("user-1");
+    getSavedListingsOptionsMock.mockReturnValue({
+      queryKey: ["saved-listings"],
+      queryFn: async () => ({ data: [mockSavedListing] }),
+    });
+
+    render(<Compare />, { wrapper: createWrapper() });
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Change listing A" }),
+      ).toBeInTheDocument(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.getByText("2022 Volkswagen Golf")).toBeInTheDocument(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Compare" }));
+
+    expect(vi.mocked(router.navigate)).toHaveBeenCalledWith({
+      to: "/compare",
+      search: {
+        a: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+        b: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      },
     });
   });
 });
