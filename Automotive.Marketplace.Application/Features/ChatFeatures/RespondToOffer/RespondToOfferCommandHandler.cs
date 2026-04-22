@@ -28,6 +28,12 @@ public class RespondToOfferCommandHandler(IRepository repository)
         if (offer.InitiatorId == request.ResponderId)
             throw new UnauthorizedAccessException("You cannot respond to your own offer.");
 
+        var isParticipant = request.ResponderId == conversation.BuyerId
+            || request.ResponderId == listing.SellerId;
+        if (!isParticipant)
+            throw new UnauthorizedAccessException(
+                "Only the buyer or seller of this conversation may respond to an offer.");
+
         if (offer.ExpiresAt <= DateTime.UtcNow)
             throw new RequestValidationException(
             [
@@ -74,7 +80,13 @@ public class RespondToOfferCommandHandler(IRepository repository)
         }
 
         // Counter
-        var counterAmount = request.CounterAmount!.Value;
+        if (request.CounterAmount is null)
+            throw new RequestValidationException(
+            [
+                new ValidationFailure("CounterAmount", "Counter amount is required when action is Counter.")
+            ]);
+
+        var counterAmount = request.CounterAmount.Value;
 
         if (counterAmount < listing.Price / 3)
             throw new RequestValidationException(

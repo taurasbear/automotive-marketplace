@@ -191,6 +191,48 @@ public class RespondToOfferCommandHandlerTests(
         await act.Should().ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>();
     }
 
+    [Fact]
+    public async Task Handle_CounterAmountAboveListingPrice_ShouldThrowValidationException()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (_, _, _, offer, listing) = await SeedPendingOfferAsync(context, initiatedByBuyer: true);
+
+        var act = () => handler.Handle(new RespondToOfferCommand
+        {
+            OfferId = offer.Id,
+            ResponderId = listing.SellerId,
+            Action = OfferResponseAction.Counter,
+            CounterAmount = listing.Price + 1
+        }, CancellationToken.None);
+
+        await act.Should().ThrowAsync<Automotive.Marketplace.Application.Common.Exceptions.RequestValidationException>();
+    }
+
+    [Fact]
+    public async Task Handle_NonParticipantResponder_ShouldThrowUnauthorizedException()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (_, _, _, offer, _) = await SeedPendingOfferAsync(context, initiatedByBuyer: true);
+        var outsider = new UserBuilder().Build();
+        await context.AddAsync(outsider);
+        await context.SaveChangesAsync();
+
+        var act = () => handler.Handle(new RespondToOfferCommand
+        {
+            OfferId = offer.Id,
+            ResponderId = outsider.Id,
+            Action = OfferResponseAction.Accept
+        }, CancellationToken.None);
+
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
     private static async Task<(User buyer, User seller, Conversation conversation, Offer offer, Listing listing)>
         SeedPendingOfferAsync(AutomotiveContext context, bool initiatedByBuyer)
     {
