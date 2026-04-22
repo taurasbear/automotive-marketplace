@@ -18,11 +18,13 @@ const {
   searchListingsOptionsMock: vi.fn(),
 }));
 
+// Pre-established for liked listings logic added in Task 5
 vi.mock("@/hooks/redux", () => ({
   useAppSelector: (...args: unknown[]) =>
     useAppSelectorMock(...args),
 }));
 
+// Pre-established for liked listings logic added in Task 5
 vi.mock("@/features/savedListings/api/getSavedListingsOptions", () => ({
   getSavedListingsOptions: getSavedListingsOptionsMock,
 }));
@@ -116,7 +118,31 @@ describe("CompareSearchModal — new prop API", () => {
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(1),
     );
 
-    expect(screen.queryByText("Toyota")).not.toBeInTheDocument();
-    expect(screen.getByText("Honda")).toBeInTheDocument();
+    expect(screen.queryByText(/Toyota/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Honda/)).toBeInTheDocument();
+  });
+
+  it("does not call onClose when a listing is selected", async () => {
+    const onClose = vi.fn();
+    const onSelect = vi.fn();
+    render(
+      <CompareSearchModal
+        open={true}
+        onClose={onClose}
+        excludeIds={[]}
+        onSelect={onSelect}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() =>
+      expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
+        searchResults.length,
+      ),
+    );
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Compare" })[0]);
+    expect(onSelect).toHaveBeenCalledWith("listing-1");
+    expect(onClose).not.toHaveBeenCalled(); // caller is responsible for closing
   });
 });
