@@ -38,7 +38,7 @@ describe("CompareHeader — Change buttons", () => {
   it("does not render any Change button when no onChange callbacks are provided", () => {
     render(<CompareHeader listingA={listingA} listingB={listingB} />);
     expect(
-      screen.queryByRole("button", { name: "Change" }),
+      screen.queryByRole("button"),
     ).not.toBeInTheDocument();
   });
 

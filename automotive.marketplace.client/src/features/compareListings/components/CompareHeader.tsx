@@ -3,9 +3,10 @@ import type { GetListingByIdResponse } from "@/features/listingDetails/types/Get
 
 type ListingCardProps = {
   listing: GetListingByIdResponse;
-  onChange?: () => void;
-  ariaLabel?: string;
-};
+} & (
+  | { onChange: () => void; ariaLabel: string }
+  | { onChange?: undefined; ariaLabel?: undefined }
+);
 
 const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => (
   <div className="text-center">
@@ -27,7 +28,7 @@ const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => (
         variant="outline"
         size="sm"
         className="mt-2"
-        aria-label={ariaLabel ?? "Change"}
+        aria-label={ariaLabel}
         onClick={onChange}
       >
         Change
@@ -55,7 +56,23 @@ export const CompareHeader = ({
         Specification
       </span>
     </div>
-    <ListingCard listing={listingA} onChange={onChangeA} ariaLabel="Change listing A" />
-    <ListingCard listing={listingB} onChange={onChangeB} ariaLabel="Change listing B" />
+    {onChangeA ? (
+      <ListingCard
+        listing={listingA}
+        onChange={onChangeA}
+        ariaLabel="Change listing A"
+      />
+    ) : (
+      <ListingCard listing={listingA} />
+    )}
+    {onChangeB ? (
+      <ListingCard
+        listing={listingB}
+        onChange={onChangeB}
+        ariaLabel="Change listing B"
+      />
+    ) : (
+      <ListingCard listing={listingB} />
+    )}
   </div>
 );
