@@ -1,4 +1,5 @@
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,5 +18,11 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
             .WithMany()
             .HasForeignKey(m => m.SenderId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(m => m.MessageType)
+            .HasDefaultValue(MessageType.Text);
+
+        builder.Property(m => m.OfferId)
+            .IsRequired(false);
     }
 }
