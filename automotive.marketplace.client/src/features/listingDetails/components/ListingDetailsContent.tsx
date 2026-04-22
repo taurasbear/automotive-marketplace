@@ -232,7 +232,11 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
       <CompareSearchModal
         open={compareModalOpen}
         onClose={() => setCompareModalOpen(false)}
-        currentListingId={id}
+        excludeIds={[id]}
+        onSelect={(selectedId) => {
+          setCompareModalOpen(false);
+          void router.navigate({ to: "/compare", search: { a: id, b: selectedId } });
+        }}
       />
     </>
   );
