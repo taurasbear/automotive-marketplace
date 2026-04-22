@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Compare from "./Compare";
@@ -14,6 +14,25 @@ vi.mock("@/app/routes/compare", () => ({
 // Break the import chain: CompareSearchModal → router → routeTree → __root → redux store
 vi.mock("@/lib/router", () => ({
   router: { navigate: vi.fn() },
+}));
+
+vi.mock("@/hooks/redux", () => ({
+  useAppSelector: vi.fn().mockReturnValue(null),
+}));
+
+vi.mock("@/features/savedListings/api/getSavedListingsOptions", () => ({
+  getSavedListingsOptions: vi.fn().mockReturnValue({
+    queryKey: ["saved-listings"],
+    queryFn: async () => ({ data: [] }),
+  }),
+}));
+
+vi.mock("@/features/compareListings/api/searchListingsOptions", () => ({
+  searchListingsOptions: vi.fn().mockReturnValue({
+    queryKey: ["search", ""],
+    queryFn: async () => ({ data: [] }),
+    enabled: false,
+  }),
 }));
 
 const mockComparison: GetListingComparisonResponse = {
@@ -127,6 +146,57 @@ describe("Compare page", () => {
       expect(
         screen.getByText(/one or more listings could not be found/i),
       ).toBeInTheDocument();
+    });
+  });
+});
+
+describe("Compare page — swap orchestration", () => {
+  it("opens the modal targeting slot A when the Change listing A button is clicked", async () => {
+    render(<Compare />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Change listing A" }),
+      ).toBeInTheDocument();
+    });
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("opens the modal targeting slot B when the Change listing B button is clicked", async () => {
+    render(<Compare />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Change listing B" }),
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Change listing B" }));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("closes the modal when Escape is pressed", async () => {
+    render(<Compare />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Change listing A" }),
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
   });
 });
