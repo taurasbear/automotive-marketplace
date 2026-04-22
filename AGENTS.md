@@ -28,7 +28,7 @@ docker compose --env-file .env up -d
 
 **Auth:** Short-lived JWT access token in Redux store + long-lived refresh token in HttpOnly cookie. Axios interceptor handles refresh on 401 automatically.
 
-**Testing:** xUnit + TestContainers (real PostgreSQL per test class) + Respawn (state reset between tests) + Bogus builders + NSubstitute + FluentAssertions.
+**Testing:** xUnit + TestContainers (real PostgreSQL per test class) + Respawn (state reset between tests) + Bogus builders + NSubstitute + FluentAssertions. No Frontend testing is needed.
 
 ## Agent Preferences
 
