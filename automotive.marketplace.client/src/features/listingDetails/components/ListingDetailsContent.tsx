@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PERMISSIONS } from "@/constants/permissions";
 import { ChatPanel, useGetOrCreateConversation } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
+import { CompareSearchModal } from "@/features/compareListings";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -29,6 +30,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
 
   const [chatConversation, setChatConversation] =
     useState<ConversationSummary | null>(null);
+  const [compareModalOpen, setCompareModalOpen] = useState(false);
   const { mutateAsync: getOrCreateConversation } = useGetOrCreateConversation();
 
   const isSeller = listing.sellerId === userId;
@@ -116,6 +118,13 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   Contact Seller
                 </Button>
               )}
+              <Button
+                variant="outline"
+                className="mt-2 w-full"
+                onClick={() => setCompareModalOpen(true)}
+              >
+                Compare with another listing
+              </Button>
             </div>
 
             <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
@@ -220,6 +229,15 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
           onClose={() => setChatConversation(null)}
         />
       )}
+      <CompareSearchModal
+        open={compareModalOpen}
+        onClose={() => setCompareModalOpen(false)}
+        excludeIds={[id]}
+        onSelect={(selectedId) => {
+          setCompareModalOpen(false);
+          void router.navigate({ to: "/compare", search: { a: id, b: selectedId } });
+        }}
+      />
     </>
   );
 };

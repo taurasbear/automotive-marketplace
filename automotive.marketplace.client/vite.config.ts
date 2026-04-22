@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import tailwindcss from "@tailwindcss/vite";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -51,6 +52,12 @@ export default defineConfig(({ mode }) => {
       hmr: {
         clientPort: 57263,
       },
+    },
+    test: {
+      globals: true,
+      environment: "jsdom",
+      setupFiles: ["./src/test/setup.ts"],
+      clearMocks: true,
     },
   };
 });

@@ -5,6 +5,8 @@ export const ENDPOINTS = {
     CREATE: "/Listing/Create",
     DELETE: "/Listing/Delete",
     UPDATE: "/Listing/Update",
+    SEARCH: "/Listing/Search",
+    COMPARE: "/Listing/Compare",
   },
   AUTH: {
     REFRESH: "/Auth/Refresh",

@@ -2,6 +2,8 @@
 using Automotive.Marketplace.Application.Features.ListingFeatures.DeleteListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingById;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComparison;
+using Automotive.Marketplace.Application.Features.ListingFeatures.SearchListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
@@ -55,5 +57,25 @@ public class ListingController(IMediator mediator) : BaseController
     {
         await mediator.Send(command, cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<SearchListingsResponse>>> Search(
+        [FromQuery] SearchListingsQuery query,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetListingComparisonResponse>> Compare(
+        [FromQuery] Guid a,
+        [FromQuery] Guid b,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetListingComparisonQuery { ListingAId = a, ListingBId = b };
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
     }
 }
