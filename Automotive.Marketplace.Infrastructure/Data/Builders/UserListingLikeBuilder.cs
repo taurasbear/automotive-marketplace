@@ -1,5 +1,6 @@
 using Automotive.Marketplace.Domain.Entities;
 using Bogus;
+using System.Linq.Expressions;
 
 namespace Automotive.Marketplace.Infrastructure.Data.Builders;
 
@@ -26,6 +27,12 @@ public class UserListingLikeBuilder
     public UserListingLikeBuilder WithListing(Guid listingId)
     {
         _faker.RuleFor(l => l.ListingId, listingId);
+        return this;
+    }
+
+    public UserListingLikeBuilder With<T>(Expression<Func<UserListingLike, T>> property, T value)
+    {
+        _faker.RuleFor(property, value);
         return this;
     }
 

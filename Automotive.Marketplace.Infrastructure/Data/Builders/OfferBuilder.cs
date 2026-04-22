@@ -1,6 +1,7 @@
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using Bogus;
+using System.Linq.Expressions;
 
 namespace Automotive.Marketplace.Infrastructure.Data.Builders;
 
@@ -54,6 +55,12 @@ public class OfferBuilder
     public OfferBuilder WithParent(Guid parentOfferId)
     {
         _faker.RuleFor(o => o.ParentOfferId, parentOfferId);
+        return this;
+    }
+
+    public OfferBuilder With<T>(Expression<Func<Offer, T>> property, T value)
+    {
+        _faker.RuleFor(property, value);
         return this;
     }
 
