@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -75,6 +76,9 @@ export const CompareSearchModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Compare with another listing</DialogTitle>
+          <DialogDescription className="sr-only">
+            Search for a listing to compare
+          </DialogDescription>
         </DialogHeader>
         <Input
           placeholder="Search by make, model, year, seller…"

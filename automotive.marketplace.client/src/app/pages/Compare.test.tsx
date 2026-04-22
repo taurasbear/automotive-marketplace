@@ -255,4 +255,37 @@ describe("Compare page — swap orchestration", () => {
       },
     });
   });
+
+  it("navigates with the selected listing replacing slot B when a listing is chosen", async () => {
+    useAppSelectorMock.mockReturnValue("user-1");
+    getSavedListingsOptionsMock.mockReturnValue({
+      queryKey: ["saved-listings"],
+      queryFn: async () => ({ data: [mockSavedListing] }),
+    });
+
+    render(<Compare />, { wrapper: createWrapper() });
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Change listing B" }),
+      ).toBeInTheDocument(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Change listing B" }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.getByText("2022 Volkswagen Golf")).toBeInTheDocument(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Compare" }));
+
+    expect(vi.mocked(router.navigate)).toHaveBeenCalledWith({
+      to: "/compare",
+      search: {
+        a: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        b: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      },
+    });
+  });
 });
