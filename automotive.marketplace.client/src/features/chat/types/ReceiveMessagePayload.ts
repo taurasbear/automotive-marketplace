@@ -1,3 +1,5 @@
+import type { Offer } from './Offer';
+
 export type ReceiveMessagePayload = {
   id: string;
   conversationId: string;
@@ -6,4 +8,6 @@ export type ReceiveMessagePayload = {
   content: string;
   sentAt: string;
   isRead: boolean;
+  messageType: 'Text' | 'Offer';
+  offer?: Offer;
 };
