@@ -68,7 +68,7 @@ const createWrapper = () => {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  useAppSelectorMock.mockReturnValue(null); // not logged in by default
+  useAppSelectorMock.mockReturnValue(null);
   getSavedListingsOptionsMock.mockReturnValue({
     queryKey: ["saved-listings"],
     queryFn: async () => ({ data: [] }),
@@ -93,6 +93,8 @@ describe("CompareSearchModal — new prop API", () => {
       { wrapper: createWrapper() },
     );
 
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "camry" } });
+
     await waitFor(() =>
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
         searchResults.length,
@@ -115,6 +117,8 @@ describe("CompareSearchModal — new prop API", () => {
       { wrapper: createWrapper() },
     );
 
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "camry" } });
+
     await waitFor(() =>
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(1),
     );
@@ -136,6 +140,8 @@ describe("CompareSearchModal — new prop API", () => {
       { wrapper: createWrapper() },
     );
 
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "camry" } });
+
     await waitFor(() =>
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
         searchResults.length,
@@ -144,7 +150,7 @@ describe("CompareSearchModal — new prop API", () => {
 
     fireEvent.click(screen.getAllByRole("button", { name: "Compare" })[0]);
     expect(onSelect).toHaveBeenCalledWith("listing-1");
-    expect(onClose).not.toHaveBeenCalled(); // caller is responsible for closing
+    expect(onClose).not.toHaveBeenCalled();
   });
 });
 
@@ -328,6 +334,8 @@ describe("CompareSearchModal — liked listings (with query)", () => {
       { wrapper: createWrapper() },
     );
 
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "bmw" } });
+
     await waitFor(() =>
       expect(screen.getByText(/❤ Saved/)).toBeInTheDocument(),
     );
@@ -351,9 +359,11 @@ describe("CompareSearchModal — liked listings (with query)", () => {
       { wrapper: createWrapper() },
     );
 
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "bmw" } });
+
     await waitFor(() =>
-      expect(screen.getByText("Honda")).toBeInTheDocument(),
+      expect(screen.getByText(/Honda/)).toBeInTheDocument(),
     );
-    expect(screen.queryByText("BMW")).not.toBeInTheDocument();
+    expect(screen.queryByText(/BMW/)).not.toBeInTheDocument();
   });
 });

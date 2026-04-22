@@ -61,7 +61,7 @@ export const CompareSearchModal = ({
     (s) => !excludeIds.includes(s.listingId),
   );
 
-  const showEmptyState = debouncedQuery === "" && allResults.length === 0;
+  const showEmptyState = debouncedQuery === "";
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -126,9 +126,7 @@ export const CompareSearchModal = ({
                   />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">
-                      {listing.year}{" "}
-                      <span>{listing.makeName}</span>{" "}
-                      {listing.modelName}
+                      {listing.year} {listing.makeName} {listing.modelName}
                     </p>
                     <p className="text-muted-foreground text-sm">
                       {listing.price.toFixed(0)} € ·{" "}
@@ -163,9 +161,7 @@ export const CompareSearchModal = ({
                   />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">
-                      {listing.year}{" "}
-                      <span>{listing.makeName}</span>{" "}
-                      {listing.modelName}
+                      {listing.year} {listing.makeName} {listing.modelName}
                     </p>
                     <p className="text-muted-foreground text-sm">
                       {listing.price.toFixed(0)} € ·{" "}
