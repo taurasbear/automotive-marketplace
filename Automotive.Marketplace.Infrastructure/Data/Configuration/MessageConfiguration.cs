@@ -20,7 +20,8 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(m => m.MessageType)
-            .HasDefaultValue(MessageType.Text);
+            .HasDefaultValue(MessageType.Text)
+            .HasSentinel(MessageType.Text);
 
         builder.Property(m => m.OfferId)
             .IsRequired(false);
