@@ -1,4 +1,5 @@
 export type GetListingByIdResponse = {
+  id: string;
   makeName: string;
   modelName: string;
   price: number;
@@ -19,6 +20,7 @@ export type GetListingByIdResponse = {
   drivetrainName: string;
   sellerName: string;
   sellerId: string;
+  status: string;
   images: Image[];
 };
 
