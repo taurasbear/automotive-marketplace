@@ -6,7 +6,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { router } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { searchListingsOptions } from "../api/searchListingsOptions";
@@ -14,13 +13,15 @@ import { searchListingsOptions } from "../api/searchListingsOptions";
 type CompareSearchModalProps = {
   open: boolean;
   onClose: () => void;
-  currentListingId: string;
+  excludeIds: string[];
+  onSelect: (id: string) => void;
 };
 
 export const CompareSearchModal = ({
   open,
   onClose,
-  currentListingId,
+  excludeIds,
+  onSelect,
 }: CompareSearchModalProps) => {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -31,12 +32,7 @@ export const CompareSearchModal = ({
   }, [query]);
 
   const { data } = useQuery(searchListingsOptions(debouncedQuery));
-  const results = (data?.data ?? []).filter((r) => r.id !== currentListingId);
-
-  const handleCompare = (selectedId: string) => {
-    onClose();
-    void router.navigate({ to: "/compare", search: { a: currentListingId, b: selectedId } });
-  };
+  const results = (data?.data ?? []).filter((r) => !excludeIds.includes(r.id));
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -66,7 +62,7 @@ export const CompareSearchModal = ({
               />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">
-                  {listing.year} {listing.makeName} {listing.modelName}
+                  {listing.year} <span>{listing.makeName}</span> {listing.modelName}
                 </p>
                 <p className="text-muted-foreground text-sm">
                   {listing.price.toFixed(0)} € ·{" "}
@@ -76,7 +72,7 @@ export const CompareSearchModal = ({
                   {listing.sellerName}
                 </p>
               </div>
-              <Button size="sm" onClick={() => handleCompare(listing.id)}>
+              <Button size="sm" onClick={() => onSelect(listing.id)}>
                 Compare
               </Button>
             </div>
