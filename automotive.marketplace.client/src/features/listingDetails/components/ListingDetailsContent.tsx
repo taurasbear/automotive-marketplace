@@ -48,6 +48,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
       lastMessage: null,
       lastMessageAt: new Date().toISOString(),
       unreadCount: 0,
+      buyerId: userId ?? "",
+      sellerId: listing.sellerId,
+      buyerHasLiked: false,
     });
   };
 
