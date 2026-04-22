@@ -31,6 +31,7 @@ const listingB: GetListingByIdResponse = {
   id: "b1",
   makeName: "Honda",
   modelName: "Civic",
+  sellerId: "s2",
 };
 
 describe("CompareHeader — Change buttons", () => {
@@ -50,39 +51,58 @@ describe("CompareHeader — Change buttons", () => {
       />,
     );
     expect(
-      screen.getByRole("button", { name: "Change" }),
+      screen.getByRole("button", { name: "Change listing A" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a Change button for listing B when onChangeB is provided", () => {
+    render(
+      <CompareHeader
+        listingA={listingA}
+        listingB={listingB}
+        onChangeB={vi.fn()}
+      />,
+    );
+    expect(
+      screen.getByRole("button", { name: "Change listing B" }),
     ).toBeInTheDocument();
   });
 
   it("calls onChangeA when the first Change button is clicked", () => {
     const onChangeA = vi.fn();
-    render(
-      <CompareHeader
-        listingA={listingA}
-        listingB={listingB}
-        onChangeA={onChangeA}
-        onChangeB={vi.fn()}
-      />,
-    );
-
-    const buttons = screen.getAllByRole("button", { name: "Change" });
-    fireEvent.click(buttons[0]);
-    expect(onChangeA).toHaveBeenCalledTimes(1);
-  });
-
-  it("calls onChangeB when the second Change button is clicked", () => {
     const onChangeB = vi.fn();
     render(
       <CompareHeader
         listingA={listingA}
         listingB={listingB}
-        onChangeA={vi.fn()}
+        onChangeA={onChangeA}
         onChangeB={onChangeB}
       />,
     );
 
-    const buttons = screen.getAllByRole("button", { name: "Change" });
-    fireEvent.click(buttons[1]);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Change listing A" }),
+    );
+    expect(onChangeA).toHaveBeenCalledTimes(1);
+    expect(onChangeB).not.toHaveBeenCalled();
+  });
+
+  it("calls onChangeB when the second Change button is clicked", () => {
+    const onChangeA = vi.fn();
+    const onChangeB = vi.fn();
+    render(
+      <CompareHeader
+        listingA={listingA}
+        listingB={listingB}
+        onChangeA={onChangeA}
+        onChangeB={onChangeB}
+      />,
+    );
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Change listing B" }),
+    );
     expect(onChangeB).toHaveBeenCalledTimes(1);
+    expect(onChangeA).not.toHaveBeenCalled();
   });
 });
