@@ -64,6 +64,7 @@ const createWrapper = () => {
 };
 
 beforeEach(() => {
+  vi.clearAllMocks();
   useAppSelectorMock.mockReturnValue(null); // not logged in by default
   getSavedListingsOptionsMock.mockReturnValue({
     queryKey: ["saved-listings"],
@@ -112,9 +113,7 @@ describe("CompareSearchModal — new prop API", () => {
     );
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("button", { name: "Compare" }),
-      ).toBeInTheDocument(),
+      expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(1),
     );
 
     expect(screen.queryByText("Toyota")).not.toBeInTheDocument();
