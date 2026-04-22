@@ -1,11 +1,12 @@
+import { Button } from "@/components/ui/button";
 import type { GetListingByIdResponse } from "@/features/listingDetails/types/GetListingByIdResponse";
 
-type CompareHeaderProps = {
-  listingA: GetListingByIdResponse;
-  listingB: GetListingByIdResponse;
+type ListingCardProps = {
+  listing: GetListingByIdResponse;
+  onChange?: () => void;
 };
 
-const ListingCard = ({ listing }: { listing: GetListingByIdResponse }) => (
+const ListingCard = ({ listing, onChange }: ListingCardProps) => (
   <div className="text-center">
     <img
       src={
@@ -20,17 +21,39 @@ const ListingCard = ({ listing }: { listing: GetListingByIdResponse }) => (
     </p>
     <p className="text-primary font-bold">{listing.price.toFixed(0)} €</p>
     <p className="text-sm text-muted-foreground">{listing.city}</p>
+    {onChange && (
+      <Button
+        variant="outline"
+        size="sm"
+        className="mt-2"
+        onClick={onChange}
+      >
+        Change
+      </Button>
+    )}
   </div>
 );
 
-export const CompareHeader = ({ listingA, listingB }: CompareHeaderProps) => (
+type CompareHeaderProps = {
+  listingA: GetListingByIdResponse;
+  listingB: GetListingByIdResponse;
+  onChangeA?: () => void;
+  onChangeB?: () => void;
+};
+
+export const CompareHeader = ({
+  listingA,
+  listingB,
+  onChangeA,
+  onChangeB,
+}: CompareHeaderProps) => (
   <div className="sticky top-0 z-10 mb-4 grid grid-cols-3 rounded-lg border bg-background p-4 shadow-sm">
     <div className="flex items-center">
       <span className="text-sm font-semibold text-muted-foreground">
         Specification
       </span>
     </div>
-    <ListingCard listing={listingA} />
-    <ListingCard listing={listingB} />
+    <ListingCard listing={listingA} onChange={onChangeA} />
+    <ListingCard listing={listingB} onChange={onChangeB} />
   </div>
 );
