@@ -243,7 +243,7 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
     expect(screen.getByText("2018 Audi A4")).toBeInTheDocument();
   });
 
-  it("shows nothing when user is not logged in", () => {
+  it("shows nothing when user is not logged in", async () => {
     useAppSelectorMock.mockReturnValue(null);
     render(
       <CompareSearchModal
@@ -255,6 +255,27 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
       { wrapper: createWrapper() },
     );
 
+    // Wait for the modal to settle (search input is always rendered)
+    await waitFor(() =>
+      expect(screen.getByRole("textbox")).toBeInTheDocument(),
+    );
+    expect(screen.queryByText("Your saved listings")).not.toBeInTheDocument();
+  });
+
+  it("hides the saved listings section when all items are excluded", async () => {
+    render(
+      <CompareSearchModal
+        open={true}
+        onClose={vi.fn()}
+        excludeIds={["saved-111", "saved-222"]}
+        onSelect={vi.fn()}
+      />,
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() =>
+      expect(screen.getByRole("textbox")).toBeInTheDocument(),
+    );
     expect(screen.queryByText("Your saved listings")).not.toBeInTheDocument();
   });
 });
