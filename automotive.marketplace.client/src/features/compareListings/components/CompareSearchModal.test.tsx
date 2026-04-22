@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CompareSearchModal } from "./CompareSearchModal";
 import type { SearchListingsResponse } from "../types/SearchListingsResponse";
@@ -67,6 +67,7 @@ const createWrapper = () => {
 };
 
 beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
   vi.clearAllMocks();
   useAppSelectorMock.mockReturnValue(null);
   getSavedListingsOptionsMock.mockReturnValue({
@@ -78,6 +79,10 @@ beforeEach(() => {
     queryFn: async () => ({ data: searchResults }),
     enabled: true,
   });
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe("CompareSearchModal — new prop API", () => {
@@ -94,6 +99,7 @@ describe("CompareSearchModal — new prop API", () => {
     );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "camry" } });
+    await act(async () => { vi.advanceTimersByTime(300); });
 
     await waitFor(() =>
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
@@ -118,6 +124,7 @@ describe("CompareSearchModal — new prop API", () => {
     );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "camry" } });
+    await act(async () => { vi.advanceTimersByTime(300); });
 
     await waitFor(() =>
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(1),
@@ -141,6 +148,7 @@ describe("CompareSearchModal — new prop API", () => {
     );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "camry" } });
+    await act(async () => { vi.advanceTimersByTime(300); });
 
     await waitFor(() =>
       expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
@@ -335,6 +343,7 @@ describe("CompareSearchModal — liked listings (with query)", () => {
     );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "bmw" } });
+    await act(async () => { vi.advanceTimersByTime(300); });
 
     await waitFor(() =>
       expect(screen.getByText(/❤ Saved/)).toBeInTheDocument(),
@@ -360,6 +369,7 @@ describe("CompareSearchModal — liked listings (with query)", () => {
     );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "bmw" } });
+    await act(async () => { vi.advanceTimersByTime(300); });
 
     await waitFor(() =>
       expect(screen.getByText(/Honda/)).toBeInTheDocument(),

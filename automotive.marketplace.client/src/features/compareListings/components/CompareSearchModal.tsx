@@ -34,6 +34,13 @@ export const CompareSearchModal = ({
     return () => clearTimeout(timer);
   }, [query]);
 
+  useEffect(() => {
+    if (!open) {
+      setQuery("");
+      setDebouncedQuery("");
+    }
+  }, [open]);
+
   const userId = useAppSelector((state) => state.auth.userId);
 
   const { data: savedData } = useQuery({
@@ -61,7 +68,7 @@ export const CompareSearchModal = ({
     (s) => !excludeIds.includes(s.listingId),
   );
 
-  const showEmptyState = debouncedQuery === "";
+  const isQueryEmpty = debouncedQuery === "";
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -76,7 +83,7 @@ export const CompareSearchModal = ({
           autoFocus
         />
         <div className="mt-4 max-h-96 space-y-2 overflow-y-auto">
-          {showEmptyState && visibleSaved.length > 0 && (
+          {isQueryEmpty && visibleSaved.length > 0 && (
             <>
               <p className="text-muted-foreground px-1 text-xs font-semibold uppercase tracking-wide">
                 Your saved listings
@@ -109,9 +116,12 @@ export const CompareSearchModal = ({
             </>
           )}
 
-          {!showEmptyState && (
+          {!isQueryEmpty && (
             <>
-              {savedMatches.map((listing) => (
+              {[
+                ...savedMatches.map((r) => ({ ...r, isSaved: true as const })),
+                ...otherResults.map((r) => ({ ...r, isSaved: false as const })),
+              ].map((listing) => (
                 <div
                   key={listing.id}
                   className="flex items-center gap-3 rounded-lg border p-3"
@@ -137,43 +147,18 @@ export const CompareSearchModal = ({
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-600">
-                      ❤ Saved
-                    </span>
+                    {listing.isSaved && (
+                      <span
+                        aria-label="Saved listing"
+                        className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-600"
+                      >
+                        ❤ Saved
+                      </span>
+                    )}
                     <Button size="sm" onClick={() => onSelect(listing.id)}>
                       Compare
                     </Button>
                   </div>
-                </div>
-              ))}
-              {otherResults.map((listing) => (
-                <div
-                  key={listing.id}
-                  className="flex items-center gap-3 rounded-lg border p-3"
-                >
-                  <img
-                    src={
-                      listing.firstImageUrl ??
-                      "https://placehold.co/80x60?text=No+Image"
-                    }
-                    alt={`${listing.year} ${listing.makeName} ${listing.modelName}`}
-                    className="h-14 w-20 rounded object-cover"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium">
-                      {listing.year} {listing.makeName} {listing.modelName}
-                    </p>
-                    <p className="text-muted-foreground text-sm">
-                      {listing.price.toFixed(0)} € ·{" "}
-                      {listing.mileage.toLocaleString()} km · {listing.city}
-                    </p>
-                    <p className="text-muted-foreground text-sm">
-                      {listing.sellerName}
-                    </p>
-                  </div>
-                  <Button size="sm" onClick={() => onSelect(listing.id)}>
-                    Compare
-                  </Button>
                 </div>
               ))}
               {debouncedQuery &&
