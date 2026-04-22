@@ -85,6 +85,7 @@ builder.Services.AddLogging(logging =>
 });
 
 builder.Services.AddSignalR();
+builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.OfferExpiryService>();
 
 var app = builder.Build();
 
