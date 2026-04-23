@@ -9,6 +9,7 @@ import {
 import { getVariantsByModelIdOptions } from "@/features/variantList/api/getVariantsByModelIdOptions";
 import { Variant } from "@/features/variantList/types/Variant";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 type VariantTableProps = {
   modelId: string;
@@ -23,6 +24,7 @@ const VariantTable = ({
   onSelect,
   disabled,
 }: VariantTableProps) => {
+  const { t } = useTranslation("common");
   const {
     data: variantsQuery,
     isPending,
@@ -45,12 +47,12 @@ const VariantTable = ({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Fuel</TableHead>
-          <TableHead>Transmission</TableHead>
-          <TableHead>Power (kW)</TableHead>
-          <TableHead>Engine (ml)</TableHead>
-          <TableHead>Body Type</TableHead>
-          <TableHead>Doors</TableHead>
+          <TableHead>{t("variantTable.fuel")}</TableHead>
+          <TableHead>{t("variantTable.transmission")}</TableHead>
+          <TableHead>{t("variantTable.powerKw")}</TableHead>
+          <TableHead>{t("variantTable.engineMl")}</TableHead>
+          <TableHead>{t("variantTable.bodyType")}</TableHead>
+          <TableHead>{t("variantTable.doors")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -60,7 +62,7 @@ const VariantTable = ({
               colSpan={6}
               className="text-muted-foreground text-center text-sm"
             >
-              Loading variants…
+              {t("variantTable.loading")}
             </TableCell>
           </TableRow>
         )}
@@ -70,7 +72,7 @@ const VariantTable = ({
               colSpan={6}
               className="text-destructive text-center text-sm"
             >
-              Failed to load variants
+              {t("variantTable.failed")}
             </TableCell>
           </TableRow>
         )}
@@ -80,7 +82,7 @@ const VariantTable = ({
               colSpan={6}
               className="text-muted-foreground text-center text-sm"
             >
-              No variants available for this model
+              {t("variantTable.noVariants")}
             </TableCell>
           </TableRow>
         )}

@@ -12,6 +12,7 @@ import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 type MakeSelectProps = SelectRootProps & {
   isAllMakesEnabled: boolean;
@@ -25,6 +26,7 @@ const MakeSelect = ({
   className,
   ...props
 }: MakeSelectProps) => {
+  const { t } = useTranslation("common");
   const { data: makesQuery } = useQuery(getAllMakesOptions);
 
   const makes = makesQuery?.data || [];
@@ -39,7 +41,7 @@ const MakeSelect = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Makes</SelectLabel>
+          <SelectLabel>{t("select.makes")}</SelectLabel>
           {!isAllMakesEnabled || (
             <SelectItem value={UI_CONSTANTS.SELECT.ALL_MAKES.VALUE}>
               {UI_CONSTANTS.SELECT.ALL_MAKES.LABEL}
