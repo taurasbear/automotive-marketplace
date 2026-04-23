@@ -3,6 +3,7 @@ import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ListingSearchStateValues } from "../types/listingSearchStateValues";
 import { mapSearchValuesToSearchParams } from "../utils/listingSearchUtils";
 import ListingSearchFilters from "./ListingSearchFilters";
@@ -12,6 +13,7 @@ type ListingSearchProps = {
 };
 
 const ListingSearch = ({ className }: ListingSearchProps) => {
+  const { t } = useTranslation("listings");
   const [searchValues, setSearchValues] = useState<ListingSearchStateValues>({
     makeId: UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
     models: [UI_CONSTANTS.SELECT.ALL_MODELS.VALUE],
@@ -37,7 +39,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
         className,
       )}
     >
-      <label className="block pb-5 text-2xl font-semibold">Look up</label>
+      <label className="block pb-5 text-2xl font-semibold">{t("search.lookUp")}</label>
       <ListingSearchFilters
         searchValues={searchValues}
         updateSearchValue={updateSearchValue}
@@ -48,7 +50,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
           to="/listings"
           search={() => mapSearchValuesToSearchParams(searchValues)}
         >
-          <Button className="px-8 py-5 text-lg">Search</Button>
+          <Button className="px-8 py-5 text-lg">{t("search.search")}</Button>
         </Link>
       </div>
     </div>

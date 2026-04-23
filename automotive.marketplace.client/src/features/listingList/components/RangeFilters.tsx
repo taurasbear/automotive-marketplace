@@ -5,6 +5,7 @@ import {
   getPriceRange,
   getYearRange,
 } from "@/utils/rangeUtils";
+import { useTranslation } from "react-i18next";
 import { ValueOf } from "type-fest";
 import { RangeFilter } from "../types/rangeFilter";
 
@@ -17,21 +18,22 @@ type RangeFiltersProps = {
 };
 
 const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
+  const { t } = useTranslation("listings");
   return (
     <div className="columns-1 space-y-4">
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">Year</legend>
+        <legend className="mb-2 text-sm font-normal">{t("filters.year")}</legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getYearRange()}
-            label="Min"
+            label={t("filters.min")}
             className="min-h-12 rounded-r-none border-0 border-r-1 shadow-none"
             value={filters.minYear}
             onValueChange={(value) => onFilterChange("minYear", value)}
           />
           <BasicSelect
             options={getYearRange()}
-            label="Max"
+            label={t("filters.max")}
             className="min-h-12 rounded-l-none border-0 shadow-none"
             value={filters.maxYear}
             onValueChange={(value) => onFilterChange("maxYear", value)}
@@ -39,12 +41,12 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
         </div>
       </fieldset>
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">Price (€)</legend>
+        <legend className="mb-2 text-sm font-normal">{t("filters.price")}</legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getPriceRange()}
             suffix="€"
-            label="Min"
+            label={t("filters.min")}
             className="min-h-12 rounded-r-none border-0 border-r-1 shadow-none"
             value={filters.minPrice}
             onValueChange={(value) => onFilterChange("minPrice", value)}
@@ -52,7 +54,7 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
           <BasicSelect
             options={getPriceRange()}
             suffix="€"
-            label="Max"
+            label={t("filters.max")}
             className="min-h-12 rounded-l-none border-0 shadow-none"
             value={filters.maxPrice}
             onValueChange={(value) => onFilterChange("maxPrice", value)}
@@ -60,12 +62,12 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
         </div>
       </fieldset>
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">Mileage (km)</legend>
+        <legend className="mb-2 text-sm font-normal">{t("filters.mileage")}</legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getMileageRange()}
             suffix="km"
-            label="Min"
+            label={t("filters.min")}
             className="min-h-12 rounded-r-none border-0 border-r-1 shadow-none"
             value={filters.minMileage}
             onValueChange={(value) => onFilterChange("minMileage", value)}
@@ -73,7 +75,7 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
           <BasicSelect
             options={getMileageRange()}
             suffix="km"
-            label="Max"
+            label={t("filters.max")}
             className="min-h-12 rounded-l-none border-0 shadow-none"
             value={filters.maxMileage}
             onValueChange={(value) => onFilterChange("maxMileage", value)}
@@ -81,12 +83,12 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
         </div>
       </fieldset>
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">Power (kW)</legend>
+        <legend className="mb-2 text-sm font-normal">{t("filters.powerKw")}</legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getPowerRange()}
             suffix="kW"
-            label="Min"
+            label={t("filters.min")}
             className="min-h-12 rounded-r-none border-0 border-r-1 shadow-none"
             value={filters.minPower}
             onValueChange={(value) => onFilterChange("minPower", value)}
@@ -94,7 +96,7 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
           <BasicSelect
             options={getPowerRange()}
             suffix="kW"
-            label="Max"
+            label={t("filters.max")}
             className="min-h-12 rounded-l-none border-0 shadow-none"
             value={filters.maxPower}
             onValueChange={(value) => onFilterChange("maxPower", value)}
