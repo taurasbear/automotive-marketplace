@@ -7,6 +7,8 @@ export const HUB_METHODS = {
   RESPOND_TO_MEETING: "RespondToMeeting",
   SHARE_AVAILABILITY: "ShareAvailability",
   RESPOND_TO_AVAILABILITY: "RespondToAvailability",
+  CANCEL_MEETING: "CancelMeeting",
+  CANCEL_AVAILABILITY: "CancelAvailability",
   // Server → Client
   RECEIVE_MESSAGE: "ReceiveMessage",
   UPDATE_UNREAD_COUNT: "UpdateUnreadCount",
@@ -20,7 +22,9 @@ export const HUB_METHODS = {
   MEETING_DECLINED: "MeetingDeclined",
   MEETING_RESCHEDULED: "MeetingRescheduled",
   MEETING_EXPIRED: "MeetingExpired",
+  MEETING_CANCELLED: "MeetingCancelled",
   AVAILABILITY_SHARED: "AvailabilityShared",
   AVAILABILITY_RESPONDED: "AvailabilityResponded",
   AVAILABILITY_EXPIRED: "AvailabilityExpired",
+  AVAILABILITY_CANCELLED: "AvailabilityCancelled",
 } as const;

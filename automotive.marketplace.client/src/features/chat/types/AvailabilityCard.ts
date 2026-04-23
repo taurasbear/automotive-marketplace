@@ -1,4 +1,4 @@
-export type AvailabilityCardStatus = "Pending" | "Responded" | "Expired";
+export type AvailabilityCardStatus = "Pending" | "Responded" | "Expired" | "Cancelled";
 
 export type AvailabilitySlot = {
   id: string;

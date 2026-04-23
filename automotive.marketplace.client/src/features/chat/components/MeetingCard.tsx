@@ -75,6 +75,15 @@ const statusConfig = {
     subLabel: "No response in time",
     subLabelClass: "text-muted-foreground",
   },
+  Cancelled: {
+    headerClass: "bg-red-900",
+    borderClass: "border-red-300 dark:border-red-800",
+    label: "Meetup Cancelled",
+    icon: CalendarX,
+    labelClass: "text-red-200",
+    subLabel: "Cancelled",
+    subLabelClass: "text-red-400",
+  },
 } as const;
 
 const MeetingCard = ({
@@ -94,7 +103,8 @@ const MeetingCard = ({
   const isMuted =
     meeting.status === "Declined" ||
     meeting.status === "Expired" ||
-    meeting.status === "Rescheduled";
+    meeting.status === "Rescheduled" ||
+    meeting.status === "Cancelled";
 
   return (
     <>

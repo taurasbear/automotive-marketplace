@@ -3,7 +3,8 @@ export type MeetingStatus =
   | "Accepted"
   | "Declined"
   | "Rescheduled"
-  | "Expired";
+  | "Expired"
+  | "Cancelled";
 
 export type Meeting = {
   id: string;

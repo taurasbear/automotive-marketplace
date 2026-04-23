@@ -49,6 +49,13 @@ const statusConfig: Record<
     icon: Clock,
     labelClass: "text-muted",
   },
+  Cancelled: {
+    headerClass: "bg-red-900/60",
+    borderClass: "border-red-300 dark:border-red-800",
+    label: "Availability Cancelled",
+    icon: CalendarRange,
+    labelClass: "text-red-300",
+  },
 };
 
 const AvailabilityCardComponent = ({

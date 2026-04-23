@@ -56,3 +56,19 @@ export type AvailabilityExpiredPayload = {
   availabilityCardId: string;
   conversationId: string;
 };
+
+export type MeetingCancelledPayload = {
+  meetingId: string;
+  conversationId: string;
+  newStatus: "Cancelled";
+  initiatorId: string;
+  recipientId: string;
+};
+
+export type AvailabilityCancelledPayload = {
+  availabilityCardId: string;
+  conversationId: string;
+  newStatus: "Cancelled";
+  initiatorId: string;
+  recipientId: string;
+};
