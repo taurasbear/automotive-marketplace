@@ -47,7 +47,9 @@ const ModelListTable = ({ className }: ModelListTableProps) => {
             <TableRow key={m.id}>
               <TableCell>{m.name}</TableCell>
               <TableCell>{m.createdBy}</TableCell>
-              <TableCell>{new Date(m.createdAt).toLocaleDateString()}</TableCell>
+              <TableCell>
+                {new Date(m.createdAt).toLocaleDateString()}
+              </TableCell>
               <TableCell>
                 <ViewModelDialog id={m.id} />
                 <EditModelDialog id={m.id} />

@@ -27,9 +27,11 @@ const VariantListTable = ({
   makeId,
   className,
 }: VariantListTableProps) => {
-  const { data: variantsQuery, isLoading, isError } = useQuery(
-    getVariantsByModelIdOptions(modelId),
-  );
+  const {
+    data: variantsQuery,
+    isLoading,
+    isError,
+  } = useQuery(getVariantsByModelIdOptions(modelId));
 
   const { mutateAsync: deleteVariantAsync } = useDeleteVariant();
 
@@ -71,10 +73,7 @@ const VariantListTable = ({
               <TableCell>
                 <ViewVariantDialog variant={v} />
                 <EditVariantDialog variant={v} makeId={makeId} />
-                <Button
-                  variant="secondary"
-                  onClick={() => handleDelete(v.id)}
-                >
+                <Button variant="secondary" onClick={() => handleDelete(v.id)}>
                   <Trash />
                 </Button>
               </TableCell>

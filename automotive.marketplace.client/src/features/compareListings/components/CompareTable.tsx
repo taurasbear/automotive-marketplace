@@ -5,7 +5,9 @@ import { CompareRow } from "./CompareRow";
 type RowSpec = {
   field: keyof GetListingByIdResponse;
   label: string;
-  format?: (value: GetListingByIdResponse[keyof GetListingByIdResponse]) => string;
+  format?: (
+    value: GetListingByIdResponse[keyof GetListingByIdResponse],
+  ) => string;
 };
 
 type SectionSpec = {
@@ -21,7 +23,11 @@ const TABLE_SECTIONS: SectionSpec[] = [
       { field: "modelName", label: "Model" },
       { field: "bodyTypeName", label: "Body Type" },
       { field: "year", label: "Year" },
-      { field: "isUsed", label: "Condition", format: (v) => (v ? "Used" : "New") },
+      {
+        field: "isUsed",
+        label: "Condition",
+        format: (v) => (v ? "Used" : "New"),
+      },
       {
         field: "mileage",
         label: "Mileage",

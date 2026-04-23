@@ -18,7 +18,15 @@ public class Message : BaseEntity
 
     public Guid? OfferId { get; set; }
 
+    public Guid? MeetingId { get; set; }
+
+    public Guid? AvailabilityCardId { get; set; }
+
     public virtual Offer? Offer { get; set; }
+
+    public virtual Meeting? Meeting { get; set; }
+
+    public virtual AvailabilityCard? AvailabilityCard { get; set; }
 
     public virtual Conversation Conversation { get; set; } = null!;
 

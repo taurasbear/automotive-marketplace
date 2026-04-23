@@ -26,6 +26,10 @@ public sealed record GetMessagesResponse
 
         public OfferData? Offer { get; set; }
 
+        public MeetingData? Meeting { get; set; }
+
+        public AvailabilityCardData? AvailabilityCard { get; set; }
+
         public sealed record OfferData
         {
             public Guid Id { get; set; }
@@ -43,6 +47,51 @@ public sealed record GetMessagesResponse
             public Guid InitiatorId { get; set; }
 
             public Guid? ParentOfferId { get; set; }
+        }
+
+        public sealed record MeetingData
+        {
+            public Guid Id { get; set; }
+
+            public DateTime ProposedAt { get; set; }
+
+            public int DurationMinutes { get; set; }
+
+            public string? LocationText { get; set; }
+
+            public decimal? LocationLat { get; set; }
+
+            public decimal? LocationLng { get; set; }
+
+            public MeetingStatus Status { get; set; }
+
+            public DateTime ExpiresAt { get; set; }
+
+            public Guid InitiatorId { get; set; }
+
+            public Guid? ParentMeetingId { get; set; }
+        }
+
+        public sealed record AvailabilityCardData
+        {
+            public Guid Id { get; set; }
+
+            public AvailabilityCardStatus Status { get; set; }
+
+            public DateTime ExpiresAt { get; set; }
+
+            public Guid InitiatorId { get; set; }
+
+            public List<SlotData> Slots { get; set; } = [];
+
+            public sealed record SlotData
+            {
+                public Guid Id { get; set; }
+
+                public DateTime StartTime { get; set; }
+
+                public DateTime EndTime { get; set; }
+            }
         }
     }
 }

@@ -23,10 +23,7 @@ const DrivetrainToggleGroup = ({
     <div className={cn(className)}>
       <ToggleGroup {...props}>
         {drivetrains.map((drivetrain) => (
-          <ToggleGroupItem
-            key={drivetrain.id}
-            value={drivetrain.id}
-          >
+          <ToggleGroupItem key={drivetrain.id} value={drivetrain.id}>
             {drivetrain.name}
           </ToggleGroupItem>
         ))}

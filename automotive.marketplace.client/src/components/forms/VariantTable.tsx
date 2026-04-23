@@ -23,9 +23,11 @@ const VariantTable = ({
   onSelect,
   disabled,
 }: VariantTableProps) => {
-  const { data: variantsQuery, isPending, isError } = useQuery(
-    getVariantsByModelIdOptions(modelId || undefined),
-  );
+  const {
+    data: variantsQuery,
+    isPending,
+    isError,
+  } = useQuery(getVariantsByModelIdOptions(modelId || undefined));
 
   if (!modelId || disabled) return null;
 
@@ -54,21 +56,30 @@ const VariantTable = ({
       <TableBody>
         {isPending && (
           <TableRow>
-            <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">
+            <TableCell
+              colSpan={6}
+              className="text-muted-foreground text-center text-sm"
+            >
               Loading variants…
             </TableCell>
           </TableRow>
         )}
         {isError && (
           <TableRow>
-            <TableCell colSpan={6} className="text-center text-sm text-destructive">
+            <TableCell
+              colSpan={6}
+              className="text-destructive text-center text-sm"
+            >
               Failed to load variants
             </TableCell>
           </TableRow>
         )}
         {!isPending && !isError && variants.length === 0 && (
           <TableRow>
-            <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">
+            <TableCell
+              colSpan={6}
+              className="text-muted-foreground text-center text-sm"
+            >
               No variants available for this model
             </TableCell>
           </TableRow>

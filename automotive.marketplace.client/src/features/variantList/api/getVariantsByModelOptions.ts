@@ -7,7 +7,10 @@ type GetVariantsByModelParams = {
   year?: number;
 };
 
-export const getVariantsByModelOptions = ({ modelId, year }: GetVariantsByModelParams) =>
+export const getVariantsByModelOptions = ({
+  modelId,
+  year,
+}: GetVariantsByModelParams) =>
   queryOptions({
     queryKey: [...variantKeys.byModelId(modelId ?? ""), year ?? null],
     queryFn: modelId ? () => getVariantsByModelId(modelId) : skipToken,

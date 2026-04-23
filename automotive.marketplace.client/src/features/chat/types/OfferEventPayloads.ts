@@ -1,4 +1,4 @@
-import type { Offer } from './Offer';
+import type { Offer } from "./Offer";
 
 export type OfferMadePayload = {
   messageId: string;
@@ -13,7 +13,7 @@ export type OfferMadePayload = {
 export type OfferStatusUpdatedPayload = {
   offerId: string;
   conversationId: string;
-  newStatus: 'Accepted' | 'Declined';
+  newStatus: "Accepted" | "Declined";
   initiatorId: string;
   responderId: string;
   counterOffer: null;
@@ -22,7 +22,7 @@ export type OfferStatusUpdatedPayload = {
 export type OfferCounteredPayload = {
   offerId: string;
   conversationId: string;
-  newStatus: 'Countered';
+  newStatus: "Countered";
   initiatorId: string;
   responderId: string;
   counterOffer: OfferMadePayload;

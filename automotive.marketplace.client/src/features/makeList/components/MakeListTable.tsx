@@ -57,7 +57,9 @@ const MakeListTable = ({ className }: MakeListTableProps) => {
             <TableRow key={m.id}>
               <TableCell>{m.name}</TableCell>
               <TableCell>{m.createdBy}</TableCell>
-              <TableCell>{new Date(m.createdAt).toLocaleDateString()}</TableCell>
+              <TableCell>
+                {new Date(m.createdAt).toLocaleDateString()}
+              </TableCell>
               <TableCell className="flex gap-1">
                 <EditMakeDialog id={m.id} />
                 <AlertDialog>

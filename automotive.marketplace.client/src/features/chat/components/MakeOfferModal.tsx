@@ -1,18 +1,18 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useState } from 'react';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 type MakeOfferModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  mode: 'offer' | 'counter';
+  mode: "offer" | "counter";
   listingPrice: number;
   conversationId?: string;
   offerId?: string;
@@ -29,7 +29,7 @@ const MakeOfferModal = ({
   onSubmit,
 }: MakeOfferModalProps) => {
   const [rawValue, setRawValue] = useState(
-    initialAmount !== undefined ? String(Math.round(initialAmount)) : '',
+    initialAmount !== undefined ? String(Math.round(initialAmount)) : "",
   );
 
   const amount = parseFloat(rawValue);
@@ -54,7 +54,9 @@ const MakeOfferModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>{mode === 'counter' ? 'Counter Offer' : 'Make an Offer'}</DialogTitle>
+          <DialogTitle>
+            {mode === "counter" ? "Counter Offer" : "Make an Offer"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
@@ -66,7 +68,9 @@ const MakeOfferModal = ({
             {percentageOff !== null && percentageOff > 0 && (
               <div className="text-right">
                 <p className="text-muted-foreground text-xs">Discount</p>
-                <p className="text-destructive font-semibold">−{percentageOff}%</p>
+                <p className="text-destructive font-semibold">
+                  −{percentageOff}%
+                </p>
               </div>
             )}
           </div>
@@ -84,12 +88,14 @@ const MakeOfferModal = ({
             />
             {isTooLow && (
               <p className="text-destructive text-xs">
-                Minimum offer is €{Math.ceil(minAmount).toLocaleString()} (⅓ of asking price).
+                Minimum offer is €{Math.ceil(minAmount).toLocaleString()} (⅓ of
+                asking price).
               </p>
             )}
             {isTooHigh && (
               <p className="text-destructive text-xs">
-                Offer cannot exceed the listing price of €{listingPrice.toLocaleString()}.
+                Offer cannot exceed the listing price of €
+                {listingPrice.toLocaleString()}.
               </p>
             )}
           </div>
@@ -99,7 +105,7 @@ const MakeOfferModal = ({
               Cancel
             </Button>
             <Button onClick={handleSubmit} disabled={!isValid}>
-              {mode === 'counter' ? 'Send Counter' : 'Send Offer'}
+              {mode === "counter" ? "Send Counter" : "Send Offer"}
             </Button>
           </div>
         </div>

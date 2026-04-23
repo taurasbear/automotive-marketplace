@@ -101,13 +101,13 @@ public class GetConversationsQueryHandlerTests(
             CancellationToken.None)).ToList();
 
         result.Should().ContainSingle();
-        result[0].BuyerHasLiked.Should().BeTrue();
+        result[0].BuyerHasEngaged.Should().BeTrue();
         result[0].BuyerId.Should().Be(buyer.Id);
         result[0].SellerId.Should().Be(seller.Id);
     }
 
     [Fact]
-    public async Task Handle_BuyerHasNotLikedListing_ShouldReturnBuyerHasLikedFalse()
+    public async Task Handle_BuyerHasNotEngaged_ShouldReturnBuyerHasEngagedFalse()
     {
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
@@ -120,7 +120,7 @@ public class GetConversationsQueryHandlerTests(
             CancellationToken.None)).ToList();
 
         result.Should().ContainSingle();
-        result[0].BuyerHasLiked.Should().BeFalse();
+        result[0].BuyerHasEngaged.Should().BeFalse();
     }
 
     private static async Task<(User buyer, User seller, Conversation conversation, Listing listing)>

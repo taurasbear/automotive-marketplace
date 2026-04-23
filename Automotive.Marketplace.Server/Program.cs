@@ -88,6 +88,7 @@ builder.Services.AddSignalR()
     .AddJsonProtocol(options =>
         options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.OfferExpiryService>();
+builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.MeetingExpiryService>();
 
 var app = builder.Build();
 

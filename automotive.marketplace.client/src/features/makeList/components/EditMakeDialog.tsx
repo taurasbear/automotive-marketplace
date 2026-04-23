@@ -27,7 +27,9 @@ const EditMakeDialog = ({ id }: EditMakeDialogProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <Suspense fallback={<p className="text-sm text-muted-foreground">Loading…</p>}>
+        <Suspense
+          fallback={<p className="text-muted-foreground text-sm">Loading…</p>}
+        >
           <EditMakeDialogContent id={id} onSubmit={handleSubmit} />
         </Suspense>
       </DialogContent>

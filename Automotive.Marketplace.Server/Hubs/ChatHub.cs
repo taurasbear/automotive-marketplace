@@ -1,7 +1,11 @@
 using System.Security.Claims;
 using Automotive.Marketplace.Application.Features.ChatFeatures.MakeOffer;
+using Automotive.Marketplace.Application.Features.ChatFeatures.ProposeMeeting;
+using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToAvailability;
+using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToMeeting;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToOffer;
 using Automotive.Marketplace.Application.Features.ChatFeatures.SendMessage;
+using Automotive.Marketplace.Application.Features.ChatFeatures.ShareAvailability;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -68,5 +72,81 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync(eventName, result);
         await Clients.Group($"user-{result.ResponderId}").SendAsync(eventName, result);
+    }
+
+    public async Task ProposeMeeting(
+        Guid conversationId, DateTime proposedAt, int durationMinutes,
+        string? locationText = null, decimal? locationLat = null, decimal? locationLng = null)
+    {
+        var result = await mediator.Send(new ProposeMeetingCommand
+        {
+            ConversationId = conversationId,
+            InitiatorId = UserId,
+            ProposedAt = proposedAt,
+            DurationMinutes = durationMinutes,
+            LocationText = locationText,
+            LocationLat = locationLat,
+            LocationLng = locationLng
+        });
+
+        await Clients.Group($"user-{UserId}").SendAsync("MeetingProposed", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("MeetingProposed", result);
+    }
+
+    public async Task RespondToMeeting(Guid meetingId, string action,
+        RespondToMeetingCommand.RescheduleData? rescheduleData = null)
+    {
+        var result = await mediator.Send(new RespondToMeetingCommand
+        {
+            MeetingId = meetingId,
+            ResponderId = UserId,
+            Action = Enum.Parse<MeetingResponseAction>(action, ignoreCase: true),
+            Reschedule = rescheduleData
+        });
+
+        var eventName = result.NewStatus switch
+        {
+            Domain.Enums.MeetingStatus.Accepted => "MeetingAccepted",
+            Domain.Enums.MeetingStatus.Declined => "MeetingDeclined",
+            Domain.Enums.MeetingStatus.Rescheduled => "MeetingRescheduled",
+            _ => throw new InvalidOperationException($"Unexpected meeting status: {result.NewStatus}")
+        };
+
+        await Clients.Group($"user-{result.InitiatorId}").SendAsync(eventName, result);
+        await Clients.Group($"user-{result.ResponderId}").SendAsync(eventName, result);
+    }
+
+    public async Task ShareAvailability(Guid conversationId,
+        List<ShareAvailabilityCommand.SlotData> slots)
+    {
+        var result = await mediator.Send(new ShareAvailabilityCommand
+        {
+            ConversationId = conversationId,
+            InitiatorId = UserId,
+            Slots = slots
+        });
+
+        await Clients.Group($"user-{UserId}").SendAsync("AvailabilityShared", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("AvailabilityShared", result);
+    }
+
+    public async Task RespondToAvailability(Guid availabilityCardId, string action,
+        Guid? slotId = null, List<RespondToAvailabilityCommand.ShareBackSlot>? shareBackSlots = null)
+    {
+        var result = await mediator.Send(new RespondToAvailabilityCommand
+        {
+            AvailabilityCardId = availabilityCardId,
+            ResponderId = UserId,
+            Action = Enum.Parse<AvailabilityResponseAction>(action, ignoreCase: true),
+            SlotId = slotId,
+            ShareBackSlots = shareBackSlots
+        });
+
+        var initiatorId = result.Action == AvailabilityResponseAction.PickSlot
+            ? result.PickedSlotMeeting!.RecipientId
+            : result.SharedBackAvailability!.RecipientId;
+
+        await Clients.Group($"user-{UserId}").SendAsync("AvailabilityResponded", result);
+        await Clients.Group($"user-{initiatorId}").SendAsync("AvailabilityResponded", result);
     }
 }

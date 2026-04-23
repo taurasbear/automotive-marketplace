@@ -12,8 +12,7 @@ const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => (
   <div className="text-center">
     <img
       src={
-        listing.images[0]?.url ??
-        "https://placehold.co/200x150?text=No+Image"
+        listing.images[0]?.url ?? "https://placehold.co/200x150?text=No+Image"
       }
       alt={`${listing.year} ${listing.makeName} ${listing.modelName}`}
       className="mx-auto h-32 w-48 rounded object-cover"
@@ -22,7 +21,7 @@ const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => (
       {listing.year} {listing.makeName} {listing.modelName}
     </p>
     <p className="text-primary font-bold">{listing.price.toFixed(0)} €</p>
-    <p className="text-sm text-muted-foreground">{listing.city}</p>
+    <p className="text-muted-foreground text-sm">{listing.city}</p>
     {onChange && (
       <Button
         variant="outline"
@@ -50,9 +49,9 @@ export const CompareHeader = ({
   onChangeA,
   onChangeB,
 }: CompareHeaderProps) => (
-  <div className="sticky top-0 z-10 mb-4 grid grid-cols-3 rounded-lg border bg-background p-4 shadow-sm">
+  <div className="bg-background sticky top-0 z-10 mb-4 grid grid-cols-3 rounded-lg border p-4 shadow-sm">
     <div className="flex items-center">
-      <span className="text-sm font-semibold text-muted-foreground">
+      <span className="text-muted-foreground text-sm font-semibold">
         Specification
       </span>
     </div>

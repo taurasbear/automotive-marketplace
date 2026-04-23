@@ -25,6 +25,83 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.AvailabilityCard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ConversationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("InitiatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("InitiatorId");
+
+                    b.ToTable("AvailabilityCards");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.AvailabilitySlot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AvailabilityCardId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AvailabilityCardId");
+
+                    b.ToTable("AvailabilitySlots");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -422,10 +499,76 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("Makes");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Meeting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ConversationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("DurationMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("InitiatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal?>("LocationLat")
+                        .HasPrecision(10, 7)
+                        .HasColumnType("numeric(10,7)");
+
+                    b.Property<decimal?>("LocationLng")
+                        .HasPrecision(10, 7)
+                        .HasColumnType("numeric(10,7)");
+
+                    b.Property<string>("LocationText")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("ParentMeetingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ProposedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("InitiatorId");
+
+                    b.HasIndex("ParentMeetingId");
+
+                    b.ToTable("Meetings");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AvailabilityCardId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
@@ -444,6 +587,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("boolean");
+
+                    b.Property<Guid?>("MeetingId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("MessageType")
                         .ValueGeneratedOnAdd()
@@ -468,7 +614,13 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvailabilityCardId")
+                        .IsUnique();
+
                     b.HasIndex("ConversationId");
+
+                    b.HasIndex("MeetingId")
+                        .IsUnique();
 
                     b.HasIndex("OfferId")
                         .IsUnique();
@@ -880,6 +1032,36 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("Variants");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.AvailabilityCard", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Conversation", "Conversation")
+                        .WithMany()
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.User", "Initiator")
+                        .WithMany()
+                        .HasForeignKey("InitiatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("Initiator");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.AvailabilitySlot", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.AvailabilityCard", "AvailabilityCard")
+                        .WithMany("Slots")
+                        .HasForeignKey("AvailabilityCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AvailabilityCard");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyTypeTranslation", b =>
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.BodyType", "BodyType")
@@ -970,13 +1152,49 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("Variant");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Meeting", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Conversation", "Conversation")
+                        .WithMany()
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.User", "Initiator")
+                        .WithMany()
+                        .HasForeignKey("InitiatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Meeting", "ParentMeeting")
+                        .WithMany("CounterMeetings")
+                        .HasForeignKey("ParentMeetingId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("Initiator");
+
+                    b.Navigation("ParentMeeting");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Message", b =>
                 {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.AvailabilityCard", "AvailabilityCard")
+                        .WithOne("Message")
+                        .HasForeignKey("Automotive.Marketplace.Domain.Entities.Message", "AvailabilityCardId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Conversation", "Conversation")
                         .WithMany("Messages")
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Meeting", "Meeting")
+                        .WithOne("Message")
+                        .HasForeignKey("Automotive.Marketplace.Domain.Entities.Message", "MeetingId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Offer", "Offer")
                         .WithOne("Message")
@@ -989,7 +1207,11 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("AvailabilityCard");
+
                     b.Navigation("Conversation");
+
+                    b.Navigation("Meeting");
 
                     b.Navigation("Offer");
 
@@ -1139,6 +1361,13 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("Transmission");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.AvailabilityCard", b =>
+                {
+                    b.Navigation("Message");
+
+                    b.Navigation("Slots");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyType", b =>
                 {
                     b.Navigation("Translations");
@@ -1167,6 +1396,13 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Make", b =>
                 {
                     b.Navigation("Models");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Meeting", b =>
+                {
+                    b.Navigation("CounterMeetings");
+
+                    b.Navigation("Message");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Model", b =>

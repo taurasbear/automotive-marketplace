@@ -1,4 +1,9 @@
-export type OfferStatus = 'Pending' | 'Accepted' | 'Declined' | 'Countered' | 'Expired';
+export type OfferStatus =
+  | "Pending"
+  | "Accepted"
+  | "Declined"
+  | "Countered"
+  | "Expired";
 
 export type Offer = {
   id: string;
