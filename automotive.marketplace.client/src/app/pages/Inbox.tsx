@@ -1,9 +1,29 @@
 import { ConversationList, MessageThread } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
-const Inbox = () => {
+type InboxProps = {
+  initialConversationId?: string;
+};
+
+const Inbox = ({ initialConversationId }: InboxProps) => {
   const [selected, setSelected] = useState<ConversationSummary | null>(null);
+  const navigate = useNavigate();
+
+  const handleSelect = (conversation: ConversationSummary) => {
+    setSelected(conversation);
+    void navigate({ to: "/inbox/$conversationId", params: { conversationId: conversation.id } });
+  };
+
+  const handleInitialLoad = (conversation: ConversationSummary | null) => {
+    if (selected) return;
+    if (conversation) {
+      setSelected(conversation);
+    } else if (initialConversationId) {
+      void navigate({ to: "/inbox", replace: true });
+    }
+  };
 
   return (
     <div className="flex h-[calc(100vh-64px)] overflow-hidden">
@@ -12,8 +32,10 @@ const Inbox = () => {
           <h1 className="text-lg font-semibold">Messages</h1>
         </div>
         <ConversationList
-          selectedId={selected?.id ?? null}
-          onSelect={setSelected}
+          selectedId={selected?.id ?? initialConversationId ?? null}
+          onSelect={handleSelect}
+          initialConversationId={initialConversationId}
+          onInitialLoad={handleInitialLoad}
         />
       </aside>
 

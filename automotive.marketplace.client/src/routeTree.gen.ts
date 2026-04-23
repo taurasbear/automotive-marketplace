@@ -20,8 +20,10 @@ import { Route as InboxRouteImport } from './app/routes/inbox'
 import { Route as CompareRouteImport } from './app/routes/compare'
 import { Route as AboutRouteImport } from './app/routes/about'
 import { Route as IndexRouteImport } from './app/routes/index'
+import { Route as InboxIndexRouteImport } from './app/routes/inbox/index'
 import { Route as ListingCreateRouteImport } from './app/routes/listing/create'
 import { Route as ListingIdRouteImport } from './app/routes/listing/$id'
+import { Route as InboxConversationIdRouteImport } from './app/routes/inbox/$conversationId'
 
 const VariantsRoute = VariantsRouteImport.update({
   id: '/variants',
@@ -78,6 +80,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InboxIndexRoute = InboxIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => InboxRoute,
+} as any)
 const ListingCreateRoute = ListingCreateRouteImport.update({
   id: '/listing/create',
   path: '/listing/create',
@@ -88,12 +95,17 @@ const ListingIdRoute = ListingIdRouteImport.update({
   path: '/listing/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InboxConversationIdRoute = InboxConversationIdRouteImport.update({
+  id: '/$conversationId',
+  path: '/$conversationId',
+  getParentRoute: () => InboxRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
-  '/inbox': typeof InboxRoute
+  '/inbox': typeof InboxRouteWithChildren
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
@@ -101,14 +113,15 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
+  '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/inbox/': typeof InboxIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
-  '/inbox': typeof InboxRoute
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
@@ -116,15 +129,17 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
+  '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/inbox': typeof InboxIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
-  '/inbox': typeof InboxRoute
+  '/inbox': typeof InboxRouteWithChildren
   '/listings': typeof ListingsRoute
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
@@ -132,8 +147,10 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
+  '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/inbox/': typeof InboxIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -149,14 +166,15 @@ export interface FileRouteTypes {
     | '/register'
     | '/saved'
     | '/variants'
+    | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/inbox/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/compare'
-    | '/inbox'
     | '/listings'
     | '/login'
     | '/makes'
@@ -164,8 +182,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/saved'
     | '/variants'
+    | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/inbox'
   id:
     | '__root__'
     | '/'
@@ -179,15 +199,17 @@ export interface FileRouteTypes {
     | '/register'
     | '/saved'
     | '/variants'
+    | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/inbox/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CompareRoute: typeof CompareRoute
-  InboxRoute: typeof InboxRoute
+  InboxRoute: typeof InboxRouteWithChildren
   ListingsRoute: typeof ListingsRoute
   LoginRoute: typeof LoginRoute
   MakesRoute: typeof MakesRoute
@@ -278,6 +300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inbox/': {
+      id: '/inbox/'
+      path: '/'
+      fullPath: '/inbox/'
+      preLoaderRoute: typeof InboxIndexRouteImport
+      parentRoute: typeof InboxRoute
+    }
     '/listing/create': {
       id: '/listing/create'
       path: '/listing/create'
@@ -292,14 +321,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ListingIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inbox/$conversationId': {
+      id: '/inbox/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/inbox/$conversationId'
+      preLoaderRoute: typeof InboxConversationIdRouteImport
+      parentRoute: typeof InboxRoute
+    }
   }
 }
+
+interface InboxRouteChildren {
+  InboxConversationIdRoute: typeof InboxConversationIdRoute
+  InboxIndexRoute: typeof InboxIndexRoute
+}
+
+const InboxRouteChildren: InboxRouteChildren = {
+  InboxConversationIdRoute: InboxConversationIdRoute,
+  InboxIndexRoute: InboxIndexRoute,
+}
+
+const InboxRouteWithChildren = InboxRoute._addFileChildren(InboxRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CompareRoute: CompareRoute,
-  InboxRoute: InboxRoute,
+  InboxRoute: InboxRouteWithChildren,
   ListingsRoute: ListingsRoute,
   LoginRoute: LoginRoute,
   MakesRoute: MakesRoute,

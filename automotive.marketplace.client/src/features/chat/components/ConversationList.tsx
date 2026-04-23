@@ -1,18 +1,35 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
+import { useEffect, useRef } from "react";
 import { getConversationsOptions } from "../api/getConversationsOptions";
 import type { ConversationSummary } from "../types/ConversationSummary";
 
 type ConversationListProps = {
   selectedId: string | null;
   onSelect: (conversation: ConversationSummary) => void;
+  initialConversationId?: string;
+  onInitialLoad?: (conversation: ConversationSummary | null) => void;
 };
 
-const ConversationList = ({ selectedId, onSelect }: ConversationListProps) => {
+const ConversationList = ({
+  selectedId,
+  onSelect,
+  initialConversationId,
+  onInitialLoad,
+}: ConversationListProps) => {
   const { data: conversationsQuery } = useSuspenseQuery(
     getConversationsOptions(),
   );
   const conversations = conversationsQuery.data;
+  const didAutoSelect = useRef(false);
+
+  useEffect(() => {
+    if (didAutoSelect.current || !initialConversationId || !onInitialLoad)
+      return;
+    didAutoSelect.current = true;
+    const match = conversations.find((c) => c.id === initialConversationId);
+    onInitialLoad(match ?? null);
+  }, [conversations, initialConversationId, onInitialLoad]);
 
   if (conversations.length === 0) {
     return (
