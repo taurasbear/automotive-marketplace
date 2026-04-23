@@ -25,5 +25,11 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
 
         builder.Property(m => m.OfferId)
             .IsRequired(false);
+
+        builder.Property(m => m.MeetingId)
+            .IsRequired(false);
+
+        builder.Property(m => m.AvailabilityCardId)
+            .IsRequired(false);
     }
 }
