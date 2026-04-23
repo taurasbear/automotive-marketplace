@@ -84,7 +84,10 @@ builder.Services.AddLogging(logging =>
     logging.AddDebug();
 });
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR()
+    .AddJsonProtocol(options =>
+        options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.OfferExpiryService>();
 
 var app = builder.Build();
 

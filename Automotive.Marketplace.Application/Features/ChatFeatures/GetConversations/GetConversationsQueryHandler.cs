@@ -40,6 +40,10 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
             if (firstImage is not null)
                 thumbnailUrl = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey);
 
+            var buyerHasLiked = await repository.AsQueryable<UserListingLike>()
+                .AnyAsync(l => l.UserId == conversation.BuyerId
+                            && l.ListingId == listing.Id, cancellationToken);
+
             result.Add(new ConversationSummaryResponse
             {
                 Id = conversation.Id,
@@ -57,7 +61,10 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
                 CounterpartUsername = counterpart.Username,
                 LastMessage = lastMessage?.Content,
                 LastMessageAt = conversation.LastMessageAt,
-                UnreadCount = unreadCount
+                UnreadCount = unreadCount,
+                BuyerId = conversation.BuyerId,
+                SellerId = listing.SellerId,
+                BuyerHasLiked = buyerHasLiked
             });
         }
 

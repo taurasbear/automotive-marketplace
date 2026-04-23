@@ -8,6 +8,7 @@ import { useMarkMessagesRead } from "../api/useMarkMessagesRead";
 import type { ConversationSummary } from "../types/ConversationSummary";
 import ActionBar from "./ActionBar";
 import ListingCard from "./ListingCard";
+import OfferCard from "./OfferCard";
 
 type MessageThreadProps = {
   conversation: ConversationSummary;
@@ -18,12 +19,12 @@ const MessageThread = ({
   conversation,
   showListingCard = true,
 }: MessageThreadProps) => {
-  const userId = useAppSelector((s) => s.auth.userId);
+  const userId = useAppSelector((s) => s.auth.userId) ?? "";
   const { data: messagesQuery } = useSuspenseQuery(
     getMessagesOptions({ conversationId: conversation.id }),
   );
   const messages = messagesQuery.data.messages;
-  const { sendMessage } = useChatHub();
+  const { sendMessage, sendOffer, respondToOffer } = useChatHub();
   const { mutate: markRead } = useMarkMessagesRead();
   const [input, setInput] = useState("");
   const [sendError, setSendError] = useState<string | null>(null);
@@ -36,6 +37,10 @@ const MessageThread = ({
   useEffect(() => {
     markRead(conversation.id);
   }, [messages.length, conversation.id, markRead]);
+
+  const hasActiveOffer = messages.some(
+    (m) => m.messageType === "Offer" && m.offer?.status === "Pending",
+  );
 
   const handleSend = () => {
     const trimmed = input.trim();
@@ -61,9 +66,37 @@ const MessageThread = ({
           listingThumbnail={conversation.listingThumbnail}
         />
       )}
-      <ActionBar />
       <div className="flex-1 space-y-2 overflow-y-auto p-4">
         {messages.map((m) => {
+          if (m.messageType === "Offer" && m.offer) {
+            const isOwn = m.senderId === userId;
+            return (
+              <div
+                key={m.id}
+                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+              >
+                <OfferCard
+                  offer={m.offer}
+                  currentUserId={userId}
+                  listingPrice={conversation.listingPrice}
+                  onAccept={(offerId) =>
+                    respondToOffer({ offerId, action: "Accept" })
+                  }
+                  onDecline={(offerId) =>
+                    respondToOffer({ offerId, action: "Decline" })
+                  }
+                  onCounter={(offerId, amount) =>
+                    respondToOffer({
+                      offerId,
+                      action: "Counter",
+                      counterAmount: amount,
+                    })
+                  }
+                />
+              </div>
+            );
+          }
+
           const isOwn = m.senderId === userId;
           return (
             <div
@@ -88,6 +121,18 @@ const MessageThread = ({
         <p className="text-destructive px-3 pb-1 text-xs">{sendError}</p>
       )}
       <div className="border-border flex items-center gap-2 border-t p-3">
+        <ActionBar
+          currentUserId={userId}
+          buyerId={conversation.buyerId}
+          sellerId={conversation.sellerId}
+          listingPrice={conversation.listingPrice}
+          conversationId={conversation.id}
+          buyerHasLiked={conversation.buyerHasLiked}
+          hasActiveOffer={hasActiveOffer}
+          onSendOffer={(amount) =>
+            sendOffer({ conversationId: conversation.id, amount })
+          }
+        />
         <input
           className="border-input bg-background focus:ring-ring flex-1 rounded-full border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
           placeholder={`Message ${conversation.counterpartUsername}...`}

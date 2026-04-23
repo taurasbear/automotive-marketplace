@@ -9,4 +9,7 @@ export type ConversationSummary = {
   lastMessage: string | null;
   lastMessageAt: string;
   unreadCount: number;
+  buyerId: string;
+  sellerId: string;
+  buyerHasLiked: boolean;
 };
