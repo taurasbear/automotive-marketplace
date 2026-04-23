@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { MapPin } from "lucide-react";
 import { useState } from "react";
 import type { Meeting } from "../types/Meeting";
+import { getTimezoneOffsetLabel } from "../utils/timezone";
 
 type ProposeMeetingModalProps = {
   open: boolean;
@@ -34,12 +35,19 @@ const ProposeMeetingModal = ({
   initialMeeting,
   onSubmit,
 }: ProposeMeetingModalProps) => {
+  const timezone = getTimezoneOffsetLabel();
   const now = new Date();
+  
+  const formatLocalDate = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const formatLocalTime = (d: Date) =>
+    `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+
   const defaultDate = initialMeeting
-    ? new Date(initialMeeting.proposedAt).toISOString().slice(0, 10)
+    ? formatLocalDate(new Date(initialMeeting.proposedAt))
     : "";
   const defaultTime = initialMeeting
-    ? new Date(initialMeeting.proposedAt).toISOString().slice(11, 16)
+    ? formatLocalTime(new Date(initialMeeting.proposedAt))
     : "";
 
   const [date, setDate] = useState(defaultDate);
@@ -54,7 +62,7 @@ const ProposeMeetingModal = ({
   const [lat, setLat] = useState(initialMeeting?.locationLat?.toString() ?? "");
   const [lng, setLng] = useState(initialMeeting?.locationLng?.toString() ?? "");
 
-  const proposedAt = date && time ? new Date(`${date}T${time}:00Z`) : null;
+  const proposedAt = date && time ? new Date(`${date}T${time}:00`) : null;
   const isInFuture = proposedAt ? proposedAt > now : false;
   const isValid = !!date && !!time && isInFuture && duration > 0;
 
@@ -104,7 +112,7 @@ const ProposeMeetingModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-time">Start time (UTC)</Label>
+            <Label htmlFor="meeting-time">Start time ({timezone})</Label>
             <Input
               id="meeting-time"
               type="time"
