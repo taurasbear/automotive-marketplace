@@ -45,6 +45,32 @@ public class GetMessagesQueryHandler(IRepository repository)
                     ExpiresAt = m.Offer.ExpiresAt,
                     InitiatorId = m.Offer.InitiatorId,
                     ParentOfferId = m.Offer.ParentOfferId
+                },
+                Meeting = m.Meeting is null ? null : new GetMessagesResponse.Message.MeetingData
+                {
+                    Id = m.Meeting.Id,
+                    ProposedAt = m.Meeting.ProposedAt,
+                    DurationMinutes = m.Meeting.DurationMinutes,
+                    LocationText = m.Meeting.LocationText,
+                    LocationLat = m.Meeting.LocationLat,
+                    LocationLng = m.Meeting.LocationLng,
+                    Status = m.Meeting.Status,
+                    ExpiresAt = m.Meeting.ExpiresAt,
+                    InitiatorId = m.Meeting.InitiatorId,
+                    ParentMeetingId = m.Meeting.ParentMeetingId
+                },
+                AvailabilityCard = m.AvailabilityCard is null ? null : new GetMessagesResponse.Message.AvailabilityCardData
+                {
+                    Id = m.AvailabilityCard.Id,
+                    Status = m.AvailabilityCard.Status,
+                    ExpiresAt = m.AvailabilityCard.ExpiresAt,
+                    InitiatorId = m.AvailabilityCard.InitiatorId,
+                    Slots = m.AvailabilityCard.Slots.Select(s => new GetMessagesResponse.Message.AvailabilityCardData.SlotData
+                    {
+                        Id = s.Id,
+                        StartTime = s.StartTime,
+                        EndTime = s.EndTime
+                    }).ToList()
                 }
             })
             .ToList();
