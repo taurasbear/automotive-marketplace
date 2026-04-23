@@ -1,3 +1,4 @@
+import "@/lib/i18n/i18n";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
