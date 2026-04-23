@@ -185,6 +185,77 @@ public class RespondToAvailabilityCommandHandlerTests(
         await act.Should().ThrowAsync<RequestValidationException>();
     }
 
+    [Fact]
+    public async Task Handle_PickSlotWithCustomStartTimeAndDuration_ShouldUseProvidedValues()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (buyer, seller, conversation, card, _) = await SeedPendingAvailabilityAsync(context, initiatedByBuyer: false);
+
+        var slotStart = DateTime.UtcNow.AddDays(1).Date.AddHours(10);
+        var slotEnd = slotStart.AddHours(4);
+        var customSlot = new AvailabilitySlotBuilder()
+            .WithCard(card.Id)
+            .WithTimes(slotStart, slotEnd)
+            .Build();
+        await context.AddAsync(customSlot);
+        await context.SaveChangesAsync();
+
+        var customStart = slotStart.AddHours(1);
+        var command = new RespondToAvailabilityCommand
+        {
+            AvailabilityCardId = card.Id,
+            ResponderId = buyer.Id,
+            Action = AvailabilityResponseAction.PickSlot,
+            SlotId = customSlot.Id,
+            StartTime = customStart,
+            DurationMinutes = 30
+        };
+
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        result.PickedSlotMeeting.Should().NotBeNull();
+        result.PickedSlotMeeting!.Meeting.ProposedAt.Should().Be(customStart);
+        result.PickedSlotMeeting.Meeting.DurationMinutes.Should().Be(30);
+    }
+
+    [Fact]
+    public async Task Handle_PickSlotWithStartTimeOutsideRange_ShouldThrowValidationException()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (buyer, seller, conversation, card, _) = await SeedPendingAvailabilityAsync(context, initiatedByBuyer: false);
+
+        var slotStart = DateTime.UtcNow.AddDays(1).Date.AddHours(10);
+        var slotEnd = slotStart.AddHours(2);
+        var customSlot = new AvailabilitySlotBuilder()
+            .WithCard(card.Id)
+            .WithTimes(slotStart, slotEnd)
+            .Build();
+        await context.AddAsync(customSlot);
+        await context.SaveChangesAsync();
+
+        var command = new RespondToAvailabilityCommand
+        {
+            AvailabilityCardId = card.Id,
+            ResponderId = buyer.Id,
+            Action = AvailabilityResponseAction.PickSlot,
+            SlotId = customSlot.Id,
+            StartTime = slotStart.AddHours(-1),
+            DurationMinutes = 60
+        };
+
+        var act = () => handler.Handle(command, CancellationToken.None);
+
+        await act.Should()
+            .ThrowAsync<RequestValidationException>()
+            .Where(ex => ex.Errors.ContainsKey("StartTime"));
+    }
+
     private static async Task<(User buyer, User seller, Conversation conversation, AvailabilityCard card, AvailabilitySlot slot)>
         SeedPendingAvailabilityAsync(AutomotiveContext context, bool initiatedByBuyer)
     {
