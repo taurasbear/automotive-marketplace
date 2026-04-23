@@ -37,9 +37,7 @@ const listingB: GetListingByIdResponse = {
 describe("CompareHeader — Change buttons", () => {
   it("does not render any Change button when no onChange callbacks are provided", () => {
     render(<CompareHeader listingA={listingA} listingB={listingB} />);
-    expect(
-      screen.queryByRole("button"),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("renders a Change button for listing A when onChangeA is provided", () => {
@@ -80,9 +78,7 @@ describe("CompareHeader — Change buttons", () => {
       />,
     );
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "Change listing A" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
     expect(onChangeA).toHaveBeenCalledTimes(1);
     expect(onChangeB).not.toHaveBeenCalled();
   });
@@ -99,9 +95,7 @@ describe("CompareHeader — Change buttons", () => {
       />,
     );
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "Change listing B" }),
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Change listing B" }));
     expect(onChangeB).toHaveBeenCalledTimes(1);
     expect(onChangeA).not.toHaveBeenCalled();
   });

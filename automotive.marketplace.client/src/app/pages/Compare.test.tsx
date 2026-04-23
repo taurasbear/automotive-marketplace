@@ -9,7 +9,10 @@ import type { SavedListing } from "@/features/savedListings/types/SavedListing";
 // Mock the route to supply search params
 vi.mock("@/app/routes/compare", () => ({
   Route: {
-    useSearch: () => ({ a: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", b: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb" }),
+    useSearch: () => ({
+      a: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      b: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    }),
   },
 }));
 
@@ -117,10 +120,12 @@ const createWrapper = () => {
 };
 
 beforeEach(() => {
-  getListingComparisonOptionsMock.mockImplementation((_a: string, _b: string) => ({
-    queryKey: ["listing", "comparison", _a, _b],
-    queryFn: async () => ({ data: mockComparison }),
-  }));
+  getListingComparisonOptionsMock.mockImplementation(
+    (_a: string, _b: string) => ({
+      queryKey: ["listing", "comparison", _a, _b],
+      queryFn: async () => ({ data: mockComparison }),
+    }),
+  );
   useAppSelectorMock.mockReturnValue(null);
   getSavedListingsOptionsMock.mockReturnValue({
     queryKey: ["saved-listings"],
@@ -151,7 +156,9 @@ describe("Compare page", () => {
   it("shows error message when query errors", async () => {
     getListingComparisonOptionsMock.mockImplementation(() => ({
       queryKey: ["listing", "comparison", "err"],
-      queryFn: async () => { throw new Error("404"); },
+      queryFn: async () => {
+        throw new Error("404");
+      },
     }));
 
     const queryClient = new QueryClient({

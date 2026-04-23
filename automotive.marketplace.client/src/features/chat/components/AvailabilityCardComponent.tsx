@@ -1,44 +1,53 @@
-import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
-import { CalendarRange, Clock } from 'lucide-react';
-import { useState } from 'react';
-import type { AvailabilityCard, AvailabilityCardStatus } from '../types/AvailabilityCard';
-import ShareAvailabilityModal from './ShareAvailabilityModal';
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { CalendarRange, Clock } from "lucide-react";
+import { useState } from "react";
+import type {
+  AvailabilityCard,
+  AvailabilityCardStatus,
+} from "../types/AvailabilityCard";
+import ShareAvailabilityModal from "./ShareAvailabilityModal";
 
 type AvailabilityCardComponentProps = {
   card: AvailabilityCard;
   currentUserId: string;
   onPickSlot: (cardId: string, slotId: string) => void;
-  onShareBack: (cardId: string, slots: { startTime: string; endTime: string }[]) => void;
+  onShareBack: (
+    cardId: string,
+    slots: { startTime: string; endTime: string }[],
+  ) => void;
 };
 
-const statusConfig: Record<AvailabilityCardStatus, {
-  headerClass: string;
-  borderClass: string;
-  label: string;
-  icon: typeof CalendarRange;
-  labelClass: string;
-}> = {
+const statusConfig: Record<
+  AvailabilityCardStatus,
+  {
+    headerClass: string;
+    borderClass: string;
+    label: string;
+    icon: typeof CalendarRange;
+    labelClass: string;
+  }
+> = {
   Pending: {
-    headerClass: 'bg-purple-900',
-    borderClass: 'border-purple-300 dark:border-purple-800',
-    label: 'Availability Shared',
+    headerClass: "bg-purple-900",
+    borderClass: "border-purple-300 dark:border-purple-800",
+    label: "Availability Shared",
     icon: CalendarRange,
-    labelClass: 'text-purple-200',
+    labelClass: "text-purple-200",
   },
   Responded: {
-    headerClass: 'bg-purple-900/60',
-    borderClass: 'border-border',
-    label: 'Responded',
+    headerClass: "bg-purple-900/60",
+    borderClass: "border-border",
+    label: "Responded",
     icon: CalendarRange,
-    labelClass: 'text-purple-300',
+    labelClass: "text-purple-300",
   },
   Expired: {
-    headerClass: 'bg-muted-foreground/60',
-    borderClass: 'border-border',
-    label: 'Availability Expired',
+    headerClass: "bg-muted-foreground/60",
+    borderClass: "border-border",
+    label: "Availability Expired",
     icon: Clock,
-    labelClass: 'text-muted',
+    labelClass: "text-muted",
   },
 };
 
@@ -52,15 +61,22 @@ const AvailabilityCardComponent = ({
   const config = statusConfig[card.status];
   const Icon = config.icon;
 
-  const canRespond = card.status === 'Pending' && currentUserId !== card.initiatorId;
-  const isDisabled = card.status !== 'Pending';
+  const canRespond =
+    card.status === "Pending" && currentUserId !== card.initiatorId;
+  const isDisabled = card.status !== "Pending";
 
   return (
     <>
-      <div className={`w-full max-w-[300px] overflow-hidden rounded-xl border ${config.borderClass} shadow-sm`}>
-        <div className={`${config.headerClass} flex items-center gap-2 px-4 py-2.5`}>
+      <div
+        className={`w-full max-w-[300px] overflow-hidden rounded-xl border ${config.borderClass} shadow-sm`}
+      >
+        <div
+          className={`${config.headerClass} flex items-center gap-2 px-4 py-2.5`}
+        >
           <Icon className={`h-3.5 w-3.5 ${config.labelClass}`} />
-          <span className={`text-xs font-semibold uppercase tracking-wider ${config.labelClass}`}>
+          <span
+            className={`text-xs font-semibold tracking-wider uppercase ${config.labelClass}`}
+          >
             {config.label}
           </span>
         </div>
@@ -72,14 +88,14 @@ const AvailabilityCardComponent = ({
             return (
               <div
                 key={slot.id}
-                className={`flex items-center justify-between px-4 py-2 ${isDisabled ? 'opacity-50' : ''}`}
+                className={`flex items-center justify-between px-4 py-2 ${isDisabled ? "opacity-50" : ""}`}
               >
                 <div>
                   <p className="text-sm font-medium">
-                    {format(start, 'EEE, MMM d')}
+                    {format(start, "EEE, MMM d")}
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    {format(start, 'HH:mm')} – {format(end, 'HH:mm')} UTC
+                    {format(start, "HH:mm")} – {format(end, "HH:mm")} UTC
                   </p>
                 </div>
                 {canRespond && (

@@ -9,7 +9,10 @@ type EditMakeDialogContentProps = {
   onSubmit: (formData: MakeFormData) => Promise<void>;
 };
 
-const EditMakeDialogContent = ({ id, onSubmit }: EditMakeDialogContentProps) => {
+const EditMakeDialogContent = ({
+  id,
+  onSubmit,
+}: EditMakeDialogContentProps) => {
   const { data: makeQuery } = useSuspenseQuery(getMakeByIdOptions({ id }));
   const make = makeQuery.data;
 

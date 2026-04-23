@@ -81,12 +81,12 @@ const NoteEditor = ({ listing, isExpanded }: NoteEditorProps) => {
           <div className="relative">
             <textarea
               ref={textareaRef}
-              className="bg-transparent w-full resize-none text-sm outline-none"
+              className="w-full resize-none bg-transparent text-sm outline-none"
               value={text}
               onChange={(e) => {
-                  setText(e.target.value);
-                  scheduleSave(e.target.value);
-                }}
+                setText(e.target.value);
+                scheduleSave(e.target.value);
+              }}
               rows={3}
               autoFocus
             />

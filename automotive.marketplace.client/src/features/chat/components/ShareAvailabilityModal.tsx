@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Trash2 } from 'lucide-react';
-import { useState } from 'react';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Trash2 } from "lucide-react";
+import { useState } from "react";
 
 type SlotEntry = {
   key: number;
@@ -26,9 +26,9 @@ type ShareAvailabilityModalProps = {
 let nextKey = 0;
 const createEmptySlot = (): SlotEntry => ({
   key: nextKey++,
-  date: '',
-  startTime: '',
-  endTime: '',
+  date: "",
+  startTime: "",
+  endTime: "",
 });
 
 const ShareAvailabilityModal = ({
@@ -39,7 +39,11 @@ const ShareAvailabilityModal = ({
   const [slots, setSlots] = useState<SlotEntry[]>([createEmptySlot()]);
   const now = new Date();
 
-  const updateSlot = (key: number, field: keyof Omit<SlotEntry, 'key'>, value: string) => {
+  const updateSlot = (
+    key: number,
+    field: keyof Omit<SlotEntry, "key">,
+    value: string,
+  ) => {
     setSlots((prev) =>
       prev.map((s) => (s.key === key ? { ...s, [field]: value } : s)),
     );
@@ -106,7 +110,9 @@ const ShareAvailabilityModal = ({
                     type="date"
                     value={slot.date}
                     min={now.toISOString().slice(0, 10)}
-                    onChange={(e) => updateSlot(slot.key, 'date', e.target.value)}
+                    onChange={(e) =>
+                      updateSlot(slot.key, "date", e.target.value)
+                    }
                     className="h-8 text-xs"
                   />
                 </div>
@@ -115,7 +121,9 @@ const ShareAvailabilityModal = ({
                   <Input
                     type="time"
                     value={slot.startTime}
-                    onChange={(e) => updateSlot(slot.key, 'startTime', e.target.value)}
+                    onChange={(e) =>
+                      updateSlot(slot.key, "startTime", e.target.value)
+                    }
                     className="h-8 text-xs"
                   />
                 </div>
@@ -124,7 +132,9 @@ const ShareAvailabilityModal = ({
                   <Input
                     type="time"
                     value={slot.endTime}
-                    onChange={(e) => updateSlot(slot.key, 'endTime', e.target.value)}
+                    onChange={(e) =>
+                      updateSlot(slot.key, "endTime", e.target.value)
+                    }
                     className="h-8 text-xs"
                   />
                 </div>

@@ -7,7 +7,9 @@ import { useChatHub } from "../api/useChatHub";
 import { useMarkMessagesRead } from "../api/useMarkMessagesRead";
 import type { ConversationSummary } from "../types/ConversationSummary";
 import ActionBar from "./ActionBar";
+import AvailabilityCardComponent from "./AvailabilityCardComponent";
 import ListingCard from "./ListingCard";
+import MeetingCard from "./MeetingCard";
 import OfferCard from "./OfferCard";
 
 type MessageThreadProps = {
@@ -24,7 +26,15 @@ const MessageThread = ({
     getMessagesOptions({ conversationId: conversation.id }),
   );
   const messages = messagesQuery.data.messages;
-  const { sendMessage, sendOffer, respondToOffer } = useChatHub();
+  const {
+    sendMessage,
+    sendOffer,
+    respondToOffer,
+    proposeMeeting,
+    respondToMeeting,
+    shareAvailability,
+    respondToAvailability,
+  } = useChatHub();
   const { mutate: markRead } = useMarkMessagesRead();
   const [input, setInput] = useState("");
   const [sendError, setSendError] = useState<string | null>(null);
@@ -40,6 +50,13 @@ const MessageThread = ({
 
   const hasActiveOffer = messages.some(
     (m) => m.messageType === "Offer" && m.offer?.status === "Pending",
+  );
+
+  const hasActiveMeeting = messages.some(
+    (m) =>
+      (m.messageType === "Meeting" && m.meeting?.status === "Pending") ||
+      (m.messageType === "Availability" &&
+        m.availabilityCard?.status === "Pending"),
   );
 
   const handleSend = () => {
@@ -97,6 +114,63 @@ const MessageThread = ({
             );
           }
 
+          if (m.messageType === "Meeting" && m.meeting) {
+            const isOwn = m.senderId === userId;
+            return (
+              <div
+                key={m.id}
+                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+              >
+                <MeetingCard
+                  meeting={m.meeting}
+                  currentUserId={userId}
+                  onAccept={(meetingId) =>
+                    respondToMeeting({ meetingId, action: "Accept" })
+                  }
+                  onDecline={(meetingId) =>
+                    respondToMeeting({ meetingId, action: "Decline" })
+                  }
+                  onReschedule={(meetingId, data) =>
+                    respondToMeeting({
+                      meetingId,
+                      action: "Reschedule",
+                      rescheduleData: data,
+                    })
+                  }
+                />
+              </div>
+            );
+          }
+
+          if (m.messageType === "Availability" && m.availabilityCard) {
+            const isOwn = m.senderId === userId;
+            return (
+              <div
+                key={m.id}
+                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+              >
+                <AvailabilityCardComponent
+                  card={m.availabilityCard}
+                  currentUserId={userId}
+                  onPickSlot={(cardId, slotId) =>
+                    respondToAvailability({
+                      availabilityCardId: cardId,
+                      action: "PickSlot",
+                      slotId,
+                    })
+                  }
+                  onShareBack={(cardId, slots) =>
+                    respondToAvailability({
+                      availabilityCardId: cardId,
+                      action: "ShareBack",
+                      shareBackSlots: slots,
+                    })
+                  }
+                />
+              </div>
+            );
+          }
+
           const isOwn = m.senderId === userId;
           return (
             <div
@@ -129,8 +203,15 @@ const MessageThread = ({
           conversationId={conversation.id}
           buyerHasLiked={conversation.buyerHasLiked}
           hasActiveOffer={hasActiveOffer}
+          hasActiveMeeting={hasActiveMeeting}
           onSendOffer={(amount) =>
             sendOffer({ conversationId: conversation.id, amount })
+          }
+          onProposeMeeting={(data) =>
+            proposeMeeting({ conversationId: conversation.id, ...data })
+          }
+          onShareAvailability={(slots) =>
+            shareAvailability({ conversationId: conversation.id, slots })
           }
         />
         <input

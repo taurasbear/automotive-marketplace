@@ -68,7 +68,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
     const { makeId, ...command } = formData;
     await createListingAsync({
       ...command,
-      variantId: isModified ? undefined : (command.variantId || undefined),
+      variantId: isModified ? undefined : command.variantId || undefined,
     });
     form.reset();
     setIsModified(false);
@@ -191,12 +191,14 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
           <div className="col-span-1 rounded-lg border p-4 md:col-span-3">
             <div className="mb-4 flex items-center gap-3">
               {specLocked ? (
-                <Lock className="h-4 w-4 text-muted-foreground" />
+                <Lock className="text-muted-foreground h-4 w-4" />
               ) : (
-                <Unlock className="h-4 w-4 text-muted-foreground" />
+                <Unlock className="text-muted-foreground h-4 w-4" />
               )}
               <span className="text-sm font-medium">
-                {specLocked ? "Specifications (locked from variant)" : "Specifications"}
+                {specLocked
+                  ? "Specifications (locked from variant)"
+                  : "Specifications"}
               </span>
               {!!variantId && (
                 <label className="ml-auto flex cursor-pointer items-center gap-2 text-sm">
@@ -306,11 +308,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                   <FormItem className="flex flex-col justify-start">
                     <FormLabel>Door count*</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        disabled={specLocked}
-                        {...field}
-                      />
+                      <Input type="number" disabled={specLocked} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

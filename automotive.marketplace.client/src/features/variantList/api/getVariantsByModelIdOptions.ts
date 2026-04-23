@@ -10,7 +10,5 @@ export const getVariantsByModelId = (modelId: string) =>
 export const getVariantsByModelIdOptions = (modelId: string | undefined) =>
   queryOptions({
     queryKey: variantKeys.byModelId(modelId ?? ""),
-    queryFn: modelId
-      ? () => getVariantsByModelId(modelId)
-      : skipToken,
+    queryFn: modelId ? () => getVariantsByModelId(modelId) : skipToken,
   });

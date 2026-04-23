@@ -89,7 +89,7 @@ export const CompareSearchModal = ({
         <div className="mt-4 max-h-96 space-y-2 overflow-y-auto">
           {isQueryEmpty && visibleSaved.length > 0 && (
             <>
-              <p className="text-muted-foreground px-1 text-xs font-semibold uppercase tracking-wide">
+              <p className="text-muted-foreground px-1 text-xs font-semibold tracking-wide uppercase">
                 Your saved listings
               </p>
               {visibleSaved.map((listing) => (

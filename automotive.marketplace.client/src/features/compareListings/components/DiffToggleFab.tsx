@@ -9,7 +9,7 @@ export const DiffToggleFab = ({ active, onToggle }: DiffToggleFabProps) => (
   <Button
     onClick={onToggle}
     variant={active ? "default" : "outline"}
-    className="fixed bottom-6 right-6 z-20 shadow-lg"
+    className="fixed right-6 bottom-6 z-20 shadow-lg"
   >
     {active ? "Show All" : "Diff Only"}
   </Button>

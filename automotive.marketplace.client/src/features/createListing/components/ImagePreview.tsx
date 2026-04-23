@@ -30,7 +30,7 @@ const ImagePreview = ({ images, onRemove }: ImagePreviewProps) => {
           <button
             type="button"
             onClick={() => onRemove(index)}
-            className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs leading-none"
+            className="bg-destructive text-destructive-foreground absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-xs leading-none"
           >
             ×
           </button>

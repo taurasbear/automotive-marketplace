@@ -27,7 +27,10 @@ const ViewModelDialogContent = ({ id }: ViewModelDialogContentProps) => {
         <p>Created by: {model.createdBy}</p>
         <p>Created at: {new Date(model.createdAt).toLocaleString()}</p>
         {model.modifiedAt && (
-          <p>Last modified by: {model.modifiedBy} on {new Date(model.modifiedAt).toLocaleString()}</p>
+          <p>
+            Last modified by: {model.modifiedBy} on{" "}
+            {new Date(model.modifiedAt).toLocaleString()}
+          </p>
         )}
       </div>
     </>

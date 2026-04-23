@@ -1,5 +1,5 @@
-import type { Meeting } from './Meeting';
-import type { AvailabilityCard } from './AvailabilityCard';
+import type { Meeting } from "./Meeting";
+import type { AvailabilityCard } from "./AvailabilityCard";
 
 export type MeetingProposedPayload = {
   messageId: string;
@@ -14,7 +14,7 @@ export type MeetingProposedPayload = {
 export type MeetingStatusUpdatedPayload = {
   meetingId: string;
   conversationId: string;
-  newStatus: 'Accepted' | 'Declined';
+  newStatus: "Accepted" | "Declined";
   initiatorId: string;
   responderId: string;
   rescheduledMeeting: null;
@@ -23,7 +23,7 @@ export type MeetingStatusUpdatedPayload = {
 export type MeetingRescheduledPayload = {
   meetingId: string;
   conversationId: string;
-  newStatus: 'Rescheduled';
+  newStatus: "Rescheduled";
   initiatorId: string;
   responderId: string;
   rescheduledMeeting: MeetingProposedPayload;
@@ -47,7 +47,7 @@ export type AvailabilitySharedPayload = {
 export type AvailabilityRespondedPayload = {
   availabilityCardId: string;
   conversationId: string;
-  action: 'PickSlot' | 'ShareBack';
+  action: "PickSlot" | "ShareBack";
   pickedSlotMeeting: MeetingProposedPayload | null;
   sharedBackAvailability: AvailabilitySharedPayload | null;
 };

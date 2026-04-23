@@ -35,10 +35,18 @@ export const variantFormSchema = z.object({
   powerKw: z.coerce
     .number<number>()
     .min(VALIDATION.POWER.MIN, {
-      error: validation.minSize({ label: "Power", size: VALIDATION.POWER.MIN, unit: "kW" }),
+      error: validation.minSize({
+        label: "Power",
+        size: VALIDATION.POWER.MIN,
+        unit: "kW",
+      }),
     })
     .max(VALIDATION.POWER.MAX, {
-      error: validation.maxSize({ label: "Power", size: VALIDATION.POWER.MAX, unit: "kW" }),
+      error: validation.maxSize({
+        label: "Power",
+        size: VALIDATION.POWER.MAX,
+        unit: "kW",
+      }),
     }),
   engineSizeMl: z.coerce
     .number<number>()

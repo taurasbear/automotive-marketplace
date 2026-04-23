@@ -1,6 +1,6 @@
-import type { Offer } from './Offer';
-import type { Meeting } from './Meeting';
-import type { AvailabilityCard } from './AvailabilityCard';
+import type { Offer } from "./Offer";
+import type { Meeting } from "./Meeting";
+import type { AvailabilityCard } from "./AvailabilityCard";
 
 export type ReceiveMessagePayload = {
   id: string;
@@ -10,7 +10,7 @@ export type ReceiveMessagePayload = {
   content: string;
   sentAt: string;
   isRead: boolean;
-  messageType: 'Text' | 'Offer' | 'Meeting' | 'Availability';
+  messageType: "Text" | "Offer" | "Meeting" | "Availability";
   offer?: Offer;
   meeting?: Meeting;
   availabilityCard?: AvailabilityCard;

@@ -1,4 +1,9 @@
-export type MeetingStatus = 'Pending' | 'Accepted' | 'Declined' | 'Rescheduled' | 'Expired';
+export type MeetingStatus =
+  | "Pending"
+  | "Accepted"
+  | "Declined"
+  | "Rescheduled"
+  | "Expired";
 
 export type Meeting = {
   id: string;

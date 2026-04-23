@@ -164,7 +164,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                     <dt className="text-muted-foreground text-sm font-medium">
                       Drivetrain
                     </dt>
-                    <dd className="text-right text-sm">{listing.drivetrainName}</dd>
+                    <dd className="text-right text-sm">
+                      {listing.drivetrainName}
+                    </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
@@ -176,7 +178,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                     <dt className="text-muted-foreground text-sm font-medium">
                       Body Type
                     </dt>
-                    <dd className="text-right text-sm">{listing.bodyTypeName}</dd>
+                    <dd className="text-right text-sm">
+                      {listing.bodyTypeName}
+                    </dd>
                   </div>
                   {listing.colour && (
                     <div className="grid grid-cols-2 px-6 py-3">
@@ -238,7 +242,10 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
         excludeIds={[id]}
         onSelect={(selectedId) => {
           setCompareModalOpen(false);
-          void router.navigate({ to: "/compare", search: { a: id, b: selectedId } });
+          void router.navigate({
+            to: "/compare",
+            search: { a: id, b: selectedId },
+          });
         }}
       />
     </>

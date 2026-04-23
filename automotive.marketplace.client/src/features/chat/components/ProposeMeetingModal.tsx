@@ -1,19 +1,19 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useState } from 'react';
-import type { Meeting } from '../types/Meeting';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import type { Meeting } from "../types/Meeting";
 
 type ProposeMeetingModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  mode: 'propose' | 'reschedule';
+  mode: "propose" | "reschedule";
   initialMeeting?: Meeting;
   onSubmit: (data: {
     proposedAt: string;
@@ -36,18 +36,22 @@ const ProposeMeetingModal = ({
   const now = new Date();
   const defaultDate = initialMeeting
     ? new Date(initialMeeting.proposedAt).toISOString().slice(0, 10)
-    : '';
+    : "";
   const defaultTime = initialMeeting
     ? new Date(initialMeeting.proposedAt).toISOString().slice(11, 16)
-    : '';
+    : "";
 
   const [date, setDate] = useState(defaultDate);
   const [time, setTime] = useState(defaultTime);
-  const [duration, setDuration] = useState(initialMeeting?.durationMinutes ?? 60);
-  const [locationText, setLocationText] = useState(initialMeeting?.locationText ?? '');
+  const [duration, setDuration] = useState(
+    initialMeeting?.durationMinutes ?? 60,
+  );
+  const [locationText, setLocationText] = useState(
+    initialMeeting?.locationText ?? "",
+  );
   const [showCoords, setShowCoords] = useState(false);
-  const [lat, setLat] = useState(initialMeeting?.locationLat?.toString() ?? '');
-  const [lng, setLng] = useState(initialMeeting?.locationLng?.toString() ?? '');
+  const [lat, setLat] = useState(initialMeeting?.locationLat?.toString() ?? "");
+  const [lng, setLng] = useState(initialMeeting?.locationLng?.toString() ?? "");
 
   const proposedAt = date && time ? new Date(`${date}T${time}:00Z`) : null;
   const isInFuture = proposedAt ? proposedAt > now : false;
@@ -82,7 +86,7 @@ const ProposeMeetingModal = ({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            {mode === 'reschedule' ? 'Reschedule Meeting' : 'Propose a Meetup'}
+            {mode === "reschedule" ? "Reschedule Meeting" : "Propose a Meetup"}
           </DialogTitle>
         </DialogHeader>
 
@@ -116,7 +120,7 @@ const ProposeMeetingModal = ({
                   key={d}
                   type="button"
                   size="sm"
-                  variant={duration === d ? 'default' : 'outline'}
+                  variant={duration === d ? "default" : "outline"}
                   className="h-7 text-xs"
                   onClick={() => setDuration(d)}
                 >
@@ -151,7 +155,9 @@ const ProposeMeetingModal = ({
           {showCoords && (
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1">
-                <Label htmlFor="lat" className="text-xs">Latitude</Label>
+                <Label htmlFor="lat" className="text-xs">
+                  Latitude
+                </Label>
                 <Input
                   id="lat"
                   type="number"
@@ -162,7 +168,9 @@ const ProposeMeetingModal = ({
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="lng" className="text-xs">Longitude</Label>
+                <Label htmlFor="lng" className="text-xs">
+                  Longitude
+                </Label>
                 <Input
                   id="lng"
                   type="number"
@@ -186,7 +194,7 @@ const ProposeMeetingModal = ({
               Cancel
             </Button>
             <Button onClick={handleSubmit} disabled={!isValid}>
-              {mode === 'reschedule' ? 'Send Reschedule' : 'Propose Meetup'}
+              {mode === "reschedule" ? "Send Reschedule" : "Propose Meetup"}
             </Button>
           </div>
         </div>

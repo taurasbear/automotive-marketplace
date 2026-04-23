@@ -25,17 +25,24 @@ const getArrow = (side: "a" | "b", diff: DiffResult): string => {
 const getRowStyle = (diff: DiffResult): React.CSSProperties =>
   diff !== "equal" ? { backgroundColor: "rgba(249,115,22,0.05)" } : {};
 
-export const CompareRow = ({ label, valueA, valueB, diff }: CompareRowProps) => (
+export const CompareRow = ({
+  label,
+  valueA,
+  valueB,
+  diff,
+}: CompareRowProps) => (
   <tr
     style={getRowStyle(diff)}
-    className="divide-x divide-border border-b border-border"
+    className="divide-border border-border divide-x border-b"
   >
-    <td className="px-4 py-3 text-sm font-medium text-muted-foreground">{label}</td>
-    <td className={`px-4 py-3 text-sm text-center ${getCellClass("a", diff)}`}>
+    <td className="text-muted-foreground px-4 py-3 text-sm font-medium">
+      {label}
+    </td>
+    <td className={`px-4 py-3 text-center text-sm ${getCellClass("a", diff)}`}>
       {valueA}
       {getArrow("a", diff)}
     </td>
-    <td className={`px-4 py-3 text-sm text-center ${getCellClass("b", diff)}`}>
+    <td className={`px-4 py-3 text-center text-sm ${getCellClass("b", diff)}`}>
       {valueB}
       {getArrow("b", diff)}
     </td>
