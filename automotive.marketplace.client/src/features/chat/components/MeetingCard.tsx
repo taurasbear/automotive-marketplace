@@ -1,16 +1,26 @@
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { format } from "date-fns";
 import {
+  Ban,
+  Calendar,
   CalendarCheck,
+  CalendarClock,
+  CalendarDays,
+  CalendarRange,
   CalendarX,
   Clock,
-  CalendarDays,
-  CalendarClock,
   MapPin,
 } from "lucide-react";
 import { useState } from "react";
 import type { Meeting } from "../types/Meeting";
+import { getTimezoneOffsetLabel } from "../utils/timezone";
 import ProposeMeetingModal from "./ProposeMeetingModal";
+import ShareAvailabilityModal from "./ShareAvailabilityModal";
 
 type MeetingCardProps = {
   meeting: Meeting;
@@ -26,6 +36,11 @@ type MeetingCardProps = {
       locationLat?: number;
       locationLng?: number;
     },
+  ) => void;
+  onCancel: (meetingId: string) => void;
+  onShareAvailability: (
+    meetingId: string,
+    slots: { startTime: string; endTime: string }[],
   ) => void;
 };
 
@@ -76,13 +91,13 @@ const statusConfig = {
     subLabelClass: "text-muted-foreground",
   },
   Cancelled: {
-    headerClass: "bg-red-900",
-    borderClass: "border-red-300 dark:border-red-800",
+    headerClass: "bg-muted-foreground/60",
+    borderClass: "border-border",
     label: "Meetup Cancelled",
-    icon: CalendarX,
-    labelClass: "text-red-200",
-    subLabel: "Cancelled",
-    subLabelClass: "text-red-400",
+    icon: Ban,
+    labelClass: "text-muted",
+    subLabel: "Withdrawn",
+    subLabelClass: "text-muted-foreground",
   },
 } as const;
 
@@ -92,13 +107,21 @@ const MeetingCard = ({
   onAccept,
   onDecline,
   onReschedule,
+  onCancel,
+  onShareAvailability,
 }: MeetingCardProps) => {
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
+  const [shareAvailOpen, setShareAvailOpen] = useState(false);
+  const [suggestOpen, setSuggestOpen] = useState(false);
   const config = statusConfig[meeting.status];
   const Icon = config.icon;
+  const timezone = getTimezoneOffsetLabel();
 
   const canRespond =
     meeting.status === "Pending" && currentUserId !== meeting.initiatorId;
+  const canCancel =
+    (meeting.status === "Pending" || meeting.status === "Accepted") &&
+    currentUserId === meeting.initiatorId;
   const proposedDate = new Date(meeting.proposedAt);
   const isMuted =
     meeting.status === "Declined" ||
@@ -159,7 +182,7 @@ const MeetingCard = ({
                   ),
                   "HH:mm",
                 )}{" "}
-                UTC
+                {timezone}
               </p>
               <p className="text-muted-foreground text-[10px]">
                 {meeting.durationMinutes} min
@@ -174,6 +197,19 @@ const MeetingCard = ({
             </p>
           )}
 
+          {canCancel && (
+            <div className="mt-3">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="text-destructive hover:text-destructive h-7 text-xs"
+                onClick={() => onCancel(meeting.id)}
+              >
+                Cancel meetup
+              </Button>
+            </div>
+          )}
+
           {canRespond && (
             <div className="mt-3 flex gap-2">
               <Button
@@ -183,14 +219,39 @@ const MeetingCard = ({
               >
                 Accept
               </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7 flex-1 text-xs"
-                onClick={() => setRescheduleOpen(true)}
-              >
-                Reschedule
-              </Button>
+              <Popover open={suggestOpen} onOpenChange={setSuggestOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 flex-1 text-xs"
+                  >
+                    Suggest alternative
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-52 p-1" align="start">
+                  <button
+                    className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
+                    onClick={() => {
+                      setSuggestOpen(false);
+                      setRescheduleOpen(true);
+                    }}
+                  >
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Propose a counter time
+                  </button>
+                  <button
+                    className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
+                    onClick={() => {
+                      setSuggestOpen(false);
+                      setShareAvailOpen(true);
+                    }}
+                  >
+                    <CalendarRange className="mr-2 h-4 w-4" />
+                    Share my availability
+                  </button>
+                </PopoverContent>
+              </Popover>
               <Button
                 size="sm"
                 variant="ghost"
@@ -212,6 +273,14 @@ const MeetingCard = ({
         onSubmit={(data) => {
           onReschedule(meeting.id, data);
           setRescheduleOpen(false);
+        }}
+      />
+      <ShareAvailabilityModal
+        open={shareAvailOpen}
+        onOpenChange={setShareAvailOpen}
+        onSubmit={(slots) => {
+          onShareAvailability(meeting.id, slots);
+          setShareAvailOpen(false);
         }}
       />
     </>
