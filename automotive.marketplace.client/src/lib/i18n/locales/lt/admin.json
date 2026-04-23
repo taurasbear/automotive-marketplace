@@ -1,1 +1,51 @@
-{}
+{
+  "makes": {
+    "addMake": "Pridėti markę",
+    "createNewMake": "Sukurti naują markę",
+    "makeName": "Markės pavadinimas",
+    "tableDescription": "Markių sąrašas",
+    "name": "Pavadinimas",
+    "createdBy": "Sukūrė",
+    "createdAt": "Sukurta",
+    "actions": "Veiksmai",
+    "deleteConfirm": "Ištrinti {{name}}?",
+    "deleteWarning": "Šio veiksmo negalima atšaukti."
+  },
+  "models": {
+    "addModel": "Pridėti modelį",
+    "createNewModel": "Sukurti naują modelį",
+    "modelName": "Modelio pavadinimas",
+    "make": "Markė",
+    "tableDescription": "Modelių sąrašas",
+    "name": "Pavadinimas",
+    "createdBy": "Sukūrė",
+    "createdAt": "Sukurta",
+    "actions": "Veiksmai"
+  },
+  "variants": {
+    "addVariant": "Pridėti variantą",
+    "createNewVariant": "Sukurti naują variantą",
+    "make": "Markė*",
+    "model": "Modelis*",
+    "fuelType": "Kuro tipas*",
+    "transmission": "Pavarų dėžė*",
+    "bodyType": "Kėbulo tipas*",
+    "doors": "Durys*",
+    "powerKw": "Galia (kW)*",
+    "engineSizeMl": "Variklio tūris (ml)*",
+    "customVariant": "Pasirinktinis variantas",
+    "tableDescription": "Variantų sąrašas",
+    "loading": "Kraunami variantai…",
+    "failed": "Nepavyko įkelti variantų.",
+    "fuel": "Kuras",
+    "transmission_col": "Pavarų dėžė",
+    "bodyType_col": "Kėbulo tipas",
+    "doors_col": "Durys",
+    "powerKw_col": "Galia (kW)",
+    "engineMl_col": "Variklis (ml)",
+    "custom": "Pasirinktinis",
+    "actions": "Veiksmai",
+    "yes": "Taip",
+    "no": "Ne"
+  }
+}

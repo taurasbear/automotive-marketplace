@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { getAllModelsOptions } from "../api/getAllModelsOptions";
 import { useDeleteModel } from "../api/useDeleteModel";
 import EditModelDialog from "./EditModelDialog";
@@ -21,6 +22,7 @@ type ModelListTableProps = {
 };
 
 const ModelListTable = ({ className }: ModelListTableProps) => {
+  const { t } = useTranslation("admin");
   const { data: modelsQuery } = useQuery(getAllModelsOptions);
   const models = modelsQuery?.data || [];
 
@@ -33,13 +35,13 @@ const ModelListTable = ({ className }: ModelListTableProps) => {
   return (
     <div className={cn(className)}>
       <Table>
-        <TableCaption>A list of models</TableCaption>
+        <TableCaption>{t("models.tableDescription")}</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Created by</TableHead>
-            <TableHead>Created at</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("models.name")}</TableHead>
+            <TableHead>{t("models.createdBy")}</TableHead>
+            <TableHead>{t("models.createdAt")}</TableHead>
+            <TableHead>{t("models.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

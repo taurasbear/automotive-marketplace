@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useDeleteVariant } from "../api/useDeleteVariant";
 import EditVariantDialog from "./EditVariantDialog";
 import ViewVariantDialog from "./ViewVariantDialog";
@@ -27,6 +28,7 @@ const VariantListTable = ({
   makeId,
   className,
 }: VariantListTableProps) => {
+  const { t } = useTranslation("admin");
   const {
     data: variantsQuery,
     isLoading,
@@ -39,25 +41,25 @@ const VariantListTable = ({
     await deleteVariantAsync({ id });
   };
 
-  if (isLoading) return <p>Loading variants…</p>;
-  if (isError) return <p>Failed to load variants.</p>;
+  if (isLoading) return <p>{t("variants.loading")}</p>;
+  if (isError) return <p>{t("variants.failed")}</p>;
 
   const variants = variantsQuery?.data || [];
 
   return (
     <div className={cn(className)}>
       <Table>
-        <TableCaption>A list of variants</TableCaption>
+        <TableCaption>{t("variants.tableDescription")}</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Fuel</TableHead>
-            <TableHead>Transmission</TableHead>
-            <TableHead>Body type</TableHead>
-            <TableHead>Doors</TableHead>
-            <TableHead>Power (kW)</TableHead>
-            <TableHead>Engine (ml)</TableHead>
-            <TableHead>Custom</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("variants.fuel")}</TableHead>
+            <TableHead>{t("variants.transmission_col")}</TableHead>
+            <TableHead>{t("variants.bodyType_col")}</TableHead>
+            <TableHead>{t("variants.doors_col")}</TableHead>
+            <TableHead>{t("variants.powerKw_col")}</TableHead>
+            <TableHead>{t("variants.engineMl_col")}</TableHead>
+            <TableHead>{t("variants.custom")}</TableHead>
+            <TableHead>{t("variants.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -69,7 +71,7 @@ const VariantListTable = ({
               <TableCell>{v.doorCount}</TableCell>
               <TableCell>{v.powerKw}</TableCell>
               <TableCell>{v.engineSizeMl}</TableCell>
-              <TableCell>{v.isCustom ? "Yes" : "No"}</TableCell>
+              <TableCell>{v.isCustom ? t("variants.yes") : t("variants.no")}</TableCell>
               <TableCell>
                 <ViewVariantDialog variant={v} />
                 <EditVariantDialog variant={v} makeId={makeId} />

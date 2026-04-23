@@ -7,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useCreateVariant } from "../api/useCreateVariant";
 import { VariantFormData } from "../types/VariantFormData";
 import VariantForm from "./VariantForm";
@@ -18,6 +19,7 @@ type CreateVariantDialogProps = {
 
 const CreateVariantDialog = ({ modelId, makeId }: CreateVariantDialogProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { t } = useTranslation("admin");
 
   const { mutateAsync: createVariantAsync } = useCreateVariant();
 
@@ -38,11 +40,11 @@ const CreateVariantDialog = ({ modelId, makeId }: CreateVariantDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Add variant</Button>
+        <Button>{t("variants.addVariant")}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create new variant</DialogTitle>
+          <DialogTitle>{t("variants.createNewVariant")}</DialogTitle>
         </DialogHeader>
         <VariantForm
           variant={{

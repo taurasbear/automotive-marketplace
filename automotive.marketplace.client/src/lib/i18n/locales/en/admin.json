@@ -1,1 +1,51 @@
-{}
+{
+  "makes": {
+    "addMake": "Add make",
+    "createNewMake": "Create new make",
+    "makeName": "Make name",
+    "tableDescription": "A list of makes",
+    "name": "Name",
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "actions": "Actions",
+    "deleteConfirm": "Delete {{name}}?",
+    "deleteWarning": "This action cannot be undone."
+  },
+  "models": {
+    "addModel": "Add model",
+    "createNewModel": "Create new model",
+    "modelName": "Model name",
+    "make": "Make",
+    "tableDescription": "A list of models",
+    "name": "Name",
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "actions": "Actions"
+  },
+  "variants": {
+    "addVariant": "Add variant",
+    "createNewVariant": "Create new variant",
+    "make": "Make*",
+    "model": "Model*",
+    "fuelType": "Fuel type*",
+    "transmission": "Transmission*",
+    "bodyType": "Body type*",
+    "doors": "Doors*",
+    "powerKw": "Power (kW)*",
+    "engineSizeMl": "Engine size (ml)*",
+    "customVariant": "Custom variant",
+    "tableDescription": "A list of variants",
+    "loading": "Loading variants…",
+    "failed": "Failed to load variants.",
+    "fuel": "Fuel",
+    "transmission_col": "Transmission",
+    "bodyType_col": "Body type",
+    "doors_col": "Doors",
+    "powerKw_col": "Power (kW)",
+    "engineMl_col": "Engine (ml)",
+    "custom": "Custom",
+    "actions": "Actions",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

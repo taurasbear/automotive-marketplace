@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { makeFormSchema } from "../schemas/makeFormSchema";
 import { MakeFormData } from "../types/MakeFormData";
 
@@ -21,6 +22,7 @@ type MakeFormProps = {
 };
 
 const MakeForm = ({ make, onSubmit, className }: MakeFormProps) => {
+  const { t } = useTranslation(["admin", "common"]);
   const form = useForm({
     defaultValues: { name: make.name },
     resolver: zodResolver(makeFormSchema),
@@ -43,7 +45,7 @@ const MakeForm = ({ make, onSubmit, className }: MakeFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Make name</FormLabel>
+                <FormLabel>{t("admin:makes.makeName")}</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -51,7 +53,7 @@ const MakeForm = ({ make, onSubmit, className }: MakeFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit">Confirm</Button>
+          <Button type="submit">{t("common:actions.confirm")}</Button>
         </form>
       </Form>
     </div>
