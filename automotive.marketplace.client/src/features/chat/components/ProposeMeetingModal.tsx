@@ -1,0 +1,198 @@
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import type { Meeting } from '../types/Meeting';
+
+type ProposeMeetingModalProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  mode: 'propose' | 'reschedule';
+  initialMeeting?: Meeting;
+  onSubmit: (data: {
+    proposedAt: string;
+    durationMinutes: number;
+    locationText?: string;
+    locationLat?: number;
+    locationLng?: number;
+  }) => void;
+};
+
+const DURATION_PRESETS = [30, 60, 90, 120];
+
+const ProposeMeetingModal = ({
+  open,
+  onOpenChange,
+  mode,
+  initialMeeting,
+  onSubmit,
+}: ProposeMeetingModalProps) => {
+  const now = new Date();
+  const defaultDate = initialMeeting
+    ? new Date(initialMeeting.proposedAt).toISOString().slice(0, 10)
+    : '';
+  const defaultTime = initialMeeting
+    ? new Date(initialMeeting.proposedAt).toISOString().slice(11, 16)
+    : '';
+
+  const [date, setDate] = useState(defaultDate);
+  const [time, setTime] = useState(defaultTime);
+  const [duration, setDuration] = useState(initialMeeting?.durationMinutes ?? 60);
+  const [locationText, setLocationText] = useState(initialMeeting?.locationText ?? '');
+  const [showCoords, setShowCoords] = useState(false);
+  const [lat, setLat] = useState(initialMeeting?.locationLat?.toString() ?? '');
+  const [lng, setLng] = useState(initialMeeting?.locationLng?.toString() ?? '');
+
+  const proposedAt = date && time ? new Date(`${date}T${time}:00Z`) : null;
+  const isInFuture = proposedAt ? proposedAt > now : false;
+  const isValid = !!date && !!time && isInFuture && duration > 0;
+
+  const handleSubmit = () => {
+    if (!isValid || !proposedAt) return;
+    onSubmit({
+      proposedAt: proposedAt.toISOString(),
+      durationMinutes: duration,
+      locationText: locationText || undefined,
+      locationLat: lat ? parseFloat(lat) : undefined,
+      locationLng: lng ? parseFloat(lng) : undefined,
+    });
+    onOpenChange(false);
+  };
+
+  const handleUseMyLocation = () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLat(pos.coords.latitude.toFixed(7));
+        setLng(pos.coords.longitude.toFixed(7));
+        setShowCoords(true);
+      },
+      () => setShowCoords(true),
+    );
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>
+            {mode === 'reschedule' ? 'Reschedule Meeting' : 'Propose a Meetup'}
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="meeting-date">Date</Label>
+            <Input
+              id="meeting-date"
+              type="date"
+              value={date}
+              min={now.toISOString().slice(0, 10)}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="meeting-time">Start time (UTC)</Label>
+            <Input
+              id="meeting-time"
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Duration</Label>
+            <div className="flex gap-2">
+              {DURATION_PRESETS.map((d) => (
+                <Button
+                  key={d}
+                  type="button"
+                  size="sm"
+                  variant={duration === d ? 'default' : 'outline'}
+                  className="h-7 text-xs"
+                  onClick={() => setDuration(d)}
+                >
+                  {d} min
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="meeting-location">Location (optional)</Label>
+            <Input
+              id="meeting-location"
+              placeholder="e.g. Central Park, 5th Ave entrance"
+              value={locationText}
+              onChange={(e) => setLocationText(e.target.value)}
+            />
+          </div>
+
+          {!showCoords && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="text-xs"
+              onClick={handleUseMyLocation}
+            >
+              📍 Set pin (optional)
+            </Button>
+          )}
+
+          {showCoords && (
+            <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-1">
+                <Label htmlFor="lat" className="text-xs">Latitude</Label>
+                <Input
+                  id="lat"
+                  type="number"
+                  step="any"
+                  value={lat}
+                  onChange={(e) => setLat(e.target.value)}
+                  placeholder="e.g. 40.7829"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="lng" className="text-xs">Longitude</Label>
+                <Input
+                  id="lng"
+                  type="number"
+                  step="any"
+                  value={lng}
+                  onChange={(e) => setLng(e.target.value)}
+                  placeholder="e.g. -73.9654"
+                />
+              </div>
+            </div>
+          )}
+
+          {date && time && !isInFuture && (
+            <p className="text-destructive text-xs">
+              Meeting time must be in the future.
+            </p>
+          )}
+
+          <div className="flex justify-end gap-2 pt-1">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit} disabled={!isValid}>
+              {mode === 'reschedule' ? 'Send Reschedule' : 'Propose Meetup'}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default ProposeMeetingModal;
