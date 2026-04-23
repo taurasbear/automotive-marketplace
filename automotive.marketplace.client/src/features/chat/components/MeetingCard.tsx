@@ -211,21 +211,17 @@ const MeetingCard = ({
           )}
 
           {canRespond && (
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               <Button
                 size="sm"
-                className="h-7 flex-1 text-xs"
+                className="h-7 text-xs"
                 onClick={() => onAccept(meeting.id)}
               >
                 Accept
               </Button>
               <Popover open={suggestOpen} onOpenChange={setSuggestOpen}>
                 <PopoverTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-7 flex-1 text-xs"
-                  >
+                  <Button size="sm" variant="outline" className="h-7 text-xs">
                     Suggest alternative
                   </Button>
                 </PopoverTrigger>
@@ -255,7 +251,7 @@ const MeetingCard = ({
               <Button
                 size="sm"
                 variant="ghost"
-                className="text-destructive hover:text-destructive h-7 flex-1 text-xs"
+                className="text-destructive hover:text-destructive col-span-2 h-7 text-xs"
                 onClick={() => onDecline(meeting.id)}
               >
                 Decline

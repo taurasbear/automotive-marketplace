@@ -335,6 +335,9 @@ export const useChatHub = () => {
             };
           },
         );
+        void queryClient.invalidateQueries({
+          queryKey: chatKeys.messages(payload.conversationId),
+        });
       },
     );
 
@@ -494,6 +497,9 @@ export const useChatHub = () => {
             };
           },
         );
+        void queryClient.invalidateQueries({
+          queryKey: chatKeys.messages(payload.conversationId),
+        });
       },
     );
 
