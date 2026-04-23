@@ -13,7 +13,10 @@ const Inbox = ({ initialConversationId }: InboxProps) => {
 
   const handleSelect = (conversation: ConversationSummary) => {
     setSelected(conversation);
-    void navigate({ to: "/inbox/$conversationId", params: { conversationId: conversation.id } });
+    void navigate({
+      to: "/inbox/$conversationId",
+      params: { conversationId: conversation.id },
+    });
   };
 
   const handleInitialLoad = (conversation: ConversationSummary | null) => {

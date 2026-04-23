@@ -37,7 +37,7 @@ const ProposeMeetingModal = ({
 }: ProposeMeetingModalProps) => {
   const timezone = getTimezoneOffsetLabel();
   const now = new Date();
-  
+
   const formatLocalDate = (d: Date) =>
     `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const formatLocalTime = (d: Date) =>

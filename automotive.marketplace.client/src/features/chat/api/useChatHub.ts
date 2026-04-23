@@ -117,7 +117,7 @@ export const useChatHub = () => {
               ...old.data,
               messages: old.data.messages.map((m) =>
                 m.offer?.id === payload.offerId
-                  ? { ...m, offer: { ...m.offer!, status: payload.newStatus } }
+                  ? { ...m, offer: { ...m.offer, status: payload.newStatus } }
                   : m,
               ),
             },
@@ -138,7 +138,7 @@ export const useChatHub = () => {
             if (!old) return old;
             const updatedMessages = old.data.messages.map((m) =>
               m.offer?.id === payload.offerId
-                ? { ...m, offer: { ...m.offer!, status: "Countered" as const } }
+                ? { ...m, offer: { ...m.offer, status: "Countered" as const } }
                 : m,
             );
             const counterMessage: Message = {
@@ -177,7 +177,7 @@ export const useChatHub = () => {
               ...old.data,
               messages: old.data.messages.map((m) =>
                 m.offer?.id === payload.offerId
-                  ? { ...m, offer: { ...m.offer!, status: "Expired" as const } }
+                  ? { ...m, offer: { ...m.offer, status: "Expired" as const } }
                   : m,
               ),
             },
@@ -233,7 +233,7 @@ export const useChatHub = () => {
                 m.meeting?.id === payload.meetingId
                   ? {
                       ...m,
-                      meeting: { ...m.meeting!, status: payload.newStatus },
+                      meeting: { ...m.meeting, status: payload.newStatus },
                     }
                   : m,
               ),
@@ -257,7 +257,7 @@ export const useChatHub = () => {
               m.meeting?.id === payload.meetingId
                 ? {
                     ...m,
-                    meeting: { ...m.meeting!, status: "Rescheduled" as const },
+                    meeting: { ...m.meeting, status: "Rescheduled" as const },
                   }
                 : m,
             );
@@ -301,7 +301,7 @@ export const useChatHub = () => {
                   m.meeting?.id === payload.meetingId
                     ? {
                         ...m,
-                        meeting: { ...m.meeting!, status: "Expired" as const },
+                        meeting: { ...m.meeting, status: "Expired" as const },
                       }
                     : m,
                 ),
@@ -327,7 +327,7 @@ export const useChatHub = () => {
                   m.meeting?.id === payload.meetingId
                     ? {
                         ...m,
-                        meeting: { ...m.meeting!, status: "Cancelled" as const },
+                        meeting: { ...m.meeting, status: "Cancelled" as const },
                       }
                     : m,
                 ),
@@ -382,7 +382,7 @@ export const useChatHub = () => {
                 ? {
                     ...m,
                     availabilityCard: {
-                      ...m.availabilityCard!,
+                      ...m.availabilityCard,
                       status: "Responded" as const,
                     },
                   }
@@ -455,7 +455,7 @@ export const useChatHub = () => {
                     ? {
                         ...m,
                         availabilityCard: {
-                          ...m.availabilityCard!,
+                          ...m.availabilityCard,
                           status: "Expired" as const,
                         },
                       }
@@ -484,7 +484,7 @@ export const useChatHub = () => {
                     ? {
                         ...m,
                         availabilityCard: {
-                          ...m.availabilityCard!,
+                          ...m.availabilityCard,
                           status: "Cancelled" as const,
                         },
                       }
@@ -698,17 +698,12 @@ export const useChatHub = () => {
     [],
   );
 
-  const cancelMeeting = useCallback(
-    ({ meetingId }: { meetingId: string }) => {
-      if (
-        connectionRef.current?.state !== signalR.HubConnectionState.Connected
-      ) {
-        throw new Error("Not connected. Please wait and try again.");
-      }
-      void connectionRef.current.invoke(HUB_METHODS.CANCEL_MEETING, meetingId);
-    },
-    [],
-  );
+  const cancelMeeting = useCallback(({ meetingId }: { meetingId: string }) => {
+    if (connectionRef.current?.state !== signalR.HubConnectionState.Connected) {
+      throw new Error("Not connected. Please wait and try again.");
+    }
+    void connectionRef.current.invoke(HUB_METHODS.CANCEL_MEETING, meetingId);
+  }, []);
 
   const cancelAvailability = useCallback(
     ({ availabilityCardId }: { availabilityCardId: string }) => {

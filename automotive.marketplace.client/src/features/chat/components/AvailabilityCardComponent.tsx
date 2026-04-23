@@ -124,9 +124,7 @@ const AvailabilityCardComponent = ({
       return;
     }
     if (selectedEnd > slotEnd) {
-      setPickerError(
-        `Meeting must end by ${format(slotEnd, "HH:mm")}`,
-      );
+      setPickerError(`Meeting must end by ${format(slotEnd, "HH:mm")}`);
       return;
     }
 
@@ -182,7 +180,7 @@ const AvailabilityCardComponent = ({
                   )}
                 </div>
                 {isExpanded && (
-                  <div className="border-t bg-muted/30 px-4 py-2 space-y-2">
+                  <div className="bg-muted/30 space-y-2 border-t px-4 py-2">
                     <div className="flex items-end gap-2">
                       <div className="flex-1 space-y-1">
                         <Label className="text-xs">Start time</Label>

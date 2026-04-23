@@ -73,12 +73,9 @@ const MessageThread = ({
   const acceptedCardRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const acceptedCardRefCallback = useCallback(
-    (node: HTMLDivElement | null) => {
-      acceptedCardRef.current = node;
-    },
-    [],
-  );
+  const acceptedCardRefCallback = useCallback((node: HTMLDivElement | null) => {
+    acceptedCardRef.current = node;
+  }, []);
 
   useEffect(() => {
     const node = acceptedCardRef.current;
@@ -123,12 +120,9 @@ const MessageThread = ({
           listingThumbnail={conversation.listingThumbnail}
         />
       )}
-      <div
-        ref={scrollContainerRef}
-        className="relative flex-1 overflow-y-auto"
-      >
+      <div ref={scrollContainerRef} className="relative flex-1 overflow-y-auto">
         {showStickyBar && acceptedMeeting && (
-          <div className="bg-green-900/95 text-green-100 sticky top-0 z-10 flex items-center gap-2 px-4 py-2 text-xs backdrop-blur-sm">
+          <div className="sticky top-0 z-10 flex items-center gap-2 bg-green-900/95 px-4 py-2 text-xs text-green-100 backdrop-blur-sm">
             <CheckCircle className="h-3.5 w-3.5 shrink-0" />
             <span className="font-semibold">Meetup Confirmed</span>
             <span className="text-green-300">·</span>
@@ -154,127 +148,127 @@ const MessageThread = ({
           </div>
         )}
         <div className="space-y-2 p-4">
-        {messages.map((m) => {
-          if (m.messageType === "Offer" && m.offer) {
+          {messages.map((m) => {
+            if (m.messageType === "Offer" && m.offer) {
+              const isOwn = m.senderId === userId;
+              return (
+                <div
+                  key={m.id}
+                  className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                >
+                  <OfferCard
+                    offer={m.offer}
+                    currentUserId={userId}
+                    listingPrice={conversation.listingPrice}
+                    onAccept={(offerId) =>
+                      respondToOffer({ offerId, action: "Accept" })
+                    }
+                    onDecline={(offerId) =>
+                      respondToOffer({ offerId, action: "Decline" })
+                    }
+                    onCounter={(offerId, amount) =>
+                      respondToOffer({
+                        offerId,
+                        action: "Counter",
+                        counterAmount: amount,
+                      })
+                    }
+                  />
+                </div>
+              );
+            }
+
+            if (m.messageType === "Meeting" && m.meeting) {
+              const isOwn = m.senderId === userId;
+              const isAccepted = m.meeting.status === "Accepted";
+              return (
+                <div
+                  key={m.id}
+                  ref={isAccepted ? acceptedCardRefCallback : undefined}
+                  className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                >
+                  <MeetingCard
+                    meeting={m.meeting}
+                    currentUserId={userId}
+                    onAccept={(meetingId) =>
+                      respondToMeeting({ meetingId, action: "Accept" })
+                    }
+                    onDecline={(meetingId) =>
+                      respondToMeeting({ meetingId, action: "Decline" })
+                    }
+                    onReschedule={(meetingId, data) =>
+                      respondToMeeting({
+                        meetingId,
+                        action: "Reschedule",
+                        rescheduleData: data,
+                      })
+                    }
+                    onCancel={(meetingId) => cancelMeeting({ meetingId })}
+                    onShareAvailability={(meetingId, slots) => {
+                      respondToMeeting({ meetingId, action: "Decline" });
+                      shareAvailability({
+                        conversationId: conversation.id,
+                        slots,
+                      });
+                    }}
+                  />
+                </div>
+              );
+            }
+
+            if (m.messageType === "Availability" && m.availabilityCard) {
+              const isOwn = m.senderId === userId;
+              return (
+                <div
+                  key={m.id}
+                  className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                >
+                  <AvailabilityCardComponent
+                    card={m.availabilityCard}
+                    currentUserId={userId}
+                    onPickSlot={(cardId, slotId, startTime, durationMinutes) =>
+                      respondToAvailability({
+                        availabilityCardId: cardId,
+                        action: "PickSlot",
+                        slotId,
+                        startTime,
+                        durationMinutes,
+                      })
+                    }
+                    onShareBack={(cardId, slots) =>
+                      respondToAvailability({
+                        availabilityCardId: cardId,
+                        action: "ShareBack",
+                        shareBackSlots: slots,
+                      })
+                    }
+                    onCancel={(cardId) =>
+                      cancelAvailability({ availabilityCardId: cardId })
+                    }
+                  />
+                </div>
+              );
+            }
+
             const isOwn = m.senderId === userId;
             return (
               <div
                 key={m.id}
                 className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
               >
-                <OfferCard
-                  offer={m.offer}
-                  currentUserId={userId}
-                  listingPrice={conversation.listingPrice}
-                  onAccept={(offerId) =>
-                    respondToOffer({ offerId, action: "Accept" })
-                  }
-                  onDecline={(offerId) =>
-                    respondToOffer({ offerId, action: "Decline" })
-                  }
-                  onCounter={(offerId, amount) =>
-                    respondToOffer({
-                      offerId,
-                      action: "Counter",
-                      counterAmount: amount,
-                    })
-                  }
-                />
+                <div
+                  className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm break-words ${
+                    isOwn
+                      ? "bg-primary text-primary-foreground rounded-br-sm"
+                      : "bg-muted rounded-bl-sm"
+                  }`}
+                >
+                  {m.content}
+                </div>
               </div>
             );
-          }
-
-          if (m.messageType === "Meeting" && m.meeting) {
-            const isOwn = m.senderId === userId;
-            const isAccepted = m.meeting.status === "Accepted";
-            return (
-              <div
-                key={m.id}
-                ref={isAccepted ? acceptedCardRefCallback : undefined}
-                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
-              >
-                <MeetingCard
-                  meeting={m.meeting}
-                  currentUserId={userId}
-                  onAccept={(meetingId) =>
-                    respondToMeeting({ meetingId, action: "Accept" })
-                  }
-                  onDecline={(meetingId) =>
-                    respondToMeeting({ meetingId, action: "Decline" })
-                  }
-                  onReschedule={(meetingId, data) =>
-                    respondToMeeting({
-                      meetingId,
-                      action: "Reschedule",
-                      rescheduleData: data,
-                    })
-                  }
-                  onCancel={(meetingId) => cancelMeeting({ meetingId })}
-                  onShareAvailability={(meetingId, slots) => {
-                    respondToMeeting({ meetingId, action: "Decline" });
-                    shareAvailability({
-                      conversationId: conversation.id,
-                      slots,
-                    });
-                  }}
-                />
-              </div>
-            );
-          }
-
-          if (m.messageType === "Availability" && m.availabilityCard) {
-            const isOwn = m.senderId === userId;
-            return (
-              <div
-                key={m.id}
-                className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
-              >
-                <AvailabilityCardComponent
-                  card={m.availabilityCard}
-                  currentUserId={userId}
-                  onPickSlot={(cardId, slotId, startTime, durationMinutes) =>
-                    respondToAvailability({
-                      availabilityCardId: cardId,
-                      action: "PickSlot",
-                      slotId,
-                      startTime,
-                      durationMinutes,
-                    })
-                  }
-                  onShareBack={(cardId, slots) =>
-                    respondToAvailability({
-                      availabilityCardId: cardId,
-                      action: "ShareBack",
-                      shareBackSlots: slots,
-                    })
-                  }
-                  onCancel={(cardId) =>
-                    cancelAvailability({ availabilityCardId: cardId })
-                  }
-                />
-              </div>
-            );
-          }
-
-          const isOwn = m.senderId === userId;
-          return (
-            <div
-              key={m.id}
-              className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm break-words ${
-                  isOwn
-                    ? "bg-primary text-primary-foreground rounded-br-sm"
-                    : "bg-muted rounded-bl-sm"
-                }`}
-              >
-                {m.content}
-              </div>
-            </div>
-          );
-        })}
-        <div ref={bottomRef} />
+          })}
+          <div ref={bottomRef} />
         </div>
       </div>
       {sendError && (
