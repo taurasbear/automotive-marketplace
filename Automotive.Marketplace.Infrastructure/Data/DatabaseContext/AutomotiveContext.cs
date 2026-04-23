@@ -46,6 +46,12 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<UserListingNote> UserListingNotes { get; set; }
 
+    public DbSet<Meeting> Meetings { get; set; }
+
+    public DbSet<AvailabilityCard> AvailabilityCards { get; set; }
+
+    public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(VariantConfiguration).Assembly);
