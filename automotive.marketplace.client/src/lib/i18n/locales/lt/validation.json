@@ -1,1 +1,13 @@
-{}
+{
+  "required": "{{label}} yra privalomas",
+  "minLength": "{{label}} turi būti bent {{length}} simbolių",
+  "maxLength": "{{label}} turi būti {{length}} arba mažiau simbolių",
+  "minSize": "{{label}} turi būti bent {{size}}{{unit}}",
+  "maxSize": "{{label}} turi būti {{size}}{{unit}} arba mažiau",
+  "pleaseSelect": "Pasirinkite {{field}}",
+  "enter": "Įveskite {{field}}",
+  "cityCannotBeEmpty": "Miestas negali būti tuščias",
+  "vinInvalid": "VIN kodas turi turėti 17 simbolių ir neturėti I, O arba Q raidžių",
+  "invalidImage": "Įkeltas failas nėra tinkamas paveikslėlis",
+  "mustUploadImage": "Turite įkelti bent vieną nuotrauką"
+}
