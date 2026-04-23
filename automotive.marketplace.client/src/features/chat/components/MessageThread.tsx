@@ -66,18 +66,6 @@ const MessageThread = ({
           listingThumbnail={conversation.listingThumbnail}
         />
       )}
-      <ActionBar
-        currentUserId={userId}
-        buyerId={conversation.buyerId}
-        sellerId={conversation.sellerId}
-        listingPrice={conversation.listingPrice}
-        conversationId={conversation.id}
-        buyerHasLiked={conversation.buyerHasLiked}
-        hasActiveOffer={hasActiveOffer}
-        onSendOffer={(amount) =>
-          sendOffer({ conversationId: conversation.id, amount })
-        }
-      />
       <div className="flex-1 space-y-2 overflow-y-auto p-4">
         {messages.map((m) => {
           if (m.messageType === "Offer" && m.offer) {
@@ -133,6 +121,18 @@ const MessageThread = ({
         <p className="text-destructive px-3 pb-1 text-xs">{sendError}</p>
       )}
       <div className="border-border flex items-center gap-2 border-t p-3">
+        <ActionBar
+          currentUserId={userId}
+          buyerId={conversation.buyerId}
+          sellerId={conversation.sellerId}
+          listingPrice={conversation.listingPrice}
+          conversationId={conversation.id}
+          buyerHasLiked={conversation.buyerHasLiked}
+          hasActiveOffer={hasActiveOffer}
+          onSendOffer={(amount) =>
+            sendOffer({ conversationId: conversation.id, amount })
+          }
+        />
         <input
           className="border-input bg-background focus:ring-ring flex-1 rounded-full border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
           placeholder={`Message ${conversation.counterpartUsername}...`}

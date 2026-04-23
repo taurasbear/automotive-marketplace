@@ -29,21 +29,20 @@ const ActionBar = ({
   const isSeller = currentUserId === sellerId;
   const showOfferButton = isBuyer || (isSeller && buyerHasLiked);
 
+  if (!showOfferButton) return null;
+
   return (
     <>
-      <div className="border-border flex items-center gap-2 border-b px-3 py-2">
-        {showOfferButton && (
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={hasActiveOffer}
-            onClick={() => setOfferModalOpen(true)}
-            title={hasActiveOffer ? 'An offer is already pending in this conversation' : undefined}
-          >
-            Make an Offer
-          </Button>
-        )}
-      </div>
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={hasActiveOffer}
+        onClick={() => setOfferModalOpen(true)}
+        title={hasActiveOffer ? 'An offer is already pending in this conversation' : undefined}
+        className="shrink-0"
+      >
+        Make an Offer
+      </Button>
 
       <MakeOfferModal
         open={offerModalOpen}
