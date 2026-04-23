@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
+import { format } from "date-fns";
 import { getAllModelsOptions } from "../api/getAllModelsOptions";
 import { useDeleteModel } from "../api/useDeleteModel";
 import EditModelDialog from "./EditModelDialog";
@@ -23,6 +25,7 @@ type ModelListTableProps = {
 
 const ModelListTable = ({ className }: ModelListTableProps) => {
   const { t } = useTranslation("admin");
+  const locale = useDateLocale();
   const { data: modelsQuery } = useQuery(getAllModelsOptions);
   const models = modelsQuery?.data || [];
 
@@ -50,7 +53,7 @@ const ModelListTable = ({ className }: ModelListTableProps) => {
               <TableCell>{m.name}</TableCell>
               <TableCell>{m.createdBy}</TableCell>
               <TableCell>
-                {new Date(m.createdAt).toLocaleDateString()}
+                {format(new Date(m.createdAt), "P", { locale })}
               </TableCell>
               <TableCell>
                 <ViewModelDialog id={m.id} />

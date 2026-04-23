@@ -51,6 +51,9 @@
     "editListing": "Redaguoti skelbimą",
     "saveChanges": "Išsaugoti pakeitimus"
   },
+  "createPage": {
+    "title": "Sukurkite savo skelbimą"
+  },
   "form": {
     "carMake": "Automobilio markė*",
     "carModel": "Automobilio modelis*",

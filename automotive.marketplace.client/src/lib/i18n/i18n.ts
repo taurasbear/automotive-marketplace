@@ -46,7 +46,7 @@ void i18n
         validation: validationLt,
       },
     },
-    fallbackLng: "en",
+    fallbackLng: "lt",
     defaultNS: "common",
     detection: {
       order: ["localStorage"],

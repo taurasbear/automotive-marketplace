@@ -9,7 +9,8 @@
     "createdAt": "Created at",
     "actions": "Actions",
     "deleteConfirm": "Delete {{name}}?",
-    "deleteWarning": "This action cannot be undone."
+    "deleteWarning": "This action cannot be undone.",
+    "editMake": "Edit {{name}}"
   },
   "models": {
     "addModel": "Add model",
@@ -20,7 +21,14 @@
     "name": "Name",
     "createdBy": "Created by",
     "createdAt": "Created at",
-    "actions": "Actions"
+    "actions": "Actions",
+    "modelDetails": "Model details",
+    "inDepth": "In depth",
+    "createdBy_label": "Created by",
+    "createdAt_label": "Created at",
+    "lastModifiedBy": "Last modified by",
+    "on": "on",
+    "editModel": "Edit {{name}}"
   },
   "variants": {
     "addVariant": "Add variant",
@@ -46,6 +54,14 @@
     "custom": "Custom",
     "actions": "Actions",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "variantDetails": "Variant details",
+    "readOnly": "Read-only view",
+    "transmission": "Transmission",
+    "bodyType": "Body type",
+    "doors": "Doors",
+    "power": "Power",
+    "engineSize": "Engine size",
+    "editVariant": "Edit variant"
   }
 }

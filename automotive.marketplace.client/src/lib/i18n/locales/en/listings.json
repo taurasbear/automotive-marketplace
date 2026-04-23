@@ -51,6 +51,9 @@
     "editListing": "Edit listing",
     "saveChanges": "Save Changes"
   },
+  "createPage": {
+    "title": "Create your own listing"
+  },
   "form": {
     "carMake": "Car make*",
     "carModel": "Car model*",

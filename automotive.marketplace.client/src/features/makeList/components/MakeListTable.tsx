@@ -24,6 +24,8 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
+import { format } from "date-fns";
 import { useDeleteMake } from "../api/useDeleteMake";
 import EditMakeDialog from "./EditMakeDialog";
 
@@ -33,6 +35,7 @@ type MakeListTableProps = {
 
 const MakeListTable = ({ className }: MakeListTableProps) => {
   const { t } = useTranslation(["admin", "common"]);
+  const locale = useDateLocale();
   const { data: makesQuery } = useQuery(getAllMakesOptions);
   const makes = makesQuery?.data || [];
 
@@ -60,7 +63,7 @@ const MakeListTable = ({ className }: MakeListTableProps) => {
               <TableCell>{m.name}</TableCell>
               <TableCell>{m.createdBy}</TableCell>
               <TableCell>
-                {new Date(m.createdAt).toLocaleDateString()}
+                {format(new Date(m.createdAt), "P", { locale })}
               </TableCell>
               <TableCell className="flex gap-1">
                 <EditMakeDialog id={m.id} />

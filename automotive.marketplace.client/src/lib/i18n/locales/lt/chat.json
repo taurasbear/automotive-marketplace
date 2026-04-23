@@ -74,6 +74,10 @@
     "cancelAvailability": "Atšaukti prieinamumą",
     "noneOfTheseWork": "Nė vienas netinka — dalintis savo prieinamumu"
   },
+  "inbox": {
+    "title": "Žinutės",
+    "emptyState": "Pasirinkite pokalbį, kad pradėtumėte rašyti."
+  },
   "conversationList": {
     "noConversationsYet": "Pokalbių dar nėra."
   },

@@ -1,4 +1,5 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useTranslation } from "react-i18next";
 import { VariantFormData } from "../types/VariantFormData";
 import { Variant } from "../types/Variant";
 import VariantForm from "./VariantForm";
@@ -14,10 +15,12 @@ const EditVariantDialogContent = ({
   makeId,
   onSubmit,
 }: EditVariantDialogContentProps) => {
+  const { t } = useTranslation("admin");
+
   return (
     <div>
       <DialogHeader>
-        <DialogTitle>Edit variant</DialogTitle>
+        <DialogTitle>{t("variants.editVariant")}</DialogTitle>
       </DialogHeader>
       <VariantForm
         variant={{

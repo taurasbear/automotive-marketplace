@@ -2,12 +2,14 @@ import { ConversationList, MessageThread } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type InboxProps = {
   initialConversationId?: string;
 };
 
 const Inbox = ({ initialConversationId }: InboxProps) => {
+  const { t } = useTranslation("chat");
   const [selected, setSelected] = useState<ConversationSummary | null>(null);
   const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const Inbox = ({ initialConversationId }: InboxProps) => {
     <div className="flex h-[calc(100vh-64px)] overflow-hidden">
       <aside className="border-border w-72 shrink-0 overflow-hidden border-r lg:w-80">
         <div className="border-border border-b px-4 py-3">
-          <h1 className="text-lg font-semibold">Messages</h1>
+          <h1 className="text-lg font-semibold">{t("inbox.title")}</h1>
         </div>
         <ConversationList
           selectedId={selected?.id ?? initialConversationId ?? null}
@@ -47,7 +49,7 @@ const Inbox = ({ initialConversationId }: InboxProps) => {
           <MessageThread conversation={selected} />
         ) : (
           <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
-            Select a conversation to start messaging.
+            {t("inbox.emptyState")}
           </div>
         )}
       </main>

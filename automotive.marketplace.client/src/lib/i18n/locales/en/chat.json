@@ -74,6 +74,10 @@
     "cancelAvailability": "Cancel availability",
     "noneOfTheseWork": "None of these work — share my availability instead"
   },
+  "inbox": {
+    "title": "Messages",
+    "emptyState": "Select a conversation to start messaging."
+  },
   "conversationList": {
     "noConversationsYet": "No conversations yet."
   },

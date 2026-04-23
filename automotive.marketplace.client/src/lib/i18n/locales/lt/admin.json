@@ -9,7 +9,8 @@
     "createdAt": "Sukurta",
     "actions": "Veiksmai",
     "deleteConfirm": "Ištrinti {{name}}?",
-    "deleteWarning": "Šio veiksmo negalima atšaukti."
+    "deleteWarning": "Šio veiksmo negalima atšaukti.",
+    "editMake": "Redaguoti {{name}}"
   },
   "models": {
     "addModel": "Pridėti modelį",
@@ -20,7 +21,14 @@
     "name": "Pavadinimas",
     "createdBy": "Sukūrė",
     "createdAt": "Sukurta",
-    "actions": "Veiksmai"
+    "actions": "Veiksmai",
+    "modelDetails": "Modelio informacija",
+    "inDepth": "Išsamiau",
+    "createdBy_label": "Sukūrė",
+    "createdAt_label": "Sukurta",
+    "lastModifiedBy": "Paskutinį kartą redagavo",
+    "on": "",
+    "editModel": "Redaguoti {{name}}"
   },
   "variants": {
     "addVariant": "Pridėti variantą",
@@ -46,6 +54,14 @@
     "custom": "Pasirinktinis",
     "actions": "Veiksmai",
     "yes": "Taip",
-    "no": "Ne"
+    "no": "Ne",
+    "variantDetails": "Varianto informacija",
+    "readOnly": "Tik peržiūrai",
+    "transmission": "Pavarų dėžė",
+    "bodyType": "Kėbulo tipas",
+    "doors": "Durys",
+    "power": "Galia",
+    "engineSize": "Variklio tūris",
+    "editVariant": "Redaguoti variantą"
   }
 }
