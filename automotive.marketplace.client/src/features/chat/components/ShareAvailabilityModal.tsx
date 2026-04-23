@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { getTimezoneOffsetLabel } from "../utils/timezone";
 
 type SlotEntry = {
   key: number;
@@ -37,6 +38,7 @@ const ShareAvailabilityModal = ({
   onSubmit,
 }: ShareAvailabilityModalProps) => {
   const [slots, setSlots] = useState<SlotEntry[]>([createEmptySlot()]);
+  const timezone = getTimezoneOffsetLabel();
   const now = new Date();
 
   const updateSlot = (
@@ -59,8 +61,8 @@ const ShareAvailabilityModal = ({
 
   const validSlots = slots.filter((s) => {
     if (!s.date || !s.startTime || !s.endTime) return false;
-    const start = new Date(`${s.date}T${s.startTime}:00Z`);
-    const end = new Date(`${s.date}T${s.endTime}:00Z`);
+    const start = new Date(`${s.date}T${s.startTime}:00`);
+    const end = new Date(`${s.date}T${s.endTime}:00`);
     return start > now && end > start;
   });
 
@@ -69,8 +71,8 @@ const ShareAvailabilityModal = ({
   const handleSubmit = () => {
     if (!isValid) return;
     const mapped = slots.map((s) => ({
-      startTime: new Date(`${s.date}T${s.startTime}:00Z`).toISOString(),
-      endTime: new Date(`${s.date}T${s.endTime}:00Z`).toISOString(),
+      startTime: new Date(`${s.date}T${s.startTime}:00`).toISOString(),
+      endTime: new Date(`${s.date}T${s.endTime}:00`).toISOString(),
     }));
     onSubmit(mapped);
     onOpenChange(false);
@@ -117,7 +119,7 @@ const ShareAvailabilityModal = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">From</Label>
+                  <Label className="text-xs">From ({timezone})</Label>
                   <Input
                     type="time"
                     value={slot.startTime}
@@ -128,7 +130,7 @@ const ShareAvailabilityModal = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">To</Label>
+                  <Label className="text-xs">To ({timezone})</Label>
                   <Input
                     type="time"
                     value={slot.endTime}
