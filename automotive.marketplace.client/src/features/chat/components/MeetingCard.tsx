@@ -120,8 +120,8 @@ const MeetingCard = ({
   const canRespond =
     meeting.status === "Pending" && currentUserId !== meeting.initiatorId;
   const canCancel =
-    (meeting.status === "Pending" || meeting.status === "Accepted") &&
-    currentUserId === meeting.initiatorId;
+    (meeting.status === "Pending" && currentUserId === meeting.initiatorId) ||
+    meeting.status === "Accepted";
   const proposedDate = new Date(meeting.proposedAt);
   const isMuted =
     meeting.status === "Declined" ||
