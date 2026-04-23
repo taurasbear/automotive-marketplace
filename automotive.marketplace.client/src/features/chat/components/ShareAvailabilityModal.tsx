@@ -79,7 +79,7 @@ const ShareAvailabilityModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Share Your Availability</DialogTitle>
         </DialogHeader>
@@ -103,7 +103,7 @@ const ShareAvailabilityModal = ({
                   </Button>
                 )}
               </div>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-2">
                 <div className="space-y-1">
                   <Label className="text-xs">Date</Label>
                   <Input
