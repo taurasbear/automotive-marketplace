@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using Automotive.Marketplace.Application.Features.ChatFeatures.CancelAvailability;
+using Automotive.Marketplace.Application.Features.ChatFeatures.CancelMeeting;
 using Automotive.Marketplace.Application.Features.ChatFeatures.MakeOffer;
 using Automotive.Marketplace.Application.Features.ChatFeatures.ProposeMeeting;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToAvailability;
@@ -148,5 +150,29 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{UserId}").SendAsync("AvailabilityResponded", result);
         await Clients.Group($"user-{initiatorId}").SendAsync("AvailabilityResponded", result);
+    }
+
+    public async Task CancelMeeting(Guid meetingId)
+    {
+        var result = await mediator.Send(new CancelMeetingCommand
+        {
+            MeetingId = meetingId,
+            CancellerId = UserId
+        });
+
+        await Clients.Group($"user-{result.InitiatorId}").SendAsync("MeetingCancelled", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("MeetingCancelled", result);
+    }
+
+    public async Task CancelAvailability(Guid availabilityCardId)
+    {
+        var result = await mediator.Send(new CancelAvailabilityCommand
+        {
+            AvailabilityCardId = availabilityCardId,
+            CancellerId = UserId
+        });
+
+        await Clients.Group($"user-{result.InitiatorId}").SendAsync("AvailabilityCancelled", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("AvailabilityCancelled", result);
     }
 }
