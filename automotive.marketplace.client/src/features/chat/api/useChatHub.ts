@@ -26,6 +26,8 @@ import type {
   AvailabilitySharedPayload,
   AvailabilityRespondedPayload,
   AvailabilityExpiredPayload,
+  MeetingCancelledPayload,
+  AvailabilityCancelledPayload,
 } from "../types/MeetingEventPayloads";
 
 const apiBase =
@@ -311,6 +313,32 @@ export const useChatHub = () => {
     );
 
     connection.on(
+      HUB_METHODS.MEETING_CANCELLED,
+      (payload: MeetingCancelledPayload) => {
+        queryClient.setQueryData<{ data: GetMessagesResponse }>(
+          chatKeys.messages(payload.conversationId),
+          (old) => {
+            if (!old) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                messages: old.data.messages.map((m) =>
+                  m.meeting?.id === payload.meetingId
+                    ? {
+                        ...m,
+                        meeting: { ...m.meeting!, status: "Cancelled" as const },
+                      }
+                    : m,
+                ),
+              },
+            };
+          },
+        );
+      },
+    );
+
+    connection.on(
       HUB_METHODS.AVAILABILITY_SHARED,
       (payload: AvailabilitySharedPayload) => {
         queryClient.setQueryData<{ data: GetMessagesResponse }>(
@@ -429,6 +457,35 @@ export const useChatHub = () => {
                         availabilityCard: {
                           ...m.availabilityCard!,
                           status: "Expired" as const,
+                        },
+                      }
+                    : m,
+                ),
+              },
+            };
+          },
+        );
+      },
+    );
+
+    connection.on(
+      HUB_METHODS.AVAILABILITY_CANCELLED,
+      (payload: AvailabilityCancelledPayload) => {
+        queryClient.setQueryData<{ data: GetMessagesResponse }>(
+          chatKeys.messages(payload.conversationId),
+          (old) => {
+            if (!old) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                messages: old.data.messages.map((m) =>
+                  m.availabilityCard?.id === payload.availabilityCardId
+                    ? {
+                        ...m,
+                        availabilityCard: {
+                          ...m.availabilityCard!,
+                          status: "Cancelled" as const,
                         },
                       }
                     : m,
@@ -613,11 +670,15 @@ export const useChatHub = () => {
       action,
       slotId,
       shareBackSlots,
+      startTime,
+      durationMinutes,
     }: {
       availabilityCardId: string;
       action: "PickSlot" | "ShareBack";
       slotId?: string;
       shareBackSlots?: { startTime: string; endTime: string }[];
+      startTime?: string;
+      durationMinutes?: number;
     }) => {
       if (
         connectionRef.current?.state !== signalR.HubConnectionState.Connected
@@ -630,6 +691,35 @@ export const useChatHub = () => {
         action,
         slotId ?? null,
         shareBackSlots ?? null,
+        startTime ?? null,
+        durationMinutes ?? null,
+      );
+    },
+    [],
+  );
+
+  const cancelMeeting = useCallback(
+    ({ meetingId }: { meetingId: string }) => {
+      if (
+        connectionRef.current?.state !== signalR.HubConnectionState.Connected
+      ) {
+        throw new Error("Not connected. Please wait and try again.");
+      }
+      void connectionRef.current.invoke(HUB_METHODS.CANCEL_MEETING, meetingId);
+    },
+    [],
+  );
+
+  const cancelAvailability = useCallback(
+    ({ availabilityCardId }: { availabilityCardId: string }) => {
+      if (
+        connectionRef.current?.state !== signalR.HubConnectionState.Connected
+      ) {
+        throw new Error("Not connected. Please wait and try again.");
+      }
+      void connectionRef.current.invoke(
+        HUB_METHODS.CANCEL_AVAILABILITY,
+        availabilityCardId,
       );
     },
     [],
@@ -643,5 +733,7 @@ export const useChatHub = () => {
     respondToMeeting,
     shareAvailability,
     respondToAvailability,
+    cancelMeeting,
+    cancelAvailability,
   };
 };
