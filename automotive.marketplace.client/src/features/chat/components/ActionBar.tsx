@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, DollarSign, Plus } from "lucide-react";
 import { useState } from "react";
 import MakeOfferModal from "./MakeOfferModal";
 import ProposeMeetingModal from "./ProposeMeetingModal";
@@ -46,7 +46,7 @@ const ActionBar = ({
   onShareAvailability,
 }: ActionBarProps) => {
   const [offerModalOpen, setOfferModalOpen] = useState(false);
-  const [meetupPopoverOpen, setMeetupPopoverOpen] = useState(false);
+  const [actionsPopoverOpen, setActionsPopoverOpen] = useState(false);
   const [proposeMeetingOpen, setProposeMeetingOpen] = useState(false);
   const [shareAvailabilityOpen, setShareAvailabilityOpen] = useState(false);
 
@@ -58,43 +58,39 @@ const ActionBar = ({
 
   return (
     <>
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={hasActiveOffer}
-        onClick={() => setOfferModalOpen(true)}
-        title={
-          hasActiveOffer
-            ? "An offer is already pending in this conversation"
-            : undefined
-        }
-        className="shrink-0"
-      >
-        Make an Offer
-      </Button>
-
-      <Popover open={meetupPopoverOpen} onOpenChange={setMeetupPopoverOpen}>
+      <Popover open={actionsPopoverOpen} onOpenChange={setActionsPopoverOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
+          <Button variant="outline" size="icon" className="h-8 w-8 shrink-0">
+            <Plus className="h-4 w-4" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-48 p-1" align="start">
+          <button
+            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={hasActiveOffer}
+            title={
+              hasActiveOffer
+                ? "An offer is already pending in this conversation"
+                : undefined
+            }
+            onClick={() => {
+              setActionsPopoverOpen(false);
+              setOfferModalOpen(true);
+            }}
+          >
+            <DollarSign className="mr-2 h-4 w-4" />
+            Make an Offer
+          </button>
+          <button
+            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
               hasActiveMeeting
                 ? "A meetup negotiation is already active"
                 : undefined
             }
-            className="shrink-0"
-          >
-            <Calendar className="mr-1 h-3.5 w-3.5" />
-            Plan Meetup
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-48 p-1" align="start">
-          <button
-            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
             onClick={() => {
-              setMeetupPopoverOpen(false);
+              setActionsPopoverOpen(false);
               setProposeMeetingOpen(true);
             }}
           >
@@ -102,9 +98,15 @@ const ActionBar = ({
             Propose a time
           </button>
           <button
-            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
+            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={hasActiveMeeting}
+            title={
+              hasActiveMeeting
+                ? "A meetup negotiation is already active"
+                : undefined
+            }
             onClick={() => {
-              setMeetupPopoverOpen(false);
+              setActionsPopoverOpen(false);
               setShareAvailabilityOpen(true);
             }}
           >
