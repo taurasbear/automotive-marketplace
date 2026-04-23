@@ -13,9 +13,11 @@ import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 const Login = () => {
+  const { t } = useTranslation("auth");
   const { mutateAsync: loginUserAsync } = useLoginUser();
   const navigate = useNavigate();
 
@@ -48,7 +50,7 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
-      <h2 className="mb-6 text-2xl font-bold">Login</h2>
+      <h2 className="mb-6 text-2xl font-bold">{t("login.title")}</h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -59,11 +61,11 @@ const Login = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("login.fields.email")}</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder={t("login.fields.emailPlaceholder")}
                     {...field}
                   />
                 </FormControl>
@@ -76,16 +78,16 @@ const Login = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("login.fields.password")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Password" {...field} />
+                  <Input type="password" placeholder={t("login.fields.passwordPlaceholder")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <Button type="submit" className="w-full">
-            Login
+            {t("login.submit")}
           </Button>
         </form>
       </Form>
