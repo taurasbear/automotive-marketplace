@@ -133,7 +133,8 @@ public class ChatHub(IMediator mediator) : Hub
     }
 
     public async Task RespondToAvailability(Guid availabilityCardId, string action,
-        Guid? slotId = null, List<RespondToAvailabilityCommand.ShareBackSlot>? shareBackSlots = null)
+        Guid? slotId = null, List<RespondToAvailabilityCommand.ShareBackSlot>? shareBackSlots = null,
+        DateTime? startTime = null, int? durationMinutes = null)
     {
         var result = await mediator.Send(new RespondToAvailabilityCommand
         {
@@ -141,7 +142,9 @@ public class ChatHub(IMediator mediator) : Hub
             ResponderId = UserId,
             Action = Enum.Parse<AvailabilityResponseAction>(action, ignoreCase: true),
             SlotId = slotId,
-            ShareBackSlots = shareBackSlots
+            ShareBackSlots = shareBackSlots,
+            StartTime = startTime,
+            DurationMinutes = durationMinutes
         });
 
         var initiatorId = result.Action == AvailabilityResponseAction.PickSlot
