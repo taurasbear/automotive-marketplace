@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useUpsertListingNote } from "../api/useUpsertListingNote";
 import { useDeleteListingNote } from "../api/useDeleteListingNote";
 import type { SavedListing } from "../types/SavedListing";
@@ -12,6 +13,7 @@ interface NoteEditorProps {
 const DEBOUNCE_MS = 800;
 
 const NoteEditor = ({ listing, isExpanded }: NoteEditorProps) => {
+  const { t } = useTranslation("saved");
   const [text, setText] = useState(listing.noteContent ?? "");
   const [isEditing, setIsEditing] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -117,7 +119,7 @@ const NoteEditor = ({ listing, isExpanded }: NoteEditorProps) => {
             <p className="text-sm">{listing.noteContent}</p>
           ) : (
             <p className="text-muted-foreground text-sm italic">
-              Click to add a note…
+              {t("noteEditor.placeholder")}
             </p>
           )}
         </div>
