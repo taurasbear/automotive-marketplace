@@ -114,9 +114,7 @@ const ActionBar = ({
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveOffer}
             title={
-              hasActiveOffer
-                ? t("actionBar.offerAlreadyPending")
-                : undefined
+              hasActiveOffer ? t("actionBar.offerAlreadyPending") : undefined
             }
             onClick={() => {
               setActionsPopoverOpen(false);
@@ -130,9 +128,7 @@ const ActionBar = ({
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
-              hasActiveMeeting
-                ? t("actionBar.meetupAlreadyActive")
-                : undefined
+              hasActiveMeeting ? t("actionBar.meetupAlreadyActive") : undefined
             }
             onClick={() => handleMeetingAction("propose")}
           >
@@ -143,9 +139,7 @@ const ActionBar = ({
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
-              hasActiveMeeting
-                ? t("actionBar.meetupAlreadyActive")
-                : undefined
+              hasActiveMeeting ? t("actionBar.meetupAlreadyActive") : undefined
             }
             onClick={() => handleMeetingAction("availability")}
           >
@@ -163,12 +157,22 @@ const ActionBar = ({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("actionBar.cancelExistingMeetup")}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("actionBar.cancelExistingMeetup")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {acceptedMeeting
                 ? t("actionBar.confirmedMeetupWarning", {
-                    date: format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d", { locale }),
-                    time: format(new Date(acceptedMeeting.proposedAt), "HH:mm", { locale }),
+                    date: format(
+                      new Date(acceptedMeeting.proposedAt),
+                      "EEE, MMM d",
+                      { locale },
+                    ),
+                    time: format(
+                      new Date(acceptedMeeting.proposedAt),
+                      "HH:mm",
+                      { locale },
+                    ),
                   })
                 : t("actionBar.activeMeetupWarning")}
             </AlertDialogDescription>

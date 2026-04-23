@@ -80,7 +80,11 @@ const Login = () => {
               <FormItem>
                 <FormLabel>{t("login.fields.password")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder={t("login.fields.passwordPlaceholder")} {...field} />
+                  <Input
+                    type="password"
+                    placeholder={t("login.fields.passwordPlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

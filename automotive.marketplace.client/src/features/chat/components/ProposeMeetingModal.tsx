@@ -97,13 +97,17 @@ const ProposeMeetingModal = ({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            {mode === "reschedule" ? t("proposeMeetingModal.rescheduleTitle") : t("proposeMeetingModal.proposeTitle")}
+            {mode === "reschedule"
+              ? t("proposeMeetingModal.rescheduleTitle")
+              : t("proposeMeetingModal.proposeTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-date">{t("proposeMeetingModal.date")}</Label>
+            <Label htmlFor="meeting-date">
+              {t("proposeMeetingModal.date")}
+            </Label>
             <Input
               id="meeting-date"
               type="date"
@@ -114,7 +118,9 @@ const ProposeMeetingModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-time">{t("proposeMeetingModal.startTime", { timezone })}</Label>
+            <Label htmlFor="meeting-time">
+              {t("proposeMeetingModal.startTime", { timezone })}
+            </Label>
             <Input
               id="meeting-time"
               type="time"
@@ -142,7 +148,9 @@ const ProposeMeetingModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-location">{t("proposeMeetingModal.locationOptional")}</Label>
+            <Label htmlFor="meeting-location">
+              {t("proposeMeetingModal.locationOptional")}
+            </Label>
             <Input
               id="meeting-location"
               placeholder={t("proposeMeetingModal.locationPlaceholder")}
@@ -206,7 +214,9 @@ const ProposeMeetingModal = ({
               {t("common:actions.cancel")}
             </Button>
             <Button onClick={handleSubmit} disabled={!isValid}>
-              {mode === "reschedule" ? t("proposeMeetingModal.sendReschedule") : t("proposeMeetingModal.proposeMeetup")}
+              {mode === "reschedule"
+                ? t("proposeMeetingModal.sendReschedule")
+                : t("proposeMeetingModal.proposeMeetup")}
             </Button>
           </div>
         </div>

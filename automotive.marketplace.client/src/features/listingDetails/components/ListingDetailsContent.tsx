@@ -80,7 +80,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
             />
             {listing.description && (
               <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-                <h2 className="mb-4 text-2xl font-semibold">{t("details.description")}</h2>
+                <h2 className="mb-4 text-2xl font-semibold">
+                  {t("details.description")}
+                </h2>
                 <p className="text-muted-foreground">{listing.description}</p>
               </div>
             )}
@@ -134,7 +136,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
 
             <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
               <div className="p-6">
-                <h2 className="text-2xl font-semibold">{t("details.specifications")}</h2>
+                <h2 className="text-2xl font-semibold">
+                  {t("details.specifications")}
+                </h2>
               </div>
               <div className="border-t p-0">
                 <dl className="divide-border divide-y">

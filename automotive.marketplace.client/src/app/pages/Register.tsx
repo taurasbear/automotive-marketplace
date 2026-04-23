@@ -70,7 +70,10 @@ const Register = () => {
               <FormItem>
                 <FormLabel>{t("register.fields.username")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("register.fields.usernamePlaceholder")} {...field} />
+                  <Input
+                    placeholder={t("register.fields.usernamePlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   {t("register.fields.usernameDescription")}
@@ -92,7 +95,9 @@ const Register = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>{t("register.fields.emailDescription")}</FormDescription>
+                <FormDescription>
+                  {t("register.fields.emailDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -104,9 +109,15 @@ const Register = () => {
               <FormItem>
                 <FormLabel>{t("register.fields.password")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder={t("register.fields.passwordPlaceholder")} {...field} />
+                  <Input
+                    type="password"
+                    placeholder={t("register.fields.passwordPlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>{t("register.fields.passwordDescription")}</FormDescription>
+                <FormDescription>
+                  {t("register.fields.passwordDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

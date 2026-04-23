@@ -37,7 +37,11 @@ const DatePicker = <
             !dateValue && "text-muted-foreground",
           )}
         >
-          {dateValue ? format(dateValue, "PPP") : <span>{t("datePicker.pickADate")}</span>}
+          {dateValue ? (
+            format(dateValue, "PPP")
+          ) : (
+            <span>{t("datePicker.pickADate")}</span>
+          )}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

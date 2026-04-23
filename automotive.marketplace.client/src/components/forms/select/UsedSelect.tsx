@@ -38,7 +38,9 @@ const UsedSelect = ({
         aria-label="Used, new or both"
       >
         <div className="grid grid-cols-1 justify-items-start">
-          <span className="text-muted-foreground text-xs">{t("select.usedNew")}</span>
+          <span className="text-muted-foreground text-xs">
+            {t("select.usedNew")}
+          </span>
           <SelectValue />
         </div>
       </SelectTrigger>

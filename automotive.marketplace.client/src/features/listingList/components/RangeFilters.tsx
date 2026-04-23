@@ -22,7 +22,9 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
   return (
     <div className="columns-1 space-y-4">
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">{t("filters.year")}</legend>
+        <legend className="mb-2 text-sm font-normal">
+          {t("filters.year")}
+        </legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getYearRange()}
@@ -41,7 +43,9 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
         </div>
       </fieldset>
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">{t("filters.price")}</legend>
+        <legend className="mb-2 text-sm font-normal">
+          {t("filters.price")}
+        </legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getPriceRange()}
@@ -62,7 +66,9 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
         </div>
       </fieldset>
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">{t("filters.mileage")}</legend>
+        <legend className="mb-2 text-sm font-normal">
+          {t("filters.mileage")}
+        </legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getMileageRange()}
@@ -83,7 +89,9 @@ const RangeFilters = ({ filters, onFilterChange }: RangeFiltersProps) => {
         </div>
       </fieldset>
       <fieldset>
-        <legend className="mb-2 text-sm font-normal">{t("filters.powerKw")}</legend>
+        <legend className="mb-2 text-sm font-normal">
+          {t("filters.powerKw")}
+        </legend>
         <div className="border-input bg-background flex rounded-md border-1">
           <BasicSelect
             options={getPowerRange()}

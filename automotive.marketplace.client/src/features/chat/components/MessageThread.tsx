@@ -128,11 +128,19 @@ const MessageThread = ({
         {showStickyBar && acceptedMeeting && (
           <div className="sticky top-0 z-10 flex items-center gap-2 bg-green-900/95 px-4 py-2 text-xs text-green-100 backdrop-blur-sm">
             <CheckCircle className="h-3.5 w-3.5 shrink-0" />
-            <span className="font-semibold">{t("messageThread.meetupConfirmed")}</span>
+            <span className="font-semibold">
+              {t("messageThread.meetupConfirmed")}
+            </span>
             <span className="text-green-300">·</span>
             <span>
-              {format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d", { locale })} ·{" "}
-              {format(new Date(acceptedMeeting.proposedAt), "HH:mm", { locale })}–
+              {format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d", {
+                locale,
+              })}{" "}
+              ·{" "}
+              {format(new Date(acceptedMeeting.proposedAt), "HH:mm", {
+                locale,
+              })}
+              –
               {format(
                 new Date(
                   new Date(acceptedMeeting.proposedAt).getTime() +
@@ -306,7 +314,9 @@ const MessageThread = ({
         />
         <input
           className="border-input bg-background focus:ring-ring flex-1 rounded-full border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
-          placeholder={t("messageThread.placeholder", { username: conversation.counterpartUsername })}
+          placeholder={t("messageThread.placeholder", {
+            username: conversation.counterpartUsername,
+          })}
           value={input}
           onChange={(e) => {
             setInput(e.target.value);

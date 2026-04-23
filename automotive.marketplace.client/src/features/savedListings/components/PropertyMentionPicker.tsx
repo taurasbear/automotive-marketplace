@@ -22,7 +22,11 @@ const PROPERTY_FIELDS: {
     labelKey: "propertyMention.price",
     format: (v) => `${(v as number).toLocaleString()} €`,
   },
-  { key: "fuelName", labelKey: "propertyMention.fuel", format: (v) => v as string },
+  {
+    key: "fuelName",
+    labelKey: "propertyMention.fuel",
+    format: (v) => v as string,
+  },
   {
     key: "transmissionName",
     labelKey: "propertyMention.transmission",

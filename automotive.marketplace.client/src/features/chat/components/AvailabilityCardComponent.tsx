@@ -123,12 +123,18 @@ const AvailabilityCardComponent = ({
 
     if (selectedStart < slotStart) {
       setPickerError(
-        t("availabilityCard.startTimeMustBeAtOrAfter", { time: format(slotStart, "HH:mm", { locale }) }),
+        t("availabilityCard.startTimeMustBeAtOrAfter", {
+          time: format(slotStart, "HH:mm", { locale }),
+        }),
       );
       return;
     }
     if (selectedEnd > slotEnd) {
-      setPickerError(t("availabilityCard.meetingMustEndBy", { time: format(slotEnd, "HH:mm", { locale }) }));
+      setPickerError(
+        t("availabilityCard.meetingMustEndBy", {
+          time: format(slotEnd, "HH:mm", { locale }),
+        }),
+      );
       return;
     }
 
@@ -168,8 +174,8 @@ const AvailabilityCardComponent = ({
                       {format(start, "EEE, MMM d", { locale })}
                     </p>
                     <p className="text-muted-foreground text-xs">
-                      {format(start, "HH:mm", { locale })} – {format(end, "HH:mm", { locale })}{" "}
-                      {timezone}
+                      {format(start, "HH:mm", { locale })} –{" "}
+                      {format(end, "HH:mm", { locale })} {timezone}
                     </p>
                   </div>
                   {canRespond && (
@@ -179,7 +185,9 @@ const AvailabilityCardComponent = ({
                       className="h-7 text-xs"
                       onClick={() => handleToggleSlot(slot)}
                     >
-                      {isExpanded ? t("availabilityCard.close") : t("availabilityCard.propose")}
+                      {isExpanded
+                        ? t("availabilityCard.close")
+                        : t("availabilityCard.propose")}
                     </Button>
                   )}
                 </div>
@@ -187,7 +195,9 @@ const AvailabilityCardComponent = ({
                   <div className="bg-muted/30 space-y-2 border-t px-4 py-2">
                     <div className="flex items-end gap-2">
                       <div className="flex-1 space-y-1">
-                        <Label className="text-xs">{t("availabilityCard.startTime")}</Label>
+                        <Label className="text-xs">
+                          {t("availabilityCard.startTime")}
+                        </Label>
                         <Input
                           type="time"
                           value={pickerTime}
@@ -199,7 +209,9 @@ const AvailabilityCardComponent = ({
                         />
                       </div>
                       <div className="flex-1 space-y-1">
-                        <Label className="text-xs">{t("availabilityCard.duration")}</Label>
+                        <Label className="text-xs">
+                          {t("availabilityCard.duration")}
+                        </Label>
                         <select
                           value={pickerDuration}
                           onChange={(e) => {

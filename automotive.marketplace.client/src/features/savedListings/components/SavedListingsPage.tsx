@@ -19,9 +19,7 @@ const SavedListingsPage = () => {
   if (listings.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-muted-foreground text-lg">
-          {t("page.emptyState")}
-        </p>
+        <p className="text-muted-foreground text-lg">{t("page.emptyState")}</p>
         <Link
           to="/listings"
           className="mt-4 text-sm text-red-500 underline hover:text-red-600"

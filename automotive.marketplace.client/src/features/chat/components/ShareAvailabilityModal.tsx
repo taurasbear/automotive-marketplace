@@ -109,7 +109,9 @@ const ShareAvailabilityModal = ({
               </div>
               <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-2">
                 <div className="space-y-1">
-                  <Label className="text-xs">{t("shareAvailabilityModal.date")}</Label>
+                  <Label className="text-xs">
+                    {t("shareAvailabilityModal.date")}
+                  </Label>
                   <Input
                     type="date"
                     value={slot.date}
@@ -121,7 +123,9 @@ const ShareAvailabilityModal = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">{t("shareAvailabilityModal.from", { timezone })}</Label>
+                  <Label className="text-xs">
+                    {t("shareAvailabilityModal.from", { timezone })}
+                  </Label>
                   <Input
                     type="time"
                     value={slot.startTime}
@@ -132,7 +136,9 @@ const ShareAvailabilityModal = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">{t("shareAvailabilityModal.to", { timezone })}</Label>
+                  <Label className="text-xs">
+                    {t("shareAvailabilityModal.to", { timezone })}
+                  </Label>
                   <Input
                     type="time"
                     value={slot.endTime}

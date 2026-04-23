@@ -327,7 +327,11 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               <FormItem className="flex flex-col justify-start">
                 <FormLabel>{t("form.colour")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("form.colourPlaceholder")} type="text" {...field} />
+                  <Input
+                    placeholder={t("form.colourPlaceholder")}
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -401,7 +405,11 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               <FormItem className="flex flex-col justify-start">
                 <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("form.cityPlaceholder")} type="text" {...field} />
+                  <Input
+                    placeholder={t("form.cityPlaceholder")}
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -450,7 +458,9 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                     className="h-5 w-5"
                   />
                 </FormControl>
-                <FormLabel className="mt-0">{t("form.steeringWheelRight")}</FormLabel>
+                <FormLabel className="mt-0">
+                  {t("form.steeringWheelRight")}
+                </FormLabel>
                 <FormMessage />
               </FormItem>
             )}

@@ -51,7 +51,9 @@ const LocationCombobox = ({
             )}
           >
             <div className="grid grid-cols-1 justify-items-start">
-              <span className="text-muted-foreground text-xs">{t("select.location")}</span>
+              <span className="text-muted-foreground text-xs">
+                {t("select.location")}
+              </span>
               {value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE ? (
                 <span className="truncate text-sm">
                   {UI_CONSTANTS.SELECT.ANY_LOCATION.LABEL}

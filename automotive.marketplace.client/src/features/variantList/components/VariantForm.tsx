@@ -185,7 +185,9 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel className="mt-0">{t("admin:variants.customVariant")}</FormLabel>
+                <FormLabel className="mt-0">
+                  {t("admin:variants.customVariant")}
+                </FormLabel>
                 <FormMessage />
               </FormItem>
             )}

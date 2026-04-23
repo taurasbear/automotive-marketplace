@@ -20,7 +20,7 @@ import listingsLt from "./locales/lt/listings.json";
 import savedLt from "./locales/lt/saved.json";
 import validationLt from "./locales/lt/validation.json";
 
-i18n
+void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({

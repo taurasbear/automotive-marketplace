@@ -57,19 +57,25 @@ const MakeOfferModal = ({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            {mode === "counter" ? t("makeOfferModal.counterOfferTitle") : t("makeOfferModal.makeOfferTitle")}
+            {mode === "counter"
+              ? t("makeOfferModal.counterOfferTitle")
+              : t("makeOfferModal.makeOfferTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <div className="bg-muted flex justify-between rounded-lg px-4 py-3 text-sm">
             <div>
-              <p className="text-muted-foreground text-xs">{t("makeOfferModal.listedPrice")}</p>
+              <p className="text-muted-foreground text-xs">
+                {t("makeOfferModal.listedPrice")}
+              </p>
               <p className="font-semibold">€{listingPrice.toLocaleString()}</p>
             </div>
             {percentageOff !== null && percentageOff > 0 && (
               <div className="text-right">
-                <p className="text-muted-foreground text-xs">{t("makeOfferModal.discount")}</p>
+                <p className="text-muted-foreground text-xs">
+                  {t("makeOfferModal.discount")}
+                </p>
                 <p className="text-destructive font-semibold">
                   −{percentageOff}%
                 </p>
@@ -78,7 +84,9 @@ const MakeOfferModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="offer-amount">{t("makeOfferModal.yourOffer")}</Label>
+            <Label htmlFor="offer-amount">
+              {t("makeOfferModal.yourOffer")}
+            </Label>
             <Input
               id="offer-amount"
               type="number"
@@ -90,12 +98,16 @@ const MakeOfferModal = ({
             />
             {isTooLow && (
               <p className="text-destructive text-xs">
-                {t("makeOfferModal.minOffer", { amount: Math.ceil(minAmount).toLocaleString() })}
+                {t("makeOfferModal.minOffer", {
+                  amount: Math.ceil(minAmount).toLocaleString(),
+                })}
               </p>
             )}
             {isTooHigh && (
               <p className="text-destructive text-xs">
-                {t("makeOfferModal.maxOffer", { price: listingPrice.toLocaleString() })}
+                {t("makeOfferModal.maxOffer", {
+                  price: listingPrice.toLocaleString(),
+                })}
               </p>
             )}
           </div>
@@ -105,7 +117,9 @@ const MakeOfferModal = ({
               {t("common:actions.cancel")}
             </Button>
             <Button onClick={handleSubmit} disabled={!isValid}>
-              {mode === "counter" ? t("makeOfferModal.sendCounter") : t("makeOfferModal.sendOffer")}
+              {mode === "counter"
+                ? t("makeOfferModal.sendCounter")
+                : t("makeOfferModal.sendOffer")}
             </Button>
           </div>
         </div>

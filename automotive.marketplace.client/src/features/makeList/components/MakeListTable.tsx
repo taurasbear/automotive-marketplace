@@ -72,13 +72,17 @@ const MakeListTable = ({ className }: MakeListTableProps) => {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>{t("admin:makes.deleteConfirm", { name: m.name })}</AlertDialogTitle>
+                      <AlertDialogTitle>
+                        {t("admin:makes.deleteConfirm", { name: m.name })}
+                      </AlertDialogTitle>
                       <AlertDialogDescription>
                         {t("admin:makes.deleteWarning")}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>{t("common:actions.cancel")}</AlertDialogCancel>
+                      <AlertDialogCancel>
+                        {t("common:actions.cancel")}
+                      </AlertDialogCancel>
                       <AlertDialogAction onClick={() => handleDelete(m.id)}>
                         {t("common:actions.delete")}
                       </AlertDialogAction>

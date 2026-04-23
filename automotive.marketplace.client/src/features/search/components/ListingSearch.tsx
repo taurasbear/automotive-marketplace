@@ -39,7 +39,9 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
         className,
       )}
     >
-      <label className="block pb-5 text-2xl font-semibold">{t("search.lookUp")}</label>
+      <label className="block pb-5 text-2xl font-semibold">
+        {t("search.lookUp")}
+      </label>
       <ListingSearchFilters
         searchValues={searchValues}
         updateSearchValue={updateSearchValue}

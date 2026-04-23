@@ -71,7 +71,9 @@ const VariantListTable = ({
               <TableCell>{v.doorCount}</TableCell>
               <TableCell>{v.powerKw}</TableCell>
               <TableCell>{v.engineSizeMl}</TableCell>
-              <TableCell>{v.isCustom ? t("variants.yes") : t("variants.no")}</TableCell>
+              <TableCell>
+                {v.isCustom ? t("variants.yes") : t("variants.no")}
+              </TableCell>
               <TableCell>
                 <ViewVariantDialog variant={v} />
                 <EditVariantDialog variant={v} makeId={makeId} />

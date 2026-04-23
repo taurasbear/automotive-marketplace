@@ -190,7 +190,9 @@ const MeetingCard = ({
                 {timezone}
               </p>
               <p className="text-muted-foreground text-[10px]">
-                {t("proposeMeetingModal.durationMinutes", { d: meeting.durationMinutes })}
+                {t("proposeMeetingModal.durationMinutes", {
+                  d: meeting.durationMinutes,
+                })}
               </p>
             </div>
           </div>

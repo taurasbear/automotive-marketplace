@@ -102,7 +102,11 @@ const EditListingForm = ({
               <FormItem className="col-span-2 flex flex-col justify-start">
                 <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("form.cityPlaceholder")} type="text" {...field} />
+                  <Input
+                    placeholder={t("form.cityPlaceholder")}
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
