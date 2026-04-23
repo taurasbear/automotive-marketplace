@@ -50,7 +50,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
       unreadCount: 0,
       buyerId: userId ?? "",
       sellerId: listing.sellerId,
-      buyerHasLiked: false,
+      buyerHasEngaged: true,
     });
   };
 

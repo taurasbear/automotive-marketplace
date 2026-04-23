@@ -44,6 +44,10 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
                 .AnyAsync(l => l.UserId == conversation.BuyerId
                             && l.ListingId == listing.Id, cancellationToken);
 
+            var buyerHasSentMessage = conversation.Messages.Any(m => m.SenderId == conversation.BuyerId);
+
+            var buyerHasEngaged = buyerHasLiked || buyerHasSentMessage;
+
             result.Add(new ConversationSummaryResponse
             {
                 Id = conversation.Id,
@@ -64,7 +68,7 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
                 UnreadCount = unreadCount,
                 BuyerId = conversation.BuyerId,
                 SellerId = listing.SellerId,
-                BuyerHasLiked = buyerHasLiked
+                BuyerHasEngaged = buyerHasEngaged
             });
         }
 

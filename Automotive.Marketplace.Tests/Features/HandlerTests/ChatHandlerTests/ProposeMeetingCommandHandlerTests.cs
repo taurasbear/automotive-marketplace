@@ -97,7 +97,7 @@ public class ProposeMeetingCommandHandlerTests(
     }
 
     [Fact]
-    public async Task Handle_SellerProposesWithoutBuyerLike_ShouldThrowUnauthorized()
+    public async Task Handle_SellerProposesWithoutBuyerEngagement_ShouldThrowValidationException()
     {
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
@@ -115,7 +115,7 @@ public class ProposeMeetingCommandHandlerTests(
 
         var act = () => handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+        await act.Should().ThrowAsync<RequestValidationException>();
     }
 
     [Fact]

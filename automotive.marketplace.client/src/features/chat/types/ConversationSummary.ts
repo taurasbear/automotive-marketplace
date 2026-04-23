@@ -11,5 +11,5 @@ export type ConversationSummary = {
   unreadCount: number;
   buyerId: string;
   sellerId: string;
-  buyerHasLiked: boolean;
+  buyerHasEngaged: boolean;
 };

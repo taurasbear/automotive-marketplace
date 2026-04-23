@@ -201,7 +201,7 @@ const MessageThread = ({
           sellerId={conversation.sellerId}
           listingPrice={conversation.listingPrice}
           conversationId={conversation.id}
-          buyerHasLiked={conversation.buyerHasLiked}
+          buyerHasEngaged={conversation.buyerHasEngaged}
           hasActiveOffer={hasActiveOffer}
           hasActiveMeeting={hasActiveMeeting}
           onSendOffer={(amount) =>

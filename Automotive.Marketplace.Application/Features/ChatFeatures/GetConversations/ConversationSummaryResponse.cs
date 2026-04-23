@@ -26,5 +26,5 @@ public sealed record ConversationSummaryResponse
 
     public Guid SellerId { get; set; }
 
-    public bool BuyerHasLiked { get; set; }
+    public bool BuyerHasEngaged { get; set; }
 }

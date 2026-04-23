@@ -16,7 +16,7 @@ type ActionBarProps = {
   sellerId: string;
   listingPrice: number;
   conversationId: string;
-  buyerHasLiked: boolean;
+  buyerHasEngaged: boolean;
   hasActiveOffer: boolean;
   hasActiveMeeting: boolean;
   onSendOffer: (amount: number) => void;
@@ -38,7 +38,7 @@ const ActionBar = ({
   sellerId,
   listingPrice,
   conversationId,
-  buyerHasLiked,
+  buyerHasEngaged,
   hasActiveOffer,
   hasActiveMeeting,
   onSendOffer,
@@ -52,7 +52,7 @@ const ActionBar = ({
 
   const isBuyer = currentUserId === buyerId;
   const isSeller = currentUserId === sellerId;
-  const showButtons = isBuyer || (isSeller && buyerHasLiked);
+  const showButtons = isBuyer || (isSeller && buyerHasEngaged);
 
   if (!showButtons) return null;
 

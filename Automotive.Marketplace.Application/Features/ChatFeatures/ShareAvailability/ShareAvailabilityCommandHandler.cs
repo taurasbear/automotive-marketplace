@@ -30,10 +30,10 @@ public class ShareAvailabilityCommandHandler(IRepository repository)
             var buyerHasLiked = await repository.AsQueryable<UserListingLike>()
                 .AnyAsync(l => l.UserId == conversation.BuyerId
                             && l.ListingId == listing.Id, cancellationToken);
-
-            if (!buyerHasLiked)
-                throw new UnauthorizedAccessException(
-                    "Seller can only share availability if the buyer has liked the listing.");
+            var buyerHasSentMessage = conversation.Messages.Any(m => m.SenderId == conversation.BuyerId);
+            if (!buyerHasLiked && !buyerHasSentMessage)
+                throw new RequestValidationException(
+                    [new("Conversation", "Seller can only share availability if the buyer has engaged.")]);
         }
 
         if (request.Slots.Count == 0)

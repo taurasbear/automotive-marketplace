@@ -1,3 +1,4 @@
+using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Features.ChatFeatures.MakeOffer;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Domain.Entities;
@@ -99,7 +100,7 @@ public class MakeOfferCommandHandlerTests(
     }
 
     [Fact]
-    public async Task Handle_SellerMakesOfferWithoutBuyerLike_ShouldThrowUnauthorizedException()
+    public async Task Handle_SellerMakesOfferWithoutBuyerEngagement_ShouldThrowValidationException()
     {
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
@@ -116,7 +117,7 @@ public class MakeOfferCommandHandlerTests(
 
         var act = () => handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+        await act.Should().ThrowAsync<RequestValidationException>();
     }
 
     [Fact]
