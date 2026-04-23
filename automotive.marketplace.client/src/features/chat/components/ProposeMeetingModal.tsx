@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { MapPin } from "lucide-react";
 import { useState } from "react";
 import type { Meeting } from "../types/Meeting";
 
@@ -148,7 +149,8 @@ const ProposeMeetingModal = ({
               className="text-xs"
               onClick={handleUseMyLocation}
             >
-              📍 Set pin (optional)
+              <MapPin className="mr-1 h-3.5 w-3.5" />
+              Set pin (optional)
             </Button>
           )}
 

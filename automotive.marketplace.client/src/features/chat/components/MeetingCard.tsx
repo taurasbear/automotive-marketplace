@@ -6,6 +6,7 @@ import {
   Clock,
   CalendarDays,
   CalendarClock,
+  MapPin,
 } from "lucide-react";
 import { useState } from "react";
 import type { Meeting } from "../types/Meeting";
@@ -158,7 +159,8 @@ const MeetingCard = ({
 
           {meeting.locationText && (
             <p className={`text-xs ${isMuted ? "text-muted-foreground" : ""}`}>
-              📍 {meeting.locationText}
+              <MapPin className="mr-1 inline h-3 w-3" />
+              {meeting.locationText}
             </p>
           )}
 

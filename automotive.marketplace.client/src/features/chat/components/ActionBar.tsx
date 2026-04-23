@@ -4,6 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Calendar, Clock } from "lucide-react";
 import { useState } from "react";
 import MakeOfferModal from "./MakeOfferModal";
 import ProposeMeetingModal from "./ProposeMeetingModal";
@@ -85,27 +86,30 @@ const ActionBar = ({
             }
             className="shrink-0"
           >
-            Plan Meetup 📅 ▾
+            <Calendar className="mr-1 h-3.5 w-3.5" />
+            Plan Meetup
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-48 p-1" align="start">
           <button
-            className="hover:bg-muted w-full rounded-md px-3 py-2 text-left text-sm"
+            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
             onClick={() => {
               setMeetupPopoverOpen(false);
               setProposeMeetingOpen(true);
             }}
           >
-            🗓️ Propose a time
+            <Calendar className="mr-2 h-4 w-4" />
+            Propose a time
           </button>
           <button
-            className="hover:bg-muted w-full rounded-md px-3 py-2 text-left text-sm"
+            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
             onClick={() => {
               setMeetupPopoverOpen(false);
               setShareAvailabilityOpen(true);
             }}
           >
-            ⏰ Share availability
+            <Clock className="mr-2 h-4 w-4" />
+            Share availability
           </button>
         </PopoverContent>
       </Popover>
