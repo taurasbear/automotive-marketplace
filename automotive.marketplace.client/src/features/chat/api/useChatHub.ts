@@ -15,6 +15,15 @@ import type {
   OfferMadePayload,
   OfferStatusUpdatedPayload,
 } from '../types/OfferEventPayloads';
+import type {
+  MeetingProposedPayload,
+  MeetingStatusUpdatedPayload,
+  MeetingRescheduledPayload,
+  MeetingExpiredPayload,
+  AvailabilitySharedPayload,
+  AvailabilityRespondedPayload,
+  AvailabilityExpiredPayload,
+} from '../types/MeetingEventPayloads';
 
 const apiBase =
   (import.meta.env.VITE_APP_API_URL as string) ||
@@ -157,6 +166,194 @@ export const useChatHub = () => {
       );
     });
 
+    connection.on(HUB_METHODS.MEETING_PROPOSED, (payload: MeetingProposedPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          const newMessage: Message = {
+            id: payload.messageId,
+            senderId: payload.senderId,
+            senderUsername: payload.senderUsername,
+            content: '',
+            sentAt: payload.sentAt,
+            isRead: false,
+            messageType: 'Meeting',
+            meeting: payload.meeting,
+          };
+          return {
+            ...old,
+            data: { ...old.data, messages: [...old.data.messages, newMessage] },
+          };
+        },
+      );
+      void queryClient.invalidateQueries({ queryKey: chatKeys.conversations() });
+    });
+
+    const handleMeetingStatusUpdate = (payload: MeetingStatusUpdatedPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              messages: old.data.messages.map((m) =>
+                m.meeting?.id === payload.meetingId
+                  ? { ...m, meeting: { ...m.meeting!, status: payload.newStatus } }
+                  : m,
+              ),
+            },
+          };
+        },
+      );
+    };
+
+    connection.on(HUB_METHODS.MEETING_ACCEPTED, handleMeetingStatusUpdate);
+    connection.on(HUB_METHODS.MEETING_DECLINED, handleMeetingStatusUpdate);
+
+    connection.on(HUB_METHODS.MEETING_RESCHEDULED, (payload: MeetingRescheduledPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          const updatedMessages = old.data.messages.map((m) =>
+            m.meeting?.id === payload.meetingId
+              ? { ...m, meeting: { ...m.meeting!, status: 'Rescheduled' as const } }
+              : m,
+          );
+          const rescheduledMessage: Message = {
+            id: payload.rescheduledMeeting.messageId,
+            senderId: payload.rescheduledMeeting.senderId,
+            senderUsername: payload.rescheduledMeeting.senderUsername,
+            content: '',
+            sentAt: payload.rescheduledMeeting.sentAt,
+            isRead: false,
+            messageType: 'Meeting',
+            meeting: payload.rescheduledMeeting.meeting,
+          };
+          return {
+            ...old,
+            data: { ...old.data, messages: [...updatedMessages, rescheduledMessage] },
+          };
+        },
+      );
+      void queryClient.invalidateQueries({ queryKey: chatKeys.conversations() });
+    });
+
+    connection.on(HUB_METHODS.MEETING_EXPIRED, (payload: MeetingExpiredPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              messages: old.data.messages.map((m) =>
+                m.meeting?.id === payload.meetingId
+                  ? { ...m, meeting: { ...m.meeting!, status: 'Expired' as const } }
+                  : m,
+              ),
+            },
+          };
+        },
+      );
+    });
+
+    connection.on(HUB_METHODS.AVAILABILITY_SHARED, (payload: AvailabilitySharedPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          const newMessage: Message = {
+            id: payload.messageId,
+            senderId: payload.senderId,
+            senderUsername: payload.senderUsername,
+            content: '',
+            sentAt: payload.sentAt,
+            isRead: false,
+            messageType: 'Availability',
+            availabilityCard: payload.availabilityCard,
+          };
+          return {
+            ...old,
+            data: { ...old.data, messages: [...old.data.messages, newMessage] },
+          };
+        },
+      );
+      void queryClient.invalidateQueries({ queryKey: chatKeys.conversations() });
+    });
+
+    connection.on(HUB_METHODS.AVAILABILITY_RESPONDED, (payload: AvailabilityRespondedPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          const updatedMessages = old.data.messages.map((m) =>
+            m.availabilityCard?.id === payload.availabilityCardId
+              ? { ...m, availabilityCard: { ...m.availabilityCard!, status: 'Responded' as const } }
+              : m,
+          );
+          if (payload.action === 'PickSlot' && payload.pickedSlotMeeting) {
+            const meetingMessage: Message = {
+              id: payload.pickedSlotMeeting.messageId,
+              senderId: payload.pickedSlotMeeting.senderId,
+              senderUsername: payload.pickedSlotMeeting.senderUsername,
+              content: '',
+              sentAt: payload.pickedSlotMeeting.sentAt,
+              isRead: false,
+              messageType: 'Meeting',
+              meeting: payload.pickedSlotMeeting.meeting,
+            };
+            return {
+              ...old,
+              data: { ...old.data, messages: [...updatedMessages, meetingMessage] },
+            };
+          }
+          if (payload.action === 'ShareBack' && payload.sharedBackAvailability) {
+            const availMessage: Message = {
+              id: payload.sharedBackAvailability.messageId,
+              senderId: payload.sharedBackAvailability.senderId,
+              senderUsername: payload.sharedBackAvailability.senderUsername,
+              content: '',
+              sentAt: payload.sharedBackAvailability.sentAt,
+              isRead: false,
+              messageType: 'Availability',
+              availabilityCard: payload.sharedBackAvailability.availabilityCard,
+            };
+            return {
+              ...old,
+              data: { ...old.data, messages: [...updatedMessages, availMessage] },
+            };
+          }
+          return { ...old, data: { ...old.data, messages: updatedMessages } };
+        },
+      );
+      void queryClient.invalidateQueries({ queryKey: chatKeys.conversations() });
+    });
+
+    connection.on(HUB_METHODS.AVAILABILITY_EXPIRED, (payload: AvailabilityExpiredPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              messages: old.data.messages.map((m) =>
+                m.availabilityCard?.id === payload.availabilityCardId
+                  ? { ...m, availabilityCard: { ...m.availabilityCard!, status: 'Expired' as const } }
+                  : m,
+              ),
+            },
+          };
+        },
+      );
+    });
+
     connectionRef.current = connection;
     connection.start().catch(console.error);
 
@@ -211,5 +408,120 @@ export const useChatHub = () => {
     [],
   );
 
-  return { sendMessage, sendOffer, respondToOffer };
+  const proposeMeeting = useCallback(
+    ({
+      conversationId,
+      proposedAt,
+      durationMinutes,
+      locationText,
+      locationLat,
+      locationLng,
+    }: {
+      conversationId: string;
+      proposedAt: string;
+      durationMinutes: number;
+      locationText?: string;
+      locationLat?: number;
+      locationLng?: number;
+    }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected) {
+        throw new Error('Not connected. Please wait and try again.');
+      }
+      void connectionRef.current.invoke(
+        HUB_METHODS.PROPOSE_MEETING,
+        conversationId,
+        proposedAt,
+        durationMinutes,
+        locationText ?? null,
+        locationLat ?? null,
+        locationLng ?? null,
+      );
+    },
+    [],
+  );
+
+  const respondToMeeting = useCallback(
+    ({
+      meetingId,
+      action,
+      rescheduleData,
+    }: {
+      meetingId: string;
+      action: 'Accept' | 'Decline' | 'Reschedule';
+      rescheduleData?: {
+        proposedAt: string;
+        durationMinutes: number;
+        locationText?: string;
+        locationLat?: number;
+        locationLng?: number;
+      };
+    }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected) {
+        throw new Error('Not connected. Please wait and try again.');
+      }
+      void connectionRef.current.invoke(
+        HUB_METHODS.RESPOND_TO_MEETING,
+        meetingId,
+        action,
+        rescheduleData ?? null,
+      );
+    },
+    [],
+  );
+
+  const shareAvailability = useCallback(
+    ({
+      conversationId,
+      slots,
+    }: {
+      conversationId: string;
+      slots: { startTime: string; endTime: string }[];
+    }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected) {
+        throw new Error('Not connected. Please wait and try again.');
+      }
+      void connectionRef.current.invoke(
+        HUB_METHODS.SHARE_AVAILABILITY,
+        conversationId,
+        slots,
+      );
+    },
+    [],
+  );
+
+  const respondToAvailability = useCallback(
+    ({
+      availabilityCardId,
+      action,
+      slotId,
+      shareBackSlots,
+    }: {
+      availabilityCardId: string;
+      action: 'PickSlot' | 'ShareBack';
+      slotId?: string;
+      shareBackSlots?: { startTime: string; endTime: string }[];
+    }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected) {
+        throw new Error('Not connected. Please wait and try again.');
+      }
+      void connectionRef.current.invoke(
+        HUB_METHODS.RESPOND_TO_AVAILABILITY,
+        availabilityCardId,
+        action,
+        slotId ?? null,
+        shareBackSlots ?? null,
+      );
+    },
+    [],
+  );
+
+  return {
+    sendMessage,
+    sendOffer,
+    respondToOffer,
+    proposeMeeting,
+    respondToMeeting,
+    shareAvailability,
+    respondToAvailability,
+  };
 };
