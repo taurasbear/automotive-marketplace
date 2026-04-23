@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MapPin } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Meeting } from "../types/Meeting";
 import { getTimezoneOffsetLabel } from "../utils/timezone";
 
@@ -35,6 +36,7 @@ const ProposeMeetingModal = ({
   initialMeeting,
   onSubmit,
 }: ProposeMeetingModalProps) => {
+  const { t } = useTranslation(["chat", "common"]);
   const timezone = getTimezoneOffsetLabel();
   const now = new Date();
 
@@ -95,13 +97,13 @@ const ProposeMeetingModal = ({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            {mode === "reschedule" ? "Reschedule Meeting" : "Propose a Meetup"}
+            {mode === "reschedule" ? t("proposeMeetingModal.rescheduleTitle") : t("proposeMeetingModal.proposeTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-date">Date</Label>
+            <Label htmlFor="meeting-date">{t("proposeMeetingModal.date")}</Label>
             <Input
               id="meeting-date"
               type="date"
@@ -112,7 +114,7 @@ const ProposeMeetingModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-time">Start time ({timezone})</Label>
+            <Label htmlFor="meeting-time">{t("proposeMeetingModal.startTime", { timezone })}</Label>
             <Input
               id="meeting-time"
               type="time"
@@ -122,7 +124,7 @@ const ProposeMeetingModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label>Duration</Label>
+            <Label>{t("proposeMeetingModal.duration")}</Label>
             <div className="flex gap-2">
               {DURATION_PRESETS.map((d) => (
                 <Button
@@ -133,17 +135,17 @@ const ProposeMeetingModal = ({
                   className="h-7 text-xs"
                   onClick={() => setDuration(d)}
                 >
-                  {d} min
+                  {t("proposeMeetingModal.durationMinutes", { d })}
                 </Button>
               ))}
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="meeting-location">Location (optional)</Label>
+            <Label htmlFor="meeting-location">{t("proposeMeetingModal.locationOptional")}</Label>
             <Input
               id="meeting-location"
-              placeholder="e.g. Central Park, 5th Ave entrance"
+              placeholder={t("proposeMeetingModal.locationPlaceholder")}
               value={locationText}
               onChange={(e) => setLocationText(e.target.value)}
             />
@@ -158,7 +160,7 @@ const ProposeMeetingModal = ({
               onClick={handleUseMyLocation}
             >
               <MapPin className="mr-1 h-3.5 w-3.5" />
-              Set pin (optional)
+              {t("proposeMeetingModal.setPinOptional")}
             </Button>
           )}
 
@@ -166,7 +168,7 @@ const ProposeMeetingModal = ({
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1">
                 <Label htmlFor="lat" className="text-xs">
-                  Latitude
+                  {t("proposeMeetingModal.latitude")}
                 </Label>
                 <Input
                   id="lat"
@@ -174,12 +176,12 @@ const ProposeMeetingModal = ({
                   step="any"
                   value={lat}
                   onChange={(e) => setLat(e.target.value)}
-                  placeholder="e.g. 40.7829"
+                  placeholder={t("proposeMeetingModal.latitudePlaceholder")}
                 />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="lng" className="text-xs">
-                  Longitude
+                  {t("proposeMeetingModal.longitude")}
                 </Label>
                 <Input
                   id="lng"
@@ -187,7 +189,7 @@ const ProposeMeetingModal = ({
                   step="any"
                   value={lng}
                   onChange={(e) => setLng(e.target.value)}
-                  placeholder="e.g. -73.9654"
+                  placeholder={t("proposeMeetingModal.longitudePlaceholder")}
                 />
               </div>
             </div>
@@ -195,16 +197,16 @@ const ProposeMeetingModal = ({
 
           {date && time && !isInFuture && (
             <p className="text-destructive text-xs">
-              Meeting time must be in the future.
+              {t("proposeMeetingModal.mustBeInFuture")}
             </p>
           )}
 
           <div className="flex justify-end gap-2 pt-1">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("common:actions.cancel")}
             </Button>
             <Button onClick={handleSubmit} disabled={!isValid}>
-              {mode === "reschedule" ? "Send Reschedule" : "Propose Meetup"}
+              {mode === "reschedule" ? t("proposeMeetingModal.sendReschedule") : t("proposeMeetingModal.proposeMeetup")}
             </Button>
           </div>
         </div>

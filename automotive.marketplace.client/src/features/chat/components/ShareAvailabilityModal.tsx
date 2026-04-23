@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getTimezoneOffsetLabel } from "../utils/timezone";
 
 type SlotEntry = {
@@ -37,6 +38,7 @@ const ShareAvailabilityModal = ({
   onOpenChange,
   onSubmit,
 }: ShareAvailabilityModalProps) => {
+  const { t } = useTranslation(["chat", "common"]);
   const [slots, setSlots] = useState<SlotEntry[]>([createEmptySlot()]);
   const timezone = getTimezoneOffsetLabel();
   const now = new Date();
@@ -83,7 +85,7 @@ const ShareAvailabilityModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Share Your Availability</DialogTitle>
+          <DialogTitle>{t("shareAvailabilityModal.title")}</DialogTitle>
         </DialogHeader>
 
         <div className="max-h-80 space-y-3 overflow-y-auto py-2">
@@ -91,7 +93,7 @@ const ShareAvailabilityModal = ({
             <div key={slot.key} className="bg-muted/50 relative rounded-lg p-3">
               <div className="mb-1 flex items-center justify-between">
                 <span className="text-muted-foreground text-xs font-medium">
-                  Slot {i + 1}
+                  {t("shareAvailabilityModal.slot", { number: i + 1 })}
                 </span>
                 {slots.length > 1 && (
                   <Button
@@ -107,7 +109,7 @@ const ShareAvailabilityModal = ({
               </div>
               <div className="grid grid-cols-[1.4fr_1fr_1fr] gap-2">
                 <div className="space-y-1">
-                  <Label className="text-xs">Date</Label>
+                  <Label className="text-xs">{t("shareAvailabilityModal.date")}</Label>
                   <Input
                     type="date"
                     value={slot.date}
@@ -119,7 +121,7 @@ const ShareAvailabilityModal = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">From ({timezone})</Label>
+                  <Label className="text-xs">{t("shareAvailabilityModal.from", { timezone })}</Label>
                   <Input
                     type="time"
                     value={slot.startTime}
@@ -130,7 +132,7 @@ const ShareAvailabilityModal = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">To ({timezone})</Label>
+                  <Label className="text-xs">{t("shareAvailabilityModal.to", { timezone })}</Label>
                   <Input
                     type="time"
                     value={slot.endTime}
@@ -152,15 +154,15 @@ const ShareAvailabilityModal = ({
           className="w-full text-xs"
           onClick={addSlot}
         >
-          + Add another slot
+          {t("shareAvailabilityModal.addAnotherSlot")}
         </Button>
 
         <div className="flex justify-end gap-2 pt-1">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t("common:actions.cancel")}
           </Button>
           <Button onClick={handleSubmit} disabled={!isValid}>
-            Share Availability
+            {t("shareAvailabilityModal.shareAvailability")}
           </Button>
         </div>
       </DialogContent>

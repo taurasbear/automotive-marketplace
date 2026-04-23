@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/redux";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CheckCircle, MapPin } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getMessagesOptions } from "../api/getMessagesOptions";
 import { useChatHub } from "../api/useChatHub";
 import { useMarkMessagesRead } from "../api/useMarkMessagesRead";
@@ -25,6 +27,8 @@ const MessageThread = ({
   showListingCard = true,
 }: MessageThreadProps) => {
   const userId = useAppSelector((s) => s.auth.userId) ?? "";
+  const { t } = useTranslation("chat");
+  const locale = useDateLocale();
   const { data: messagesQuery } = useSuspenseQuery(
     getMessagesOptions({ conversationId: conversation.id }),
   );
@@ -105,7 +109,7 @@ const MessageThread = ({
       setSendError(null);
     } catch (err) {
       setSendError(
-        err instanceof Error ? err.message : "Failed to send message.",
+        err instanceof Error ? err.message : t("messageThread.failedToSend"),
       );
     }
   };
@@ -124,17 +128,18 @@ const MessageThread = ({
         {showStickyBar && acceptedMeeting && (
           <div className="sticky top-0 z-10 flex items-center gap-2 bg-green-900/95 px-4 py-2 text-xs text-green-100 backdrop-blur-sm">
             <CheckCircle className="h-3.5 w-3.5 shrink-0" />
-            <span className="font-semibold">Meetup Confirmed</span>
+            <span className="font-semibold">{t("messageThread.meetupConfirmed")}</span>
             <span className="text-green-300">·</span>
             <span>
-              {format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d")} ·{" "}
-              {format(new Date(acceptedMeeting.proposedAt), "HH:mm")}–
+              {format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d", { locale })} ·{" "}
+              {format(new Date(acceptedMeeting.proposedAt), "HH:mm", { locale })}–
               {format(
                 new Date(
                   new Date(acceptedMeeting.proposedAt).getTime() +
                     acceptedMeeting.durationMinutes * 60000,
                 ),
                 "HH:mm",
+                { locale },
               )}{" "}
               {getTimezoneOffsetLabel()}
             </span>
@@ -301,7 +306,7 @@ const MessageThread = ({
         />
         <input
           className="border-input bg-background focus:ring-ring flex-1 rounded-full border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
-          placeholder={`Message ${conversation.counterpartUsername}...`}
+          placeholder={t("messageThread.placeholder", { username: conversation.counterpartUsername })}
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
@@ -310,7 +315,7 @@ const MessageThread = ({
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
         <Button size="sm" onClick={handleSend} disabled={!input.trim()}>
-          Send
+          {t("messageThread.send")}
         </Button>
       </div>
     </div>

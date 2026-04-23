@@ -14,9 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { format } from "date-fns";
 import { Calendar, Clock, DollarSign, Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Meeting } from "../types/Meeting";
 import MakeOfferModal from "./MakeOfferModal";
 import ProposeMeetingModal from "./ProposeMeetingModal";
@@ -61,6 +63,8 @@ const ActionBar = ({
   onShareAvailability,
   onCancelMeeting,
 }: ActionBarProps) => {
+  const { t } = useTranslation(["chat", "common"]);
+  const locale = useDateLocale();
   const [offerModalOpen, setOfferModalOpen] = useState(false);
   const [actionsPopoverOpen, setActionsPopoverOpen] = useState(false);
   const [proposeMeetingOpen, setProposeMeetingOpen] = useState(false);
@@ -111,7 +115,7 @@ const ActionBar = ({
             disabled={hasActiveOffer}
             title={
               hasActiveOffer
-                ? "An offer is already pending in this conversation"
+                ? t("actionBar.offerAlreadyPending")
                 : undefined
             }
             onClick={() => {
@@ -120,33 +124,33 @@ const ActionBar = ({
             }}
           >
             <DollarSign className="mr-2 h-4 w-4" />
-            Make an Offer
+            {t("actionBar.makeAnOffer")}
           </button>
           <button
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
               hasActiveMeeting
-                ? "A meetup negotiation is already active"
+                ? t("actionBar.meetupAlreadyActive")
                 : undefined
             }
             onClick={() => handleMeetingAction("propose")}
           >
             <Calendar className="mr-2 h-4 w-4" />
-            Propose a time
+            {t("actionBar.proposeATime")}
           </button>
           <button
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
               hasActiveMeeting
-                ? "A meetup negotiation is already active"
+                ? t("actionBar.meetupAlreadyActive")
                 : undefined
             }
             onClick={() => handleMeetingAction("availability")}
           >
             <Clock className="mr-2 h-4 w-4" />
-            Share availability
+            {t("actionBar.shareAvailability")}
           </button>
         </PopoverContent>
       </Popover>
@@ -159,20 +163,23 @@ const ActionBar = ({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Cancel existing meetup?</AlertDialogTitle>
+            <AlertDialogTitle>{t("actionBar.cancelExistingMeetup")}</AlertDialogTitle>
             <AlertDialogDescription>
               {acceptedMeeting
-                ? `You have a confirmed meetup on ${format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d")} at ${format(new Date(acceptedMeeting.proposedAt), "HH:mm")}. Starting a new negotiation will cancel it.`
-                : "Starting a new negotiation will cancel the existing meetup."}
+                ? t("actionBar.confirmedMeetupWarning", {
+                    date: format(new Date(acceptedMeeting.proposedAt), "EEE, MMM d", { locale }),
+                    time: format(new Date(acceptedMeeting.proposedAt), "HH:mm", { locale }),
+                  })
+                : t("actionBar.activeMeetupWarning")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Keep existing</AlertDialogCancel>
+            <AlertDialogCancel>{t("actionBar.keepExisting")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={handleGuardConfirm}
             >
-              Continue
+              {t("actionBar.continue")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

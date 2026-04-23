@@ -8,6 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type MakeOfferModalProps = {
   open: boolean;
@@ -28,6 +29,7 @@ const MakeOfferModal = ({
   initialAmount,
   onSubmit,
 }: MakeOfferModalProps) => {
+  const { t } = useTranslation(["chat", "common"]);
   const [rawValue, setRawValue] = useState(
     initialAmount !== undefined ? String(Math.round(initialAmount)) : "",
   );
@@ -55,19 +57,19 @@ const MakeOfferModal = ({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            {mode === "counter" ? "Counter Offer" : "Make an Offer"}
+            {mode === "counter" ? t("makeOfferModal.counterOfferTitle") : t("makeOfferModal.makeOfferTitle")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           <div className="bg-muted flex justify-between rounded-lg px-4 py-3 text-sm">
             <div>
-              <p className="text-muted-foreground text-xs">Listed price</p>
+              <p className="text-muted-foreground text-xs">{t("makeOfferModal.listedPrice")}</p>
               <p className="font-semibold">€{listingPrice.toLocaleString()}</p>
             </div>
             {percentageOff !== null && percentageOff > 0 && (
               <div className="text-right">
-                <p className="text-muted-foreground text-xs">Discount</p>
+                <p className="text-muted-foreground text-xs">{t("makeOfferModal.discount")}</p>
                 <p className="text-destructive font-semibold">
                   −{percentageOff}%
                 </p>
@@ -76,7 +78,7 @@ const MakeOfferModal = ({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="offer-amount">Your offer (€)</Label>
+            <Label htmlFor="offer-amount">{t("makeOfferModal.yourOffer")}</Label>
             <Input
               id="offer-amount"
               type="number"
@@ -88,24 +90,22 @@ const MakeOfferModal = ({
             />
             {isTooLow && (
               <p className="text-destructive text-xs">
-                Minimum offer is €{Math.ceil(minAmount).toLocaleString()} (⅓ of
-                asking price).
+                {t("makeOfferModal.minOffer", { amount: Math.ceil(minAmount).toLocaleString() })}
               </p>
             )}
             {isTooHigh && (
               <p className="text-destructive text-xs">
-                Offer cannot exceed the listing price of €
-                {listingPrice.toLocaleString()}.
+                {t("makeOfferModal.maxOffer", { price: listingPrice.toLocaleString() })}
               </p>
             )}
           </div>
 
           <div className="flex justify-end gap-2 pt-1">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("common:actions.cancel")}
             </Button>
             <Button onClick={handleSubmit} disabled={!isValid}>
-              {mode === "counter" ? "Send Counter" : "Send Offer"}
+              {mode === "counter" ? t("makeOfferModal.sendCounter") : t("makeOfferModal.sendOffer")}
             </Button>
           </div>
         </div>

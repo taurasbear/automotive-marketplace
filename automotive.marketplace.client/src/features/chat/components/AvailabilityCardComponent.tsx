@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { format } from "date-fns";
 import { Ban, CalendarRange, Clock } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   AvailabilityCard,
   AvailabilityCardStatus,
@@ -17,7 +19,7 @@ const statusConfig: Record<
   {
     headerClass: string;
     borderClass: string;
-    label: string;
+    labelKey: string;
     icon: React.ElementType;
     labelClass: string;
   }
@@ -25,28 +27,28 @@ const statusConfig: Record<
   Pending: {
     headerClass: "bg-sky-900",
     borderClass: "border-sky-300 dark:border-sky-800",
-    label: "Availability Shared",
+    labelKey: "availabilityCard.statusLabels.shared",
     icon: CalendarRange,
     labelClass: "text-sky-200",
   },
   Responded: {
     headerClass: "bg-muted-foreground/60",
     borderClass: "border-border",
-    label: "Availability Responded",
+    labelKey: "availabilityCard.statusLabels.responded",
     icon: CalendarRange,
     labelClass: "text-muted",
   },
   Expired: {
     headerClass: "bg-muted-foreground/60",
     borderClass: "border-border",
-    label: "Availability Expired",
+    labelKey: "availabilityCard.statusLabels.expired",
     icon: Clock,
     labelClass: "text-muted",
   },
   Cancelled: {
     headerClass: "bg-muted-foreground/60",
     borderClass: "border-border",
-    label: "Availability Cancelled",
+    labelKey: "availabilityCard.statusLabels.cancelled",
     icon: Ban,
     labelClass: "text-muted",
   },
@@ -82,6 +84,8 @@ const AvailabilityCardComponent = ({
   const [pickerTime, setPickerTime] = useState("");
   const [pickerDuration, setPickerDuration] = useState(60);
   const [pickerError, setPickerError] = useState<string | null>(null);
+  const { t } = useTranslation("chat");
+  const locale = useDateLocale();
   const config = statusConfig[card.status];
   const Icon = config.icon;
   const timezone = getTimezoneOffsetLabel();
@@ -119,12 +123,12 @@ const AvailabilityCardComponent = ({
 
     if (selectedStart < slotStart) {
       setPickerError(
-        `Start time must be at or after ${format(slotStart, "HH:mm")}`,
+        t("availabilityCard.startTimeMustBeAtOrAfter", { time: format(slotStart, "HH:mm", { locale }) }),
       );
       return;
     }
     if (selectedEnd > slotEnd) {
-      setPickerError(`Meeting must end by ${format(slotEnd, "HH:mm")}`);
+      setPickerError(t("availabilityCard.meetingMustEndBy", { time: format(slotEnd, "HH:mm", { locale }) }));
       return;
     }
 
@@ -145,7 +149,7 @@ const AvailabilityCardComponent = ({
           <span
             className={`text-xs font-semibold tracking-wider uppercase ${config.labelClass}`}
           >
-            {config.label}
+            {t(config.labelKey)}
           </span>
         </div>
 
@@ -161,10 +165,10 @@ const AvailabilityCardComponent = ({
                 >
                   <div>
                     <p className="text-sm font-medium">
-                      {format(start, "EEE, MMM d")}
+                      {format(start, "EEE, MMM d", { locale })}
                     </p>
                     <p className="text-muted-foreground text-xs">
-                      {format(start, "HH:mm")} – {format(end, "HH:mm")}{" "}
+                      {format(start, "HH:mm", { locale })} – {format(end, "HH:mm", { locale })}{" "}
                       {timezone}
                     </p>
                   </div>
@@ -175,7 +179,7 @@ const AvailabilityCardComponent = ({
                       className="h-7 text-xs"
                       onClick={() => handleToggleSlot(slot)}
                     >
-                      {isExpanded ? "Close" : "Propose"}
+                      {isExpanded ? t("availabilityCard.close") : t("availabilityCard.propose")}
                     </Button>
                   )}
                 </div>
@@ -183,7 +187,7 @@ const AvailabilityCardComponent = ({
                   <div className="bg-muted/30 space-y-2 border-t px-4 py-2">
                     <div className="flex items-end gap-2">
                       <div className="flex-1 space-y-1">
-                        <Label className="text-xs">Start time</Label>
+                        <Label className="text-xs">{t("availabilityCard.startTime")}</Label>
                         <Input
                           type="time"
                           value={pickerTime}
@@ -195,7 +199,7 @@ const AvailabilityCardComponent = ({
                         />
                       </div>
                       <div className="flex-1 space-y-1">
-                        <Label className="text-xs">Duration</Label>
+                        <Label className="text-xs">{t("availabilityCard.duration")}</Label>
                         <select
                           value={pickerDuration}
                           onChange={(e) => {
@@ -206,7 +210,7 @@ const AvailabilityCardComponent = ({
                         >
                           {DURATION_OPTIONS.map((d) => (
                             <option key={d} value={d}>
-                              {d} min
+                              {t("proposeMeetingModal.durationMinutes", { d })}
                             </option>
                           ))}
                         </select>
@@ -216,7 +220,7 @@ const AvailabilityCardComponent = ({
                         className="h-7 text-xs"
                         onClick={() => handlePickSlotSubmit(slot)}
                       >
-                        Propose
+                        {t("availabilityCard.propose")}
                       </Button>
                     </div>
                     {pickerError && (
@@ -237,7 +241,7 @@ const AvailabilityCardComponent = ({
               className="text-destructive hover:text-destructive h-7 text-xs"
               onClick={() => onCancel(card.id)}
             >
-              Cancel availability
+              {t("availabilityCard.cancelAvailability")}
             </Button>
           </div>
         )}
@@ -248,7 +252,7 @@ const AvailabilityCardComponent = ({
               className="text-muted-foreground hover:text-foreground text-xs underline"
               onClick={() => setShareBackOpen(true)}
             >
-              None of these work — share my availability instead
+              {t("availabilityCard.noneOfTheseWork")}
             </button>
           </div>
         )}

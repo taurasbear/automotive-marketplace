@@ -1,6 +1,8 @@
+import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { getConversationsOptions } from "../api/getConversationsOptions";
 import type { ConversationSummary } from "../types/ConversationSummary";
 
@@ -21,6 +23,8 @@ const ConversationList = ({
     getConversationsOptions(),
   );
   const conversations = conversationsQuery.data;
+  const { t } = useTranslation("chat");
+  const locale = useDateLocale();
   const didAutoSelect = useRef(false);
 
   useEffect(() => {
@@ -34,7 +38,7 @@ const ConversationList = ({
   if (conversations.length === 0) {
     return (
       <div className="text-muted-foreground flex h-full items-center justify-center p-4 text-sm">
-        No conversations yet.
+        {t("conversationList.noConversationsYet")}
       </div>
     );
   }
@@ -83,6 +87,7 @@ const ConversationList = ({
           <p className="text-muted-foreground mt-1 text-right text-[10px]">
             {formatDistanceToNow(new Date(c.lastMessageAt), {
               addSuffix: true,
+              locale,
             })}
           </p>
         </li>

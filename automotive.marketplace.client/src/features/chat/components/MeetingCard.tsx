@@ -4,6 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { format } from "date-fns";
 import {
   Ban,
@@ -17,6 +18,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Meeting } from "../types/Meeting";
 import { getTimezoneOffsetLabel } from "../utils/timezone";
 import ProposeMeetingModal from "./ProposeMeetingModal";
@@ -48,55 +50,55 @@ const statusConfig = {
   Pending: {
     headerClass: "bg-[#1e3a5f]",
     borderClass: "border-blue-300 dark:border-blue-800",
-    label: "Meetup Proposed",
+    labelKey: "meetingCard.statusLabels.proposed",
     icon: CalendarDays,
     labelClass: "text-blue-200",
-    subLabel: "Awaiting response",
+    subLabelKey: "meetingCard.subtitles.awaitingResponse",
     subLabelClass: "text-blue-400",
   },
   Accepted: {
     headerClass: "bg-green-900",
     borderClass: "border-green-300 dark:border-green-800",
-    label: "Meetup Confirmed",
+    labelKey: "meetingCard.statusLabels.confirmed",
     icon: CalendarCheck,
     labelClass: "text-green-200",
-    subLabel: "See you there!",
+    subLabelKey: "meetingCard.subtitles.seeYouThere",
     subLabelClass: "text-green-400",
   },
   Declined: {
     headerClass: "bg-red-900",
     borderClass: "border-red-300 dark:border-red-800",
-    label: "Meetup Declined",
+    labelKey: "meetingCard.statusLabels.declined",
     icon: CalendarX,
     labelClass: "text-red-200",
-    subLabel: "Not happening",
+    subLabelKey: "meetingCard.subtitles.notHappening",
     subLabelClass: "text-red-400",
   },
   Rescheduled: {
     headerClass: "bg-violet-900",
     borderClass: "border-violet-300 dark:border-violet-800",
-    label: "Reschedule Proposed",
+    labelKey: "meetingCard.statusLabels.rescheduled",
     icon: CalendarClock,
     labelClass: "text-violet-200",
-    subLabel: "Superseded",
+    subLabelKey: "meetingCard.subtitles.superseded",
     subLabelClass: "text-violet-400",
   },
   Expired: {
     headerClass: "bg-muted-foreground/60",
     borderClass: "border-border",
-    label: "Meetup Expired",
+    labelKey: "meetingCard.statusLabels.expired",
     icon: Clock,
     labelClass: "text-muted",
-    subLabel: "No response in time",
+    subLabelKey: "meetingCard.subtitles.noResponseInTime",
     subLabelClass: "text-muted-foreground",
   },
   Cancelled: {
     headerClass: "bg-muted-foreground/60",
     borderClass: "border-border",
-    label: "Meetup Cancelled",
+    labelKey: "meetingCard.statusLabels.cancelled",
     icon: Ban,
     labelClass: "text-muted",
-    subLabel: "Withdrawn",
+    subLabelKey: "meetingCard.subtitles.withdrawn",
     subLabelClass: "text-muted-foreground",
   },
 } as const;
@@ -113,6 +115,8 @@ const MeetingCard = ({
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
   const [shareAvailOpen, setShareAvailOpen] = useState(false);
   const [suggestOpen, setSuggestOpen] = useState(false);
+  const { t } = useTranslation("chat");
+  const locale = useDateLocale();
   const config = statusConfig[meeting.status];
   const Icon = config.icon;
   const timezone = getTimezoneOffsetLabel();
@@ -142,11 +146,11 @@ const MeetingCard = ({
             <span
               className={`text-xs font-semibold tracking-wider uppercase ${config.labelClass}`}
             >
-              {config.label}
+              {t(config.labelKey)}
             </span>
           </div>
           <span className={`text-xs ${config.subLabelClass}`}>
-            {config.subLabel}
+            {t(config.subLabelKey)}
           </span>
         </div>
 
@@ -158,34 +162,35 @@ const MeetingCard = ({
               <span
                 className={`text-lg leading-none font-bold ${isMuted ? "text-muted-foreground" : "text-primary"}`}
               >
-                {format(proposedDate, "d")}
+                {format(proposedDate, "d", { locale })}
               </span>
               <span
                 className={`text-[10px] uppercase ${isMuted ? "text-muted-foreground" : "text-primary"}`}
               >
-                {format(proposedDate, "MMM")}
+                {format(proposedDate, "MMM", { locale })}
               </span>
             </div>
             <div>
               <p
                 className={`text-sm font-semibold ${isMuted ? "text-muted-foreground line-through" : ""}`}
               >
-                {format(proposedDate, "EEEE")}
+                {format(proposedDate, "EEEE", { locale })}
               </p>
               <p
                 className={`text-xs ${isMuted ? "text-muted-foreground" : "text-muted-foreground"}`}
               >
-                {format(proposedDate, "HH:mm")} –{" "}
+                {format(proposedDate, "HH:mm", { locale })} –{" "}
                 {format(
                   new Date(
                     proposedDate.getTime() + meeting.durationMinutes * 60000,
                   ),
                   "HH:mm",
+                  { locale },
                 )}{" "}
                 {timezone}
               </p>
               <p className="text-muted-foreground text-[10px]">
-                {meeting.durationMinutes} min
+                {t("proposeMeetingModal.durationMinutes", { d: meeting.durationMinutes })}
               </p>
             </div>
           </div>
@@ -205,7 +210,7 @@ const MeetingCard = ({
                 className="text-destructive hover:text-destructive h-7 text-xs"
                 onClick={() => onCancel(meeting.id)}
               >
-                Cancel meetup
+                {t("meetingCard.actions.cancelMeetup")}
               </Button>
             </div>
           )}
@@ -217,12 +222,12 @@ const MeetingCard = ({
                 className="h-7 text-xs"
                 onClick={() => onAccept(meeting.id)}
               >
-                Accept
+                {t("meetingCard.actions.accept")}
               </Button>
               <Popover open={suggestOpen} onOpenChange={setSuggestOpen}>
                 <PopoverTrigger asChild>
                   <Button size="sm" variant="outline" className="h-7 text-xs">
-                    Suggest alternative
+                    {t("meetingCard.actions.suggestAlternative")}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-52 p-1" align="start">
@@ -234,7 +239,7 @@ const MeetingCard = ({
                     }}
                   >
                     <Calendar className="mr-2 h-4 w-4" />
-                    Propose a counter time
+                    {t("meetingCard.actions.proposeCounterTime")}
                   </button>
                   <button
                     className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm"
@@ -244,7 +249,7 @@ const MeetingCard = ({
                     }}
                   >
                     <CalendarRange className="mr-2 h-4 w-4" />
-                    Share my availability
+                    {t("meetingCard.actions.shareMyAvailability")}
                   </button>
                 </PopoverContent>
               </Popover>
@@ -254,7 +259,7 @@ const MeetingCard = ({
                 className="text-destructive hover:text-destructive col-span-2 h-7 text-xs"
                 onClick={() => onDecline(meeting.id)}
               >
-                Decline
+                {t("meetingCard.actions.decline")}
               </Button>
             </div>
           )}

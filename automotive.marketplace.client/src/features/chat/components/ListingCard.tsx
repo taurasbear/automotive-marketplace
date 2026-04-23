@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 type ListingCardProps = {
   listingId: string;
@@ -12,7 +13,9 @@ const ListingCard = ({
   listingTitle,
   listingPrice,
   listingThumbnail,
-}: ListingCardProps) => (
+}: ListingCardProps) => {
+  const { t } = useTranslation("chat");
+  return (
   <div className="border-border bg-muted/40 flex items-center gap-3 border-b px-4 py-2">
     {listingThumbnail && (
       <img
@@ -32,9 +35,10 @@ const ListingCard = ({
       params={{ id: listingId }}
       className="text-primary shrink-0 text-xs hover:underline"
     >
-      View listing
+      {t("listingCard.viewListing")}
     </Link>
   </div>
-);
+  );
+};
 
 export default ListingCard;

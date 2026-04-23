@@ -1,1 +1,130 @@
-{}
+{
+  "actionBar": {
+    "offerAlreadyPending": "Šiame pokalbyje jau yra laukiantis pasiūlymas",
+    "meetupAlreadyActive": "Susitikimo derybos jau vyksta",
+    "makeAnOffer": "Pateikti pasiūlymą",
+    "proposeATime": "Pasiūlyti laiką",
+    "shareAvailability": "Dalintis prieinamumu",
+    "cancelExistingMeetup": "Atšaukti esamą susitikimą?",
+    "confirmedMeetupWarning": "Turite patvirtintą susitikimą {{date}}, {{time}}. Pradėjus naujas derybas, jis bus atšauktas.",
+    "activeMeetupWarning": "Pradėjus naujas derybas, esamas susitikimas bus atšauktas.",
+    "keepExisting": "Palikti esamą",
+    "continue": "Tęsti"
+  },
+  "meetingCard": {
+    "statusLabels": {
+      "proposed": "Susitikimas pasiūlytas",
+      "confirmed": "Susitikimas patvirtintas",
+      "declined": "Susitikimas atmestas",
+      "rescheduled": "Perkėlimas pasiūlytas",
+      "expired": "Susitikimas baigė galioti",
+      "cancelled": "Susitikimas atšauktas",
+      "superseded": "Pakeistas"
+    },
+    "subtitles": {
+      "awaitingResponse": "Laukiama atsakymo",
+      "seeYouThere": "Iki pasimatymo!",
+      "notHappening": "Neįvyks",
+      "noResponseInTime": "Negautas atsakymas laiku",
+      "withdrawn": "Atsiimta"
+    },
+    "actions": {
+      "accept": "Priimti",
+      "suggestAlternative": "Siūlyti alternatyvą",
+      "proposeCounterTime": "Pasiūlyti kitą laiką",
+      "shareMyAvailability": "Dalintis prieinamumu",
+      "decline": "Atmesti",
+      "cancelMeetup": "Atšaukti susitikimą"
+    }
+  },
+  "offerCard": {
+    "offer": "Pasiūlymas",
+    "counterOffer": "Kontra-pasiūlymas",
+    "statusLabels": {
+      "pending": "Laukiama atsakymo",
+      "accepted": "Pasiūlymas priimtas",
+      "declined": "Pasiūlymas atmestas",
+      "expired": "Pasiūlymas baigė galioti"
+    },
+    "subtitles": {
+      "listingOnHold": "Skelbimas sulaikytas",
+      "noDealReached": "Sandoris neįvyko",
+      "awaitingResponse": "Laukiama atsakymo",
+      "noResponseWithin48h": "Negautas atsakymas per 48 valandas"
+    },
+    "actions": {
+      "accept": "Priimti",
+      "counter": "Kontra",
+      "decline": "Atmesti"
+    }
+  },
+  "availabilityCard": {
+    "statusLabels": {
+      "shared": "Prieinamumas pasidalintas",
+      "responded": "Prieinamumas atsakytas",
+      "expired": "Prieinamumas baigė galioti",
+      "cancelled": "Prieinamumas atšauktas"
+    },
+    "close": "Uždaryti",
+    "propose": "Pasiūlyti",
+    "startTime": "Pradžios laikas",
+    "duration": "Trukmė",
+    "startTimeMustBeAtOrAfter": "Pradžios laikas turi būti ne ankstesnis nei {{time}}",
+    "meetingMustEndBy": "Susitikimas turi baigtis iki {{time}}",
+    "cancelAvailability": "Atšaukti prieinamumą",
+    "noneOfTheseWork": "Nė vienas netinka — dalintis savo prieinamumu"
+  },
+  "conversationList": {
+    "noConversationsYet": "Pokalbių dar nėra."
+  },
+  "messageThread": {
+    "meetupConfirmed": "Susitikimas patvirtintas",
+    "failedToSend": "Nepavyko išsiųsti žinutės.",
+    "placeholder": "Rašyti {{username}}...",
+    "send": "Siųsti"
+  },
+  "chatPanel": {
+    "closeChat": "Uždaryti pokalbį"
+  },
+  "listingCard": {
+    "viewListing": "Žiūrėti skelbimą"
+  },
+  "makeOfferModal": {
+    "counterOfferTitle": "Kontra-pasiūlymas",
+    "makeOfferTitle": "Pateikti pasiūlymą",
+    "listedPrice": "Skelbiama kaina",
+    "discount": "Nuolaida",
+    "yourOffer": "Jūsų pasiūlymas (€)",
+    "minOffer": "Minimali suma – {{amount}} € (⅓ prašomos kainos).",
+    "maxOffer": "Pasiūlymas negali viršyti skelbimo kainos – {{price}} €.",
+    "sendCounter": "Siųsti kontra",
+    "sendOffer": "Siųsti pasiūlymą"
+  },
+  "proposeMeetingModal": {
+    "rescheduleTitle": "Perkelti susitikimą",
+    "proposeTitle": "Pasiūlyti susitikimą",
+    "date": "Data",
+    "startTime": "Pradžios laikas ({{timezone}})",
+    "duration": "Trukmė",
+    "durationMinutes": "{{d}} min",
+    "locationOptional": "Vieta (neprivaloma)",
+    "locationPlaceholder": "pvz. Gedimino pr. 1, Vilnius",
+    "setPinOptional": "Nustatyti žymeklį (neprivaloma)",
+    "latitude": "Platuma",
+    "latitudePlaceholder": "pvz. 54.6872",
+    "longitude": "Ilguma",
+    "longitudePlaceholder": "pvz. 25.2797",
+    "mustBeInFuture": "Susitikimo laikas turi būti ateityje.",
+    "sendReschedule": "Siųsti perkėlimą",
+    "proposeMeetup": "Siūlyti susitikimą"
+  },
+  "shareAvailabilityModal": {
+    "title": "Dalintis prieinamumu",
+    "slot": "Laikas {{number}}",
+    "date": "Data",
+    "from": "Nuo ({{timezone}})",
+    "to": "Iki ({{timezone}})",
+    "addAnotherSlot": "+ Pridėti kitą laiką",
+    "shareAvailability": "Dalintis prieinamumu"
+  }
+}

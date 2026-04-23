@@ -1,1 +1,130 @@
-{}
+{
+  "actionBar": {
+    "offerAlreadyPending": "An offer is already pending in this conversation",
+    "meetupAlreadyActive": "A meetup negotiation is already active",
+    "makeAnOffer": "Make an Offer",
+    "proposeATime": "Propose a time",
+    "shareAvailability": "Share availability",
+    "cancelExistingMeetup": "Cancel existing meetup?",
+    "confirmedMeetupWarning": "You have a confirmed meetup on {{date}} at {{time}}. Starting a new negotiation will cancel it.",
+    "activeMeetupWarning": "Starting a new negotiation will cancel the existing meetup.",
+    "keepExisting": "Keep existing",
+    "continue": "Continue"
+  },
+  "meetingCard": {
+    "statusLabels": {
+      "proposed": "Meetup Proposed",
+      "confirmed": "Meetup Confirmed",
+      "declined": "Meetup Declined",
+      "rescheduled": "Reschedule Proposed",
+      "expired": "Meetup Expired",
+      "cancelled": "Meetup Cancelled",
+      "superseded": "Superseded"
+    },
+    "subtitles": {
+      "awaitingResponse": "Awaiting response",
+      "seeYouThere": "See you there!",
+      "notHappening": "Not happening",
+      "noResponseInTime": "No response in time",
+      "withdrawn": "Withdrawn"
+    },
+    "actions": {
+      "accept": "Accept",
+      "suggestAlternative": "Suggest alternative",
+      "proposeCounterTime": "Propose a counter time",
+      "shareMyAvailability": "Share my availability",
+      "decline": "Decline",
+      "cancelMeetup": "Cancel meetup"
+    }
+  },
+  "offerCard": {
+    "offer": "Offer",
+    "counterOffer": "Counter-Offer",
+    "statusLabels": {
+      "pending": "Pending response",
+      "accepted": "Offer Accepted",
+      "declined": "Offer Declined",
+      "expired": "Offer Expired"
+    },
+    "subtitles": {
+      "listingOnHold": "Listing is now on hold",
+      "noDealReached": "No deal reached",
+      "awaitingResponse": "Awaiting response",
+      "noResponseWithin48h": "No response within 48 hours"
+    },
+    "actions": {
+      "accept": "Accept",
+      "counter": "Counter",
+      "decline": "Decline"
+    }
+  },
+  "availabilityCard": {
+    "statusLabels": {
+      "shared": "Availability Shared",
+      "responded": "Availability Responded",
+      "expired": "Availability Expired",
+      "cancelled": "Availability Cancelled"
+    },
+    "close": "Close",
+    "propose": "Propose",
+    "startTime": "Start time",
+    "duration": "Duration",
+    "startTimeMustBeAtOrAfter": "Start time must be at or after {{time}}",
+    "meetingMustEndBy": "Meeting must end by {{time}}",
+    "cancelAvailability": "Cancel availability",
+    "noneOfTheseWork": "None of these work — share my availability instead"
+  },
+  "conversationList": {
+    "noConversationsYet": "No conversations yet."
+  },
+  "messageThread": {
+    "meetupConfirmed": "Meetup Confirmed",
+    "failedToSend": "Failed to send message.",
+    "placeholder": "Message {{username}}...",
+    "send": "Send"
+  },
+  "chatPanel": {
+    "closeChat": "Close chat"
+  },
+  "listingCard": {
+    "viewListing": "View listing"
+  },
+  "makeOfferModal": {
+    "counterOfferTitle": "Counter Offer",
+    "makeOfferTitle": "Make an Offer",
+    "listedPrice": "Listed price",
+    "discount": "Discount",
+    "yourOffer": "Your offer (€)",
+    "minOffer": "Minimum offer is €{{amount}} (⅓ of asking price).",
+    "maxOffer": "Offer cannot exceed the listing price of €{{price}}.",
+    "sendCounter": "Send Counter",
+    "sendOffer": "Send Offer"
+  },
+  "proposeMeetingModal": {
+    "rescheduleTitle": "Reschedule Meeting",
+    "proposeTitle": "Propose a Meetup",
+    "date": "Date",
+    "startTime": "Start time ({{timezone}})",
+    "duration": "Duration",
+    "durationMinutes": "{{d}} min",
+    "locationOptional": "Location (optional)",
+    "locationPlaceholder": "e.g. Central Park, 5th Ave entrance",
+    "setPinOptional": "Set pin (optional)",
+    "latitude": "Latitude",
+    "latitudePlaceholder": "e.g. 40.7829",
+    "longitude": "Longitude",
+    "longitudePlaceholder": "e.g. -73.9654",
+    "mustBeInFuture": "Meeting time must be in the future.",
+    "sendReschedule": "Send Reschedule",
+    "proposeMeetup": "Propose Meetup"
+  },
+  "shareAvailabilityModal": {
+    "title": "Share Your Availability",
+    "slot": "Slot {{number}}",
+    "date": "Date",
+    "from": "From ({{timezone}})",
+    "to": "To ({{timezone}})",
+    "addAnotherSlot": "+ Add another slot",
+    "shareAvailability": "Share Availability"
+  }
+}
