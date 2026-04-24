@@ -56,5 +56,13 @@
     "sectionAdmin": "Admin",
     "sectionAccount": "Account",
     "comingSoon": "Coming soon"
+  },
+  "defectSelector": {
+    "title": "Defects",
+    "addCustom": "Add custom defect",
+    "addPhoto": "Add photo",
+    "photoCount": "{{count}} / 3",
+    "noDefects": "No defects selected",
+    "customPlaceholder": "Enter defect name..."
   }
 }

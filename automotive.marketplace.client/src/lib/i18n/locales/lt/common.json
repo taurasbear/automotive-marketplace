@@ -56,5 +56,13 @@
     "sectionAdmin": "Administravimas",
     "sectionAccount": "Paskyra",
     "comingSoon": "Greitai"
+  },
+  "defectSelector": {
+    "title": "Defektai",
+    "addCustom": "Pridėti kitą defektą",
+    "addPhoto": "Pridėti nuotrauką",
+    "photoCount": "{{count}} / 3",
+    "noDefects": "Defektai nepasirinkti",
+    "customPlaceholder": "Įveskite defekto pavadinimą..."
   }
 }
