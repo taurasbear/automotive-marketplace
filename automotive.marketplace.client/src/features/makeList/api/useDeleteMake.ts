@@ -11,8 +11,8 @@ export const useDeleteMake = () =>
   useMutation({
     mutationFn: deleteMake,
     meta: {
-      successMessage: "Successfully deleted make!",
-      errorMessage: "Sorry, we had trouble deleting your make",
+      successMessage: "toasts:make.deleteSuccess",
+      errorMessage: "toasts:make.deleteError",
       invalidatesQuery: makeKeys.all(),
     },
   });

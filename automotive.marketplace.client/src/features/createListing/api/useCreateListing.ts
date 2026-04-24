@@ -22,7 +22,7 @@ export const useCreateListing = () =>
   useMutation({
     mutationFn: createListing,
     meta: {
-      successMessage: "Successfully created listing!",
-      errorMessage: "Sorry, we had trouble creating your listing.",
+      successMessage: "toasts:listing.createSuccess",
+      errorMessage: "toasts:listing.createError",
     },
   });

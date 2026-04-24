@@ -22,8 +22,8 @@ export const useAddDefectImage = () =>
   useMutation({
     mutationFn: addDefectImage,
     meta: {
-      successMessage: "Photo added!",
-      errorMessage: "Failed to upload photo",
+      successMessage: "toasts:defect.addImageSuccess",
+      errorMessage: "toasts:defect.addImageError",
       invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

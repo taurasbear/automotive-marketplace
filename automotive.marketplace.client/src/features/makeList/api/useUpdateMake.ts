@@ -11,8 +11,8 @@ export const useUpdateMake = () =>
   useMutation({
     mutationFn: updateMake,
     meta: {
-      successMessage: "Successfully updated make!",
-      errorMessage: "Sorry, we couldn't update your make",
+      successMessage: "toasts:make.updateSuccess",
+      errorMessage: "toasts:make.updateError",
       invalidatesQuery: makeKeys.all(),
     },
   });

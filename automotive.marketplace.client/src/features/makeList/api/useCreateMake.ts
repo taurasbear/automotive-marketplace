@@ -11,8 +11,8 @@ export const useCreateMake = () =>
   useMutation({
     mutationFn: createMake,
     meta: {
-      successMessage: "Successfully created make!",
-      errorMessage: "Sorry, we couldn't create your make",
+      successMessage: "toasts:make.createSuccess",
+      errorMessage: "toasts:make.createError",
       invalidatesQuery: makeKeys.all(),
     },
   });

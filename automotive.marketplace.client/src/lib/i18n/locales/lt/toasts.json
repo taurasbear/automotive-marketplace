@@ -1,0 +1,64 @@
+{
+  "defect": {
+    "addSuccess": "Defektas pridėtas!",
+    "addError": "Nepavyko pridėti defekto",
+    "removeSuccess": "Defektas pašalintas!",
+    "removeError": "Nepavyko pašalinti defekto",
+    "addImageSuccess": "Nuotrauka pridėta!",
+    "addImageError": "Nepavyko įkelti nuotraukos",
+    "removeImageSuccess": "Nuotrauka pašalinta!",
+    "removeImageError": "Nepavyko pašalinti nuotraukos"
+  },
+  "listing": {
+    "createSuccess": "Skelbimas sėkmingai sukurtas!",
+    "createError": "Atsiprašome, nepavyko sukurti skelbimo.",
+    "updateSuccess": "Skelbimas sėkmingai atnaujintas!",
+    "updateError": "Atsiprašome, nepavyko atnaujinti skelbimo",
+    "deleteSuccess": "Skelbimas sėkmingai ištrintas!",
+    "deleteError": "Atsiprašome, nepavyko ištrinti skelbimo"
+  },
+  "myListing": {
+    "deleteSuccess": "Skelbimas sėkmingai ištrintas!",
+    "deleteError": "Nepavyko ištrinti skelbimo"
+  },
+  "auth": {
+    "loginSuccess": "Sėkmingai prisijungėte!",
+    "loginError": "Atsiprašome, nepavyko prisijungti. Bandykite dar kartą.",
+    "logoutSuccess": "Sėkmingai atsijungėte",
+    "logoutError": "Atsiprašome, nepavyko atsijungti. Bandykite dar kartą.",
+    "registerSuccess": "Sėkmingai užsiregistravote!",
+    "registerError": "Atsiprašome, nepavyko sukurti paskyros. Bandykite dar kartą."
+  },
+  "make": {
+    "createSuccess": "Markė sėkmingai sukurta!",
+    "createError": "Atsiprašome, nepavyko sukurti markės",
+    "updateSuccess": "Markė sėkmingai atnaujinta!",
+    "updateError": "Atsiprašome, nepavyko atnaujinti markės",
+    "deleteSuccess": "Markė sėkmingai ištrinta!",
+    "deleteError": "Atsiprašome, nepavyko ištrinti markės"
+  },
+  "model": {
+    "createSuccess": "Modelis sėkmingai sukurtas!",
+    "createError": "Atsiprašome, nepavyko sukurti modelio",
+    "updateSuccess": "Modelis sėkmingai atnaujintas!",
+    "updateError": "Atsiprašome, nepavyko atnaujinti modelio",
+    "deleteSuccess": "Modelis sėkmingai ištrintas!",
+    "deleteError": "Atsiprašome, nepavyko ištrinti modelio"
+  },
+  "variant": {
+    "createSuccess": "Variantas sėkmingai sukurtas!",
+    "createError": "Atsiprašome, nepavyko sukurti varianto",
+    "updateSuccess": "Variantas sėkmingai atnaujintas!",
+    "updateError": "Atsiprašome, nepavyko atnaujinti varianto",
+    "deleteSuccess": "Variantas sėkmingai ištrintas!",
+    "deleteError": "Atsiprašome, nepavyko ištrinti varianto"
+  },
+  "saved": {
+    "likeError": "Nepavyko atnaujinti patiktuko. Bandykite dar kartą.",
+    "noteError": "Nepavyko išsaugoti pastabos. Bandykite dar kartą.",
+    "noteDeleteError": "Nepavyko ištrinti pastabos. Bandykite dar kartą."
+  },
+  "chat": {
+    "conversationError": "Nepavyko atidaryti pokalbio. Bandykite dar kartą."
+  }
+}

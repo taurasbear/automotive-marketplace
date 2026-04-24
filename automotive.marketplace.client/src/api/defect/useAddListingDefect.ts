@@ -17,8 +17,8 @@ export const useAddListingDefect = () =>
   useMutation({
     mutationFn: addListingDefect,
     meta: {
-      successMessage: "Defect added!",
-      errorMessage: "Failed to add defect",
+      successMessage: "toasts:defect.addSuccess",
+      errorMessage: "toasts:defect.addError",
       invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

@@ -11,8 +11,8 @@ export const useRemoveListingDefect = () =>
   useMutation({
     mutationFn: removeListingDefect,
     meta: {
-      successMessage: "Defect removed!",
-      errorMessage: "Failed to remove defect",
+      successMessage: "toasts:defect.removeSuccess",
+      errorMessage: "toasts:defect.removeError",
       invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

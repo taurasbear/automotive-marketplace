@@ -11,8 +11,8 @@ export const useUpdateListing = () =>
   useMutation({
     mutationFn: updateListing,
     meta: {
-      successMessage: "Successfully updated listing!",
-      errorMessage: "Sorry, we couldn't update listing",
+      successMessage: "toasts:listing.updateSuccess",
+      errorMessage: "toasts:listing.updateError",
       invalidatesQuery: listingKeys.all(),
     },
   });

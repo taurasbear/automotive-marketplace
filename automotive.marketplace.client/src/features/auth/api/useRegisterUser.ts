@@ -11,7 +11,7 @@ export const useRegisterUser = () =>
   useMutation({
     mutationFn: registerUser,
     meta: {
-      successMessage: "Successfully registered!",
-      errorMessage: "Sorry, couldn't register an account. Please try again.",
+      successMessage: "toasts:auth.registerSuccess",
+      errorMessage: "toasts:auth.registerError",
     },
   });

@@ -11,8 +11,8 @@ export const useCreateVariant = () =>
   useMutation({
     mutationFn: createVariant,
     meta: {
-      successMessage: "Successfully created variant!",
-      errorMessage: "Sorry, we couldn't create your variant",
+      successMessage: "toasts:variant.createSuccess",
+      errorMessage: "toasts:variant.createError",
       invalidatesQuery: variantKeys.all(),
     },
   });

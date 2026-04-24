@@ -11,8 +11,8 @@ export const useCreateModel = () =>
   useMutation({
     mutationFn: createModel,
     meta: {
-      successMessage: "Successfully created model!",
-      errorMessage: "Sorry, we couldn't create your model",
+      successMessage: "toasts:model.createSuccess",
+      errorMessage: "toasts:model.createError",
       invalidatesQuery: modelKeys.all(),
     },
   });

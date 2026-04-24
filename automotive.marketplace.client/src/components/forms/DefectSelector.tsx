@@ -239,10 +239,16 @@ const DefectSelector = (props: DefectSelectorProps) => {
             placeholder={t("defectSelector.customPlaceholder")}
             value={customDefectName}
             onChange={(e) => setCustomDefectName(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addCustomDefect()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addCustomDefect();
+              }
+            }}
             className="flex-1"
           />
           <Button
+            type="button"
             onClick={addCustomDefect}
             disabled={!customDefectName.trim()}
             variant="outline"
@@ -275,6 +281,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium">{getDefectName(defect)}</h4>
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
                       onClick={() => removeDefect(defect)}
@@ -293,6 +300,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
                       </span>
                       {images.length < 3 && (
                         <Button
+                          type="button"
                           variant="outline"
                           size="sm"
                           onClick={() =>
@@ -327,6 +335,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
                                 className="h-16 w-16 rounded border object-cover"
                               />
                               <Button
+                                type="button"
                                 variant="destructive"
                                 size="sm"
                                 onClick={() => removeImage(defect, index)}

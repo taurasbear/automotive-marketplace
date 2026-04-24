@@ -11,8 +11,8 @@ export const useRemoveDefectImage = () =>
   useMutation({
     mutationFn: removeDefectImage,
     meta: {
-      successMessage: "Photo removed!",
-      errorMessage: "Failed to remove photo",
+      successMessage: "toasts:defect.removeImageSuccess",
+      errorMessage: "toasts:defect.removeImageError",
       invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

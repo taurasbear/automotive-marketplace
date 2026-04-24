@@ -20,7 +20,7 @@ export const useUpsertListingNote = () => {
       void queryClient.invalidateQueries({ queryKey: savedListingKeys.list() });
     },
     meta: {
-      errorMessage: "Could not save note. Please try again.",
+      errorMessage: "toasts:saved.noteError",
     },
   });
 };

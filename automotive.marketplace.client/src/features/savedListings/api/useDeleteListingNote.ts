@@ -21,7 +21,7 @@ export const useDeleteListingNote = () => {
       void queryClient.invalidateQueries({ queryKey: savedListingKeys.list() });
     },
     meta: {
-      errorMessage: "Could not delete note. Please try again.",
+      errorMessage: "toasts:saved.noteDeleteError",
     },
   });
 };

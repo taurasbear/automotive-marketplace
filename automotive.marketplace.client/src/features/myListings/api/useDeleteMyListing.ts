@@ -11,8 +11,8 @@ export const useDeleteMyListing = () =>
   useMutation({
     mutationFn: deleteMyListing,
     meta: {
-      successMessage: "Listing deleted successfully!",
-      errorMessage: "Failed to delete listing",
+      successMessage: "toasts:myListing.deleteSuccess",
+      errorMessage: "toasts:myListing.deleteError",
       invalidatesQuery: [myListingKeys.all(), listingKeys.all()],
     },
   });

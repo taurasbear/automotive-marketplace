@@ -10,6 +10,7 @@ import compareEn from "./locales/en/compare.json";
 import listingsEn from "./locales/en/listings.json";
 import myListingsEn from "./locales/en/myListings.json";
 import savedEn from "./locales/en/saved.json";
+import toastsEn from "./locales/en/toasts.json";
 import validationEn from "./locales/en/validation.json";
 
 import adminLt from "./locales/lt/admin.json";
@@ -20,6 +21,7 @@ import compareLt from "./locales/lt/compare.json";
 import listingsLt from "./locales/lt/listings.json";
 import myListingsLt from "./locales/lt/myListings.json";
 import savedLt from "./locales/lt/saved.json";
+import toastsLt from "./locales/lt/toasts.json";
 import validationLt from "./locales/lt/validation.json";
 
 void i18n
@@ -36,6 +38,7 @@ void i18n
         saved: savedEn,
         compare: compareEn,
         admin: adminEn,
+        toasts: toastsEn,
         validation: validationEn,
       },
       lt: {
@@ -47,6 +50,7 @@ void i18n
         saved: savedLt,
         compare: compareLt,
         admin: adminLt,
+        toasts: toastsLt,
         validation: validationLt,
       },
     },
