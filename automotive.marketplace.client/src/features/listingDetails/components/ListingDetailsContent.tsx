@@ -6,25 +6,29 @@ import { CompareSearchModal } from "@/features/compareListings";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { formatNumber } from "@/lib/i18n/formatNumber";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
+import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { Trash, Camera } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getDefectCategoriesOptions } from "@/api/defect/getDefectCategoriesOptions";
 import { getListingByIdOptions } from "../api/getListingByIdOptions";
 import { useDeleteListing } from "../api/useDeleteListing";
 import EditListingDialog from "./EditListingDialog";
 import ImageArrowGallery from "@/components/gallery/ImageArrowGallery";
+import type { ListingDefectDto } from "@/features/listingDetails/types/GetListingByIdResponse";
 
 type ListingDetailsProps = {
   id: string;
 };
 
 const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
-  const { t } = useTranslation("listings");
+  const { t, i18n } = useTranslation("listings");
   const { data: listingQuery } = useSuspenseQuery(
     getListingByIdOptions({ id }),
   );
 
+  const { data: defectCategories } = useQuery(getDefectCategoriesOptions);
   const { mutateAsync: deleteListingAsync } = useDeleteListing();
 
   const listing = listingQuery.data;
@@ -58,6 +62,17 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
     });
   };
 
+  const getDefectDisplayName = (defect: ListingDefectDto): string => {
+    if (defect.customName) return defect.customName;
+    if (defect.defectCategoryId && defectCategories?.data) {
+      const category = defectCategories.data.find((c) => c.id === defect.defectCategoryId);
+      if (category) {
+        return getTranslatedName(category.translations, i18n.language);
+      }
+    }
+    return defect.defectCategoryName ?? t("common:defects.unknownDefect");
+  };
+
   const handleDelete = async () => {
     await deleteListingAsync({ id });
     await router.navigate({ to: "/" });
@@ -70,7 +85,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
       defect.images.map((img) => ({
         url: img.url,
         altText: img.altText,
-        defectName: defect.customName ?? defect.defectCategoryName ?? "Defect",
+        defectName: getDefectDisplayName(defect),
       })),
     ),
   ];
@@ -103,7 +118,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       key={defect.id}
                       className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-sm text-amber-700 dark:text-amber-400"
                     >
-                      {defect.customName ?? defect.defectCategoryName}
+                      {getDefectDisplayName(defect)}
                       {defect.images.length > 0 && (
                         <span className="ml-1 inline-flex items-center gap-0.5">
                           ({defect.images.length} <Camera className="inline h-3.5 w-3.5" />)

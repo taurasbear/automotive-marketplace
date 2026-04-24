@@ -1,8 +1,6 @@
 {
   "defect": {
-    "addSuccess": "Defektas pridėtas!",
     "addError": "Nepavyko pridėti defekto",
-    "removeSuccess": "Defektas pašalintas!",
     "removeError": "Nepavyko pašalinti defekto",
     "addImageSuccess": "Nuotrauka pridėta!",
     "addImageError": "Nepavyko įkelti nuotraukos",

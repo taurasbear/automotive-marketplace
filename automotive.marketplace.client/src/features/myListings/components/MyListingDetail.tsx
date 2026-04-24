@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, AlertTriangle } from "lucide-react";
 import { useState } from "react";
@@ -19,26 +19,41 @@ import {
 } from "@/components/ui/alert-dialog";
 import ImageArrowGallery from "@/components/gallery/ImageArrowGallery";
 import DefectSelector from "@/components/forms/DefectSelector";
+import { getDefectCategoriesOptions } from "@/api/defect/getDefectCategoriesOptions";
+import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
 import { getListingByIdOptions } from "@/features/listingDetails/api/getListingByIdOptions";
 import { useUpdateListing } from "@/features/listingDetails/api/useUpdateListing";
 import { useDeleteMyListing } from "@/features/myListings/api/useDeleteMyListing";
 import EditableField from "./EditableField";
+import type { ListingDefectDto } from "@/features/listingDetails/types/GetListingByIdResponse";
 
 type MyListingDetailProps = {
   id: string;
 };
 
 const MyListingDetail = ({ id }: MyListingDetailProps) => {
-  const { t } = useTranslation("myListings");
+  const { t, i18n } = useTranslation("myListings");
   const navigate = useNavigate();
   const [pendingChanges, setPendingChanges] = useState<
     Record<string, string | number | boolean>
   >({});
 
   const { data: response } = useSuspenseQuery(getListingByIdOptions({ id }));
+  const { data: defectCategories } = useQuery(getDefectCategoriesOptions);
   const listing = response.data;
   const updateMutation = useUpdateListing();
   const deleteMutation = useDeleteMyListing();
+
+  const getDefectDisplayName = (defect: ListingDefectDto): string => {
+    if (defect.customName) return defect.customName;
+    if (defect.defectCategoryId && defectCategories?.data) {
+      const category = defectCategories.data.find((c) => c.id === defect.defectCategoryId);
+      if (category) {
+        return getTranslatedName(category.translations, i18n.language);
+      }
+    }
+    return defect.defectCategoryName ?? t("common:defects.unknownDefect");
+  };
 
   const galleryImages = [
     ...listing.images.map((img) => ({ url: img.url, altText: img.altText })),
@@ -46,7 +61,7 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
       defect.images.map((img) => ({
         url: img.url,
         altText: img.altText,
-        defectName: defect.customName ?? defect.defectCategoryName ?? "Defect",
+        defectName: getDefectDisplayName(defect),
       })),
     ),
   ];

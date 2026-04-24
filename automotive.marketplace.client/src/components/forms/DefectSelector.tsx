@@ -129,12 +129,13 @@ const DefectSelector = (props: DefectSelectorProps) => {
     if (defect.customName) return defect.customName;
 
     if (defect.defectCategoryId) {
-      if (props.mode === "api" && "defectCategoryName" in defect) {
-        return defect.defectCategoryName;
-      }
       const category = categories.find((c) => c.id === defect.defectCategoryId);
       if (category) {
         return getTranslatedName(category.translations, i18n.language);
+      }
+      // Fallback to flat name if categories not loaded yet
+      if ("defectCategoryName" in defect && defect.defectCategoryName) {
+        return defect.defectCategoryName;
       }
     }
 

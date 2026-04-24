@@ -1,8 +1,6 @@
 {
   "defect": {
-    "addSuccess": "Defect added!",
     "addError": "Failed to add defect",
-    "removeSuccess": "Defect removed!",
     "removeError": "Failed to remove defect",
     "addImageSuccess": "Photo added!",
     "addImageError": "Failed to upload photo",
