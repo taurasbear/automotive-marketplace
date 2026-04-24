@@ -89,7 +89,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
           defectCategoryId: defect.defectCategoryId || undefined,
           customName: defect.customName || undefined,
         });
-        
+
         // Upload defect images
         const defectId = defectResponse.data;
         if (defect.images && defect.images.length > 0 && defectId) {
@@ -482,7 +482,9 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             <DefectSelector
               mode="form"
               selectedDefects={(defects as FormDefect[]) ?? []}
-              onDefectsChange={(newDefects) => form.setValue("defects", newDefects)}
+              onDefectsChange={(newDefects) =>
+                form.setValue("defects", newDefects)
+              }
             />
           </div>
 

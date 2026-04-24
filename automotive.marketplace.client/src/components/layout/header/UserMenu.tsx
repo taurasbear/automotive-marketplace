@@ -35,15 +35,19 @@ const UserMenu = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>{t("common:userMenu.sectionMyListings")}</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {t("common:userMenu.sectionMyListings")}
+        </DropdownMenuLabel>
         <DropdownMenuItem asChild>
           <Link to="/my-listings">{t("common:userMenu.myListings")}</Link>
         </DropdownMenuItem>
-        
+
         {permissions.includes(PERMISSIONS.ViewMakes) && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel>{t("common:userMenu.sectionAdmin")}</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {t("common:userMenu.sectionAdmin")}
+            </DropdownMenuLabel>
             <DropdownMenuItem asChild>
               <Link to="/makes">{t("common:userMenu.makes")}</Link>
             </DropdownMenuItem>
@@ -55,18 +59,20 @@ const UserMenu = () => {
             </DropdownMenuItem>
           </>
         )}
-        
+
         <DropdownMenuSeparator />
-        <DropdownMenuLabel>{t("common:userMenu.sectionAccount")}</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          {t("common:userMenu.sectionAccount")}
+        </DropdownMenuLabel>
         <DropdownMenuItem disabled>
           <Settings className="mr-2 h-4 w-4" />
           {t("common:userMenu.profileSettings")}
-          <span className="ml-auto text-xs text-muted-foreground">
+          <span className="text-muted-foreground ml-auto text-xs">
             ({t("common:userMenu.comingSoon")})
           </span>
         </DropdownMenuItem>
-        <DropdownMenuItem 
-          className="text-red-600" 
+        <DropdownMenuItem
+          className="text-red-600"
           onClick={() => void handleLogout()}
         >
           <LogOut className="mr-2 h-4 w-4" />

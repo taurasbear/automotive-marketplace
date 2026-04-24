@@ -3,7 +3,8 @@
     "title": "Mano skelbimai",
     "createListing": "Sukurti skelbimą",
     "emptyState": "Jūs dar nesukūrėte jokių skelbimų.",
-    "createFirst": "Sukurkite savo pirmą skelbimą!"
+    "createFirst": "Sukurkite savo pirmą skelbimą!",
+    "loadError": "Nepavyko įkelti skelbimų. Pabandykite dar kartą."
   },
   "card": {
     "active": "Aktyvus",
@@ -38,5 +39,18 @@
     "new": "Naujas",
     "left": "Kairė",
     "right": "Dešinė"
+  },
+  "vehicleInfo": {
+    "title": "Automobilio informacija",
+    "editableTitle": "Redaguojama informacija",
+    "make": "Markė:",
+    "model": "Modelis:",
+    "fuel": "Kuras:",
+    "transmission": "Pavarų dėžė:",
+    "bodyType": "Kėbulo tipas:",
+    "drivetrain": "Pavara:",
+    "doors": "Durys:",
+    "powerKw": "Galia (kW):",
+    "engineSizeMl": "Variklio tūris (ml):"
   }
 }

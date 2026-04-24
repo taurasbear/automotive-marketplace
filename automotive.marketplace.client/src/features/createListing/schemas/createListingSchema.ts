@@ -138,11 +138,15 @@ export const CreateListingSchema = z
       .min(1, {
         error: () => i18n.t("mustUploadImage", { ns: "validation" }),
       }),
-    defects: z.array(z.object({
-      defectCategoryId: z.string().optional(),
-      customName: z.string().optional(),
-      images: z.array(z.instanceof(Blob)).max(3),
-    })).default([]),
+    defects: z
+      .array(
+        z.object({
+          defectCategoryId: z.string().optional(),
+          customName: z.string().optional(),
+          images: z.array(z.instanceof(Blob)).max(3),
+        }),
+      )
+      .default([]),
   })
   .superRefine((data, ctx) => {
     if (!data.variantId) {

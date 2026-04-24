@@ -64,5 +64,12 @@
     "photoCount": "{{count}} / 3",
     "noDefects": "Defektai nepasirinkti",
     "customPlaceholder": "Įveskite defekto pavadinimą..."
+  },
+  "gallery": {
+    "noImagesAvailable": "Nuotraukų nėra",
+    "noImageAvailable": "Nuotrauka nepasiekiama",
+    "previousImage": "Ankstesnė nuotrauka",
+    "nextImage": "Kita nuotrauka",
+    "defectLabel": "Defektas:"
   }
 }

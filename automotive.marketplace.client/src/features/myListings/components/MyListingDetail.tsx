@@ -47,11 +47,14 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
         url: img.url,
         altText: img.altText,
         defectName: defect.customName ?? defect.defectCategoryName ?? "Defect",
-      }))
+      })),
     ),
   ];
 
-  const handleFieldChange = (field: string, value: string | number | boolean) => {
+  const handleFieldChange = (
+    field: string,
+    value: string | number | boolean,
+  ) => {
     setPendingChanges((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -61,7 +64,8 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
       price: (pendingChanges.price as number) ?? listing.price,
       mileage: (pendingChanges.mileage as number) ?? listing.mileage,
       city: (pendingChanges.city as string) ?? listing.city,
-      description: (pendingChanges.description as string) ?? listing.description,
+      description:
+        (pendingChanges.description as string) ?? listing.description,
       colour: (pendingChanges.colour as string) ?? listing.colour,
       vin: (pendingChanges.vin as string) ?? listing.vin,
       isUsed: (pendingChanges.isUsed as boolean) ?? listing.isUsed,
@@ -92,9 +96,12 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6">
+    <div className="container mx-auto space-y-6 px-4 py-6">
       {/* Back link */}
-      <Link to="/my-listings" className="inline-flex items-center gap-2 text-sm hover:underline">
+      <Link
+        to="/my-listings"
+        className="inline-flex items-center gap-2 text-sm hover:underline"
+      >
         <ArrowLeft className="h-4 w-4" />
         {t("detail.backToMyListings")}
       </Link>
@@ -119,13 +126,15 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive" size="sm">
-              <AlertTriangle className="h-4 w-4 mr-2" />
+              <AlertTriangle className="mr-2 h-4 w-4" />
               {t("detail.deleteListing")}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>{t("detail.deleteConfirmTitle")}</AlertDialogTitle>
+              <AlertDialogTitle>
+                {t("detail.deleteConfirmTitle")}
+              </AlertDialogTitle>
               <AlertDialogDescription>
                 {t("detail.deleteConfirmDescription")}
               </AlertDialogDescription>
@@ -146,42 +155,60 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Non-editable info */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Vehicle Information</h3>
+          <h3 className="text-lg font-semibold">{t("vehicleInfo.title")}</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Make:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.make")}
+              </span>
               <span>{listing.makeName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Model:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.model")}
+              </span>
               <span>{listing.modelName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Fuel:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.fuel")}
+              </span>
               <span>{listing.fuelName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Transmission:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.transmission")}
+              </span>
               <span>{listing.transmissionName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Body Type:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.bodyType")}
+              </span>
               <span>{listing.bodyTypeName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Drivetrain:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.drivetrain")}
+              </span>
               <span>{listing.drivetrainName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Doors:</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.doors")}
+              </span>
               <span>{listing.doorCount}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Power (kW):</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.powerKw")}
+              </span>
               <span>{listing.powerKw}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Engine Size (ml):</span>
+              <span className="text-muted-foreground">
+                {t("vehicleInfo.engineSizeMl")}
+              </span>
               <span>{listing.engineSizeMl}</span>
             </div>
           </div>
@@ -189,8 +216,10 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
 
         {/* Editable fields */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Editable Information</h3>
-          <div className="space-y-1 border rounded-lg p-4">
+          <h3 className="text-lg font-semibold">
+            {t("vehicleInfo.editableTitle")}
+          </h3>
+          <div className="space-y-1 rounded-lg border p-4">
             <EditableField
               label={t("fields.price")}
               value={listing.price}
@@ -239,7 +268,9 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
               value={listing.isSteeringWheelRight}
               type="toggle"
               toggleLabels={{ on: t("fields.right"), off: t("fields.left") }}
-              onConfirm={(value) => handleFieldChange("isSteeringWheelRight", value)}
+              onConfirm={(value) =>
+                handleFieldChange("isSteeringWheelRight", value)
+              }
             />
           </div>
         </div>
@@ -257,18 +288,17 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
 
       {/* Floating save bar */}
       {Object.keys(pendingChanges).length > 0 && (
-        <div className="sticky bottom-0 bg-card border-t p-4 flex items-center justify-between shadow-lg">
-          <span className="text-sm text-muted-foreground">
-            {t("detail.unsavedChanges", { count: Object.keys(pendingChanges).length })}
+        <div className="bg-card sticky bottom-0 flex items-center justify-between border-t p-4 shadow-lg">
+          <span className="text-muted-foreground text-sm">
+            {t("detail.unsavedChanges", {
+              count: Object.keys(pendingChanges).length,
+            })}
           </span>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setPendingChanges({})}>
               {t("detail.discard")}
             </Button>
-            <Button 
-              onClick={handleSave} 
-              disabled={updateMutation.isPending}
-            >
+            <Button onClick={handleSave} disabled={updateMutation.isPending}>
               {t("detail.saveChanges")}
             </Button>
           </div>

@@ -70,7 +70,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
         url: img.url,
         altText: img.altText,
         defectName: defect.customName ?? defect.defectCategoryName ?? "Defect",
-      }))
+      })),
     ),
   ];
 
@@ -93,15 +93,18 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
             )}
             {listing.defects.length > 0 && (
               <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-                <h2 className="mb-4 text-2xl font-semibold">{t("details.defects")}</h2>
+                <h2 className="mb-4 text-2xl font-semibold">
+                  {t("details.defects")}
+                </h2>
                 <div className="flex flex-wrap gap-2">
                   {listing.defects.map((defect) => (
                     <span
                       key={defect.id}
-                      className="bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded-full border border-amber-500/20 px-3 py-1 text-sm"
+                      className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-sm text-amber-700 dark:text-amber-400"
                     >
                       {defect.customName ?? defect.defectCategoryName}
-                      {defect.images.length > 0 && ` (${defect.images.length} 📷)`}
+                      {defect.images.length > 0 &&
+                        ` (${defect.images.length} 📷)`}
                     </span>
                   ))}
                 </div>

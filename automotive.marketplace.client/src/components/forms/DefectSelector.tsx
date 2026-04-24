@@ -36,7 +36,7 @@ type DefectSelectorProps = DefectSelectorFormProps | DefectSelectorApiProps;
 const DefectSelector = (props: DefectSelectorProps) => {
   const { t, i18n } = useTranslation("common");
   const [customDefectName, setCustomDefectName] = useState("");
-  
+
   const { data: categoriesQuery } = useQuery(getDefectCategoriesOptions);
   const categories = categoriesQuery?.data || [];
 
@@ -48,13 +48,12 @@ const DefectSelector = (props: DefectSelectorProps) => {
 
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
-  const selectedDefects = props.mode === "form" 
-    ? props.selectedDefects 
-    : props.existingDefects;
+  const selectedDefects =
+    props.mode === "form" ? props.selectedDefects : props.existingDefects;
 
   const isDefectSelected = (categoryId: string) => {
-    return selectedDefects.some(defect => 
-      defect.defectCategoryId === categoryId
+    return selectedDefects.some(
+      (defect) => defect.defectCategoryId === categoryId,
     );
   };
 
@@ -64,14 +63,14 @@ const DefectSelector = (props: DefectSelectorProps) => {
       if (isSelected) {
         // Remove defect
         const updatedDefects = props.selectedDefects.filter(
-          defect => defect.defectCategoryId !== categoryId
+          (defect) => defect.defectCategoryId !== categoryId,
         );
         props.onDefectsChange(updatedDefects);
       } else {
         // Add defect
         const newDefect: FormDefect = {
           defectCategoryId: categoryId,
-          images: []
+          images: [],
         };
         props.onDefectsChange([...props.selectedDefects, newDefect]);
       }
@@ -81,7 +80,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
       if (isSelected) {
         // Remove defect
         const defectToRemove = props.existingDefects.find(
-          defect => defect.defectCategoryId === categoryId
+          (defect) => defect.defectCategoryId === categoryId,
         );
         if (defectToRemove) {
           await removeDefectMutation.mutateAsync({ id: defectToRemove.id });
@@ -90,7 +89,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
         // Add defect
         await addDefectMutation.mutateAsync({
           listingId: props.listingId,
-          defectCategoryId: categoryId
+          defectCategoryId: categoryId,
         });
       }
     }
@@ -102,77 +101,87 @@ const DefectSelector = (props: DefectSelectorProps) => {
     if (props.mode === "form") {
       const newDefect: FormDefect = {
         customName: customDefectName.trim(),
-        images: []
+        images: [],
       };
       props.onDefectsChange([...props.selectedDefects, newDefect]);
     } else {
       await addDefectMutation.mutateAsync({
         listingId: props.listingId,
-        customName: customDefectName.trim()
+        customName: customDefectName.trim(),
       });
     }
-    
+
     setCustomDefectName("");
   };
 
   const removeDefect = async (defect: FormDefect | ListingDefectDto) => {
     if (props.mode === "form") {
-      const updatedDefects = props.selectedDefects.filter(d => d !== defect);
+      const updatedDefects = props.selectedDefects.filter((d) => d !== defect);
       props.onDefectsChange(updatedDefects);
     } else {
-      await removeDefectMutation.mutateAsync({ id: (defect as ListingDefectDto).id });
+      await removeDefectMutation.mutateAsync({
+        id: (defect as ListingDefectDto).id,
+      });
     }
   };
 
   const getDefectName = (defect: FormDefect | ListingDefectDto) => {
     if (defect.customName) return defect.customName;
-    
+
     if (defect.defectCategoryId) {
       if (props.mode === "api" && "defectCategoryName" in defect) {
         return defect.defectCategoryName;
       }
-      const category = categories.find(c => c.id === defect.defectCategoryId);
+      const category = categories.find((c) => c.id === defect.defectCategoryId);
       if (category) {
         return getTranslatedName(category.translations, i18n.language);
       }
     }
-    
+
     return "Unknown defect";
   };
 
-  const handleFileSelect = async (defect: FormDefect | ListingDefectDto, files: FileList | null) => {
+  const handleFileSelect = async (
+    defect: FormDefect | ListingDefectDto,
+    files: FileList | null,
+  ) => {
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    
+
     if (props.mode === "form") {
       const formDefect = defect as FormDefect;
       if (formDefect.images.length >= 3) return;
-      
-      const updatedDefects = props.selectedDefects.map(d => 
-        d === defect ? { ...d, images: [...d.images, file] } : d
+
+      const updatedDefects = props.selectedDefects.map((d) =>
+        d === defect ? { ...d, images: [...d.images, file] } : d,
       );
       props.onDefectsChange(updatedDefects);
     } else {
       const listingDefect = defect as ListingDefectDto;
       if (listingDefect.images.length >= 3) return;
-      
+
       await addImageMutation.mutateAsync({
         listingDefectId: listingDefect.id,
-        image: file
+        image: file,
       });
     }
   };
 
-  const removeImage = async (defect: FormDefect | ListingDefectDto, imageIndex: number) => {
+  const removeImage = async (
+    defect: FormDefect | ListingDefectDto,
+    imageIndex: number,
+  ) => {
     if (props.mode === "form") {
       const formDefect = defect as FormDefect;
-      const updatedImages = formDefect.images.filter((_, index) => index !== imageIndex);
-      const updatedDefects = props.selectedDefects.map(d => 
-        d === defect ? { ...d, images: updatedImages } : d
+      const updatedImages = formDefect.images.filter(
+        (_, index) => index !== imageIndex,
+      );
+      const updatedDefects = props.selectedDefects.map((d) =>
+        d === defect ? { ...d, images: updatedImages } : d,
       );
       props.onDefectsChange(updatedDefects);
-      
+
       // Revoke object URL to prevent memory leak
       const file = formDefect.images[imageIndex];
       if (file) {
@@ -193,16 +202,20 @@ const DefectSelector = (props: DefectSelectorProps) => {
     if (props.mode === "api") {
       return (defect as ListingDefectDto).id;
     }
-    return defect.defectCategoryId || defect.customName || Math.random().toString();
+    return (
+      defect.defectCategoryId || defect.customName || Math.random().toString()
+    );
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">{t("defectSelector.title")}</h3>
-        
+        <h3 className="mb-4 text-lg font-medium">
+          {t("defectSelector.title")}
+        </h3>
+
         {/* Category grid */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="mb-4 grid grid-cols-2 gap-3">
           {categories.map((category) => (
             <div key={category.id} className="flex items-center space-x-2">
               <Checkbox
@@ -210,9 +223,9 @@ const DefectSelector = (props: DefectSelectorProps) => {
                 checked={isDefectSelected(category.id)}
                 onCheckedChange={() => toggleDefectCategory(category.id)}
               />
-              <label 
-                htmlFor={category.id} 
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              <label
+                htmlFor={category.id}
+                className="cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {getTranslatedName(category.translations, i18n.language)}
               </label>
@@ -229,7 +242,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
             onKeyDown={(e) => e.key === "Enter" && addCustomDefect()}
             className="flex-1"
           />
-          <Button 
+          <Button
             onClick={addCustomDefect}
             disabled={!customDefectName.trim()}
             variant="outline"
@@ -242,19 +255,23 @@ const DefectSelector = (props: DefectSelectorProps) => {
       {/* Selected defects section */}
       <div>
         {selectedDefects.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {t("defectSelector.noDefects")}
           </p>
         ) : (
           <div className="space-y-4">
             {selectedDefects.map((defect) => {
               const defectKey = getDefectKey(defect);
-              const images = props.mode === "form" 
-                ? (defect as FormDefect).images 
-                : (defect as ListingDefectDto).images;
-              
+              const images =
+                props.mode === "form"
+                  ? (defect as FormDefect).images
+                  : (defect as ListingDefectDto).images;
+
               return (
-                <div key={defectKey} className="border-l-4 border-amber-500 pl-3 space-y-3">
+                <div
+                  key={defectKey}
+                  className="space-y-3 border-l-4 border-amber-500 pl-3"
+                >
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium">{getDefectName(defect)}</h4>
                     <Button
@@ -266,45 +283,54 @@ const DefectSelector = (props: DefectSelectorProps) => {
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
-                  
+
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-muted-foreground">
-                        {t("defectSelector.photoCount", { count: images.length })}
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="text-muted-foreground text-sm">
+                        {t("defectSelector.photoCount", {
+                          count: images.length,
+                        })}
                       </span>
                       {images.length < 3 && (
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => fileInputRefs.current[defectKey]?.click()}
+                          onClick={() =>
+                            fileInputRefs.current[defectKey]?.click()
+                          }
                           className="h-8"
                         >
-                          <Plus className="h-4 w-4 mr-1" />
+                          <Plus className="mr-1 h-4 w-4" />
                           {t("defectSelector.addPhoto")}
                         </Button>
                       )}
                     </div>
-                    
+
                     {/* Photo previews */}
                     {images.length > 0 && (
-                      <div className="flex gap-2 flex-wrap">
+                      <div className="flex flex-wrap gap-2">
                         {images.map((image, index) => {
-                          const imageSrc = props.mode === "form" 
-                            ? URL.createObjectURL(image as File)
-                            : (image as { url: string; altText: string }).url;
-                          
+                          const imageSrc =
+                            props.mode === "form"
+                              ? URL.createObjectURL(image as File)
+                              : (image as { url: string; altText: string }).url;
+
                           return (
                             <div key={index} className="relative">
                               <img
                                 src={imageSrc}
-                                alt={props.mode === "form" ? `Defect image ${index + 1}` : (image as { altText: string }).altText}
-                                className="h-16 w-16 object-cover rounded border"
+                                alt={
+                                  props.mode === "form"
+                                    ? `Defect image ${index + 1}`
+                                    : (image as { altText: string }).altText
+                                }
+                                className="h-16 w-16 rounded border object-cover"
                               />
                               <Button
                                 variant="destructive"
                                 size="sm"
                                 onClick={() => removeImage(defect, index)}
-                                className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
                               >
                                 <X className="h-3 w-3" />
                               </Button>
@@ -313,10 +339,12 @@ const DefectSelector = (props: DefectSelectorProps) => {
                         })}
                       </div>
                     )}
-                    
+
                     {/* Hidden file input */}
                     <input
-                      ref={(el) => { fileInputRefs.current[defectKey] = el; }}
+                      ref={(el) => {
+                        fileInputRefs.current[defectKey] = el;
+                      }}
                       type="file"
                       accept="image/*"
                       onChange={(e) => handleFileSelect(defect, e.target.files)}

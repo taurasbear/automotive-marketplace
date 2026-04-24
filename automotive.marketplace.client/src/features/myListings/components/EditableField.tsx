@@ -54,7 +54,7 @@ const EditableField = ({
   if (isEditing) {
     return (
       <div className="space-y-2">
-        <label className="text-sm text-muted-foreground">{label}</label>
+        <label className="text-muted-foreground text-sm">{label}</label>
         <div className="flex items-center gap-2">
           {type === "text" && (
             <Input
@@ -95,7 +95,7 @@ const EditableField = ({
             />
           )}
           {type === "toggle" && toggleLabels && (
-            <div className="flex items-center gap-2 flex-1">
+            <div className="flex flex-1 items-center gap-2">
               <Toggle
                 pressed={Boolean(editValue)}
                 onPressedChange={setEditValue}
@@ -119,7 +119,7 @@ const EditableField = ({
   return (
     <div className="flex items-start justify-between py-2">
       <div>
-        <div className="text-sm text-muted-foreground">{label}</div>
+        <div className="text-muted-foreground text-sm">{label}</div>
         <div className="font-medium">{formatDisplayValue()}</div>
       </div>
       <Button size="sm" variant="ghost" onClick={handleEdit}>

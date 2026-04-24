@@ -3,7 +3,8 @@
     "title": "My Listings",
     "createListing": "Create Listing",
     "emptyState": "You haven't created any listings yet.",
-    "createFirst": "Create your first listing!"
+    "createFirst": "Create your first listing!",
+    "loadError": "Failed to load listings. Please try again."
   },
   "card": {
     "active": "Active",
@@ -38,5 +39,18 @@
     "new": "New",
     "left": "Left",
     "right": "Right"
+  },
+  "vehicleInfo": {
+    "title": "Vehicle Information",
+    "editableTitle": "Editable Information",
+    "make": "Make:",
+    "model": "Model:",
+    "fuel": "Fuel:",
+    "transmission": "Transmission:",
+    "bodyType": "Body Type:",
+    "drivetrain": "Drivetrain:",
+    "doors": "Doors:",
+    "powerKw": "Power (kW):",
+    "engineSizeMl": "Engine Size (ml):"
   }
 }

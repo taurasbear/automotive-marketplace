@@ -64,5 +64,12 @@
     "photoCount": "{{count}} / 3",
     "noDefects": "No defects selected",
     "customPlaceholder": "Enter defect name..."
+  },
+  "gallery": {
+    "noImagesAvailable": "No images available",
+    "noImageAvailable": "No image available",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "defectLabel": "Defect:"
   }
 }
