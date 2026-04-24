@@ -1,0 +1,42 @@
+{
+  "page": {
+    "title": "Mano skelbimai",
+    "createListing": "Sukurti skelbimą",
+    "emptyState": "Jūs dar nesukūrėte jokių skelbimų.",
+    "createFirst": "Sukurkite savo pirmą skelbimą!"
+  },
+  "card": {
+    "active": "Aktyvus",
+    "sold": "Parduotas",
+    "defects": "{{count}} defektai",
+    "edit": "Redaguoti",
+    "delete": "Ištrinti"
+  },
+  "detail": {
+    "backToMyListings": "Grįžti į mano skelbimus",
+    "deleteListing": "Ištrinti skelbimą",
+    "unsavedChanges": "{{count}} neišsaugoti pakeitimai",
+    "discard": "Atmesti",
+    "saveChanges": "Išsaugoti pakeitimus",
+    "defects": "Defektai",
+    "addDefect": "Pridėti defektą",
+    "deleteConfirmTitle": "Ištrinti skelbimą?",
+    "deleteConfirmDescription": "Šis veiksmas negali būti atšauktas. Skelbimas bus negrįžtamai ištrintas.",
+    "cancel": "Atšaukti",
+    "confirm": "Ištrinti"
+  },
+  "fields": {
+    "price": "Kaina",
+    "city": "Miestas",
+    "mileage": "Rida",
+    "description": "Aprašymas",
+    "colour": "Spalva",
+    "vin": "VIN",
+    "isUsed": "Būklė",
+    "steeringWheel": "Vairas",
+    "used": "Naudotas",
+    "new": "Naujas",
+    "left": "Kairė",
+    "right": "Dešinė"
+  }
+}

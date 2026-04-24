@@ -1,0 +1,42 @@
+{
+  "page": {
+    "title": "My Listings",
+    "createListing": "Create Listing",
+    "emptyState": "You haven't created any listings yet.",
+    "createFirst": "Create your first listing!"
+  },
+  "card": {
+    "active": "Active",
+    "sold": "Sold",
+    "defects": "{{count}} defects",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "detail": {
+    "backToMyListings": "Back to My Listings",
+    "deleteListing": "Delete Listing",
+    "unsavedChanges": "{{count}} unsaved changes",
+    "discard": "Discard",
+    "saveChanges": "Save Changes",
+    "defects": "Defects",
+    "addDefect": "Add defect",
+    "deleteConfirmTitle": "Delete listing?",
+    "deleteConfirmDescription": "This action cannot be undone. This will permanently delete your listing.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "fields": {
+    "price": "Price",
+    "city": "City",
+    "mileage": "Mileage",
+    "description": "Description",
+    "colour": "Colour",
+    "vin": "VIN",
+    "isUsed": "Condition",
+    "steeringWheel": "Steering Wheel",
+    "used": "Used",
+    "new": "New",
+    "left": "Left",
+    "right": "Right"
+  }
+}

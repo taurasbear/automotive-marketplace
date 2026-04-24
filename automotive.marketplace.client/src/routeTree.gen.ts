@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './app/routes/__root'
 import { Route as VariantsRouteImport } from './app/routes/variants'
 import { Route as SavedRouteImport } from './app/routes/saved'
 import { Route as RegisterRouteImport } from './app/routes/register'
+import { Route as MyListingsRouteImport } from './app/routes/my-listings'
 import { Route as ModelsRouteImport } from './app/routes/models'
 import { Route as MakesRouteImport } from './app/routes/makes'
 import { Route as LoginRouteImport } from './app/routes/login'
@@ -21,6 +22,7 @@ import { Route as CompareRouteImport } from './app/routes/compare'
 import { Route as AboutRouteImport } from './app/routes/about'
 import { Route as IndexRouteImport } from './app/routes/index'
 import { Route as InboxIndexRouteImport } from './app/routes/inbox/index'
+import { Route as MyListingsIdRouteImport } from './app/routes/my-listings/$id'
 import { Route as ListingCreateRouteImport } from './app/routes/listing/create'
 import { Route as ListingIdRouteImport } from './app/routes/listing/$id'
 import { Route as InboxConversationIdRouteImport } from './app/routes/inbox/$conversationId'
@@ -38,6 +40,11 @@ const SavedRoute = SavedRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyListingsRoute = MyListingsRouteImport.update({
+  id: '/my-listings',
+  path: '/my-listings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModelsRoute = ModelsRouteImport.update({
@@ -85,6 +92,11 @@ const InboxIndexRoute = InboxIndexRouteImport.update({
   path: '/',
   getParentRoute: () => InboxRoute,
 } as any)
+const MyListingsIdRoute = MyListingsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => MyListingsRoute,
+} as any)
 const ListingCreateRoute = ListingCreateRouteImport.update({
   id: '/listing/create',
   path: '/listing/create',
@@ -110,12 +122,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
+  '/my-listings': typeof MyListingsRouteWithChildren
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox/': typeof InboxIndexRoute
 }
 export interface FileRoutesByTo {
@@ -126,12 +140,14 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
+  '/my-listings': typeof MyListingsRouteWithChildren
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox': typeof InboxIndexRoute
 }
 export interface FileRoutesById {
@@ -144,12 +160,14 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
+  '/my-listings': typeof MyListingsRouteWithChildren
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox/': typeof InboxIndexRoute
 }
 export interface FileRouteTypes {
@@ -163,12 +181,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/makes'
     | '/models'
+    | '/my-listings'
     | '/register'
     | '/saved'
     | '/variants'
     | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/my-listings/$id'
     | '/inbox/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -179,12 +199,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/makes'
     | '/models'
+    | '/my-listings'
     | '/register'
     | '/saved'
     | '/variants'
     | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/my-listings/$id'
     | '/inbox'
   id:
     | '__root__'
@@ -196,12 +218,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/makes'
     | '/models'
+    | '/my-listings'
     | '/register'
     | '/saved'
     | '/variants'
     | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/my-listings/$id'
     | '/inbox/'
   fileRoutesById: FileRoutesById
 }
@@ -214,6 +238,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MakesRoute: typeof MakesRoute
   ModelsRoute: typeof ModelsRoute
+  MyListingsRoute: typeof MyListingsRouteWithChildren
   RegisterRoute: typeof RegisterRoute
   SavedRoute: typeof SavedRoute
   VariantsRoute: typeof VariantsRoute
@@ -242,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-listings': {
+      id: '/my-listings'
+      path: '/my-listings'
+      fullPath: '/my-listings'
+      preLoaderRoute: typeof MyListingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/models': {
@@ -307,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InboxIndexRouteImport
       parentRoute: typeof InboxRoute
     }
+    '/my-listings/$id': {
+      id: '/my-listings/$id'
+      path: '/$id'
+      fullPath: '/my-listings/$id'
+      preLoaderRoute: typeof MyListingsIdRouteImport
+      parentRoute: typeof MyListingsRoute
+    }
     '/listing/create': {
       id: '/listing/create'
       path: '/listing/create'
@@ -343,6 +382,18 @@ const InboxRouteChildren: InboxRouteChildren = {
 
 const InboxRouteWithChildren = InboxRoute._addFileChildren(InboxRouteChildren)
 
+interface MyListingsRouteChildren {
+  MyListingsIdRoute: typeof MyListingsIdRoute
+}
+
+const MyListingsRouteChildren: MyListingsRouteChildren = {
+  MyListingsIdRoute: MyListingsIdRoute,
+}
+
+const MyListingsRouteWithChildren = MyListingsRoute._addFileChildren(
+  MyListingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -352,6 +403,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MakesRoute: MakesRoute,
   ModelsRoute: ModelsRoute,
+  MyListingsRoute: MyListingsRouteWithChildren,
   RegisterRoute: RegisterRoute,
   SavedRoute: SavedRoute,
   VariantsRoute: VariantsRoute,
