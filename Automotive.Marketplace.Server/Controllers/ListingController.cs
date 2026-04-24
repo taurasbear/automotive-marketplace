@@ -36,12 +36,12 @@ public class ListingController(IMediator mediator) : BaseController
 
     [HttpPost]
     [Protect(Permission.CreateListings, Permission.ManageListings)]
-    public async Task<ActionResult> Create(
+    public async Task<ActionResult<CreateListingResponse>> Create(
         [FromForm] CreateListingCommand command,
         CancellationToken cancellationToken)
     {
-        await mediator.Send(command with { SellerId = UserId }, cancellationToken);
-        return Created();
+        var result = await mediator.Send(command with { SellerId = UserId }, cancellationToken);
+        return Created("", result);
     }
 
     [HttpDelete]
