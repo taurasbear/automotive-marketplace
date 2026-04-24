@@ -12,6 +12,7 @@ import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
 import ListingCardBadge from "./ListingCardBadge";
+import ImageHoverGallery from "@/components/gallery/ImageHoverGallery";
 
 interface ListingCardProps {
   listing: GetAllListingsResponse;
@@ -34,14 +35,9 @@ const ListingCard = ({ listing }: ListingCardProps) => {
   return (
     <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
       <div className="group relative flex flex-shrink-0 py-5">
-        <img
-          className="aspect-[4/3] object-cover"
-          alt={listing.thumbnail?.altText || "Listing image"}
-          src={
-            listing.thumbnail
-              ? listing.thumbnail.url
-              : "https://imgs.search.brave.com/_avFlFDyXU8SS34ve__STsLcC6LfrFsy76XnfAbI4Vo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNDU5/NDQ1ODUxL3Bob3Rv/L3RveW90YS1wcml1/cy5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9OGRDdF9lSGxP/YzhMcUxEQllYME42/N0FpZFNNd2lRT0ZT/LVhzMUxYcnBjQT0"
-          }
+        <ImageHoverGallery
+          images={listing.images}
+          className="aspect-[4/3]"
         />
         {accessToken && (
           <button

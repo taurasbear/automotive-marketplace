@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { getListingByIdOptions } from "../api/getListingByIdOptions";
 import { useDeleteListing } from "../api/useDeleteListing";
 import EditListingDialog from "./EditListingDialog";
+import ImageArrowGallery from "@/components/gallery/ImageArrowGallery";
 
 type ListingDetailsProps = {
   id: string;
@@ -61,22 +62,26 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
     await router.navigate({ to: "/" });
   };
 
+  // Build the gallery images array by combining listing images + defect images
+  const galleryImages = [
+    ...listing.images.map((img) => ({ url: img.url, altText: img.altText })),
+    ...listing.defects.flatMap((defect) =>
+      defect.images.map((img) => ({
+        url: img.url,
+        altText: img.altText,
+        defectName: defect.customName ?? defect.defectCategoryName ?? "Defect",
+      }))
+    ),
+  ];
+
   return (
     <>
       <div className="container mx-auto max-w-6xl p-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <img
-              className="aspect-video w-full rounded-lg object-cover shadow-lg"
-              alt={
-                listing.images[0]?.altText ||
-                `${listing.year} ${listing.makeName} ${listing.modelName}`
-              }
-              src={
-                listing.images.length > 0
-                  ? listing.images[0].url
-                  : "https://placehold.co/1280x720?text=Image+Not+Available"
-              }
+            <ImageArrowGallery
+              images={galleryImages}
+              className="w-full rounded-lg shadow-lg"
             />
             {listing.description && (
               <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
@@ -84,6 +89,22 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   {t("details.description")}
                 </h2>
                 <p className="text-muted-foreground">{listing.description}</p>
+              </div>
+            )}
+            {listing.defects.length > 0 && (
+              <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
+                <h2 className="mb-4 text-2xl font-semibold">{t("details.defects")}</h2>
+                <div className="flex flex-wrap gap-2">
+                  {listing.defects.map((defect) => (
+                    <span
+                      key={defect.id}
+                      className="bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded-full border border-amber-500/20 px-3 py-1 text-sm"
+                    >
+                      {defect.customName ?? defect.defectCategoryName}
+                      {defect.images.length > 0 && ` (${defect.images.length} 📷)`}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>
