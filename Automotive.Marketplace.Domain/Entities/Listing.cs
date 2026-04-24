@@ -41,4 +41,6 @@ public class Listing : BaseEntity
     public virtual ICollection<ListingDefect> Defects { get; set; } = [];
 
     public virtual ICollection<User> LikeUsers { get; set; } = [];
+    public virtual ICollection<UserListingLike> Likes { get; set; } = [];
+    public virtual ICollection<Conversation> Conversations { get; set; } = [];
 }

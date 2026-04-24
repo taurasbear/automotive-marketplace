@@ -73,6 +73,9 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
             .ForMember(dest => dest.Thumbnail, opt => opt.Ignore())
             .ForMember(dest => dest.ImageCount, opt => opt.Ignore())
-            .ForMember(dest => dest.DefectCount, opt => opt.Ignore());
+            .ForMember(dest => dest.DefectCount, opt => opt.Ignore())
+            .ForMember(dest => dest.Images, opt => opt.Ignore())
+            .ForMember(dest => dest.LikeCount, opt => opt.Ignore())
+            .ForMember(dest => dest.ConversationCount, opt => opt.Ignore());
     }
 }
