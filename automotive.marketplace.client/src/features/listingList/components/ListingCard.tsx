@@ -35,7 +35,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
   return (
     <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
       <div className="group relative flex flex-shrink-0 py-5">
-        <ImageHoverGallery images={listing.images} className="aspect-[4/3]" />
+        <ImageHoverGallery images={listing.images} className="aspect-[4/3] w-full" />
         {accessToken && (
           <button
             onClick={handleLikeClick}
@@ -53,7 +53,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           </button>
         )}
       </div>
-      <div className="flex min-w-0 flex-grow flex-col justify-between pt-4 pr-4 pb-2">
+      <div className="flex min-w-0 flex-grow flex-col justify-between gap-3 pt-4 pr-4 pb-2">
         <div className="truncate">
           <p className="truncate font-sans text-xs">
             {listing.isUsed ? t("card.used") : t("card.new")}

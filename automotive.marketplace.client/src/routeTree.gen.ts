@@ -93,9 +93,9 @@ const InboxIndexRoute = InboxIndexRouteImport.update({
   getParentRoute: () => InboxRoute,
 } as any)
 const MyListingsIdRoute = MyListingsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => MyListingsRoute,
+  id: '/my-listings/$id',
+  path: '/my-listings/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ListingCreateRoute = ListingCreateRouteImport.update({
   id: '/listing/create',
@@ -243,6 +243,7 @@ export interface RootRouteChildren {
   VariantsRoute: typeof VariantsRoute
   ListingIdRoute: typeof ListingIdRoute
   ListingCreateRoute: typeof ListingCreateRoute
+  MyListingsIdRoute: typeof MyListingsIdRoute
   MyListingsIndexRoute: typeof MyListingsIndexRoute
 }
 
@@ -341,10 +342,10 @@ declare module '@tanstack/react-router' {
     }
     '/my-listings/$id': {
       id: '/my-listings/$id'
-      path: '/$id'
+      path: '/my-listings/$id'
       fullPath: '/my-listings/$id'
       preLoaderRoute: typeof MyListingsIdRouteImport
-      parentRoute: typeof MyListingsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/listing/create': {
       id: '/listing/create'
@@ -396,6 +397,7 @@ const rootRouteChildren: RootRouteChildren = {
   VariantsRoute: VariantsRoute,
   ListingIdRoute: ListingIdRoute,
   ListingCreateRoute: ListingCreateRoute,
+  MyListingsIdRoute: MyListingsIdRoute,
   MyListingsIndexRoute: MyListingsIndexRoute,
 }
 export const routeTree = rootRouteImport

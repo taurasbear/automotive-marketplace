@@ -96,7 +96,7 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
   };
 
   return (
-    <div className="container mx-auto space-y-6 px-4 py-6">
+    <div className="container mx-auto max-w-4xl space-y-6 px-4 py-6">
       {/* Back link */}
       <Link
         to="/my-listings"
@@ -108,177 +108,170 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
 
       {/* Image gallery */}
       {galleryImages.length > 0 && (
-        <div className="aspect-video max-h-96">
-          <ImageArrowGallery images={galleryImages} />
-        </div>
+        <ImageArrowGallery images={galleryImages} className="w-full rounded-lg" />
       )}
 
-      {/* Title area */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">
-            {listing.year} {listing.makeName} {listing.modelName}
-          </h1>
-          <Badge variant={getStatusVariant(listing.status)} className="mt-2">
-            {listing.status}
-          </Badge>
-        </div>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive" size="sm">
-              <AlertTriangle className="mr-2 h-4 w-4" />
-              {t("detail.deleteListing")}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                {t("detail.deleteConfirmTitle")}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("detail.deleteConfirmDescription")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("detail.cancel")}</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleDelete}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              >
-                {t("detail.confirm")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Non-editable info */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">{t("vehicleInfo.title")}</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.make")}
-              </span>
-              <span>{listing.makeName}</span>
+      {/* Header card */}
+      <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold">
+                {listing.year} {listing.makeName} {listing.modelName}
+              </h1>
+              <Badge variant={getStatusVariant(listing.status)}>
+                {listing.status}
+              </Badge>
             </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.model")}
-              </span>
-              <span>{listing.modelName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.fuel")}
-              </span>
-              <span>{listing.fuelName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.transmission")}
-              </span>
-              <span>{listing.transmissionName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.bodyType")}
-              </span>
-              <span>{listing.bodyTypeName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.drivetrain")}
-              </span>
-              <span>{listing.drivetrainName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.doors")}
-              </span>
-              <span>{listing.doorCount}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.powerKw")}
-              </span>
-              <span>{listing.powerKw}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">
-                {t("vehicleInfo.engineSizeMl")}
-              </span>
-              <span>{listing.engineSizeMl}</span>
-            </div>
+            <p className="text-3xl font-bold mt-3">
+              {listing.price.toFixed(0)} €
+            </p>
           </div>
-        </div>
-
-        {/* Editable fields */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">
-            {t("vehicleInfo.editableTitle")}
-          </h3>
-          <div className="space-y-1 rounded-lg border p-4">
-            <EditableField
-              label={t("fields.price")}
-              value={listing.price}
-              type="number"
-              onConfirm={(value) => handleFieldChange("price", value)}
-            />
-            <EditableField
-              label={t("fields.city")}
-              value={listing.city}
-              type="text"
-              onConfirm={(value) => handleFieldChange("city", value)}
-            />
-            <EditableField
-              label={t("fields.mileage")}
-              value={listing.mileage}
-              type="number"
-              onConfirm={(value) => handleFieldChange("mileage", value)}
-            />
-            <EditableField
-              label={t("fields.description")}
-              value={listing.description || ""}
-              type="textarea"
-              onConfirm={(value) => handleFieldChange("description", value)}
-            />
-            <EditableField
-              label={t("fields.colour")}
-              value={listing.colour || ""}
-              type="text"
-              onConfirm={(value) => handleFieldChange("colour", value)}
-            />
-            <EditableField
-              label={t("fields.vin")}
-              value={listing.vin || ""}
-              type="text"
-              onConfirm={(value) => handleFieldChange("vin", value)}
-            />
-            <EditableField
-              label={t("fields.isUsed")}
-              value={listing.isUsed}
-              type="toggle"
-              toggleLabels={{ on: t("fields.used"), off: t("fields.new") }}
-              onConfirm={(value) => handleFieldChange("isUsed", value)}
-            />
-            <EditableField
-              label={t("fields.steeringWheel")}
-              value={listing.isSteeringWheelRight}
-              type="toggle"
-              toggleLabels={{ on: t("fields.right"), off: t("fields.left") }}
-              onConfirm={(value) =>
-                handleFieldChange("isSteeringWheelRight", value)
-              }
-            />
-          </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm">
+                <AlertTriangle className="mr-2 h-4 w-4" />
+                {t("detail.deleteListing")}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  {t("detail.deleteConfirmTitle")}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("detail.deleteConfirmDescription")}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("detail.cancel")}</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  {t("detail.confirm")}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 
-      {/* Defect Selector */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">{t("detail.defects")}</h3>
+      {/* Vehicle Specifications card */}
+      <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
+        <div className="p-6">
+          <h2 className="text-xl font-semibold">{t("vehicleInfo.title")}</h2>
+        </div>
+        <div className="border-t p-0">
+          <dl className="divide-y divide-border">
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.make")}</dt>
+              <dd className="text-right text-sm">{listing.makeName}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.model")}</dt>
+              <dd className="text-right text-sm">{listing.modelName}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.fuel")}</dt>
+              <dd className="text-right text-sm">{listing.fuelName}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.transmission")}</dt>
+              <dd className="text-right text-sm">{listing.transmissionName}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.bodyType")}</dt>
+              <dd className="text-right text-sm">{listing.bodyTypeName}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.drivetrain")}</dt>
+              <dd className="text-right text-sm">{listing.drivetrainName}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.doors")}</dt>
+              <dd className="text-right text-sm">{listing.doorCount}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.powerKw")}</dt>
+              <dd className="text-right text-sm">{listing.powerKw}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.engineSizeMl")}</dt>
+              <dd className="text-right text-sm">{listing.engineSizeMl}</dd>
+            </div>
+            <div className="grid grid-cols-2 px-6 py-3">
+              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.year")}</dt>
+              <dd className="text-right text-sm">{listing.year}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      {/* Editable Details card */}
+      <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
+        <h2 className="text-xl font-semibold mb-4">
+          {t("vehicleInfo.editableTitle")}
+        </h2>
+        <div className="divide-y divide-border">
+          <EditableField
+            label={t("fields.price")}
+            value={listing.price}
+            type="number"
+            onConfirm={(value) => handleFieldChange("price", value)}
+          />
+          <EditableField
+            label={t("fields.city")}
+            value={listing.city}
+            type="text"
+            onConfirm={(value) => handleFieldChange("city", value)}
+          />
+          <EditableField
+            label={t("fields.mileage")}
+            value={listing.mileage}
+            type="number"
+            onConfirm={(value) => handleFieldChange("mileage", value)}
+          />
+          <EditableField
+            label={t("fields.description")}
+            value={listing.description || ""}
+            type="textarea"
+            onConfirm={(value) => handleFieldChange("description", value)}
+          />
+          <EditableField
+            label={t("fields.colour")}
+            value={listing.colour || ""}
+            type="text"
+            onConfirm={(value) => handleFieldChange("colour", value)}
+          />
+          <EditableField
+            label={t("fields.vin")}
+            value={listing.vin || ""}
+            type="text"
+            onConfirm={(value) => handleFieldChange("vin", value)}
+          />
+          <EditableField
+            label={t("fields.isUsed")}
+            value={listing.isUsed}
+            type="toggle"
+            toggleLabels={{ on: t("fields.used"), off: t("fields.new") }}
+            onConfirm={(value) => handleFieldChange("isUsed", value)}
+          />
+          <EditableField
+            label={t("fields.steeringWheel")}
+            value={listing.isSteeringWheelRight}
+            type="toggle"
+            toggleLabels={{ on: t("fields.right"), off: t("fields.left") }}
+            onConfirm={(value) =>
+              handleFieldChange("isSteeringWheelRight", value)
+            }
+          />
+        </div>
+      </div>
+
+      {/* Defects card */}
+      <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
+        <h2 className="text-xl font-semibold mb-4">{t("detail.defects")}</h2>
         <DefectSelector
           mode="api"
           listingId={listing.id}
