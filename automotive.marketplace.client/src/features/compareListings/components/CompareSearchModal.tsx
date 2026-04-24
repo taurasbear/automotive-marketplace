@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/hooks/redux";
 import { useTranslation } from "react-i18next";
+import { formatNumber } from "@/lib/i18n/formatNumber";
 import { getSavedListingsOptions } from "@/features/savedListings/api/getSavedListingsOptions";
 import type { SavedListing } from "@/features/savedListings/types/SavedListing";
 import { useQuery } from "@tanstack/react-query";
@@ -111,7 +112,7 @@ export const CompareSearchModal = ({
                     <p className="truncate font-medium">{listing.title}</p>
                     <p className="text-muted-foreground text-sm">
                       {listing.price.toFixed(0)} € ·{" "}
-                      {listing.mileage.toLocaleString()} km · {listing.city}
+                      {formatNumber(listing.mileage)} km · {listing.city}
                     </p>
                   </div>
                   <Button size="sm" onClick={() => onSelect(listing.listingId)}>
@@ -146,7 +147,7 @@ export const CompareSearchModal = ({
                     </p>
                     <p className="text-muted-foreground text-sm">
                       {listing.price.toFixed(0)} € ·{" "}
-                      {listing.mileage.toLocaleString()} km · {listing.city}
+                      {formatNumber(listing.mileage)} km · {listing.city}
                     </p>
                     <p className="text-muted-foreground text-sm">
                       {listing.sellerName}
@@ -155,7 +156,7 @@ export const CompareSearchModal = ({
                   <div className="flex flex-col items-end gap-1">
                     {listing.isSaved && (
                       <span
-                        aria-label="Saved listing"
+                        aria-label={t("common:aria.savedListing")}
                         className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-600"
                       >
                         {t("searchModal.saved")}

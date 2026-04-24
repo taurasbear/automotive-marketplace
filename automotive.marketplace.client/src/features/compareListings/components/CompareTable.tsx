@@ -1,5 +1,6 @@
 import type { GetListingByIdResponse } from "@/features/listingDetails/types/GetListingByIdResponse";
 import { useTranslation } from "react-i18next";
+import { formatNumber } from "@/lib/i18n/formatNumber";
 import type { DiffMap } from "../types/diff";
 import { CompareRow } from "./CompareRow";
 
@@ -47,7 +48,7 @@ export const CompareTable = ({
         {
           field: "mileage",
           label: t("table.mileage"),
-          format: (v) => `${(v as number).toLocaleString()} km`,
+          format: (v) => `${formatNumber(v as number)} km`,
         },
         { field: "city", label: t("table.city") },
       ],

@@ -138,7 +138,7 @@ const DefectSelector = (props: DefectSelectorProps) => {
       }
     }
 
-    return "Unknown defect";
+    return t("defects.unknownDefect");
   };
 
   const handleFileSelect = async (

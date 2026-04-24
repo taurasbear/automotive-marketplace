@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoHeart } from "react-icons/io5";
+import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
 import { useToggleLike } from "../api/useToggleLike";
 import type { SavedListing } from "../types/SavedListing";
 import NoteEditor from "./NoteEditor";
@@ -45,8 +46,8 @@ const SavedListingRow = ({ listing }: SavedListingRowProps) => {
           <div className="min-w-0">
             <p className="truncate font-medium">{listing.title}</p>
             <p className="text-muted-foreground text-sm">
-              {listing.price.toLocaleString()} € · {listing.city} ·{" "}
-              {listing.mileage.toLocaleString()} km · {listing.fuelName} ·{" "}
+              {formatCurrency(listing.price)} € · {listing.city} ·{" "}
+              {formatNumber(listing.mileage)} km · {listing.fuelName} ·{" "}
               {listing.transmissionName}
             </p>
           </div>

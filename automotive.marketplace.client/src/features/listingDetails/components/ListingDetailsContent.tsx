@@ -5,6 +5,7 @@ import type { ConversationSummary } from "@/features/chat";
 import { CompareSearchModal } from "@/features/compareListings";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
+import { formatNumber } from "@/lib/i18n/formatNumber";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Trash, Camera } from "lucide-react";
 import { useState } from "react";
@@ -174,7 +175,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       {t("details.mileage")}
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.mileage.toLocaleString()} km
+                      {formatNumber(listing.mileage)} km
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">

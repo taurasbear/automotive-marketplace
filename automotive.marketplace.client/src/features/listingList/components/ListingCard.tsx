@@ -4,6 +4,7 @@ import { selectAccessToken } from "@/features/auth";
 import { useToggleLike } from "@/features/savedListings/api/useToggleLike";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
+import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineLocalGasStation } from "react-icons/md";
 import { PiEngine } from "react-icons/pi";
@@ -59,9 +60,9 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             {listing.isUsed ? t("card.used") : t("card.new")}
           </p>
           <p className="font-sans text-xl">{`${listing.year} ${listing.makeName} ${listing.modelName}`}</p>
-          <p className="font-sans text-xs">{listing.mileage} km</p>
+          <p className="font-sans text-xs">{formatNumber(listing.mileage)} km</p>
           <p className="font-sans text-3xl font-bold">
-            {listing.price.toFixed(0)} €
+            {formatCurrency(listing.price)} €
           </p>
         </div>
         <div className="justify-items-stretched grid grid-cols-2 gap-x-0 gap-y-4">

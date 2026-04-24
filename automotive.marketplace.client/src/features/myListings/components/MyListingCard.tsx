@@ -3,6 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Pencil, Trash2, Camera } from "lucide-react";
 
+import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,18 +46,6 @@ export default function MyListingCard({ listing }: MyListingCardProps) {
     );
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
-
-  const formatMileage = (mileage: number) => {
-    return new Intl.NumberFormat("en-US").format(mileage);
-  };
-
   return (
     <Card className={`p-4 transition-opacity ${isSold ? "opacity-60" : ""}`}>
       <div className="flex gap-4">
@@ -91,8 +81,8 @@ export default function MyListingCard({ listing }: MyListingCardProps) {
 
             {/* Details */}
             <p className="mb-2 text-sm text-gray-600">
-              {listing.city} · {formatMileage(listing.mileage)} km ·{" "}
-              {formatPrice(listing.price)}
+              {listing.city} · {formatNumber(listing.mileage)} km ·{" "}
+              {formatCurrency(listing.price)} €
             </p>
 
             {/* Specs */}

@@ -42,7 +42,7 @@ const UsedSelect = ({
     >
       <SelectTrigger
         className={cn("w-full", className)}
-        aria-label="Used, new or both"
+        aria-label={t("aria.conditionFilter")}
       >
         <div className="grid grid-cols-1 justify-items-start">
           <span className="text-muted-foreground text-xs">

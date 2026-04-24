@@ -71,5 +71,13 @@
     "previousImage": "Previous image",
     "nextImage": "Next image",
     "defectLabel": "Defect:"
+  },
+  "aria": {
+    "location": "Location",
+    "conditionFilter": "Used, new or both",
+    "savedListing": "Saved listing"
+  },
+  "defects": {
+    "unknownDefect": "Unknown defect"
   }
 }

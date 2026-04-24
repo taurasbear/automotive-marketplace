@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Toggle } from "@/components/ui/toggle";
+import { formatNumber } from "@/lib/i18n/formatNumber";
 import { Check, Pencil, X } from "lucide-react";
 import { useState } from "react";
 
@@ -46,7 +47,7 @@ const EditableField = ({
       return value ? toggleLabels.on : toggleLabels.off;
     }
     if (type === "number" && typeof value === "number") {
-      return value.toLocaleString();
+      return formatNumber(value);
     }
     return String(value);
   };
