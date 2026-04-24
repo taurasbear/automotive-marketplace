@@ -38,5 +38,7 @@ public class Listing : BaseEntity
 
     public virtual ICollection<Image> Images { get; set; } = [];
 
+    public virtual ICollection<ListingDefect> Defects { get; set; } = [];
+
     public virtual ICollection<User> LikeUsers { get; set; } = [];
 }
