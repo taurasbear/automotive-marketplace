@@ -95,6 +95,11 @@ export default function MyListingCard({ listing }: MyListingCardProps) {
               {formatPrice(listing.price)}
             </p>
 
+            {/* Specs */}
+            <p className="mb-2 text-sm text-gray-500">
+              {listing.engineSizeMl / 1000}l · {listing.powerKw} kW · {listing.fuelName} · {listing.transmissionName}
+            </p>
+
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
               <Badge

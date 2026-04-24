@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './app/routes/__root'
 import { Route as VariantsRouteImport } from './app/routes/variants'
 import { Route as SavedRouteImport } from './app/routes/saved'
 import { Route as RegisterRouteImport } from './app/routes/register'
-import { Route as MyListingsRouteImport } from './app/routes/my-listings'
 import { Route as ModelsRouteImport } from './app/routes/models'
 import { Route as MakesRouteImport } from './app/routes/makes'
 import { Route as LoginRouteImport } from './app/routes/login'
@@ -21,6 +20,7 @@ import { Route as InboxRouteImport } from './app/routes/inbox'
 import { Route as CompareRouteImport } from './app/routes/compare'
 import { Route as AboutRouteImport } from './app/routes/about'
 import { Route as IndexRouteImport } from './app/routes/index'
+import { Route as MyListingsIndexRouteImport } from './app/routes/my-listings/index'
 import { Route as InboxIndexRouteImport } from './app/routes/inbox/index'
 import { Route as MyListingsIdRouteImport } from './app/routes/my-listings/$id'
 import { Route as ListingCreateRouteImport } from './app/routes/listing/create'
@@ -40,11 +40,6 @@ const SavedRoute = SavedRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyListingsRoute = MyListingsRouteImport.update({
-  id: '/my-listings',
-  path: '/my-listings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModelsRoute = ModelsRouteImport.update({
@@ -87,6 +82,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MyListingsIndexRoute = MyListingsIndexRouteImport.update({
+  id: '/my-listings/',
+  path: '/my-listings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InboxIndexRoute = InboxIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -122,7 +122,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
-  '/my-listings': typeof MyListingsRouteWithChildren
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
@@ -131,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/listing/create': typeof ListingCreateRoute
   '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox/': typeof InboxIndexRoute
+  '/my-listings/': typeof MyListingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,7 +140,6 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
-  '/my-listings': typeof MyListingsRouteWithChildren
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
@@ -149,6 +148,7 @@ export interface FileRoutesByTo {
   '/listing/create': typeof ListingCreateRoute
   '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox': typeof InboxIndexRoute
+  '/my-listings': typeof MyListingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,7 +160,6 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/makes': typeof MakesRoute
   '/models': typeof ModelsRoute
-  '/my-listings': typeof MyListingsRouteWithChildren
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
   '/variants': typeof VariantsRoute
@@ -169,6 +168,7 @@ export interface FileRoutesById {
   '/listing/create': typeof ListingCreateRoute
   '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox/': typeof InboxIndexRoute
+  '/my-listings/': typeof MyListingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,7 +181,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/makes'
     | '/models'
-    | '/my-listings'
     | '/register'
     | '/saved'
     | '/variants'
@@ -190,6 +189,7 @@ export interface FileRouteTypes {
     | '/listing/create'
     | '/my-listings/$id'
     | '/inbox/'
+    | '/my-listings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,7 +199,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/makes'
     | '/models'
-    | '/my-listings'
     | '/register'
     | '/saved'
     | '/variants'
@@ -208,6 +207,7 @@ export interface FileRouteTypes {
     | '/listing/create'
     | '/my-listings/$id'
     | '/inbox'
+    | '/my-listings'
   id:
     | '__root__'
     | '/'
@@ -218,7 +218,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/makes'
     | '/models'
-    | '/my-listings'
     | '/register'
     | '/saved'
     | '/variants'
@@ -227,6 +226,7 @@ export interface FileRouteTypes {
     | '/listing/create'
     | '/my-listings/$id'
     | '/inbox/'
+    | '/my-listings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -238,12 +238,12 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MakesRoute: typeof MakesRoute
   ModelsRoute: typeof ModelsRoute
-  MyListingsRoute: typeof MyListingsRouteWithChildren
   RegisterRoute: typeof RegisterRoute
   SavedRoute: typeof SavedRoute
   VariantsRoute: typeof VariantsRoute
   ListingIdRoute: typeof ListingIdRoute
   ListingCreateRoute: typeof ListingCreateRoute
+  MyListingsIndexRoute: typeof MyListingsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -267,13 +267,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/my-listings': {
-      id: '/my-listings'
-      path: '/my-listings'
-      fullPath: '/my-listings'
-      preLoaderRoute: typeof MyListingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/models': {
@@ -332,6 +325,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/my-listings/': {
+      id: '/my-listings/'
+      path: '/my-listings'
+      fullPath: '/my-listings/'
+      preLoaderRoute: typeof MyListingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inbox/': {
       id: '/inbox/'
       path: '/'
@@ -382,18 +382,6 @@ const InboxRouteChildren: InboxRouteChildren = {
 
 const InboxRouteWithChildren = InboxRoute._addFileChildren(InboxRouteChildren)
 
-interface MyListingsRouteChildren {
-  MyListingsIdRoute: typeof MyListingsIdRoute
-}
-
-const MyListingsRouteChildren: MyListingsRouteChildren = {
-  MyListingsIdRoute: MyListingsIdRoute,
-}
-
-const MyListingsRouteWithChildren = MyListingsRoute._addFileChildren(
-  MyListingsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -403,12 +391,12 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MakesRoute: MakesRoute,
   ModelsRoute: ModelsRoute,
-  MyListingsRoute: MyListingsRouteWithChildren,
   RegisterRoute: RegisterRoute,
   SavedRoute: SavedRoute,
   VariantsRoute: VariantsRoute,
   ListingIdRoute: ListingIdRoute,
   ListingCreateRoute: ListingCreateRoute,
+  MyListingsIndexRoute: MyListingsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

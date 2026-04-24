@@ -16,4 +16,8 @@ export type GetMyListingsResponse = {
   thumbnail: Thumbnail | null;
   imageCount: number;
   defectCount: number;
+  fuelName: string;
+  transmissionName: string;
+  engineSizeMl: number;
+  powerKw: number;
 };

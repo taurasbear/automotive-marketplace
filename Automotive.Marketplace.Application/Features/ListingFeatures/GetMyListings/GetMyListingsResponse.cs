@@ -16,4 +16,8 @@ public sealed record GetMyListingsResponse
     public ImageDto? Thumbnail { get; set; }
     public int ImageCount { get; set; }
     public int DefectCount { get; set; }
+    public string FuelName { get; set; } = string.Empty;
+    public string TransmissionName { get; set; } = string.Empty;
+    public int EngineSizeMl { get; set; }
+    public int PowerKw { get; set; }
 }

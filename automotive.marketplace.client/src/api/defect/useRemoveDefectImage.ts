@@ -13,6 +13,6 @@ export const useRemoveDefectImage = () =>
     meta: {
       successMessage: "Photo removed!",
       errorMessage: "Failed to remove photo",
-      invalidatesQuery: [...listingKeys.all(), ...myListingKeys.all()],
+      invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

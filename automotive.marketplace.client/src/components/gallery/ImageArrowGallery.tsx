@@ -71,7 +71,7 @@ export default function ImageArrowGallery({
       {/* Main image container */}
       <div className="relative">
         <img
-          className="aspect-video w-full rounded-lg object-cover"
+          className="aspect-video w-full rounded-t-lg object-cover"
           alt={currentImage.altText}
           src={currentImage.url}
         />
@@ -111,7 +111,7 @@ export default function ImageArrowGallery({
 
       {/* Thumbnail strip */}
       {images.length > 1 && (
-        <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+        <div className="mt-2 flex gap-2 overflow-x-auto pb-2 rounded-b-lg">
           {images.map((image, index) => {
             const isDefectImage = !!image.defectName;
             const isActive = index === activeIndex;

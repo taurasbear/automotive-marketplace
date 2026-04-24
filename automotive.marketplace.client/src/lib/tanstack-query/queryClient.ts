@@ -24,8 +24,16 @@ const queryClient = new QueryClient({
     },
     onSettled: async (_data, _error, _variables, _context, mutation) => {
       const queryToInvalidate = mutation.meta?.invalidatesQuery;
-      if (queryToInvalidate) {
-        await queryClient.invalidateQueries({ queryKey: queryToInvalidate });
+      if (queryToInvalidate && queryToInvalidate.length > 0) {
+        if (Array.isArray(queryToInvalidate[0])) {
+          // Multiple query keys to invalidate
+          for (const key of queryToInvalidate) {
+            await queryClient.invalidateQueries({ queryKey: key as readonly unknown[] });
+          }
+        } else {
+          // Single query key
+          await queryClient.invalidateQueries({ queryKey: queryToInvalidate });
+        }
       }
     },
   }),

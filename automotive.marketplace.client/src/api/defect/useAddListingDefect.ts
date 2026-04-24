@@ -19,6 +19,6 @@ export const useAddListingDefect = () =>
     meta: {
       successMessage: "Defect added!",
       errorMessage: "Failed to add defect",
-      invalidatesQuery: [...listingKeys.all(), ...myListingKeys.all()],
+      invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

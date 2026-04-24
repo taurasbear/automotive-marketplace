@@ -6,7 +6,7 @@ import { CompareSearchModal } from "@/features/compareListings";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Trash } from "lucide-react";
+import { Trash, Camera } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getListingByIdOptions } from "../api/getListingByIdOptions";
@@ -103,8 +103,11 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-sm text-amber-700 dark:text-amber-400"
                     >
                       {defect.customName ?? defect.defectCategoryName}
-                      {defect.images.length > 0 &&
-                        ` (${defect.images.length} 📷)`}
+                      {defect.images.length > 0 && (
+                        <span className="ml-1 inline-flex items-center gap-0.5">
+                          ({defect.images.length} <Camera className="inline h-3.5 w-3.5" />)
+                        </span>
+                      )}
                     </span>
                   ))}
                 </div>

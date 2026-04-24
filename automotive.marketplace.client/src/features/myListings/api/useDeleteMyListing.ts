@@ -13,6 +13,6 @@ export const useDeleteMyListing = () =>
     meta: {
       successMessage: "Listing deleted successfully!",
       errorMessage: "Failed to delete listing",
-      invalidatesQuery: [...myListingKeys.all(), ...listingKeys.all()],
+      invalidatesQuery: [myListingKeys.all(), listingKeys.all()],
     },
   });

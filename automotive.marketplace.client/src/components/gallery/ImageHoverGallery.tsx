@@ -41,12 +41,12 @@ export default function ImageHoverGallery({
 
   return (
     <div
-      className={`group relative overflow-hidden ${className}`}
+      className={`group relative overflow-hidden bg-muted ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <img
-        className="h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
         alt={displayImages[activeIndex].altText}
         src={displayImages[activeIndex].url}
       />

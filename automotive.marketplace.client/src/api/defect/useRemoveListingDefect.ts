@@ -13,6 +13,6 @@ export const useRemoveListingDefect = () =>
     meta: {
       successMessage: "Defect removed!",
       errorMessage: "Failed to remove defect",
-      invalidatesQuery: [...listingKeys.all(), ...myListingKeys.all()],
+      invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });

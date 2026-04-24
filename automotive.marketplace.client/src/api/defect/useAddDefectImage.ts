@@ -24,6 +24,6 @@ export const useAddDefectImage = () =>
     meta: {
       successMessage: "Photo added!",
       errorMessage: "Failed to upload photo",
-      invalidatesQuery: [...listingKeys.all(), ...myListingKeys.all()],
+      invalidatesQuery: [listingKeys.all(), myListingKeys.all()],
     },
   });
