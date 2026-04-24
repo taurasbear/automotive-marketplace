@@ -8,4 +8,6 @@ public interface IImageStorageService
     public Task<ImageUploadResult> UploadImageAsync(IFormFile file, string fileName);
 
     public Task<string> GetPresignedUrlAsync(string fileName);
+
+    public Task DeleteImageAsync(string objectKey);
 }
