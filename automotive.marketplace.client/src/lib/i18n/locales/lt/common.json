@@ -31,7 +31,13 @@
     "location": "Vietovė",
     "searchLocation": "Ieškoti vietovės",
     "noLocationFound": "Vietovė nerasta.",
-    "usedNew": "Naudotas/Naujas"
+    "usedNew": "Naudotas/Naujas",
+    "allMakes": "Visos markės",
+    "allModels": "Visi modeliai",
+    "anyLocation": "Bet kur",
+    "conditionNew": "Naujas",
+    "conditionUsed": "Naudotas",
+    "conditionUsedAndNew": "Naudoti ir nauji"
   },
   "actions": {
     "cancel": "Atšaukti",

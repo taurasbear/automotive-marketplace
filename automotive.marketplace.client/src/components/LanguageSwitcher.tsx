@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 const languages = [
-  { code: "lt", label: "LT", flag: "🇱🇹" },
-  { code: "en", label: "EN", flag: "🇬🇧" },
+  { code: "lt", label: "LT" },
+  { code: "en", label: "EN" },
 ] as const;
 
 const LanguageSwitcher = () => {
@@ -22,7 +22,6 @@ const LanguageSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-1">
-          <span>{current.flag}</span>
           <span>{current.label}</span>
         </Button>
       </DropdownMenuTrigger>
@@ -32,7 +31,6 @@ const LanguageSwitcher = () => {
             key={lang.code}
             onClick={() => i18n.changeLanguage(lang.code)}
           >
-            <span className="mr-2">{lang.flag}</span>
             {lang.label}
           </DropdownMenuItem>
         ))}

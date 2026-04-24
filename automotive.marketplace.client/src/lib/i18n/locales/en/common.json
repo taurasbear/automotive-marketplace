@@ -31,7 +31,13 @@
     "location": "Location",
     "searchLocation": "Search location",
     "noLocationFound": "No location found.",
-    "usedNew": "Used/New"
+    "usedNew": "Used/New",
+    "allMakes": "All makes",
+    "allModels": "All models",
+    "anyLocation": "Any location",
+    "conditionNew": "New",
+    "conditionUsed": "Used",
+    "conditionUsedAndNew": "Used & New"
   },
   "actions": {
     "cancel": "Cancel",

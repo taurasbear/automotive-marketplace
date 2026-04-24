@@ -50,7 +50,7 @@ const ModelSelect = ({
           <SelectLabel>{t("select.models")}</SelectLabel>
           {!isAllModelsEnabled || (
             <SelectItem value={UI_CONSTANTS.SELECT.ALL_MODELS.VALUE}>
-              {UI_CONSTANTS.SELECT.ALL_MODELS.LABEL}
+              {t("select.allModels")}
             </SelectItem>
           )}
           {models.map((model) => (

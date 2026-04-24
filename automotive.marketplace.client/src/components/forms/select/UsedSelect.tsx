@@ -27,6 +27,13 @@ const UsedSelect = ({
   className,
 }: UsedSelectProps) => {
   const { t } = useTranslation("common");
+
+  const conditionKeys: Record<string, string> = {
+    new: "select.conditionNew",
+    used: "select.conditionUsed",
+    newUsed: "select.conditionUsedAndNew",
+  };
+
   return (
     <Select
       value={value}
@@ -45,9 +52,9 @@ const UsedSelect = ({
         </div>
       </SelectTrigger>
       <SelectContent>
-        {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (
+        {CAR_CONDITION_OPTIONS.map(([conditionKey]) => (
           <SelectItem key={conditionKey} value={conditionKey}>
-            {conditionName}
+            {t(conditionKeys[conditionKey])}
           </SelectItem>
         ))}
       </SelectContent>

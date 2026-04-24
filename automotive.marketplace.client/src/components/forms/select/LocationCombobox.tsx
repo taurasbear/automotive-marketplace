@@ -56,7 +56,7 @@ const LocationCombobox = ({
               </span>
               {value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE ? (
                 <span className="truncate text-sm">
-                  {UI_CONSTANTS.SELECT.ANY_LOCATION.LABEL}
+                  {t("select.anyLocation")}
                 </span>
               ) : (
                 locations.find((location) => location.value === value)?.label

@@ -44,7 +44,7 @@ const MakeSelect = ({
           <SelectLabel>{t("select.makes")}</SelectLabel>
           {!isAllMakesEnabled || (
             <SelectItem value={UI_CONSTANTS.SELECT.ALL_MAKES.VALUE}>
-              {UI_CONSTANTS.SELECT.ALL_MAKES.LABEL}
+              {t("select.allMakes")}
             </SelectItem>
           )}
           {makes.map((make) => (
