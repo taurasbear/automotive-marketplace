@@ -23,4 +23,7 @@ public sealed record GetAllListingsResponse
     public int EngineSizeMl { get; set; }
     public ImageDto? Thumbnail { get; set; }
     public bool IsLiked { get; set; }
+    public IEnumerable<ImageDto> Images { get; set; } = [];
+    public int ImageCount { get; set; }
+    public int DefectCount { get; set; }
 }

@@ -1,3 +1,5 @@
+using Automotive.Marketplace.Application.Models;
+
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListingById;
 
 public sealed record GetListingByIdResponse
@@ -25,5 +27,6 @@ public sealed record GetListingByIdResponse
     public string? Colour { get; set; }
     public string? Vin { get; set; }
     public bool IsSteeringWheelRight { get; set; }
-    public IEnumerable<Automotive.Marketplace.Application.Models.ImageDto> Images { get; set; } = [];
+    public IEnumerable<ImageDto> Images { get; set; } = [];
+    public IEnumerable<ListingDefectDto> Defects { get; set; } = [];
 }

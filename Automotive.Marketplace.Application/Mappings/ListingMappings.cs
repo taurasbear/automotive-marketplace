@@ -2,6 +2,7 @@ using AutoMapper;
 using Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingById;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetMyListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
 using Automotive.Marketplace.Domain.Entities;
 
@@ -26,7 +27,10 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? string.Empty))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
             .ForMember(dest => dest.Thumbnail, opt => opt.Ignore())
-            .ForMember(dest => dest.IsLiked, opt => opt.Ignore());
+            .ForMember(dest => dest.IsLiked, opt => opt.Ignore())
+            .ForMember(dest => dest.Images, opt => opt.Ignore())
+            .ForMember(dest => dest.ImageCount, opt => opt.Ignore())
+            .ForMember(dest => dest.DefectCount, opt => opt.Ignore());
 
         CreateMap<UpdateListingCommand, Listing>()
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
@@ -56,6 +60,15 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.IsSteeringWheelRight, opt => opt.MapFrom(src => src.IsSteeringWheelRight))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? string.Empty))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForMember(dest => dest.Images, opt => opt.Ignore());
+            .ForMember(dest => dest.Images, opt => opt.Ignore())
+            .ForMember(dest => dest.Defects, opt => opt.Ignore());
+
+        CreateMap<Listing, GetMyListingsResponse>()
+            .ForMember(dest => dest.MakeName, opt => opt.MapFrom((src, _) => src.Variant != null ? src.Variant.Model?.Make?.Name ?? string.Empty : string.Empty))
+            .ForMember(dest => dest.ModelName, opt => opt.MapFrom((src, _) => src.Variant != null ? src.Variant.Model?.Name ?? string.Empty : string.Empty))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.Thumbnail, opt => opt.Ignore())
+            .ForMember(dest => dest.ImageCount, opt => opt.Ignore())
+            .ForMember(dest => dest.DefectCount, opt => opt.Ignore());
     }
 }
