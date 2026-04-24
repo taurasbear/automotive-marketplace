@@ -14,6 +14,9 @@ export type GetAllListingsResponse = {
   description: string;
   thumbnail: Thumbnail | null;
   isLiked: boolean;
+  images: { url: string; altText: string }[];
+  imageCount: number;
+  defectCount: number;
 };
 
 type Thumbnail = {

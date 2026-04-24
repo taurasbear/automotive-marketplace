@@ -2,6 +2,7 @@ export const ENDPOINTS = {
   LISTING: {
     GET_BY_ID: "/Listing/GetById",
     GET_ALL: "/Listing/GetAll",
+    GET_MY: "/Listing/GetMy",
     CREATE: "/Listing/Create",
     DELETE: "/Listing/Delete",
     UPDATE: "/Listing/Update",
@@ -72,5 +73,12 @@ export const ENDPOINTS = {
     GET_ALL: "/SavedListing/GetAll",
     UPSERT_NOTE: "/SavedListing/UpsertNote",
     DELETE_NOTE: "/SavedListing/DeleteNote",
+  },
+  DEFECT: {
+    GET_CATEGORIES: "/Defect/GetCategories",
+    ADD: "/Defect/Add",
+    REMOVE: "/Defect/Remove",
+    ADD_IMAGE: "/Defect/AddImage",
+    REMOVE_IMAGE: "/Defect/RemoveImage",
   },
 } as const;

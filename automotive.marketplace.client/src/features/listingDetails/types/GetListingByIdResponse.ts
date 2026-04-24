@@ -22,6 +22,15 @@ export type GetListingByIdResponse = {
   sellerId: string;
   status: string;
   images: Image[];
+  defects: ListingDefectDto[];
+};
+
+export type ListingDefectDto = {
+  id: string;
+  defectCategoryId?: string;
+  defectCategoryName?: string;
+  customName?: string;
+  images: { url: string; altText: string }[];
 };
 
 type Image = {

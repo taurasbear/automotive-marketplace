@@ -24,6 +24,7 @@ const listingA: GetListingByIdResponse = {
   sellerId: "s1",
   status: "Available",
   images: [],
+  defects: [],
 };
 
 const listingB: GetListingByIdResponse = {

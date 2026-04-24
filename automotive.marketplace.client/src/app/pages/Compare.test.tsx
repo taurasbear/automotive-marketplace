@@ -59,6 +59,7 @@ const mockComparison: GetListingComparisonResponse = {
     sellerId: "s1",
     status: "Available",
     images: [],
+    defects: [],
   },
   listingB: {
     id: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
@@ -81,6 +82,7 @@ const mockComparison: GetListingComparisonResponse = {
     sellerId: "s2",
     status: "Available",
     images: [],
+    defects: [],
   },
 };
 

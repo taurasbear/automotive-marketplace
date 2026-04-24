@@ -23,6 +23,7 @@ const base: GetListingByIdResponse = {
   sellerId: "s1",
   status: "Available",
   images: [],
+  defects: [],
 };
 
 describe("computeDiff", () => {
