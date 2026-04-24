@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Unlock } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useCreateListing } from "../api/useCreateListing";
 import { CreateListingSchema } from "../schemas/createListingSchema";
 import { CreateListingFormData } from "../types/CreateListingFormData";
@@ -34,6 +35,7 @@ type CreateListingFormProps = {
 };
 
 const CreateListingForm = ({ className }: CreateListingFormProps) => {
+  const { t } = useTranslation("listings");
   const [isModified, setIsModified] = useState(false);
 
   const form = useForm({
@@ -122,7 +124,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Car make*</FormLabel>
+                <FormLabel>{t("form.carMake")}</FormLabel>
                 <FormControl>
                   <MakeSelect
                     isAllMakesEnabled={false}
@@ -145,7 +147,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Car model*</FormLabel>
+                <FormLabel>{t("form.carModel")}</FormLabel>
                 <FormControl>
                   <ModelSelect
                     isAllModelsEnabled={false}
@@ -169,7 +171,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Year*</FormLabel>
+                <FormLabel>{t("form.year")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={VALIDATION.YEAR.MIN} {...field} />
                 </FormControl>
@@ -197,8 +199,8 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               )}
               <span className="text-sm font-medium">
                 {specLocked
-                  ? "Specifications (locked from variant)"
-                  : "Specifications"}
+                  ? t("form.specificationsLockedFromVariant")
+                  : t("form.specifications")}
               </span>
               {!!variantId && (
                 <label className="ml-auto flex cursor-pointer items-center gap-2 text-sm">
@@ -208,7 +210,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                       handleIsModifiedChange(checked === true)
                     }
                   />
-                  Car is modified
+                  {t("form.carIsModified")}
                 </label>
               )}
             </div>
@@ -218,7 +220,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-start">
-                    <FormLabel>Fuel type*</FormLabel>
+                    <FormLabel>{t("form.fuelType")}</FormLabel>
                     <FormControl>
                       <FuelSelect
                         disabled={specLocked}
@@ -235,7 +237,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-start">
-                    <FormLabel>Transmission*</FormLabel>
+                    <FormLabel>{t("form.transmission")}</FormLabel>
                     <FormControl>
                       <TransmissionToggleGroup
                         type="single"
@@ -253,7 +255,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-start">
-                    <FormLabel>Body type*</FormLabel>
+                    <FormLabel>{t("form.bodyType")}</FormLabel>
                     <FormControl>
                       <BodyTypeSelect
                         disabled={specLocked}
@@ -270,7 +272,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-start">
-                    <FormLabel>Engine power (kW)*</FormLabel>
+                    <FormLabel>{t("form.enginePowerKw")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -288,7 +290,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-start">
-                    <FormLabel>Engine size (ml)*</FormLabel>
+                    <FormLabel>{t("form.engineSizeMl")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -306,7 +308,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-start">
-                    <FormLabel>Door count*</FormLabel>
+                    <FormLabel>{t("form.doorCount")}</FormLabel>
                     <FormControl>
                       <Input type="number" disabled={specLocked} {...field} />
                     </FormControl>
@@ -323,9 +325,13 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Colour</FormLabel>
+                <FormLabel>{t("form.colour")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Crimson" type="text" {...field} />
+                  <Input
+                    placeholder={t("form.colourPlaceholder")}
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -336,10 +342,10 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>VIN</FormLabel>
+                <FormLabel>{t("form.vinLabel")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="1G1JC524417418958"
+                    placeholder={t("form.vinPlaceholder")}
                     type="text"
                     {...field}
                   />
@@ -353,7 +359,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Drivetrain*</FormLabel>
+                <FormLabel>{t("form.drivetrain")}</FormLabel>
                 <FormControl>
                   <DrivetrainToggleGroup
                     type="single"
@@ -371,7 +377,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Car price (€)*</FormLabel>
+                <FormLabel>{t("form.carPrice")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -384,7 +390,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Mileage (km)*</FormLabel>
+                <FormLabel>{t("form.mileage")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -397,9 +403,13 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>City*</FormLabel>
+                <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Kaunas" type="text" {...field} />
+                  <Input
+                    placeholder={t("form.cityPlaceholder")}
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -412,7 +422,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-1 flex flex-col justify-start md:col-span-2">
-                <FormLabel>Description</FormLabel>
+                <FormLabel>{t("form.descriptionLabel")}</FormLabel>
                 <FormControl>
                   <Textarea className="max-h-96" {...field} />
                 </FormControl>
@@ -425,7 +435,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
-                <FormLabel>Vehicle images*</FormLabel>
+                <FormLabel>{t("form.vehicleImages")}</FormLabel>
                 <FormControl>
                   <ImageUploadInput field={field} />
                 </FormControl>
@@ -448,7 +458,9 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                     className="h-5 w-5"
                   />
                 </FormControl>
-                <FormLabel className="mt-0">Steering wheel on right</FormLabel>
+                <FormLabel className="mt-0">
+                  {t("form.steeringWheelRight")}
+                </FormLabel>
                 <FormMessage />
               </FormItem>
             )}
@@ -465,12 +477,12 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                     className="h-5 w-5"
                   />
                 </FormControl>
-                <FormLabel className="mt-0">Used car</FormLabel>
+                <FormLabel className="mt-0">{t("form.usedCar")}</FormLabel>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{t("form.submit")}</Button>
         </form>
       </Form>
     </div>

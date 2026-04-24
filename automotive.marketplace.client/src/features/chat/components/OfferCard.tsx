@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { BadgeCheck, BadgeX, Clock, HandCoins, Undo2 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Offer } from "../types/Offer";
 import MakeOfferModal from "./MakeOfferModal";
 
@@ -17,10 +18,10 @@ const statusConfig = {
   Pending: {
     headerClass: "bg-slate-900",
     borderClass: "border-border",
-    label: "Offer",
+    labelKey: "offerCard.offer",
     icon: HandCoins,
     labelClass: "text-slate-200",
-    subLabel: "Pending response",
+    subLabelKey: "offerCard.statusLabels.pending",
     subLabelClass: "text-slate-400",
     priceClass: "text-foreground",
     badgeClass: "bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400",
@@ -28,10 +29,10 @@ const statusConfig = {
   Accepted: {
     headerClass: "bg-green-900",
     borderClass: "border-green-300 dark:border-green-800",
-    label: "Offer Accepted",
+    labelKey: "offerCard.statusLabels.accepted",
     icon: BadgeCheck,
     labelClass: "text-green-200",
-    subLabel: "Listing is now on hold",
+    subLabelKey: "offerCard.subtitles.listingOnHold",
     subLabelClass: "text-green-400",
     priceClass: "text-green-600 dark:text-green-400",
     badgeClass:
@@ -40,10 +41,10 @@ const statusConfig = {
   Declined: {
     headerClass: "bg-red-900",
     borderClass: "border-red-300 dark:border-red-800",
-    label: "Offer Declined",
+    labelKey: "offerCard.statusLabels.declined",
     icon: BadgeX,
     labelClass: "text-red-200",
-    subLabel: "No deal reached",
+    subLabelKey: "offerCard.subtitles.noDealReached",
     subLabelClass: "text-red-400",
     priceClass: "text-muted-foreground line-through",
     badgeClass: "bg-muted text-muted-foreground",
@@ -51,10 +52,10 @@ const statusConfig = {
   Countered: {
     headerClass: "bg-violet-900",
     borderClass: "border-violet-300 dark:border-violet-800",
-    label: "Counter-Offer",
+    labelKey: "offerCard.counterOffer",
     icon: Undo2,
     labelClass: "text-violet-200",
-    subLabel: "Awaiting response",
+    subLabelKey: "offerCard.subtitles.awaitingResponse",
     subLabelClass: "text-violet-400",
     priceClass: "text-foreground",
     badgeClass:
@@ -63,10 +64,10 @@ const statusConfig = {
   Expired: {
     headerClass: "bg-muted-foreground/60",
     borderClass: "border-border",
-    label: "Offer Expired",
+    labelKey: "offerCard.statusLabels.expired",
     icon: Clock,
     labelClass: "text-muted",
-    subLabel: "No response within 48 hours",
+    subLabelKey: "offerCard.subtitles.noResponseWithin48h",
     subLabelClass: "text-muted-foreground",
     priceClass: "text-muted-foreground line-through",
     badgeClass: "bg-muted text-muted-foreground",
@@ -82,6 +83,7 @@ const OfferCard = ({
   onCounter,
 }: OfferCardProps) => {
   const [counterModalOpen, setCounterModalOpen] = useState(false);
+  const { t } = useTranslation("chat");
   const config = statusConfig[offer.status];
   const Icon = config.icon;
 
@@ -101,11 +103,11 @@ const OfferCard = ({
             <span
               className={`text-xs font-semibold tracking-wider uppercase ${config.labelClass}`}
             >
-              {config.label}
+              {t(config.labelKey)}
             </span>
           </div>
           <span className={`text-xs ${config.subLabelClass}`}>
-            {config.subLabel}
+            {t(config.subLabelKey)}
           </span>
         </div>
 
@@ -133,7 +135,7 @@ const OfferCard = ({
                 className="h-7 flex-1 text-xs"
                 onClick={() => onAccept(offer.id)}
               >
-                Accept
+                {t("offerCard.actions.accept")}
               </Button>
               <Button
                 size="sm"
@@ -141,7 +143,7 @@ const OfferCard = ({
                 className="h-7 flex-1 text-xs"
                 onClick={() => setCounterModalOpen(true)}
               >
-                Counter
+                {t("offerCard.actions.counter")}
               </Button>
               <Button
                 size="sm"
@@ -149,7 +151,7 @@ const OfferCard = ({
                 className="text-destructive hover:text-destructive h-7 flex-1 text-xs"
                 onClick={() => onDecline(offer.id)}
               >
-                Decline
+                {t("offerCard.actions.decline")}
               </Button>
             </div>
           )}

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/hooks/redux";
+import { useTranslation } from "react-i18next";
 import { getSavedListingsOptions } from "@/features/savedListings/api/getSavedListingsOptions";
 import type { SavedListing } from "@/features/savedListings/types/SavedListing";
 import { useQuery } from "@tanstack/react-query";
@@ -29,6 +30,7 @@ export const CompareSearchModal = ({
 }: CompareSearchModalProps) => {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const { t } = useTranslation("compare");
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query), 300);
@@ -75,13 +77,13 @@ export const CompareSearchModal = ({
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Compare with another listing</DialogTitle>
+          <DialogTitle>{t("searchModal.title")}</DialogTitle>
           <DialogDescription className="sr-only">
-            Search for a listing to compare
+            {t("searchModal.searchDescription")}
           </DialogDescription>
         </DialogHeader>
         <Input
-          placeholder="Search by make, model, year, seller…"
+          placeholder={t("searchModal.searchPlaceholder")}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           autoFocus
@@ -90,7 +92,7 @@ export const CompareSearchModal = ({
           {isQueryEmpty && visibleSaved.length > 0 && (
             <>
               <p className="text-muted-foreground px-1 text-xs font-semibold tracking-wide uppercase">
-                Your saved listings
+                {t("searchModal.yourSavedListings")}
               </p>
               {visibleSaved.map((listing) => (
                 <div
@@ -113,7 +115,7 @@ export const CompareSearchModal = ({
                     </p>
                   </div>
                   <Button size="sm" onClick={() => onSelect(listing.listingId)}>
-                    Compare
+                    {t("searchModal.compare")}
                   </Button>
                 </div>
               ))}
@@ -156,11 +158,11 @@ export const CompareSearchModal = ({
                         aria-label="Saved listing"
                         className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-600"
                       >
-                        ❤ Saved
+                        {t("searchModal.saved")}
                       </span>
                     )}
                     <Button size="sm" onClick={() => onSelect(listing.id)}>
-                      Compare
+                      {t("searchModal.compare")}
                     </Button>
                   </div>
                 </div>
@@ -169,7 +171,7 @@ export const CompareSearchModal = ({
                 savedMatches.length === 0 &&
                 otherResults.length === 0 && (
                   <p className="text-muted-foreground py-4 text-center">
-                    No results found
+                    {t("searchModal.noResults")}
                   </p>
                 )}
             </>

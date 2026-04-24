@@ -4,6 +4,7 @@ import ModelSelect from "@/components/forms/select/ModelSelect";
 import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { getPriceRange, getYearRange } from "@/utils/rangeUtils";
+import { useTranslation } from "react-i18next";
 import LocationCombobox from "../../../components/forms/select/LocationCombobox";
 import UsedSelect from "../../../components/forms/select/UsedSelect";
 import { ListingSearchStateValues } from "../types/listingSearchStateValues";
@@ -22,13 +23,14 @@ const ListingSearchFilters = ({
   updateSearchValue,
   className,
 }: ListingSearchFiltersProps) => {
+  const { t } = useTranslation("listings");
   return (
     <div className={cn("rounded-md", className)}>
       <div className="border-input divide-input grid grid-cols-1 divide-y-1 border-b sm:grid-cols-3 sm:divide-x-1 sm:divide-y-0">
         <div className="col-span-1">
           <MakeSelect
             className="min-h-15 rounded-none rounded-tl-md rounded-tr-md border border-b-0 shadow-none sm:rounded-tr-none sm:border-r-0 sm:border-b-0"
-            label="Make"
+            label={t("filters.make")}
             isAllMakesEnabled={true}
             value={searchValues.makeId}
             onValueChange={(value) => updateSearchValue("makeId", value)}
@@ -39,7 +41,7 @@ const ListingSearchFilters = ({
             className="min-h-15 rounded-none border-0 border-x shadow-none sm:border-x-0 sm:border-t"
             isAllModelsEnabled={true}
             defaultValue="all"
-            label="Model"
+            label={t("filters.model")}
             selectedMake={searchValues.makeId}
             value={
               searchValues.models[0] ?? UI_CONSTANTS.SELECT.ALL_MODELS.VALUE
@@ -68,7 +70,7 @@ const ListingSearchFilters = ({
           <BasicSelect
             options={getYearRange()}
             className="min-h-15 rounded-none border-0 border-l shadow-none sm:border-b-1 sm:border-l-0"
-            label="Min year"
+            label={t("filters.minYear")}
             value={searchValues.minYear}
             onValueChange={(value) => updateSearchValue("minYear", value)}
           />
@@ -77,7 +79,7 @@ const ListingSearchFilters = ({
           <BasicSelect
             options={getYearRange()}
             className="min-h-15 rounded-none border-0 border-r shadow-none sm:border-r-0 sm:border-b-1"
-            label="Max year"
+            label={t("filters.maxYear")}
             value={searchValues.maxYear}
             onValueChange={(value) => updateSearchValue("maxYear", value)}
           />
@@ -87,7 +89,7 @@ const ListingSearchFilters = ({
             options={getPriceRange()}
             suffix="€"
             className="min-h-15 rounded-none rounded-bl-md border-0 border-b border-l shadow-none sm:rounded-bl-none sm:border-l-0"
-            label="Min price"
+            label={t("filters.minPrice")}
             value={searchValues.minPrice}
             onValueChange={(value) => updateSearchValue("minPrice", value)}
           />
@@ -97,7 +99,7 @@ const ListingSearchFilters = ({
             options={getPriceRange()}
             suffix="€"
             className="min-h-15 rounded-none rounded-br-md border-0 border-r border-b shadow-none"
-            label="Max price"
+            label={t("filters.maxPrice")}
             value={searchValues.maxPrice}
             onValueChange={(value) => updateSearchValue("maxPrice", value)}
           />

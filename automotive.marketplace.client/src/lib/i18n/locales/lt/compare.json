@@ -1,0 +1,44 @@
+{
+  "header": {
+    "specification": "Specifikacija",
+    "change": "Keisti",
+    "changeListingA": "Keisti skelbimą A",
+    "changeListingB": "Keisti skelbimą B"
+  },
+  "table": {
+    "basicInfo": "Pagrindinė informacija",
+    "make": "Markė",
+    "model": "Modelis",
+    "bodyType": "Kėbulo tipas",
+    "year": "Metai",
+    "condition": "Būklė",
+    "used": "Naudotas",
+    "new": "Naujas",
+    "mileage": "Rida",
+    "city": "Miestas",
+    "engineAndPerformance": "Variklis ir charakteristikos",
+    "powerKw": "Galia (kW)",
+    "engineSizeMl": "Variklio tūris (ml)",
+    "fuelType": "Kuro tipas",
+    "transmission": "Pavarų dėžė",
+    "drivetrain": "Pavara",
+    "listingDetails": "Skelbimo duomenys",
+    "price": "Kaina",
+    "status": "Būsena",
+    "seller": "Pardavėjas"
+  },
+  "searchModal": {
+    "title": "Palyginti su kitu skelbimu",
+    "searchDescription": "Ieškokite skelbimo palyginimui",
+    "searchPlaceholder": "Ieškoti pagal markę, modelį, metus, pardavėją…",
+    "yourSavedListings": "Jūsų išsaugoti skelbimai",
+    "noImage": "Nėra nuotraukos",
+    "saved": "❤ Išsaugotas",
+    "compare": "Palyginti",
+    "noResults": "Rezultatų nerasta"
+  },
+  "diffToggle": {
+    "showAll": "Rodyti viską",
+    "diffOnly": "Tik skirtumai"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "card": {
+    "used": "Naudotas",
+    "new": "Naujas",
+    "engine": "Variklis",
+    "fuelType": "Kuro tipas",
+    "gearBox": "Pavarų dėžė",
+    "location": "Vieta",
+    "checkOut": "Peržiūrėti"
+  },
+  "filters": {
+    "make": "Markė",
+    "usedNew": "Naudotas/Naujas",
+    "location": "Vietovė",
+    "model": "Modelis",
+    "year": "Metai",
+    "min": "Min",
+    "max": "Maks",
+    "price": "Kaina (€)",
+    "mileage": "Rida (km)",
+    "powerKw": "Galia (kW)",
+    "minYear": "Min metai",
+    "maxYear": "Maks metai",
+    "minPrice": "Min kaina",
+    "maxPrice": "Maks kaina"
+  },
+  "search": {
+    "lookUp": "Paieška",
+    "search": "Ieškoti"
+  },
+  "details": {
+    "description": "Aprašymas",
+    "specifications": "Specifikacijos",
+    "mileage": "Rida",
+    "engine": "Variklis",
+    "transmission": "Pavarų dėžė",
+    "drivetrain": "Pavara",
+    "fuelType": "Kuro tipas",
+    "bodyType": "Kėbulo tipas",
+    "colour": "Spalva",
+    "doors": "Durys",
+    "steering": "Vairas",
+    "rightHand": "Dešinėje",
+    "leftHand": "Kairėje",
+    "vin": "VIN",
+    "seller": "Pardavėjas",
+    "contactSeller": "Susisiekti su pardavėju",
+    "compareWithAnother": "Palyginti su kitu skelbimu"
+  },
+  "edit": {
+    "editListing": "Redaguoti skelbimą",
+    "saveChanges": "Išsaugoti pakeitimus"
+  },
+  "createPage": {
+    "title": "Sukurkite savo skelbimą"
+  },
+  "form": {
+    "carMake": "Automobilio markė*",
+    "carModel": "Automobilio modelis*",
+    "year": "Metai*",
+    "specificationsLockedFromVariant": "Specifikacijos (užrakinta iš varianto)",
+    "specifications": "Specifikacijos",
+    "carIsModified": "Automobilis modifikuotas",
+    "fuelType": "Kuro tipas*",
+    "transmission": "Pavarų dėžė*",
+    "bodyType": "Kėbulo tipas*",
+    "enginePowerKw": "Variklio galia (kW)*",
+    "engineSizeMl": "Variklio tūris (ml)*",
+    "doorCount": "Durų skaičius*",
+    "colour": "Spalva",
+    "colourPlaceholder": "Vyšninė",
+    "vinLabel": "VIN",
+    "vinPlaceholder": "1G1JC524417418958",
+    "drivetrain": "Pavara*",
+    "carPrice": "Automobilio kaina (€)*",
+    "mileage": "Rida (km)*",
+    "city": "Miestas*",
+    "cityPlaceholder": "Kaunas",
+    "descriptionLabel": "Aprašymas",
+    "vehicleImages": "Automobilio nuotraukos*",
+    "steeringWheelRight": "Vairas dešinėje",
+    "usedCar": "Naudotas automobilis",
+    "submit": "Pateikti"
+  }
+}

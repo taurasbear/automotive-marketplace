@@ -1,0 +1,85 @@
+{
+  "card": {
+    "used": "Used",
+    "new": "New",
+    "engine": "Engine",
+    "fuelType": "Fuel Type",
+    "gearBox": "Gear Box",
+    "location": "Location",
+    "checkOut": "Check out"
+  },
+  "filters": {
+    "make": "Make",
+    "usedNew": "Used/New",
+    "location": "Location",
+    "model": "Model",
+    "year": "Year",
+    "min": "Min",
+    "max": "Max",
+    "price": "Price (€)",
+    "mileage": "Mileage (km)",
+    "powerKw": "Power (kW)",
+    "minYear": "Min year",
+    "maxYear": "Max year",
+    "minPrice": "Min price",
+    "maxPrice": "Max price"
+  },
+  "search": {
+    "lookUp": "Look up",
+    "search": "Search"
+  },
+  "details": {
+    "description": "Description",
+    "specifications": "Specifications",
+    "mileage": "Mileage",
+    "engine": "Engine",
+    "transmission": "Transmission",
+    "drivetrain": "Drivetrain",
+    "fuelType": "Fuel Type",
+    "bodyType": "Body Type",
+    "colour": "Colour",
+    "doors": "Doors",
+    "steering": "Steering",
+    "rightHand": "Right-hand",
+    "leftHand": "Left-hand",
+    "vin": "VIN",
+    "seller": "Seller",
+    "contactSeller": "Contact Seller",
+    "compareWithAnother": "Compare with another listing"
+  },
+  "edit": {
+    "editListing": "Edit listing",
+    "saveChanges": "Save Changes"
+  },
+  "createPage": {
+    "title": "Create your own listing"
+  },
+  "form": {
+    "carMake": "Car make*",
+    "carModel": "Car model*",
+    "year": "Year*",
+    "specificationsLockedFromVariant": "Specifications (locked from variant)",
+    "specifications": "Specifications",
+    "carIsModified": "Car is modified",
+    "fuelType": "Fuel type*",
+    "transmission": "Transmission*",
+    "bodyType": "Body type*",
+    "enginePowerKw": "Engine power (kW)*",
+    "engineSizeMl": "Engine size (ml)*",
+    "doorCount": "Door count*",
+    "colour": "Colour",
+    "colourPlaceholder": "Crimson",
+    "vinLabel": "VIN",
+    "vinPlaceholder": "1G1JC524417418958",
+    "drivetrain": "Drivetrain*",
+    "carPrice": "Car price (€)*",
+    "mileage": "Mileage (km)*",
+    "city": "City*",
+    "cityPlaceholder": "Kaunas",
+    "descriptionLabel": "Description",
+    "vehicleImages": "Vehicle images*",
+    "steeringWheelRight": "Steering wheel on right",
+    "usedCar": "Used car",
+    "submit": "Submit"
+  }
+}

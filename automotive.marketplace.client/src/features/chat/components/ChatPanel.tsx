@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import type { ConversationSummary } from "../types/ConversationSummary";
 import MessageThread from "./MessageThread";
 
@@ -9,6 +10,7 @@ type ChatPanelProps = {
 };
 
 const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
+  const { t } = useTranslation("chat");
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", handleKey);
@@ -25,7 +27,7 @@ const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
           variant="ghost"
           size="sm"
           onClick={onClose}
-          aria-label="Close chat"
+          aria-label={t("chatPanel.closeChat")}
           className="text-muted-foreground hover:text-foreground h-auto p-1 leading-none"
         >
           ✕

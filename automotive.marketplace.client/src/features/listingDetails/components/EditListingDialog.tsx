@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useUpdateListing } from "../api/useUpdateListing";
 import { GetListingByIdResponse } from "../types/GetListingByIdResponse";
 import { UpdateListingFormData } from "../types/UpdateListingFormData";
@@ -19,6 +20,7 @@ type ViewListingDialogProps = {
 };
 
 const EditListingDialog = ({ id, listing }: ViewListingDialogProps) => {
+  const { t } = useTranslation("listings");
   const [isEditListingDialogOpen, setIsEditListingDialogOpen] =
     useState<boolean>(false);
 
@@ -45,7 +47,7 @@ const EditListingDialog = ({ id, listing }: ViewListingDialogProps) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit listing</DialogTitle>
+          <DialogTitle>{t("edit.editListing")}</DialogTitle>
         </DialogHeader>
         <EditListingForm listing={listing} id={id} onSubmit={handleSubmit} />
       </DialogContent>

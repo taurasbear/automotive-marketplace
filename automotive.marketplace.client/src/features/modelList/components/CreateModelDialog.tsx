@@ -7,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useCreateModel } from "../api/useCreateModel";
 import { ModelFormData } from "../types/ModelFormData";
 import ModelForm from "./ModelForm";
@@ -14,6 +15,7 @@ import ModelForm from "./ModelForm";
 const CreateModelDialog = () => {
   const [isCreateModelDialogOpen, setIsCreateModelDialogOpen] =
     useState<boolean>();
+  const { t } = useTranslation("admin");
 
   const { mutateAsync: createModelAsync } = useCreateModel();
 
@@ -31,11 +33,11 @@ const CreateModelDialog = () => {
       onOpenChange={setIsCreateModelDialogOpen}
     >
       <DialogTrigger asChild>
-        <Button>Add model</Button>
+        <Button>{t("models.addModel")}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create new model</DialogTitle>
+          <DialogTitle>{t("models.createNewModel")}</DialogTitle>
         </DialogHeader>
         <ModelForm
           model={{

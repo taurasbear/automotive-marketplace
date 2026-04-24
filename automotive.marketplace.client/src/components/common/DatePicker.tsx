@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useTranslation } from "react-i18next";
 import { CalendarIcon } from "lucide-react";
 import { ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
 import { Button } from "../ui/button";
@@ -19,6 +20,7 @@ const DatePicker = <
 >({
   field,
 }: DatePickerProps<TFieldValues, TName>) => {
+  const { t } = useTranslation("common");
   const isValidDate = (value: unknown): value is Date => {
     return value instanceof Date && !isNaN(value.getTime());
   };
@@ -35,7 +37,11 @@ const DatePicker = <
             !dateValue && "text-muted-foreground",
           )}
         >
-          {dateValue ? format(dateValue, "PPP") : <span>Pick a date</span>}
+          {dateValue ? (
+            format(dateValue, "PPP")
+          ) : (
+            <span>{t("datePicker.pickADate")}</span>
+          )}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>

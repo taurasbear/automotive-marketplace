@@ -8,6 +8,7 @@ import { router } from "@/lib/router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getListingByIdOptions } from "../api/getListingByIdOptions";
 import { useDeleteListing } from "../api/useDeleteListing";
 import EditListingDialog from "./EditListingDialog";
@@ -17,6 +18,7 @@ type ListingDetailsProps = {
 };
 
 const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
+  const { t } = useTranslation("listings");
   const { data: listingQuery } = useSuspenseQuery(
     getListingByIdOptions({ id }),
   );
@@ -78,7 +80,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
             />
             {listing.description && (
               <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-                <h2 className="mb-4 text-2xl font-semibold">Description</h2>
+                <h2 className="mb-4 text-2xl font-semibold">
+                  {t("details.description")}
+                </h2>
                 <p className="text-muted-foreground">{listing.description}</p>
               </div>
             )}
@@ -110,7 +114,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="bg-secondary text-secondary-foreground rounded-full border px-3 py-1 text-sm">
-                  {listing.isUsed ? "Used" : "New"}
+                  {listing.isUsed ? t("card.used") : t("card.new")}
                 </span>
                 <span className="bg-secondary text-secondary-foreground rounded-full border px-3 py-1 text-sm">
                   {listing.city}
@@ -118,7 +122,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
               </div>
               {userId && !isSeller && (
                 <Button className="mt-4 w-full" onClick={handleContactSeller}>
-                  Contact Seller
+                  {t("details.contactSeller")}
                 </Button>
               )}
               <Button
@@ -126,19 +130,21 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                 className="mt-2 w-full"
                 onClick={() => setCompareModalOpen(true)}
               >
-                Compare with another listing
+                {t("details.compareWithAnother")}
               </Button>
             </div>
 
             <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
               <div className="p-6">
-                <h2 className="text-2xl font-semibold">Specifications</h2>
+                <h2 className="text-2xl font-semibold">
+                  {t("details.specifications")}
+                </h2>
               </div>
               <div className="border-t p-0">
                 <dl className="divide-border divide-y">
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Mileage
+                      {t("details.mileage")}
                     </dt>
                     <dd className="text-right text-sm">
                       {listing.mileage.toLocaleString()} km
@@ -146,7 +152,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Engine
+                      {t("details.engine")}
                     </dt>
                     <dd className="text-right text-sm">
                       {listing.engineSizeMl} ml, {listing.powerKw} kw
@@ -154,7 +160,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Transmission
+                      {t("details.transmission")}
                     </dt>
                     <dd className="text-right text-sm">
                       {listing.transmissionName}
@@ -162,7 +168,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Drivetrain
+                      {t("details.drivetrain")}
                     </dt>
                     <dd className="text-right text-sm">
                       {listing.drivetrainName}
@@ -170,13 +176,13 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Fuel Type
+                      {t("details.fuelType")}
                     </dt>
                     <dd className="text-right text-sm">{listing.fuelName}</dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Body Type
+                      {t("details.bodyType")}
                     </dt>
                     <dd className="text-right text-sm">
                       {listing.bodyTypeName}
@@ -185,31 +191,31 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   {listing.colour && (
                     <div className="grid grid-cols-2 px-6 py-3">
                       <dt className="text-muted-foreground text-sm font-medium">
-                        Colour
+                        {t("details.colour")}
                       </dt>
                       <dd className="text-right text-sm">{listing.colour}</dd>
                     </div>
                   )}
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Doors
+                      {t("details.doors")}
                     </dt>
                     <dd className="text-right text-sm">{listing.doorCount}</dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Steering
+                      {t("details.steering")}
                     </dt>
                     <dd className="text-right text-sm">
                       {listing.isSteeringWheelRight
-                        ? "Right-hand"
-                        : "Left-hand"}
+                        ? t("details.rightHand")
+                        : t("details.leftHand")}
                     </dd>
                   </div>
                   {listing.vin && (
                     <div className="grid grid-cols-2 px-6 py-3">
                       <dt className="text-muted-foreground text-sm font-medium">
-                        VIN
+                        {t("details.vin")}
                       </dt>
                       <dd className="text-right text-sm break-all">
                         {listing.vin}
@@ -218,7 +224,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   )}
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
-                      Seller
+                      {t("details.seller")}
                     </dt>
                     <dd className="text-right text-sm font-semibold">
                       {listing.sellerName}

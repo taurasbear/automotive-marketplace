@@ -1,0 +1,21 @@
+{
+  "page": {
+    "title": "Išsaugoti skelbimai",
+    "emptyState": "Dar neišsaugojote jokių skelbimų.",
+    "browseListings": "Naršyti skelbimus"
+  },
+  "row": {
+    "removeFromSaved": "Pašalinti iš išsaugotų",
+    "noImage": "Nėra nuotraukos"
+  },
+  "noteEditor": {
+    "placeholder": "Spustelėkite, kad pridėtumėte pastabą…"
+  },
+  "propertyMention": {
+    "mileage": "Rida",
+    "price": "Kaina",
+    "fuel": "Kuras",
+    "transmission": "Pavarų dėžė",
+    "city": "Miestas"
+  }
+}

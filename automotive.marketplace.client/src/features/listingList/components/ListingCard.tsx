@@ -9,6 +9,7 @@ import { MdOutlineLocalGasStation } from "react-icons/md";
 import { PiEngine } from "react-icons/pi";
 import { TbManualGearbox } from "react-icons/tb";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
 import ListingCardBadge from "./ListingCardBadge";
 
@@ -17,6 +18,7 @@ interface ListingCardProps {
 }
 
 const ListingCard = ({ listing }: ListingCardProps) => {
+  const { t } = useTranslation("listings");
   const accessToken = useAppSelector(selectAccessToken);
   const toggleLike = useToggleLike();
 
@@ -61,7 +63,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
       <div className="flex min-w-0 flex-grow flex-col justify-between pt-4 pr-4 pb-2">
         <div className="truncate">
           <p className="truncate font-sans text-xs">
-            {listing.isUsed ? "Used" : "New"}
+            {listing.isUsed ? t("card.used") : t("card.new")}
           </p>
           <p className="font-sans text-xl">{`${listing.year} ${listing.makeName} ${listing.modelName}`}</p>
           <p className="font-sans text-xs">{listing.mileage} km</p>
@@ -73,28 +75,28 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<PiEngine className="h-8 w-8" />}
-              title={"Engine"}
+              title={t("card.engine")}
               stat={`${listing.engineSizeMl / 1000} l ${listing.powerKw} kW`}
             />
           </div>
           <div className="flex justify-self-end">
             <ListingCardBadge
               Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
-              title={"Fuel Type"}
+              title={t("card.fuelType")}
               stat={listing.fuelName}
             />
           </div>
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<TbManualGearbox className="h-8 w-8" />}
-              title={"Gear Box"}
+              title={t("card.gearBox")}
               stat={listing.transmissionName}
             />
           </div>
           <div className="flex justify-self-end">
             <ListingCardBadge
               Icon={<IoLocationOutline className="h-8 w-8" />}
-              title={"Location"}
+              title={t("card.location")}
               stat={listing.city}
             />
           </div>
@@ -104,7 +106,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             className="h-full max-h-12 rounded-3xl text-xl font-bold"
             onClick={handleClick}
           >
-            Check out
+            {t("card.checkOut")}
           </Button>
         </div>
       </div>

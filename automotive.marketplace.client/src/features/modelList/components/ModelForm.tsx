@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { modelFormSchema } from "../schemas/modelFormSchema";
 import { ModelFormData } from "../types/ModelFormData";
 
@@ -22,6 +23,7 @@ type ModelFormProps = {
 };
 
 const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
+  const { t } = useTranslation(["admin", "common"]);
   const form = useForm({
     defaultValues: {
       name: model.name,
@@ -47,7 +49,7 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Model name</FormLabel>
+                <FormLabel>{t("admin:models.modelName")}</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -60,7 +62,7 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Make</FormLabel>
+                <FormLabel>{t("admin:models.make")}</FormLabel>
                 <FormControl>
                   <MakeSelect
                     isAllMakesEnabled={false}
@@ -72,7 +74,7 @@ const ModelForm = ({ model, onSubmit, className }: ModelFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit">Confirm</Button>
+          <Button type="submit">{t("common:actions.confirm")}</Button>
         </form>
       </Form>
     </div>

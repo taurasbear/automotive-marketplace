@@ -23,6 +23,9 @@ import { getAllMakesOptions } from "@/api/make/getAllMakesOptions";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
+import { format } from "date-fns";
 import { useDeleteMake } from "../api/useDeleteMake";
 import EditMakeDialog from "./EditMakeDialog";
 
@@ -31,6 +34,8 @@ type MakeListTableProps = {
 };
 
 const MakeListTable = ({ className }: MakeListTableProps) => {
+  const { t } = useTranslation(["admin", "common"]);
+  const locale = useDateLocale();
   const { data: makesQuery } = useQuery(getAllMakesOptions);
   const makes = makesQuery?.data || [];
 
@@ -43,13 +48,13 @@ const MakeListTable = ({ className }: MakeListTableProps) => {
   return (
     <div className={cn(className)}>
       <Table>
-        <TableCaption>A list of makes</TableCaption>
+        <TableCaption>{t("admin:makes.tableDescription")}</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Created by</TableHead>
-            <TableHead>Created at</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("admin:makes.name")}</TableHead>
+            <TableHead>{t("admin:makes.createdBy")}</TableHead>
+            <TableHead>{t("admin:makes.createdAt")}</TableHead>
+            <TableHead>{t("admin:makes.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -58,7 +63,7 @@ const MakeListTable = ({ className }: MakeListTableProps) => {
               <TableCell>{m.name}</TableCell>
               <TableCell>{m.createdBy}</TableCell>
               <TableCell>
-                {new Date(m.createdAt).toLocaleDateString()}
+                {format(new Date(m.createdAt), "P", { locale })}
               </TableCell>
               <TableCell className="flex gap-1">
                 <EditMakeDialog id={m.id} />
@@ -70,15 +75,19 @@ const MakeListTable = ({ className }: MakeListTableProps) => {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Delete {m.name}?</AlertDialogTitle>
+                      <AlertDialogTitle>
+                        {t("admin:makes.deleteConfirm", { name: m.name })}
+                      </AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone.
+                        {t("admin:makes.deleteWarning")}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>
+                        {t("common:actions.cancel")}
+                      </AlertDialogCancel>
                       <AlertDialogAction onClick={() => handleDelete(m.id)}>
-                        Delete
+                        {t("common:actions.delete")}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

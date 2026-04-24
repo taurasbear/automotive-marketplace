@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { UpdateListingSchema } from "../schemas/updateListingSchema";
 import { GetListingByIdResponse } from "../types/GetListingByIdResponse";
 import { UpdateListingFormData } from "../types/UpdateListingFormData";
@@ -28,6 +29,7 @@ const EditListingForm = ({
   onSubmit,
   className,
 }: EditListingFormProps) => {
+  const { t } = useTranslation("listings");
   const form = useForm({
     resolver: zodResolver(UpdateListingSchema),
     defaultValues: {
@@ -59,7 +61,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Year*</FormLabel>
+                <FormLabel>{t("form.year")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={1900} {...field} />
                 </FormControl>
@@ -72,7 +74,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Car price (€)*</FormLabel>
+                <FormLabel>{t("form.carPrice")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -85,7 +87,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Engine power (kw)*</FormLabel>
+                <FormLabel>{t("form.enginePowerKw")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -98,9 +100,13 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>City*</FormLabel>
+                <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Kaunas" type="text" {...field} />
+                  <Input
+                    placeholder={t("form.cityPlaceholder")}
+                    type="text"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -111,7 +117,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-4 flex flex-col justify-start">
-                <FormLabel>Description</FormLabel>
+                <FormLabel>{t("form.descriptionLabel")}</FormLabel>
                 <FormControl>
                   <Textarea
                     className="max-h-96"
@@ -128,10 +134,10 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>VIN</FormLabel>
+                <FormLabel>{t("form.vinLabel")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="1G1JC524417418958"
+                    placeholder={t("form.vinPlaceholder")}
                     type="text"
                     {...field}
                     value={field.value ?? ""}
@@ -146,7 +152,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Engine size (ml)*</FormLabel>
+                <FormLabel>{t("form.engineSizeMl")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -159,7 +165,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Mileage (km)</FormLabel>
+                <FormLabel>{t("form.mileage")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={0} {...field} />
                 </FormControl>
@@ -172,10 +178,10 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Colour</FormLabel>
+                <FormLabel>{t("form.colour")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Crimson"
+                    placeholder={t("form.colourPlaceholder")}
                     type="text"
                     {...field}
                     value={field.value ?? ""}
@@ -190,7 +196,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col items-center justify-start">
-                <FormLabel>Steering wheel on right</FormLabel>
+                <FormLabel>{t("form.steeringWheelRight")}</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -207,7 +213,7 @@ const EditListingForm = ({
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col items-center justify-start">
-                <FormLabel>Used car</FormLabel>
+                <FormLabel>{t("form.usedCar")}</FormLabel>
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -220,7 +226,7 @@ const EditListingForm = ({
             )}
           />
           <Button className="col-span-2 col-start-2" type="submit">
-            Save Changes
+            {t("edit.saveChanges")}
           </Button>
         </form>
       </Form>

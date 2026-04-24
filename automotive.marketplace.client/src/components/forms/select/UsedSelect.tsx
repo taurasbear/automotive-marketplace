@@ -11,6 +11,7 @@ import {
 } from "@/constants/carConditions";
 import { cn } from "@/lib/utils";
 import { SelectRootProps } from "@/types/ui/selectRootProps";
+import { useTranslation } from "react-i18next";
 
 type UsedSelectProps = Omit<SelectRootProps, "value" | "onValueChange"> & {
   value: CarConditionKey;
@@ -25,6 +26,14 @@ const UsedSelect = ({
   onValueChange,
   className,
 }: UsedSelectProps) => {
+  const { t } = useTranslation("common");
+
+  const conditionKeys: Record<string, string> = {
+    new: "select.conditionNew",
+    used: "select.conditionUsed",
+    newUsed: "select.conditionUsedAndNew",
+  };
+
   return (
     <Select
       value={value}
@@ -36,14 +45,16 @@ const UsedSelect = ({
         aria-label="Used, new or both"
       >
         <div className="grid grid-cols-1 justify-items-start">
-          <span className="text-muted-foreground text-xs">Used/New</span>
+          <span className="text-muted-foreground text-xs">
+            {t("select.usedNew")}
+          </span>
           <SelectValue />
         </div>
       </SelectTrigger>
       <SelectContent>
-        {CAR_CONDITION_OPTIONS.map(([conditionKey, conditionName]) => (
+        {CAR_CONDITION_OPTIONS.map(([conditionKey]) => (
           <SelectItem key={conditionKey} value={conditionKey}>
-            {conditionName}
+            {t(conditionKeys[conditionKey])}
           </SelectItem>
         ))}
       </SelectContent>

@@ -1,0 +1,48 @@
+{
+  "header": {
+    "title": "Automobilių turgavietė",
+    "makes": "Markės",
+    "models": "Modeliai",
+    "variants": "Variantai",
+    "sellYourCar": "Parduok automobilį",
+    "inbox": "Žinutės",
+    "savedListings": "Išsaugoti skelbimai",
+    "signUp": "Registruotis"
+  },
+  "datePicker": {
+    "pickADate": "Pasirinkite datą"
+  },
+  "variantTable": {
+    "loading": "Kraunami variantai…",
+    "failed": "Nepavyko įkelti variantų",
+    "fuel": "Kuras",
+    "transmission": "Pavarų dėžė",
+    "powerKw": "Galia (kW)",
+    "engineMl": "Variklis (ml)",
+    "bodyType": "Kėbulo tipas",
+    "doors": "Durys",
+    "noVariants": "Šiam modeliui nėra variantų"
+  },
+  "select": {
+    "makes": "Markės",
+    "models": "Modeliai",
+    "fuelTypes": "Kuro tipai",
+    "bodyTypes": "Kėbulo tipai",
+    "location": "Vietovė",
+    "searchLocation": "Ieškoti vietovės",
+    "noLocationFound": "Vietovė nerasta.",
+    "usedNew": "Naudotas/Naujas",
+    "allMakes": "Visos markės",
+    "allModels": "Visi modeliai",
+    "anyLocation": "Bet kur",
+    "conditionNew": "Naujas",
+    "conditionUsed": "Naudotas",
+    "conditionUsedAndNew": "Naudoti ir nauji"
+  },
+  "actions": {
+    "cancel": "Atšaukti",
+    "confirm": "Patvirtinti",
+    "delete": "Ištrinti",
+    "save": "Išsaugoti"
+  }
+}

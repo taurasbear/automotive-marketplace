@@ -12,6 +12,7 @@ import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 type ModelSelectProps = SelectRootProps & {
   selectedMake?: string;
@@ -27,6 +28,7 @@ const ModelSelect = ({
   className,
   ...props
 }: ModelSelectProps) => {
+  const { t } = useTranslation("common");
   const { data: modelsQuery } = useQuery({
     ...getModelsByMakeIdOptions({ makeId: selectedMake! }),
     enabled:
@@ -45,10 +47,10 @@ const ModelSelect = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Models</SelectLabel>
+          <SelectLabel>{t("select.models")}</SelectLabel>
           {!isAllModelsEnabled || (
             <SelectItem value={UI_CONSTANTS.SELECT.ALL_MODELS.VALUE}>
-              {UI_CONSTANTS.SELECT.ALL_MODELS.LABEL}
+              {t("select.allModels")}
             </SelectItem>
           )}
           {models.map((model) => (

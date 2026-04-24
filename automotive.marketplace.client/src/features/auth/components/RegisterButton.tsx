@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 const RegisterButton = () => {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -10,7 +12,7 @@ const RegisterButton = () => {
 
   return (
     <Button variant="secondary" onClick={() => void handleRegister()}>
-      Sign up
+      {t("header.signUp")}
     </Button>
   );
 };

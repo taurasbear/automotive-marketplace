@@ -16,6 +16,7 @@ import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type LocationComboboxProps = {
   value: string;
@@ -28,6 +29,7 @@ const LocationCombobox = ({
   onValueChange,
   className,
 }: LocationComboboxProps) => {
+  const { t } = useTranslation("common");
   const locations = [
     { value: "kaunas", label: "Kaunas" },
     { value: "trakai", label: "Trakai" },
@@ -49,10 +51,12 @@ const LocationCombobox = ({
             )}
           >
             <div className="grid grid-cols-1 justify-items-start">
-              <span className="text-muted-foreground text-xs">Location</span>
+              <span className="text-muted-foreground text-xs">
+                {t("select.location")}
+              </span>
               {value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE ? (
                 <span className="truncate text-sm">
-                  {UI_CONSTANTS.SELECT.ANY_LOCATION.LABEL}
+                  {t("select.anyLocation")}
                 </span>
               ) : (
                 locations.find((location) => location.value === value)?.label
@@ -63,9 +67,9 @@ const LocationCombobox = ({
         </PopoverTrigger>
         <PopoverContent>
           <Command>
-            <CommandInput placeholder="Search location" />
+            <CommandInput placeholder={t("select.searchLocation")} />
             <CommandList>
-              <CommandEmpty>No location found.</CommandEmpty>
+              <CommandEmpty>{t("select.noLocationFound")}</CommandEmpty>
               <CommandGroup>
                 {locations.map((location) => (
                   <CommandItem

@@ -7,4 +7,5 @@ public enum MeetingStatus
     Declined = 2,
     Rescheduled = 3,
     Expired = 4,
+    Cancelled = 5,
 }

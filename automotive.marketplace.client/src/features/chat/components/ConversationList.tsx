@@ -1,23 +1,44 @@
+import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
+import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { getConversationsOptions } from "../api/getConversationsOptions";
 import type { ConversationSummary } from "../types/ConversationSummary";
 
 type ConversationListProps = {
   selectedId: string | null;
   onSelect: (conversation: ConversationSummary) => void;
+  initialConversationId?: string;
+  onInitialLoad?: (conversation: ConversationSummary | null) => void;
 };
 
-const ConversationList = ({ selectedId, onSelect }: ConversationListProps) => {
+const ConversationList = ({
+  selectedId,
+  onSelect,
+  initialConversationId,
+  onInitialLoad,
+}: ConversationListProps) => {
   const { data: conversationsQuery } = useSuspenseQuery(
     getConversationsOptions(),
   );
   const conversations = conversationsQuery.data;
+  const { t } = useTranslation("chat");
+  const locale = useDateLocale();
+  const didAutoSelect = useRef(false);
+
+  useEffect(() => {
+    if (didAutoSelect.current || !initialConversationId || !onInitialLoad)
+      return;
+    didAutoSelect.current = true;
+    const match = conversations.find((c) => c.id === initialConversationId);
+    onInitialLoad(match ?? null);
+  }, [conversations, initialConversationId, onInitialLoad]);
 
   if (conversations.length === 0) {
     return (
       <div className="text-muted-foreground flex h-full items-center justify-center p-4 text-sm">
-        No conversations yet.
+        {t("conversationList.noConversationsYet")}
       </div>
     );
   }
@@ -66,6 +87,7 @@ const ConversationList = ({ selectedId, onSelect }: ConversationListProps) => {
           <p className="text-muted-foreground mt-1 text-right text-[10px]">
             {formatDistanceToNow(new Date(c.lastMessageAt), {
               addSuffix: true,
+              locale,
             })}
           </p>
         </li>

@@ -1,11 +1,25 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDateLocale } from "@/lib/i18n/dateLocale";
+import { format } from "date-fns";
 import { Calendar, Clock, DollarSign, Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import type { Meeting } from "../types/Meeting";
 import MakeOfferModal from "./MakeOfferModal";
 import ProposeMeetingModal from "./ProposeMeetingModal";
 import ShareAvailabilityModal from "./ShareAvailabilityModal";
@@ -19,6 +33,7 @@ type ActionBarProps = {
   buyerHasEngaged: boolean;
   hasActiveOffer: boolean;
   hasActiveMeeting: boolean;
+  acceptedMeeting: Meeting | null;
   onSendOffer: (amount: number) => void;
   onProposeMeeting: (data: {
     proposedAt: string;
@@ -30,6 +45,7 @@ type ActionBarProps = {
   onShareAvailability: (
     slots: { startTime: string; endTime: string }[],
   ) => void;
+  onCancelMeeting: (meetingId: string) => void;
 };
 
 const ActionBar = ({
@@ -41,20 +57,49 @@ const ActionBar = ({
   buyerHasEngaged,
   hasActiveOffer,
   hasActiveMeeting,
+  acceptedMeeting,
   onSendOffer,
   onProposeMeeting,
   onShareAvailability,
+  onCancelMeeting,
 }: ActionBarProps) => {
+  const { t } = useTranslation(["chat", "common"]);
+  const locale = useDateLocale();
   const [offerModalOpen, setOfferModalOpen] = useState(false);
   const [actionsPopoverOpen, setActionsPopoverOpen] = useState(false);
   const [proposeMeetingOpen, setProposeMeetingOpen] = useState(false);
   const [shareAvailabilityOpen, setShareAvailabilityOpen] = useState(false);
+  const [guardAction, setGuardAction] = useState<
+    "propose" | "availability" | null
+  >(null);
 
   const isBuyer = currentUserId === buyerId;
   const isSeller = currentUserId === sellerId;
   const showButtons = isBuyer || (isSeller && buyerHasEngaged);
 
   if (!showButtons) return null;
+
+  const handleMeetingAction = (action: "propose" | "availability") => {
+    setActionsPopoverOpen(false);
+    if (acceptedMeeting) {
+      setGuardAction(action);
+    } else if (action === "propose") {
+      setProposeMeetingOpen(true);
+    } else {
+      setShareAvailabilityOpen(true);
+    }
+  };
+
+  const handleGuardConfirm = () => {
+    if (!acceptedMeeting || !guardAction) return;
+    onCancelMeeting(acceptedMeeting.id);
+    if (guardAction === "propose") {
+      setProposeMeetingOpen(true);
+    } else {
+      setShareAvailabilityOpen(true);
+    }
+    setGuardAction(null);
+  };
 
   return (
     <>
@@ -69,9 +114,7 @@ const ActionBar = ({
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveOffer}
             title={
-              hasActiveOffer
-                ? "An offer is already pending in this conversation"
-                : undefined
+              hasActiveOffer ? t("actionBar.offerAlreadyPending") : undefined
             }
             onClick={() => {
               setActionsPopoverOpen(false);
@@ -79,42 +122,72 @@ const ActionBar = ({
             }}
           >
             <DollarSign className="mr-2 h-4 w-4" />
-            Make an Offer
+            {t("actionBar.makeAnOffer")}
           </button>
           <button
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
-              hasActiveMeeting
-                ? "A meetup negotiation is already active"
-                : undefined
+              hasActiveMeeting ? t("actionBar.meetupAlreadyActive") : undefined
             }
-            onClick={() => {
-              setActionsPopoverOpen(false);
-              setProposeMeetingOpen(true);
-            }}
+            onClick={() => handleMeetingAction("propose")}
           >
             <Calendar className="mr-2 h-4 w-4" />
-            Propose a time
+            {t("actionBar.proposeATime")}
           </button>
           <button
             className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
             disabled={hasActiveMeeting}
             title={
-              hasActiveMeeting
-                ? "A meetup negotiation is already active"
-                : undefined
+              hasActiveMeeting ? t("actionBar.meetupAlreadyActive") : undefined
             }
-            onClick={() => {
-              setActionsPopoverOpen(false);
-              setShareAvailabilityOpen(true);
-            }}
+            onClick={() => handleMeetingAction("availability")}
           >
             <Clock className="mr-2 h-4 w-4" />
-            Share availability
+            {t("actionBar.shareAvailability")}
           </button>
         </PopoverContent>
       </Popover>
+
+      <AlertDialog
+        open={guardAction !== null}
+        onOpenChange={(open) => {
+          if (!open) setGuardAction(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t("actionBar.cancelExistingMeetup")}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {acceptedMeeting
+                ? t("actionBar.confirmedMeetupWarning", {
+                    date: format(
+                      new Date(acceptedMeeting.proposedAt),
+                      "EEE, MMM d",
+                      { locale },
+                    ),
+                    time: format(
+                      new Date(acceptedMeeting.proposedAt),
+                      "HH:mm",
+                      { locale },
+                    ),
+                  })
+                : t("actionBar.activeMeetupWarning")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("actionBar.keepExisting")}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={handleGuardConfirm}
+            >
+              {t("actionBar.continue")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <MakeOfferModal
         open={offerModalOpen}

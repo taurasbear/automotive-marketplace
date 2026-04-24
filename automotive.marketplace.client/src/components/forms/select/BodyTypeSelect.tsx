@@ -8,15 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
 import { cn } from "@/lib/utils";
 import { SelectRootProps } from "@/types/ui/selectRootProps";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 type BodytypeSelectProps = SelectRootProps & {
   className?: string;
 };
 
 const BodyTypeSelect = ({ className, ...props }: BodytypeSelectProps) => {
+  const { t, i18n } = useTranslation("common");
   const { data: bodyTypesQuery } = useQuery(getAllBodyTypesOptions);
 
   const bodyTypes = bodyTypesQuery?.data || [];
@@ -25,14 +28,14 @@ const BodyTypeSelect = ({ className, ...props }: BodytypeSelectProps) => {
     <div className={cn(className)}>
       <Select {...props}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Sedan" />
+          <SelectValue placeholder={t("select.bodyTypes")} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Body types</SelectLabel>
+            <SelectLabel>{t("select.bodyTypes")}</SelectLabel>
             {bodyTypes.map((body) => (
               <SelectItem key={body.id} value={body.id}>
-                {body.name}
+                {getTranslatedName(body.translations, i18n.language)}
               </SelectItem>
             ))}
           </SelectGroup>

@@ -1,11 +1,14 @@
+import i18n from "@/lib/i18n/i18n";
+
 export const validation = {
-  required: ({ label }: { label: string }) => `${label} is required`,
+  required: ({ label }: { label: string }) =>
+    i18n.t("required", { label, ns: "validation" }),
 
   minLength: ({ label, length }: { label: string; length: number }) =>
-    `${label} must be at least ${length} characters long`,
+    i18n.t("minLength", { label, length, ns: "validation" }),
 
   maxLength: ({ label, length }: { label: string; length: number }) =>
-    `${label} must be ${length} or fewer characters long`,
+    i18n.t("maxLength", { label, length, ns: "validation" }),
 
   minSize: ({
     label,
@@ -15,7 +18,13 @@ export const validation = {
     label: string;
     size: number;
     unit?: string;
-  }) => `${label} must be at least ${size}${unit ? ` ${unit}` : ""}`,
+  }) =>
+    i18n.t("minSize", {
+      label,
+      size,
+      unit: unit ? ` ${unit}` : "",
+      ns: "validation",
+    }),
 
   maxSize: ({
     label,
@@ -25,5 +34,11 @@ export const validation = {
     label: string;
     size: number;
     unit?: string;
-  }) => `${label} must be ${size}${unit ? ` ${unit}` : ""} or less`,
+  }) =>
+    i18n.t("maxSize", {
+      label,
+      size,
+      unit: unit ? ` ${unit}` : "",
+      ns: "validation",
+    }),
 };

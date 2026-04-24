@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { IoHeart } from "react-icons/io5";
 import { useToggleLike } from "../api/useToggleLike";
 import type { SavedListing } from "../types/SavedListing";
@@ -9,6 +10,7 @@ interface SavedListingRowProps {
 }
 
 const SavedListingRow = ({ listing }: SavedListingRowProps) => {
+  const { t } = useTranslation("saved");
   const [isHovered, setIsHovered] = useState(false);
   const toggleLike = useToggleLike();
 
@@ -32,7 +34,7 @@ const SavedListingRow = ({ listing }: SavedListingRowProps) => {
           />
         ) : (
           <div className="bg-muted flex h-full w-full items-center justify-center text-xs">
-            No image
+            {t("row.noImage")}
           </div>
         )}
       </div>
@@ -51,7 +53,7 @@ const SavedListingRow = ({ listing }: SavedListingRowProps) => {
           <button
             onClick={handleUnlike}
             className="ml-2 flex-shrink-0 text-red-500 transition-opacity hover:opacity-70"
-            title="Remove from saved"
+            title={t("row.removeFromSaved")}
           >
             <IoHeart className="h-5 w-5" />
           </button>

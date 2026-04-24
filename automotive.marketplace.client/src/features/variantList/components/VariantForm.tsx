@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { variantFormSchema } from "../schemas/variantFormSchema";
 import { VariantFormData } from "../types/VariantFormData";
 
@@ -28,6 +29,7 @@ type VariantFormProps = {
 };
 
 const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
+  const { t } = useTranslation(["admin", "common"]);
   const form = useForm<VariantFormData>({
     defaultValues: variant,
     resolver: zodResolver(variantFormSchema),
@@ -59,7 +61,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Make*</FormLabel>
+                <FormLabel>{t("admin:variants.make")}</FormLabel>
                 <FormControl>
                   <MakeSelect
                     isAllMakesEnabled={false}
@@ -76,7 +78,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Model*</FormLabel>
+                <FormLabel>{t("admin:variants.model")}</FormLabel>
                 <FormControl>
                   <ModelSelect
                     isAllModelsEnabled={false}
@@ -95,7 +97,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Fuel type*</FormLabel>
+                <FormLabel>{t("admin:variants.fuelType")}</FormLabel>
                 <FormControl>
                   <FuelSelect onValueChange={field.onChange} {...field} />
                 </FormControl>
@@ -108,7 +110,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Transmission*</FormLabel>
+                <FormLabel>{t("admin:variants.transmission")}</FormLabel>
                 <FormControl>
                   <TransmissionToggleGroup
                     type="single"
@@ -125,7 +127,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Body type*</FormLabel>
+                <FormLabel>{t("admin:variants.bodyType")}</FormLabel>
                 <FormControl>
                   <BodyTypeSelect onValueChange={field.onChange} {...field} />
                 </FormControl>
@@ -138,7 +140,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-1 flex flex-col justify-start">
-                <FormLabel>Doors*</FormLabel>
+                <FormLabel>{t("admin:variants.doors")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={1} max={9} {...field} />
                 </FormControl>
@@ -151,7 +153,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-1 flex flex-col justify-start">
-                <FormLabel>Power (kW)*</FormLabel>
+                <FormLabel>{t("admin:variants.powerKw")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={5} {...field} />
                 </FormControl>
@@ -164,7 +166,7 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
-                <FormLabel>Engine size (ml)*</FormLabel>
+                <FormLabel>{t("admin:variants.engineSizeMl")}</FormLabel>
                 <FormControl>
                   <Input type="number" min={300} {...field} />
                 </FormControl>
@@ -183,13 +185,15 @@ const VariantForm = ({ variant, onSubmit, className }: VariantFormProps) => {
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel className="mt-0">Custom variant</FormLabel>
+                <FormLabel className="mt-0">
+                  {t("admin:variants.customVariant")}
+                </FormLabel>
                 <FormMessage />
               </FormItem>
             )}
           />
           <Button type="submit" className="col-span-4">
-            Confirm
+            {t("common:actions.confirm")}
           </Button>
         </form>
       </Form>

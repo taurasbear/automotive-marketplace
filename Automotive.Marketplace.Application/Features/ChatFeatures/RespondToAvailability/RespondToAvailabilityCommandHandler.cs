@@ -66,13 +66,38 @@ public class RespondToAvailabilityCommandHandler(IRepository repository)
             card.Status = AvailabilityCardStatus.Responded;
             await repository.UpdateAsync(card, cancellationToken);
 
+            var meetingStart = request.StartTime ?? slot.StartTime;
+            var meetingDuration = request.DurationMinutes ?? (int)(slot.EndTime - slot.StartTime).TotalMinutes;
+
+            if (meetingDuration < 15)
+                throw new RequestValidationException(
+                [
+                    new ValidationFailure("DurationMinutes", "Meeting duration must be at least 15 minutes.")
+                ]);
+
+            if (request.StartTime.HasValue || request.DurationMinutes.HasValue)
+            {
+                if (meetingStart < slot.StartTime)
+                    throw new RequestValidationException(
+                    [
+                        new ValidationFailure("StartTime", "Start time must be within the selected slot range.")
+                    ]);
+
+                var meetingEnd = meetingStart.AddMinutes(meetingDuration);
+                if (meetingEnd > slot.EndTime)
+                    throw new RequestValidationException(
+                    [
+                        new ValidationFailure("StartTime", "Meeting end time must not exceed the slot end time.")
+                    ]);
+            }
+
             var meeting = new Meeting
             {
                 Id = Guid.NewGuid(),
                 ConversationId = conversation.Id,
                 InitiatorId = request.ResponderId,
-                ProposedAt = slot.StartTime,
-                DurationMinutes = (int)(slot.EndTime - slot.StartTime).TotalMinutes,
+                ProposedAt = meetingStart,
+                DurationMinutes = meetingDuration,
                 Status = MeetingStatus.Pending,
                 ExpiresAt = DateTime.UtcNow.AddHours(48),
                 CreatedAt = DateTime.UtcNow,

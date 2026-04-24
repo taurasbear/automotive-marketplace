@@ -1,0 +1,44 @@
+{
+  "header": {
+    "specification": "Specification",
+    "change": "Change",
+    "changeListingA": "Change listing A",
+    "changeListingB": "Change listing B"
+  },
+  "table": {
+    "basicInfo": "Basic Info",
+    "make": "Make",
+    "model": "Model",
+    "bodyType": "Body Type",
+    "year": "Year",
+    "condition": "Condition",
+    "used": "Used",
+    "new": "New",
+    "mileage": "Mileage",
+    "city": "City",
+    "engineAndPerformance": "Engine & Performance",
+    "powerKw": "Power (kW)",
+    "engineSizeMl": "Engine Size (ml)",
+    "fuelType": "Fuel Type",
+    "transmission": "Transmission",
+    "drivetrain": "Drivetrain",
+    "listingDetails": "Listing Details",
+    "price": "Price",
+    "status": "Status",
+    "seller": "Seller"
+  },
+  "searchModal": {
+    "title": "Compare with another listing",
+    "searchDescription": "Search for a listing to compare",
+    "searchPlaceholder": "Search by make, model, year, seller…",
+    "yourSavedListings": "Your saved listings",
+    "noImage": "No Image",
+    "saved": "❤ Saved",
+    "compare": "Compare",
+    "noResults": "No results found"
+  },
+  "diffToggle": {
+    "showAll": "Show All",
+    "diffOnly": "Diff Only"
+  }
+}

@@ -7,12 +7,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useCreateMake } from "../api/useCreateMake";
 import { MakeFormData } from "../types/MakeFormData";
 import MakeForm from "./MakeForm";
 
 const CreateMakeDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation("admin");
   const { mutateAsync: createMakeAsync } = useCreateMake();
 
   const handleSubmit = async (formData: MakeFormData) => {
@@ -23,11 +25,11 @@ const CreateMakeDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Add make</Button>
+        <Button>{t("makes.addMake")}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create new make</DialogTitle>
+          <DialogTitle>{t("makes.createNewMake")}</DialogTitle>
         </DialogHeader>
         <MakeForm make={{ name: "" }} onSubmit={handleSubmit} />
       </DialogContent>

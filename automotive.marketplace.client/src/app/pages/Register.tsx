@@ -18,9 +18,11 @@ import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 const Register = () => {
+  const { t } = useTranslation("auth");
   const { mutateAsync: registerUserAsync } = useRegisterUser();
   const navigate = useNavigate();
 
@@ -55,7 +57,7 @@ const Register = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
-      <h2 className="mb-6 text-2xl font-bold">Register</h2>
+      <h2 className="mb-6 text-2xl font-bold">{t("register.title")}</h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -66,12 +68,15 @@ const Register = () => {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>{t("register.fields.username")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your username" {...field} />
+                  <Input
+                    placeholder={t("register.fields.usernamePlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
-                  This will be your public display name.
+                  {t("register.fields.usernameDescription")}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -82,15 +87,17 @@ const Register = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("register.fields.email")}</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder={t("register.fields.emailPlaceholder")}
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>{`We'll never share your email.`}</FormDescription>
+                <FormDescription>
+                  {t("register.fields.emailDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -100,23 +107,29 @@ const Register = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("register.fields.password")}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder={t("register.fields.passwordPlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>At least 6 characters.</FormDescription>
+                <FormDescription>
+                  {t("register.fields.passwordDescription")}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <Button type="submit" className="w-full">
-            Register
+            {t("register.submit")}
           </Button>
         </form>
       </Form>
       <Link to="/login">
         <Button variant="link" className="m-4">
-          Already have an account?
+          {t("register.alreadyHaveAccount")}
         </Button>
       </Link>
     </div>

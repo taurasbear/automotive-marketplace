@@ -12,6 +12,10 @@ public sealed record RespondToAvailabilityCommand : IRequest<RespondToAvailabili
 
     public Guid? SlotId { get; set; }
 
+    public DateTime? StartTime { get; set; }
+
+    public int? DurationMinutes { get; set; }
+
     public List<ShareBackSlot>? ShareBackSlots { get; set; }
 
     public sealed record ShareBackSlot

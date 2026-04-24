@@ -1,0 +1,48 @@
+{
+  "header": {
+    "title": "Automotive Marketplace",
+    "makes": "Makes",
+    "models": "Models",
+    "variants": "Variants",
+    "sellYourCar": "Sell your car",
+    "inbox": "Inbox",
+    "savedListings": "Saved listings",
+    "signUp": "Sign up"
+  },
+  "datePicker": {
+    "pickADate": "Pick a date"
+  },
+  "variantTable": {
+    "loading": "Loading variants…",
+    "failed": "Failed to load variants",
+    "fuel": "Fuel",
+    "transmission": "Transmission",
+    "powerKw": "Power (kW)",
+    "engineMl": "Engine (ml)",
+    "bodyType": "Body Type",
+    "doors": "Doors",
+    "noVariants": "No variants available for this model"
+  },
+  "select": {
+    "makes": "Makes",
+    "models": "Models",
+    "fuelTypes": "Fuel types",
+    "bodyTypes": "Body types",
+    "location": "Location",
+    "searchLocation": "Search location",
+    "noLocationFound": "No location found.",
+    "usedNew": "Used/New",
+    "allMakes": "All makes",
+    "allModels": "All models",
+    "anyLocation": "Any location",
+    "conditionNew": "New",
+    "conditionUsed": "Used",
+    "conditionUsedAndNew": "Used & New"
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "save": "Save"
+  }
+}
