@@ -31,6 +31,7 @@ public static class ServiceExtensions
         services.AddScoped<IDevelopmentSeeder, TransmissionSeeder>();
         services.AddScoped<IDevelopmentSeeder, BodyTypeSeeder>();
         services.AddScoped<IDevelopmentSeeder, DrivetrainSeeder>();
+        services.AddScoped<IDevelopmentSeeder, DefectCategorySeeder>();
         services.AddScoped<IDevelopmentSeeder, VariantSeeder>();
         services.AddScoped<IDevelopmentSeeder, ListingSeeder>();
 

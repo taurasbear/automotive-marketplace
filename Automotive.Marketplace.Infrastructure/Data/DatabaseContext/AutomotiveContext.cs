@@ -52,6 +52,12 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
 
+    public DbSet<DefectCategory> DefectCategories { get; set; }
+
+    public DbSet<DefectCategoryTranslation> DefectCategoryTranslations { get; set; }
+
+    public DbSet<ListingDefect> ListingDefects { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(VariantConfiguration).Assembly);

@@ -11,5 +11,10 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
         builder.HasOne(image => image.Listing)
             .WithMany(listing => listing.Images)
             .HasForeignKey(image => image.ListingId);
+
+        builder.HasOne(image => image.ListingDefect)
+            .WithMany(ld => ld.Images)
+            .HasForeignKey(image => image.ListingDefectId)
+            .IsRequired(false);
     }
 }
