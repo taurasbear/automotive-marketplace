@@ -1,5 +1,6 @@
 export { applyAuthResponse } from "./utils/applyAuthResponse";
 export { useLoginUser } from "./api/useLoginUser";
+export { useLogoutUser } from "./api/useLogoutUser";
 export { useRefreshToken } from "./api/useRefreshToken";
 export { useRegisterUser } from "./api/useRegisterUser";
 export { default as LogoutButton } from "./components/LogoutButton";

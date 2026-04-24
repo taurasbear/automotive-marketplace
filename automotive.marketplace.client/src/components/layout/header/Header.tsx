@@ -1,5 +1,4 @@
-import { PERMISSIONS } from "@/constants/permissions";
-import { LogoutButton, RegisterButton } from "@/features/auth";
+import { RegisterButton } from "@/features/auth";
 import { UnreadBadge } from "@/features/chat";
 import { useAppSelector } from "@/hooks/redux";
 import { Link } from "@tanstack/react-router";
@@ -8,10 +7,11 @@ import { IoHeart } from "react-icons/io5";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import { Button } from "../../ui/button";
 import ThemeToggle from "./ThemeToggle";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
   const { t } = useTranslation("common");
-  const { userId, permissions } = useAppSelector((state) => state.auth);
+  const { userId } = useAppSelector((state) => state.auth);
 
   return (
     <div className="dark:bg-secondary shadow-lg/2 dark:shadow-lg/4 dark:shadow-rose-600">
@@ -22,21 +22,6 @@ const Header = () => {
           </Link>{" "}
         </div>
         <div className="flex items-center space-x-2 truncate">
-          {permissions.includes(PERMISSIONS.ViewMakes) && (
-            <Link to="/makes">
-              <Button variant="link">{t("header.makes")}</Button>
-            </Link>
-          )}
-          {permissions.includes(PERMISSIONS.ViewModels) && (
-            <Link to="/models">
-              <Button variant="link">{t("header.models")}</Button>
-            </Link>
-          )}
-          {permissions.includes(PERMISSIONS.ViewVariants) && (
-            <Link to="/variants">
-              <Button variant="link">{t("header.variants")}</Button>
-            </Link>
-          )}
           <Link to="/listing/create">
             <Button variant="link">{t("header.sellYourCar")}</Button>
           </Link>
@@ -57,7 +42,7 @@ const Header = () => {
           )}
           <LanguageSwitcher />
           <ThemeToggle />
-          {userId ? <LogoutButton /> : <RegisterButton />}
+          {userId ? <UserMenu /> : <RegisterButton />}
         </div>
       </div>
     </div>

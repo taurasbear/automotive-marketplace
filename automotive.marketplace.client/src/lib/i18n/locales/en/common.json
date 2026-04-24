@@ -44,5 +44,17 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "save": "Save"
+  },
+  "userMenu": {
+    "myListings": "My Listings",
+    "makes": "Makes",
+    "models": "Models",
+    "variants": "Variants",
+    "profileSettings": "Profile Settings",
+    "logOut": "Log out",
+    "sectionMyListings": "My Listings",
+    "sectionAdmin": "Admin",
+    "sectionAccount": "Account",
+    "comingSoon": "Coming soon"
   }
 }

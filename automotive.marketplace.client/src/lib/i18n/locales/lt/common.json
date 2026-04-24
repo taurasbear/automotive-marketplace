@@ -44,5 +44,17 @@
     "confirm": "Patvirtinti",
     "delete": "Ištrinti",
     "save": "Išsaugoti"
+  },
+  "userMenu": {
+    "myListings": "Mano skelbimai",
+    "makes": "Markės",
+    "models": "Modeliai",
+    "variants": "Variantai",
+    "profileSettings": "Profilio nustatymai",
+    "logOut": "Atsijungti",
+    "sectionMyListings": "Mano skelbimai",
+    "sectionAdmin": "Administravimas",
+    "sectionAccount": "Paskyra",
+    "comingSoon": "Greitai"
   }
 }
