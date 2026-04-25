@@ -60,6 +60,8 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<Municipality> Municipalities { get; set; }
 
+    public DbSet<MakeExclusion> MakeExclusions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(VariantConfiguration).Assembly);

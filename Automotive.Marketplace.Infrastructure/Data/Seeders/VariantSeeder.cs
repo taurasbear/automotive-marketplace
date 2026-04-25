@@ -13,7 +13,10 @@ public class VariantSeeder(AutomotiveContext context) : IDevelopmentSeeder
         if (await context.Set<Variant>().AnyAsync(cancellationToken))
             return;
 
-        var models = await context.Set<Model>().ToListAsync(cancellationToken);
+        var models = await context.Set<Model>()
+            .OrderBy(m => m.Name)
+            .Take(20)
+            .ToListAsync(cancellationToken);
         var fuels = await context.Set<Fuel>().ToListAsync(cancellationToken);
         var transmissions = await context.Set<Transmission>().ToListAsync(cancellationToken);
         var bodyTypes = await context.Set<BodyType>().ToListAsync(cancellationToken);

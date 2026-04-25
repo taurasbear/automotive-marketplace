@@ -26,8 +26,7 @@ public static class ServiceExtensions
         services.AddScoped<IImageStorageService, S3ImageStorageService>();
 
         services.AddScoped<IDevelopmentSeeder, UserSeeder>();
-        services.AddScoped<IDevelopmentSeeder, MakeSeeder>();
-        services.AddScoped<IDevelopmentSeeder, ModelSeeder>();
+
         services.AddScoped<IDevelopmentSeeder, FuelSeeder>();
         services.AddScoped<IDevelopmentSeeder, TransmissionSeeder>();
         services.AddScoped<IDevelopmentSeeder, BodyTypeSeeder>();
