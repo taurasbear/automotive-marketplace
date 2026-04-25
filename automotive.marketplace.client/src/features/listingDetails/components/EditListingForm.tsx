@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
+import LocationCombobox from "@/components/forms/select/LocationCombobox";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -41,7 +43,7 @@ const EditListingForm = ({
       engineSizeMl: listing.engineSizeMl,
       mileage: listing.mileage,
       isSteeringWheelRight: listing.isSteeringWheelRight,
-      city: listing.city,
+      municipalityId: listing.municipalityId,
       isUsed: listing.isUsed,
       year: listing.year,
     },
@@ -96,16 +98,15 @@ const EditListingForm = ({
             )}
           />
           <FormField
-            name="city"
+            name="municipalityId"
             control={form.control}
             render={({ field }) => (
               <FormItem className="col-span-2 flex flex-col justify-start">
                 <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder={t("form.cityPlaceholder")}
-                    type="text"
-                    {...field}
+                  <LocationCombobox
+                    value={field.value || UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE}
+                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />

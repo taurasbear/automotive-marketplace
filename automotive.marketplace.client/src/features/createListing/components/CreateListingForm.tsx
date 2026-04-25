@@ -2,6 +2,7 @@ import DrivetrainToggleGroup from "@/components/forms/DrivetrainToggleGroup";
 import DefectSelector from "@/components/forms/DefectSelector";
 import BodyTypeSelect from "@/components/forms/select/BodyTypeSelect";
 import FuelSelect from "@/components/forms/select/FuelSelect";
+import LocationCombobox from "@/components/forms/select/LocationCombobox";
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
 import VariantTable from "@/components/forms/VariantTable";
@@ -19,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { VALIDATION } from "@/constants/validation";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { Variant } from "@/features/variantList/types/Variant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Unlock } from "lucide-react";
@@ -54,7 +56,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       makeId: "",
       modelId: "",
       variantId: "",
-      city: "",
+      municipalityId: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
       colour: "",
       isUsed: false,
       isCustom: true,
@@ -431,16 +433,15 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             )}
           />
           <FormField
-            name="city"
+            name="municipalityId"
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
                 <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder={t("form.cityPlaceholder")}
-                    type="text"
-                    {...field}
+                  <LocationCombobox
+                    value={field.value || UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE}
+                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
