@@ -13,7 +13,9 @@ public class LithuanianMunicipalityApiClient(HttpClient httpClient) : IMunicipal
         CancellationToken cancellationToken = default)
     {
         var response = await httpClient.GetFromJsonAsync<ApiResponse>(ApiUrl, cancellationToken);
-        return response?.Data?.Select(item => new MunicipalityDto(item.Id, item.Pavadinimas))
+        return response?.Data?
+                   .Where(item => Guid.TryParse(item.RawId, out _))
+                   .Select(item => new MunicipalityDto(Guid.Parse(item.RawId!), item.Pavadinimas))
                ?? [];
     }
 
@@ -26,7 +28,7 @@ public class LithuanianMunicipalityApiClient(HttpClient httpClient) : IMunicipal
     private class ApiItem
     {
         [JsonPropertyName("_id")]
-        public Guid Id { get; set; }
+        public string? RawId { get; set; }
 
         [JsonPropertyName("pavadinimas")]
         public string Pavadinimas { get; set; } = string.Empty;
