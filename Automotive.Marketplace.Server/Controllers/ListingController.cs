@@ -6,6 +6,7 @@ using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComp
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetMyListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.SearchListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingEngagements;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingScore;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
@@ -98,6 +99,15 @@ public class ListingController(IMediator mediator) : BaseController
         CancellationToken cancellationToken)
     {
         var query = new GetListingEngagementsQuery { ListingId = id, CurrentUserId = UserId };
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetListingScoreResponse>> GetScore(
+        [FromQuery] GetListingScoreQuery query,
+        CancellationToken cancellationToken)
+    {
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }
