@@ -48,12 +48,14 @@ This is the standard OpenAI API endpoint.
 
 **Endpoint:** `POST /v1/chat/completions`
 
+**Use `gpt-5.4-mini` for text-to-text input and output.**
+
 ```bash
 curl "https://api.openai.com/v1/chat/completions" \
   -H "Authorization: Bearer $OPENAI_APIKEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-4",
+    "model": "gpt-5.4-mini",
     "messages": [
       {
         "role": "system",
@@ -70,7 +72,7 @@ curl "https://api.openai.com/v1/chat/completions" \
 ```
 
 **Request body fields:**
-- `model`: Model to use (e.g., `"gpt-4"`, `"gpt-3.5-turbo"`)
+- `model`: Use `"gpt-5.4-mini"` for text-to-text completions
 - `messages`: Array of message objects with `role` (system/user/assistant) and `content`
 - `temperature`: 0-2, controls randomness (0=deterministic, 2=maximum randomness, default 1)
 - `max_tokens`: Maximum response length
@@ -141,7 +143,7 @@ curl "https://api.openai.com/v1/embeddings" \
 | Using `Bearer` instead of `Authorization: Bearer` | Correct format: `-H "Authorization: Bearer $OPENAI_APIKEY"` |
 | Using `/responses` endpoint | Use `/chat/completions` or `/completions`, not `/responses` |
 | Using `"input"` field instead of `"messages"` | Chat API uses `"messages": [{ "role": "user", "content": "..." }]` |
-| Model name `gpt-5.4-mini` doesn't exist | Valid models: `gpt-4`, `gpt-3.5-turbo`, `gpt-4-turbo`, `text-embedding-3-small` |
+| Not using `gpt-5.4-mini` for text-to-text | Use `gpt-5.4-mini` for text-to-text input/output; use `gpt-realtime-mini` for image-to-text |
 | Forgetting `"role"` in messages | Each message must have `"role": "system"`, `"user"`, or `"assistant"` |
 | Sending API key in body/query | Send ONLY in `Authorization` header |
 | Not checking for errors | Check for `"error"` field in response |
@@ -174,19 +176,21 @@ curl "https://api.openai.com/v1/embeddings" \
 
 ## Available Models
 
-**Chat/Completions:**
-- `gpt-4` — Most capable, slowest
-- `gpt-4-turbo` — Faster than gpt-4
-- `gpt-3.5-turbo` — Fastest, cheapest
-- `gpt-3.5-turbo-16k` — Extended context window
+**Text-to-Text Completions:**
+- `gpt-5.4-mini` — Use for text-to-text input/output (Recommended for most use cases)
+
+**Image-to-Text:**
+- `gpt-realtime-mini` — Use for image-to-text input/output
+
+**Legacy/Deprecated:**
+- `gpt-4` — Legacy, don't use
+- `gpt-4-turbo` — Legacy, don't use
+- `gpt-3.5-turbo` — Legacy, don't use
 
 **Embeddings:**
 - `text-embedding-3-small` — Fast, efficient
 - `text-embedding-3-large` — More accurate, slower
 - `text-embedding-ada-002` — Legacy, don't use
-
-**Vision (use with images):**
-- `gpt-4-vision` — Can analyze images in messages
 
 ## Important: Streaming
 
@@ -197,13 +201,44 @@ curl "https://api.openai.com/v1/chat/completions" \
   -H "Authorization: Bearer $OPENAI_APIKEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-4",
+    "model": "gpt-5.4-mini",
     "messages": [...],
     "stream": true
   }'
 ```
 
 Responses arrive as `data: {...}` lines (Server-Sent Events format).
+
+## Image-to-Text Input/Output
+
+For image-to-text capabilities, use `gpt-realtime-mini` model. Include images in messages using vision format.
+
+**Example with image:**
+```bash
+curl "https://api.openai.com/v1/chat/completions" \
+  -H "Authorization: Bearer $OPENAI_APIKEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-realtime-mini",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "What is in this image?"
+          },
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "https://example.com/image.jpg"
+            }
+          }
+        ]
+      }
+    ]
+  }'
+```
 
 ## Documentation
 
