@@ -8,7 +8,7 @@ public sealed record class GetAllListingsQuery : IRequest<IEnumerable<GetAllList
 
     public ICollection<Guid> Models { get; set; } = [];
 
-    public string? City { get; set; }
+    public Guid? MunicipalityId { get; set; }
 
     public bool? IsUsed { get; set; }
 

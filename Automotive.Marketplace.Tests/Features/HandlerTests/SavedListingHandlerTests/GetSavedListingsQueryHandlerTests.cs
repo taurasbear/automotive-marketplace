@@ -45,7 +45,6 @@ public class GetSavedListingsQueryHandlerTests(
         result.Should().HaveCount(1);
         result[0].ListingId.Should().Be(listing.Id);
         result[0].Price.Should().Be(listing.Price);
-        result[0].City.Should().Be(listing.City);
         result[0].Mileage.Should().Be(listing.Mileage);
         result[0].NoteContent.Should().BeNull();
     }
@@ -94,14 +93,16 @@ public class GetSavedListingsQueryHandlerTests(
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var variant = new VariantBuilder()
             .WithModel(model.Id).WithFuel(fuel.Id)
             .WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
         var listing = new ListingBuilder()
-            .WithSeller(user.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+            .WithSeller(user.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+            .WithMunicipality(municipality.Id).Build();
         var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
 
-        await context.AddRangeAsync(user, make, model, fuel, transmission, bodyType, drivetrain, variant, listing, like);
+        await context.AddRangeAsync(user, make, model, fuel, transmission, bodyType, drivetrain, municipality, variant, listing, like);
 
         if (noteContent is not null)
         {

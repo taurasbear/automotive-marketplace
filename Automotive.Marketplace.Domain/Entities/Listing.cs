@@ -6,7 +6,9 @@ public class Listing : BaseEntity
 {
     public decimal Price { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public Guid MunicipalityId { get; set; }
+
+    public virtual Municipality Municipality { get; set; } = null!;
 
     public Status Status { get; set; }
 

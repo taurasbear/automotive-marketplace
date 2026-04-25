@@ -9,7 +9,8 @@ public sealed record GetListingByIdResponse
     public int Mileage { get; set; }
     public string Description { get; set; } = string.Empty;
     public bool IsUsed { get; set; }
-    public string City { get; set; } = string.Empty;
+    public Guid MunicipalityId { get; set; }
+    public string MunicipalityName { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public Guid VariantId { get; set; }
     public int Year { get; set; }

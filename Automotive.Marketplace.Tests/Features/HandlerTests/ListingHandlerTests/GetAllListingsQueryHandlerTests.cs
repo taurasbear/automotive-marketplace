@@ -124,7 +124,7 @@ public class GetAllListingsQueryHandlerTests(
     }
 
     [Fact]
-    public async Task Handle_FilterByCity_ShouldReturnFilteredListings()
+    public async Task Handle_FilterByMunicipalityId_ShouldReturnFilteredListings()
     {
         // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
@@ -137,9 +137,9 @@ public class GetAllListingsQueryHandlerTests(
         var matchingListings = await SeedListingsAsync(context, expectedCount);
         _ = await SeedListingsAsync(context, otherCount);
 
-        var city = matchingListings.First().City;
+        var municipalityId = matchingListings.First().MunicipalityId;
 
-        var query = new GetAllListingsQuery { City = city };
+        var query = new GetAllListingsQuery { MunicipalityId = municipalityId };
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -495,8 +495,9 @@ public class GetAllListingsQueryHandlerTests(
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
 
-        await context.AddRangeAsync(seller, make, model, transmission, bodyType, drivetrain);
+        await context.AddRangeAsync(seller, make, model, transmission, bodyType, drivetrain, municipality);
 
         List<Listing> listings = [];
         for (int i = 0; i < count; i++)
@@ -516,7 +517,8 @@ public class GetAllListingsQueryHandlerTests(
             var listingBuilder = new ListingBuilder()
                 .WithSeller(seller.Id)
                 .WithVariant(variant.Id)
-                .WithDrivetrain(drivetrain.Id);
+                .WithDrivetrain(drivetrain.Id)
+                .WithMunicipality(municipality.Id);
 
             if (carYear.HasValue)
             {

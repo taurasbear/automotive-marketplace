@@ -27,6 +27,7 @@ public class GetMyListingsQueryHandler(
             .Include(l => l.Images)
             .Include(l => l.Defects)
             .Include(l => l.Likes)
+            .Include(l => l.Municipality)
             .Where(l => l.SellerId == request.SellerId)
             .OrderByDescending(l => l.CreatedAt)
             .ToListAsync(cancellationToken);

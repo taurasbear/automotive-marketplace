@@ -34,6 +34,7 @@ public class GetListingByIdQueryHandler(
                 .ThenInclude(d => d.DefectCategory)
             .Include(l => l.Defects)
                 .ThenInclude(d => d.Images)
+            .Include(l => l.Municipality)
             .FirstOrDefaultAsync(l => l.Id == request.Id, cancellationToken)
             ?? throw new DbEntityNotFoundException(nameof(Listing), request.Id);
 

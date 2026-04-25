@@ -86,7 +86,7 @@ public class CreateListingCommandHandler(IRepository repository, IMapper mapper,
             VariantId = variantId,
             DrivetrainId = request.DrivetrainId,
             IsUsed = request.IsUsed,
-            City = request.City,
+            MunicipalityId = request.MunicipalityId,
             Status = Status.Available,
         };
 

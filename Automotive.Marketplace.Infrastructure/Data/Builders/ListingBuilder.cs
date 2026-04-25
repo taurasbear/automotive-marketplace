@@ -15,7 +15,7 @@ public class ListingBuilder
             .RuleFor(listing => listing.Id, f => f.Random.Guid())
             .RuleFor(listing => listing.Price, f => f.Random.Decimal(100, 50000))
             .RuleFor(listing => listing.Description, f => f.Lorem.Sentences(2))
-            .RuleFor(listing => listing.City, f => f.Address.City())
+            .RuleFor(listing => listing.Status, Status.Available)
             .RuleFor(listing => listing.Status, Status.Available)
             .RuleFor(listing => listing.Vin, f => f.Vehicle.Vin())
             .RuleFor(listing => listing.Colour, f => f.Commerce.Color())
@@ -64,6 +64,12 @@ public class ListingBuilder
     public ListingBuilder WithDrivetrain(Guid drivetrainId)
     {
         _faker.RuleFor(listing => listing.DrivetrainId, drivetrainId);
+        return this;
+    }
+
+    public ListingBuilder WithMunicipality(Guid municipalityId)
+    {
+        _faker.RuleFor(listing => listing.MunicipalityId, municipalityId);
         return this;
     }
 

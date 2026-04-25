@@ -26,6 +26,7 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.SellerName, opt => opt.MapFrom((src, dest) => src.Seller != null ? src.Seller.Username ?? string.Empty : string.Empty))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? string.Empty))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.MunicipalityName, opt => opt.MapFrom(src => src.Municipality != null ? src.Municipality.Name : string.Empty))
             .ForMember(dest => dest.Thumbnail, opt => opt.Ignore())
             .ForMember(dest => dest.IsLiked, opt => opt.Ignore())
             .ForMember(dest => dest.Images, opt => opt.Ignore())
@@ -39,7 +40,7 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.Vin, opt => opt.MapFrom(src => src.Vin))
             .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Mileage))
             .ForMember(dest => dest.IsSteeringWheelRight, opt => opt.MapFrom(src => src.IsSteeringWheelRight))
-            .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+            .ForMember(dest => dest.MunicipalityId, opt => opt.MapFrom(src => src.MunicipalityId))
             .ForMember(dest => dest.IsUsed, opt => opt.MapFrom(src => src.IsUsed));
 
         CreateMap<Listing, GetListingByIdResponse>()
@@ -60,6 +61,8 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.IsSteeringWheelRight, opt => opt.MapFrom(src => src.IsSteeringWheelRight))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? string.Empty))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.MunicipalityId, opt => opt.MapFrom(src => src.MunicipalityId))
+            .ForMember(dest => dest.MunicipalityName, opt => opt.MapFrom(src => src.Municipality != null ? src.Municipality.Name : string.Empty))
             .ForMember(dest => dest.Images, opt => opt.Ignore())
             .ForMember(dest => dest.Defects, opt => opt.Ignore());
 
@@ -71,6 +74,7 @@ public class ListingMapping : Profile
             .ForMember(dest => dest.PowerKw, opt => opt.MapFrom((src, _) => src.Variant != null ? src.Variant.PowerKw : 0))
             .ForMember(dest => dest.EngineSizeMl, opt => opt.MapFrom((src, _) => src.Variant != null ? src.Variant.EngineSizeMl : 0))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.MunicipalityName, opt => opt.MapFrom(src => src.Municipality != null ? src.Municipality.Name : string.Empty))
             .ForMember(dest => dest.Thumbnail, opt => opt.Ignore())
             .ForMember(dest => dest.ImageCount, opt => opt.Ignore())
             .ForMember(dest => dest.DefectCount, opt => opt.Ignore())

@@ -23,6 +23,6 @@ public sealed record CreateListingCommand(
     int PowerKw,
     int EngineSizeMl,
     bool IsUsed,
-    string City,
+    Guid MunicipalityId,
     List<IFormFile> Images
 ) : IRequest<CreateListingResponse>;

@@ -22,7 +22,7 @@ public sealed record UpdateListingCommand : IRequest
 
     public bool IsSteeringWheelRight { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public Guid MunicipalityId { get; set; }
 
     public bool IsUsed { get; set; }
 

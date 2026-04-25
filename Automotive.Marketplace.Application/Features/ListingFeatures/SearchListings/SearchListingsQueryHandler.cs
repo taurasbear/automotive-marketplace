@@ -25,6 +25,7 @@ public class SearchListingsQueryHandler(
                     .ThenInclude(m => m.Make)
             .Include(l => l.Seller)
             .Include(l => l.Images)
+            .Include(l => l.Municipality)
             .Where(l =>
                 l.Variant.Model.Make.Name.ToLower().Contains(q) ||
                 l.Variant.Model.Name.ToLower().Contains(q) ||
@@ -45,7 +46,7 @@ public class SearchListingsQueryHandler(
                 Year = listing.Year,
                 Price = listing.Price,
                 Mileage = listing.Mileage,
-                City = listing.City,
+                MunicipalityName = listing.Municipality?.Name ?? string.Empty,
                 SellerName = listing.Seller?.Username ?? string.Empty,
             };
 

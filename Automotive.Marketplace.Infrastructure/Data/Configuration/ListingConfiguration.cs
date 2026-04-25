@@ -21,6 +21,11 @@ public class ListingConfiguration : IEntityTypeConfiguration<Listing>
             .WithMany(user => user.Listings)
             .HasForeignKey(listing => listing.SellerId);
 
+        builder.HasOne(listing => listing.Municipality)
+            .WithMany()
+            .HasForeignKey(listing => listing.MunicipalityId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.Property(listing => listing.Status)
             .HasConversion(
                 statusEnum => statusEnum.ToString(),
