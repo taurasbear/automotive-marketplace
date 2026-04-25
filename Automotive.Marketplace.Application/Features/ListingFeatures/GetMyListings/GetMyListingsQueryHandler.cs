@@ -39,17 +39,6 @@ public class GetMyListingsQueryHandler(
 
             var nonDefectImages = listing.Images.Where(i => i.ListingDefectId == null).ToList();
 
-            // Thumbnail
-            var firstImage = nonDefectImages.FirstOrDefault();
-            if (firstImage != null)
-            {
-                mappedListing.Thumbnail = new ImageDto
-                {
-                    Url = await imageStorageService.GetPresignedUrlAsync(firstImage.ObjectKey),
-                    AltText = firstImage.AltText
-                };
-            }
-
             // All non-defect images for hover gallery
             var images = new List<ImageDto>();
             foreach (var image in nonDefectImages)
@@ -61,6 +50,9 @@ public class GetMyListingsQueryHandler(
                 });
             }
             mappedListing.Images = images;
+
+            // Thumbnail reuses the already-signed first image — no second S3 call
+            mappedListing.Thumbnail = images.FirstOrDefault();
 
             // Counts
             mappedListing.ImageCount = listing.Images.Count;
