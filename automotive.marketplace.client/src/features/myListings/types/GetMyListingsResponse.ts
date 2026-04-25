@@ -1,4 +1,4 @@
-type Image = {
+export type ListingImage = {
   url: string;
   altText: string;
 };
@@ -13,8 +13,8 @@ export type GetMyListingsResponse = {
   year: number;
   makeName: string;
   modelName: string;
-  thumbnail: Image | null;
-  images: Image[];
+  thumbnail: ListingImage | null;
+  images: ListingImage[];
   imageCount: number;
   defectCount: number;
   fuelName: string;
