@@ -38,6 +38,10 @@ public static class ServiceExtensions
         services.AddHttpClient<IMunicipalityApiClient, LithuanianMunicipalityApiClient>();
         services.AddScoped<IMunicipalityInitializer, MunicipalityInitializer>();
 
+        services.AddHttpClient<IVehicleDataApiClient, VpicVehicleDataApiClient>();
+        services.AddScoped<IVehicleDataInitializer, VehicleDataInitializer>();
+        services.AddScoped<MakeExclusionSeeder>();
+
         var minioServerURL = configuration["MinIO:ServerURL"];
         var accessKey = configuration["MinIO:AccessKey"];
         var secretKey = configuration["MinIO:SecretKey"];

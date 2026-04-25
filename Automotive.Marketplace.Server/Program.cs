@@ -1,3 +1,4 @@
+using Automotive.Marketplace.Infrastructure.Data.Seeders;
 using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
@@ -91,6 +92,7 @@ builder.Services.AddSignalR()
 builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.OfferExpiryService>();
 builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.MeetingExpiryService>();
 builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.MunicipalitySyncService>();
+builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.VehicleDataSyncService>();
 
 var app = builder.Build();
 
@@ -112,8 +114,14 @@ using (var scope = app.Services.CreateScope())
     var automotiveContext = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
     await automotiveContext.Database.MigrateAsync();
 
+    var makeExclusionSeeder = scope.ServiceProvider.GetRequiredService<MakeExclusionSeeder>();
+    await makeExclusionSeeder.SeedAsync(app.Lifetime.ApplicationStopping);
+
     var municipalityInitializer = scope.ServiceProvider.GetRequiredService<IMunicipalityInitializer>();
     await municipalityInitializer.RunAsync(app.Lifetime.ApplicationStopping);
+
+    var vehicleDataInitializer = scope.ServiceProvider.GetRequiredService<IVehicleDataInitializer>();
+    await vehicleDataInitializer.RunAsync(app.Lifetime.ApplicationStopping);
 
     if (app.Environment.IsDevelopment())
     {
