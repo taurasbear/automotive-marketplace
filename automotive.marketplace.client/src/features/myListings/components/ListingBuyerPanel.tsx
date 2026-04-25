@@ -146,7 +146,7 @@ export default function ListingBuyerPanel({
         unreadCount: 0,
         buyerId: liker.userId,
         sellerId,
-        buyerHasEngaged: false,
+        buyerHasEngaged: true,
       });
     } catch {
       // error already handled via mutation meta toast
@@ -185,7 +185,7 @@ export default function ListingBuyerPanel({
             {t("buyerPanel.conversations")} ({conversations.length})
           </TabsTrigger>
           <TabsTrigger value="likes">
-            {t("buyerPanel.likes")} ({likers.length})
+            {t("buyerPanel.likedOnly")} ({likers.length})
           </TabsTrigger>
         </TabsList>
 
