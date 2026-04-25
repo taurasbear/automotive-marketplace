@@ -47,7 +47,7 @@ const searchResults: SearchListingsResponse[] = [
     year: 2020,
     price: 15000,
     mileage: 50000,
-    city: "Vilnius",
+    municipalityName: "Vilnius",
     sellerName: "John",
   },
   {
@@ -57,7 +57,7 @@ const searchResults: SearchListingsResponse[] = [
     year: 2019,
     price: 12000,
     mileage: 80000,
-    city: "Kaunas",
+    municipalityName: "Kaunas",
     sellerName: "Jane",
   },
 ];
@@ -186,7 +186,7 @@ const savedListings: SavedListing[] = [
     listingId: "saved-111",
     title: "2021 BMW 3 Series",
     price: 25000,
-    city: "Klaipeda",
+    municipalityName: "Klaipeda",
     mileage: 30000,
     fuelName: "Diesel",
     transmissionName: "Automatic",
@@ -197,7 +197,7 @@ const savedListings: SavedListing[] = [
     listingId: "saved-222",
     title: "2018 Audi A4",
     price: 18000,
-    city: "Vilnius",
+    municipalityName: "Vilnius",
     mileage: 60000,
     fuelName: "Petrol",
     transmissionName: "Automatic",
@@ -321,7 +321,7 @@ const searchResultsWithSaved: SearchListingsResponse[] = [
     year: 2021,
     price: 25000,
     mileage: 30000,
-    city: "Klaipeda",
+    municipalityName: "Klaipeda",
     sellerName: "Max",
   },
   {
@@ -331,7 +331,7 @@ const searchResultsWithSaved: SearchListingsResponse[] = [
     year: 2019,
     price: 12000,
     mileage: 80000,
-    city: "Kaunas",
+    municipalityName: "Kaunas",
     sellerName: "Jane",
   },
 ];

@@ -11,7 +11,7 @@ const base: GetListingByIdResponse = {
   engineSizeMl: 1998,
   mileage: 50000,
   isSteeringWheelRight: false,
-  city: "Vilnius",
+  municipalityId: "uuid-vilnius", municipalityName: "Vilnius",
   isUsed: true,
   year: 2020,
   transmissionName: "Automatic",

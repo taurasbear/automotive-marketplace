@@ -33,7 +33,8 @@ const LocationCombobox = ({
 }: LocationComboboxProps) => {
   const { t } = useTranslation("common");
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
-  const { data: municipalities = [] } = useQuery(getMunicipalitiesOptions());
+  const { data: municipalitiesResponse } = useQuery(getMunicipalitiesOptions());
+  const municipalities = municipalitiesResponse?.data ?? [];
 
   const selectedName =
     value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
