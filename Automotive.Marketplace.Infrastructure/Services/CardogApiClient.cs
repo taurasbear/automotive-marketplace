@@ -1,10 +1,11 @@
 using Automotive.Marketplace.Application.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace Automotive.Marketplace.Infrastructure.Services;
 
-public class CardogApiClient(HttpClient httpClient) : ICardogApiClient
+public class CardogApiClient(HttpClient httpClient, ILogger<CardogApiClient> logger) : ICardogApiClient
 {
     public async Task<CardogEfficiencyResult?> GetEfficiencyAsync(
         string make, string model, int year, CancellationToken cancellationToken)
@@ -31,8 +32,9 @@ public class CardogApiClient(HttpClient httpClient) : ICardogApiClient
                 avgLiters > 0 ? avgLiters : null,
                 avgKwh > 0 ? avgKwh : null);
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogWarning(ex, "CarDog efficiency call failed for {Make} {Model} {Year}", make, model, year);
             return null;
         }
     }
@@ -47,8 +49,9 @@ public class CardogApiClient(HttpClient httpClient) : ICardogApiClient
             if (response is null) return null;
             return new CardogMarketResult(response.MedianPrice, response.TotalListings);
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogWarning(ex, "CarDog market call failed for {Make} {Model} {Year}", make, model, year);
             return null;
         }
     }
@@ -61,30 +64,32 @@ public class CardogApiClient(HttpClient httpClient) : ICardogApiClient
             var makeEncoded = Uri.EscapeDataString(make.ToUpperInvariant());
             var modelEncoded = Uri.EscapeDataString(model.ToUpperInvariant());
 
-            var recallsResponse = await httpClient.GetFromJsonAsync<CountResponse>(
+            var recallsTask = httpClient.GetFromJsonAsync<CountResponse>(
                 $"recalls/us/search?makes={makeEncoded}&models={modelEncoded}&year={year}&limit=1",
                 cancellationToken);
 
-            var crashesResponse = await httpClient.GetFromJsonAsync<CountResponse>(
+            var crashesTask = httpClient.GetFromJsonAsync<CountResponse>(
                 $"complaints/search?makes={makeEncoded}&models={modelEncoded}&yearMin={year}&yearMax={year}&crashInvolved=true&limit=1",
                 cancellationToken);
 
-            var injuriesResponse = await httpClient.GetFromJsonAsync<CountResponse>(
+            var injuriesTask = httpClient.GetFromJsonAsync<CountResponse>(
                 $"complaints/search?makes={makeEncoded}&models={modelEncoded}&yearMin={year}&yearMax={year}&hasInjuries=true&limit=1",
                 cancellationToken);
 
+            await Task.WhenAll(recallsTask, crashesTask, injuriesTask);
+
             return new CardogReliabilityResult(
-                recallsResponse?.Count ?? 0,
-                crashesResponse?.Count ?? 0,
-                injuriesResponse?.Count ?? 0);
+                recallsTask.Result?.Count ?? 0,
+                crashesTask.Result?.Count ?? 0,
+                injuriesTask.Result?.Count ?? 0);
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogWarning(ex, "CarDog reliability call failed for {Make} {Model} {Year}", make, model, year);
             return null;
         }
     }
 
-    // Private JSON models
     private class EfficiencyResponse
     {
         [JsonPropertyName("data")]

@@ -1,7 +1,6 @@
 ﻿using Amazon.S3;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
-using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Infrastructure.Data;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Infrastructure.Data.Seeders;
