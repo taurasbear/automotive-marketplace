@@ -4,6 +4,7 @@ export const listingKeys = {
   all: () => ["listing"],
   bySearchParams: (query: GetAllListingsQuery) => [...listingKeys.all(), query],
   byId: (id: string) => [...listingKeys.all(), id],
+  score: (id: string) => [...listingKeys.all(), id, "score"],
   comparison: (a: string, b: string) => [
     ...listingKeys.all(),
     "comparison",

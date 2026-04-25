@@ -9,6 +9,7 @@ export const ENDPOINTS = {
     SEARCH: "/Listing/Search",
     COMPARE: "/Listing/Compare",
     GET_ENGAGEMENTS: "/Listing/GetEngagements",
+    GET_SCORE: "/Listing/GetScore",
   },
   AUTH: {
     REFRESH: "/Auth/Refresh",
