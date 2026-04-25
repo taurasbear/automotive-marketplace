@@ -326,11 +326,15 @@ public class GetAllListingsQueryHandlerTests(
         var seller = new UserBuilder().Build();
         await context.AddAsync(seller);
 
+        var municipality = new MunicipalityBuilder().Build();
+        await context.AddAsync(municipality);
+
         var listing = new ListingBuilder()
             .WithSeller(seller.Id)
             .WithVariant(variant.Id)
             .WithDrivetrain(drivetrain.Id)
             .WithYear(expectedYear)
+            .WithMunicipality(municipality.Id)
             .Build();
         await context.AddAsync(listing);
         await context.SaveChangesAsync();

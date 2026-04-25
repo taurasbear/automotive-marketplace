@@ -38,10 +38,12 @@ public class GetListingEngagementsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
         return (listing.Id, seller.Id);
     }

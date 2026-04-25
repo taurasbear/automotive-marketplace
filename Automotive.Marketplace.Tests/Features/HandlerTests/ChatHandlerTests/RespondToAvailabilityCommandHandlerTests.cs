@@ -267,12 +267,14 @@ public class RespondToAvailabilityCommandHandlerTests(
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var variant = new VariantBuilder()
             .WithModel(model.Id).WithFuel(fuel.Id)
             .WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id)
-            .WithDrivetrain(drivetrain.Id).WithPrice(15000m).Build();
+            .WithDrivetrain(drivetrain.Id).WithPrice(15000m)
+            .WithMunicipality(municipality.Id).Build();
         var conversation = new ConversationBuilder()
             .WithBuyer(buyer.Id).WithListing(listing.Id).Build();
 
@@ -288,7 +290,7 @@ public class RespondToAvailabilityCommandHandlerTests(
             .Build();
 
         await context.AddRangeAsync(seller, buyer, make, model, fuel,
-            transmission, bodyType, drivetrain, variant, listing, conversation, card, slot);
+            transmission, bodyType, drivetrain, municipality, variant, listing, conversation, card, slot);
         await context.SaveChangesAsync();
 
         return (buyer, seller, conversation, card, slot);

@@ -43,10 +43,12 @@ public class GetMyListingsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
         return (listing, seller);
     }
@@ -138,14 +140,15 @@ public class GetMyListingsQueryHandlerTests(
         var user1 = new UserBuilder().Build();
         var user2 = new UserBuilder().Build();
         var user3 = new UserBuilder().Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+        var municipality = new MunicipalityBuilder().Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).Build();
         var likes = new[]
         {
             new UserListingLikeBuilder().WithListing(listing.Id).WithUser(user1.Id).Build(),
             new UserListingLikeBuilder().WithListing(listing.Id).WithUser(user2.Id).Build(),
             new UserListingLikeBuilder().WithListing(listing.Id).WithUser(user3.Id).Build()
         };
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, user1, user2, user3, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, user1, user2, user3, municipality, listing);
         await context.AddRangeAsync(likes);
         await context.SaveChangesAsync();
 
@@ -176,12 +179,13 @@ public class GetMyListingsQueryHandlerTests(
         var seller = new UserBuilder().Build();
         var buyer1 = new UserBuilder().Build();
         var buyer2 = new UserBuilder().Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+        var municipality1 = new MunicipalityBuilder().Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality1.Id).Build();
         var conv1 = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer1.Id).Build();
         var conv2 = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer2.Id).Build();
         var msg1 = new MessageBuilder().WithConversation(conv1.Id).WithSender(buyer1.Id).Build();
         var msg2 = new MessageBuilder().WithConversation(conv2.Id).WithSender(buyer2.Id).Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, buyer1, buyer2, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, buyer1, buyer2, municipality1, listing);
         await context.AddRangeAsync(conv1, conv2, msg1, msg2);
         await context.SaveChangesAsync();
 
@@ -212,14 +216,15 @@ public class GetMyListingsQueryHandlerTests(
         var seller = new UserBuilder().Build();
         var buyer1 = new UserBuilder().Build();
         var buyer2 = new UserBuilder().Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+        var municipality2 = new MunicipalityBuilder().Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality2.Id).Build();
         // conversation with a message
         var conversationWithMessage = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer1.Id).Build();
         var message = new MessageBuilder().WithConversation(conversationWithMessage.Id).WithSender(buyer1.Id).Build();
         // conversation with no messages (buyer opened chat but sent nothing)
         var emptyConversation = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer2.Id).Build();
 
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, buyer1, buyer2, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, buyer1, buyer2, municipality2, listing);
         await context.AddRangeAsync(conversationWithMessage, message, emptyConversation);
         await context.SaveChangesAsync();
 
