@@ -12,8 +12,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { getMunicipalitiesOptions } from "@/features/listingList/api/getMunicipalitiesOptions";
 import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,13 +32,13 @@ const LocationCombobox = ({
   className,
 }: LocationComboboxProps) => {
   const { t } = useTranslation("common");
-  const locations = [
-    { value: "kaunas", label: "Kaunas" },
-    { value: "trakai", label: "Trakai" },
-    { value: "vilnius", label: "Vilnius" },
-  ];
-
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+  const { data: municipalities = [] } = useQuery(getMunicipalitiesOptions());
+
+  const selectedName =
+    value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+      ? null
+      : municipalities.find((m) => m.id === value)?.name;
 
   return (
     <div>
@@ -54,13 +56,9 @@ const LocationCombobox = ({
               <span className="text-muted-foreground text-xs">
                 {t("select.location")}
               </span>
-              {value === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE ? (
-                <span className="truncate text-sm">
-                  {t("select.anyLocation")}
-                </span>
-              ) : (
-                locations.find((location) => location.value === value)?.label
-              )}
+              <span className="truncate text-sm">
+                {selectedName ?? t("select.anyLocation")}
+              </span>
             </div>
             <ChevronDown className="opacity-50" />
           </Button>
@@ -71,20 +69,20 @@ const LocationCombobox = ({
             <CommandList>
               <CommandEmpty>{t("select.noLocationFound")}</CommandEmpty>
               <CommandGroup>
-                {locations.map((location) => (
+                {municipalities.map((municipality) => (
                   <CommandItem
-                    key={location.value}
-                    value={location.value.toString()}
-                    onSelect={(newLocation) => {
+                    key={municipality.id}
+                    value={municipality.name}
+                    onSelect={() => {
                       onValueChange(
-                        newLocation === value
+                        municipality.id === value
                           ? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
-                          : newLocation,
+                          : municipality.id,
                       );
                       setIsPopoverOpen(false);
                     }}
                   >
-                    {location.label}
+                    {municipality.name}
                   </CommandItem>
                 ))}
               </CommandGroup>
