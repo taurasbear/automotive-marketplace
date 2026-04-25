@@ -232,42 +232,49 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
           <EditableField
             label={t("fields.price")}
             value={listing.price}
+            pendingValue={pendingChanges.price as number | undefined}
             type="number"
             onConfirm={(value) => handleFieldChange("price", value)}
           />
           <EditableField
             label={t("fields.city")}
             value={listing.city}
+            pendingValue={pendingChanges.city as string | undefined}
             type="text"
             onConfirm={(value) => handleFieldChange("city", value)}
           />
           <EditableField
             label={t("fields.mileage")}
             value={listing.mileage}
+            pendingValue={pendingChanges.mileage as number | undefined}
             type="number"
             onConfirm={(value) => handleFieldChange("mileage", value)}
           />
           <EditableField
             label={t("fields.description")}
             value={listing.description || ""}
+            pendingValue={pendingChanges.description as string | undefined}
             type="textarea"
             onConfirm={(value) => handleFieldChange("description", value)}
           />
           <EditableField
             label={t("fields.colour")}
             value={listing.colour || ""}
+            pendingValue={pendingChanges.colour as string | undefined}
             type="text"
             onConfirm={(value) => handleFieldChange("colour", value)}
           />
           <EditableField
             label={t("fields.vin")}
             value={listing.vin || ""}
+            pendingValue={pendingChanges.vin as string | undefined}
             type="text"
             onConfirm={(value) => handleFieldChange("vin", value)}
           />
           <EditableField
             label={t("fields.isUsed")}
             value={listing.isUsed}
+            pendingValue={pendingChanges.isUsed as boolean | undefined}
             type="toggle"
             toggleLabels={{ on: t("fields.used"), off: t("fields.new") }}
             onConfirm={(value) => handleFieldChange("isUsed", value)}
@@ -275,6 +282,7 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
           <EditableField
             label={t("fields.steeringWheel")}
             value={listing.isSteeringWheelRight}
+            pendingValue={pendingChanges.isSteeringWheelRight as boolean | undefined}
             type="toggle"
             toggleLabels={{ on: t("fields.right"), off: t("fields.left") }}
             onConfirm={(value) =>

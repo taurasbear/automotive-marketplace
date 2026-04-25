@@ -9,6 +9,7 @@ import { useState } from "react";
 type EditableFieldProps = {
   label: string;
   value: string | number | boolean;
+  pendingValue?: string | number | boolean;
   displayValue?: string;
   type: "text" | "number" | "textarea" | "toggle";
   toggleLabels?: { on: string; off: string };
@@ -18,6 +19,7 @@ type EditableFieldProps = {
 const EditableField = ({
   label,
   value,
+  pendingValue,
   displayValue,
   type,
   toggleLabels,
@@ -27,7 +29,7 @@ const EditableField = ({
   const [editValue, setEditValue] = useState(value);
 
   const handleEdit = () => {
-    setEditValue(value);
+    setEditValue(pendingValue !== undefined ? pendingValue : value);
     setIsEditing(true);
   };
 
@@ -41,20 +43,23 @@ const EditableField = ({
     setIsEditing(false);
   };
 
-  const formatDisplayValue = () => {
-    if (displayValue) return displayValue;
+  const formatDisplayValue = (v: string | number | boolean) => {
+    if (displayValue && v === value) return displayValue;
     if (type === "toggle" && toggleLabels) {
-      return value ? toggleLabels.on : toggleLabels.off;
+      return v ? toggleLabels.on : toggleLabels.off;
     }
-    if (type === "number" && typeof value === "number") {
-      return formatNumber(value);
+    if (type === "number" && typeof v === "number") {
+      return formatNumber(v);
     }
-    return String(value);
+    return String(v);
   };
+
+  const hasPendingChange =
+    pendingValue !== undefined && pendingValue !== value;
 
   if (isEditing) {
     return (
-      <div className="space-y-2">
+      <div className="space-y-2 py-2">
         <label className="text-muted-foreground text-sm">{label}</label>
         <div className="flex items-center gap-2">
           {type === "text" && (
@@ -121,7 +126,18 @@ const EditableField = ({
     <div className="flex items-start justify-between py-2">
       <div>
         <div className="text-muted-foreground text-sm">{label}</div>
-        <div className="font-medium">{formatDisplayValue()}</div>
+        {hasPendingChange ? (
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground line-through">
+              {formatDisplayValue(value)}
+            </span>
+            <span className="text-amber-600 font-medium">
+              {formatDisplayValue(pendingValue)}
+            </span>
+          </div>
+        ) : (
+          <div className="font-medium">{formatDisplayValue(value)}</div>
+        )}
       </div>
       <Button size="sm" variant="ghost" onClick={handleEdit}>
         <Pencil className="h-4 w-4" />
