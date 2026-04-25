@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetOrCreateConversation } from "@/features/chat";
+import { useGetOrCreateConversationAsSeller } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
 
 import { getListingEngagementsOptions } from "../api/getListingEngagementsOptions";
@@ -106,7 +106,7 @@ export default function ListingBuyerPanel({
   onStartChat,
 }: ListingBuyerPanelProps) {
   const { t } = useTranslation("myListings");
-  const { mutateAsync: getOrCreate } = useGetOrCreateConversation();
+  const { mutateAsync: getOrCreate, isPending: isCreating } = useGetOrCreateConversationAsSeller();
   const engagementsQuery = useQuery(getListingEngagementsOptions(listingId));
 
   const conversations = engagementsQuery.data?.data.conversations ?? [];
@@ -131,7 +131,7 @@ export default function ListingBuyerPanel({
   };
 
   const handleOpenLikerChat = async (liker: ListingLikerEngagement) => {
-    const res = await getOrCreate({ listingId });
+    const res = await getOrCreate({ listingId, buyerId: liker.userId });
     onStartChat({
       id: res.data.conversationId,
       listingId,
@@ -160,6 +160,14 @@ export default function ListingBuyerPanel({
     );
   }
 
+  if (engagementsQuery.isError) {
+    return (
+      <div className="border-border border-t px-4 py-4">
+        <p className="text-destructive text-sm">{t("page.loadError")}</p>
+      </div>
+    );
+  }
+
   const shownConversations = conversations.slice(0, 5);
   const extraConversations = Math.max(0, conversations.length - 5);
   const shownLikers = likers.slice(0, 5);
@@ -180,7 +188,7 @@ export default function ListingBuyerPanel({
         <TabsContent value="conversations">
           {shownConversations.length === 0 ? (
             <p className="text-muted-foreground py-2 text-sm">
-              {t("buyerPanel.conversations")} (0)
+              {t("buyerPanel.noConversations")}
             </p>
           ) : (
             <div className="space-y-1">
@@ -221,7 +229,7 @@ export default function ListingBuyerPanel({
         <TabsContent value="likes">
           {shownLikers.length === 0 ? (
             <p className="text-muted-foreground py-2 text-sm">
-              {t("buyerPanel.likes")} (0)
+              {t("buyerPanel.noLikes")}
             </p>
           ) : (
             <div className="space-y-1">
@@ -241,6 +249,7 @@ export default function ListingBuyerPanel({
                   <Button
                     size="sm"
                     variant="outline"
+                    disabled={isCreating}
                     onClick={() => handleOpenLikerChat(l)}
                   >
                     {t("buyerPanel.chat")}

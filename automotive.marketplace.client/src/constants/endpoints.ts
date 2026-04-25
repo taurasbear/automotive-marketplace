@@ -64,6 +64,7 @@ export const ENDPOINTS = {
   },
   CHAT: {
     GET_OR_CREATE_CONVERSATION: "/Chat/GetOrCreateConversation",
+    GET_OR_CREATE_CONVERSATION_AS_SELLER: "/Chat/GetOrCreateConversationAsSeller",
     GET_CONVERSATIONS: "/Chat/GetConversations",
     GET_MESSAGES: "/Chat/GetMessages",
     MARK_MESSAGES_READ: "/Chat/MarkMessagesRead",

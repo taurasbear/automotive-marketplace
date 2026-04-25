@@ -66,6 +66,8 @@
       "availability": "Availability",
       "message": "Message",
       "liked": "Liked"
-    }
+    },
+    "noConversations": "No conversations yet.",
+    "noLikes": "No one has liked this listing yet."
   }
 }

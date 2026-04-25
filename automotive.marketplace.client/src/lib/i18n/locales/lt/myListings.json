@@ -66,6 +66,8 @@
       "availability": "Laisvas laikas",
       "message": "Žinutė",
       "liked": "Patiko"
-    }
+    },
+    "noConversations": "Pokalbių dar nėra.",
+    "noLikes": "Niekas dar nepatiko šio skelbimo."
   }
 }
