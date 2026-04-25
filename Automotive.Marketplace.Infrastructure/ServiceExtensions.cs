@@ -6,6 +6,7 @@ using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Infrastructure.Data.Seeders;
 using Automotive.Marketplace.Infrastructure.Interfaces;
 using Automotive.Marketplace.Infrastructure.Services;
+using Automotive.Marketplace.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,9 @@ public static class ServiceExtensions
         services.AddScoped<IDevelopmentSeeder, DefectCategorySeeder>();
         services.AddScoped<IDevelopmentSeeder, VariantSeeder>();
         services.AddScoped<IDevelopmentSeeder, ListingSeeder>();
+
+        services.AddHttpClient<IMunicipalityApiClient, LithuanianMunicipalityApiClient>();
+        services.AddScoped<IMunicipalityInitializer, MunicipalityInitializer>();
 
         var minioServerURL = configuration["MinIO:ServerURL"];
         var accessKey = configuration["MinIO:AccessKey"];

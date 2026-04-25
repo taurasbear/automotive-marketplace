@@ -90,6 +90,7 @@ builder.Services.AddSignalR()
         options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.OfferExpiryService>();
 builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.MeetingExpiryService>();
+builder.Services.AddHostedService<Automotive.Marketplace.Server.Services.MunicipalitySyncService>();
 
 var app = builder.Build();
 
@@ -110,6 +111,9 @@ using (var scope = app.Services.CreateScope())
 {
     var automotiveContext = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
     await automotiveContext.Database.MigrateAsync();
+
+    var municipalityInitializer = scope.ServiceProvider.GetRequiredService<IMunicipalityInitializer>();
+    await municipalityInitializer.RunAsync();
 
     if (app.Environment.IsDevelopment())
     {
