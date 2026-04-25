@@ -25,19 +25,27 @@ public class VariantSeeder(AutomotiveContext context) : IDevelopmentSeeder
             return;
 
         var random = new Random(42);
+        var seen = new HashSet<(Guid, Guid, Guid, Guid)>();
 
         foreach (var model in models)
         {
             for (int i = 0; i < 3; i++)
             {
+                var fuelId = fuels[random.Next(fuels.Count)].Id;
+                var transmissionId = transmissions[random.Next(transmissions.Count)].Id;
+                var bodyTypeId = bodyTypes[random.Next(bodyTypes.Count)].Id;
+
+                if (!seen.Add((model.Id, fuelId, transmissionId, bodyTypeId)))
+                    continue;
+
                 var variant = new VariantBuilder()
                     .WithModel(model.Id)
-                    .WithFuel(fuels[random.Next(fuels.Count)].Id)
-                    .WithTransmission(transmissions[random.Next(transmissions.Count)].Id)
-                    .WithBodyType(bodyTypes[random.Next(bodyTypes.Count)].Id)
+                    .WithFuel(fuelId)
+                    .WithTransmission(transmissionId)
+                    .WithBodyType(bodyTypeId)
                     .Build();
 
-                await context.AddAsync(variant, cancellationToken);
+                context.Add(variant);
             }
         }
 
