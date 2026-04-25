@@ -82,7 +82,7 @@ public class ListingController(IMediator mediator) : BaseController
     }
 
     [HttpGet]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult<IEnumerable<GetMyListingsResponse>>> GetMy(
         CancellationToken cancellationToken)
     {
@@ -92,7 +92,7 @@ public class ListingController(IMediator mediator) : BaseController
     }
 
     [HttpGet]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult<GetListingEngagementsResponse>> GetEngagements(
         [FromQuery] Guid id,
         CancellationToken cancellationToken)
