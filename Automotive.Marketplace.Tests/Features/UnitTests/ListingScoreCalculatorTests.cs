@@ -131,23 +131,7 @@ public class ListingScoreCalculatorTests
     }
 
     [Fact]
-    public void Calculate_LowMileageForAge_HighMileageScore()
-    {
-        // 2020 car (5 years old), 30k km — expected: 30000 vs 75000 → score = (75000 - 30000) / 75000 * 100 = 60
-        var result = ListingScoreCalculator.Calculate(
-            listingPrice: 10000m,
-            year: 2020,
-            mileageKm: 30000,
-            market: null,
-            efficiency: null,
-            reliability: null);
-
-        result.Mileage.Status.Should().Be("scored");
-        result.Mileage.Score.Should().BeGreaterThan(50);
-    }
-
-    [Fact]
-    public void Calculate_AllMissing_OverallScoreIs50()
+    public void Calculate_NullReliability_ReliabilityFactorIsMissing()
     {
         var result = ListingScoreCalculator.Calculate(
             listingPrice: 10000m,
@@ -157,10 +141,49 @@ public class ListingScoreCalculatorTests
             efficiency: null,
             reliability: null);
 
-        // Only mileage is scored (always available), so overall ≠ exactly 50
-        // But HasMissingFactors should be true
+        result.Reliability.Status.Should().Be("missing");
+        result.Reliability.Score.Should().Be(50);
+        result.MissingFactors.Should().Contain("Reliability");
+    }
+
+    [Fact]
+    public void Calculate_LowMileageForAge_HighMileageScore()
+    {
+        var carYear = DateTime.UtcNow.Year - 5; // Always 5 years old
+        var expectedKm = 5 * 15000; // 75000 km expected
+        var actualKm = 30000; // below expected
+
+        var result = ListingScoreCalculator.Calculate(
+            listingPrice: 10000m,
+            year: carYear,
+            mileageKm: actualKm,
+            market: null,
+            efficiency: null,
+            reliability: null);
+
+        result.Mileage.Status.Should().Be("scored");
+        result.Mileage.Score.Should().BeGreaterThan(50); // (75000 - 30000) / 75000 * 100 = 60
+    }
+
+    [Fact]
+    public void Calculate_AllExternalDataMissing_ThreeMissingFactors()
+    {
+        var result = ListingScoreCalculator.Calculate(
+            listingPrice: 10000m,
+            year: 2020,
+            mileageKm: 60000,
+            market: null,
+            efficiency: null,
+            reliability: null);
+
         result.HasMissingFactors.Should().BeTrue();
         result.MissingFactors.Should().HaveCount(3);
+        result.MissingFactors.Should().Contain("Market Value");
+        result.MissingFactors.Should().Contain("Efficiency");
+        result.MissingFactors.Should().Contain("Reliability");
+        // Only mileage is scored, so overall is based solely on mileage
+        result.Mileage.Status.Should().Be("scored");
+        result.OverallScore.Should().BeGreaterThan(0).And.BeLessThan(100);
     }
 
     [Fact]
