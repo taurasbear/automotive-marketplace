@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Infrastructure.Data;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Infrastructure.Data.Seeders;
@@ -41,6 +42,13 @@ public static class ServiceExtensions
         services.AddHttpClient<IVehicleDataApiClient, VpicVehicleDataApiClient>();
         services.AddScoped<IVehicleDataInitializer, VehicleDataInitializer>();
         services.AddScoped<MakeExclusionSeeder>();
+
+        var cardogApiKey = configuration["Cardog:ApiKey"] ?? string.Empty;
+        services.AddHttpClient<ICardogApiClient, CardogApiClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.cardog.io/v1/");
+            client.DefaultRequestHeaders.Add("x-api-key", cardogApiKey);
+        });
 
         var minioServerURL = configuration["MinIO:ServerURL"];
         var accessKey = configuration["MinIO:AccessKey"];
