@@ -14,8 +14,10 @@ public class LithuanianMunicipalityApiClient(HttpClient httpClient) : IMunicipal
     {
         var response = await httpClient.GetFromJsonAsync<ApiResponse>(ApiUrl, cancellationToken);
         return response?.Data?
-                   .Where(item => Guid.TryParse(item.RawId, out _))
-                   .Select(item => new MunicipalityDto(Guid.Parse(item.RawId!), item.Pavadinimas))
+                   .Select(item => Guid.TryParse(item.RawId, out var id)
+                       ? new MunicipalityDto(id, item.Pavadinimas)
+                       : null)
+                   .OfType<MunicipalityDto>()
                ?? [];
     }
 

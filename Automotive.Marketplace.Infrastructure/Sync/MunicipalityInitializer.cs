@@ -33,19 +33,21 @@ public class MunicipalityInitializer(
             var municipalities = (await apiClient.FetchMunicipalitiesAsync(cancellationToken)).ToList();
             var syncedAt = DateTime.UtcNow;
 
+            var existingById = await context.Set<Municipality>()
+                .ToDictionaryAsync(m => m.Id, cancellationToken);
+
             foreach (var dto in municipalities)
             {
-                var existing = await context.Set<Municipality>()
-                    .FindAsync([dto.Id], cancellationToken);
-
-                if (existing is null)
-                    await context.Set<Municipality>().AddAsync(
-                        new Municipality { Id = dto.Id, Name = dto.Name, SyncedAt = syncedAt, CreatedAt = syncedAt, CreatedBy = "system" },
-                        cancellationToken);
-                else
+                if (existingById.TryGetValue(dto.Id, out var existing))
                 {
                     existing.Name = dto.Name;
                     existing.SyncedAt = syncedAt;
+                }
+                else
+                {
+                    await context.Set<Municipality>().AddAsync(
+                        new Municipality { Id = dto.Id, Name = dto.Name, SyncedAt = syncedAt, CreatedAt = syncedAt, CreatedBy = "system" },
+                        cancellationToken);
                 }
             }
 
