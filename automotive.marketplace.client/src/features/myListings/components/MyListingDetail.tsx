@@ -49,7 +49,9 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
   const getDefectDisplayName = (defect: ListingDefectDto): string => {
     if (defect.customName) return defect.customName;
     if (defect.defectCategoryId && defectCategories?.data) {
-      const category = defectCategories.data.find((c) => c.id === defect.defectCategoryId);
+      const category = defectCategories.data.find(
+        (c) => c.id === defect.defectCategoryId,
+      );
       if (category) {
         return getTranslatedName(category.translations, i18n.language);
       }
@@ -80,7 +82,8 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
       id: listing.id,
       price: (pendingChanges.price as number) ?? listing.price,
       mileage: (pendingChanges.mileage as number) ?? listing.mileage,
-      municipalityId: (pendingChanges.municipalityId as string) ?? listing.municipalityId,
+      municipalityId:
+        (pendingChanges.municipalityId as string) ?? listing.municipalityId,
       description:
         (pendingChanges.description as string) ?? listing.description,
       colour: (pendingChanges.colour as string) ?? listing.colour,
@@ -125,7 +128,10 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
 
       {/* Image gallery */}
       {galleryImages.length > 0 && (
-        <ImageArrowGallery images={galleryImages} className="w-full rounded-lg" />
+        <ImageArrowGallery
+          images={galleryImages}
+          className="w-full rounded-lg"
+        />
       )}
 
       {/* Header card */}
@@ -140,7 +146,7 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
                 {listing.status}
               </Badge>
             </div>
-            <p className="text-3xl font-bold mt-3">
+            <p className="mt-3 text-3xl font-bold">
               {listing.price.toFixed(0)} €
             </p>
           </div>
@@ -180,45 +186,65 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
           <h2 className="text-xl font-semibold">{t("vehicleInfo.title")}</h2>
         </div>
         <div className="border-t p-0">
-          <dl className="divide-y divide-border">
+          <dl className="divide-border divide-y">
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.make")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.make")}
+              </dt>
               <dd className="text-right text-sm">{listing.makeName}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.model")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.model")}
+              </dt>
               <dd className="text-right text-sm">{listing.modelName}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.fuel")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.fuel")}
+              </dt>
               <dd className="text-right text-sm">{listing.fuelName}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.transmission")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.transmission")}
+              </dt>
               <dd className="text-right text-sm">{listing.transmissionName}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.bodyType")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.bodyType")}
+              </dt>
               <dd className="text-right text-sm">{listing.bodyTypeName}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.drivetrain")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.drivetrain")}
+              </dt>
               <dd className="text-right text-sm">{listing.drivetrainName}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.doors")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.doors")}
+              </dt>
               <dd className="text-right text-sm">{listing.doorCount}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.powerKw")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.powerKw")}
+              </dt>
               <dd className="text-right text-sm">{listing.powerKw}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.engineSizeMl")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.engineSizeMl")}
+              </dt>
               <dd className="text-right text-sm">{listing.engineSizeMl}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
-              <dt className="text-sm font-medium text-muted-foreground">{t("vehicleInfo.year")}</dt>
+              <dt className="text-muted-foreground text-sm font-medium">
+                {t("vehicleInfo.year")}
+              </dt>
               <dd className="text-right text-sm">{listing.year}</dd>
             </div>
           </dl>
@@ -227,10 +253,10 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
 
       {/* Editable Details card */}
       <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-        <h2 className="text-xl font-semibold mb-4">
+        <h2 className="mb-4 text-xl font-semibold">
           {t("vehicleInfo.editableTitle")}
         </h2>
-        <div className="divide-y divide-border">
+        <div className="divide-border divide-y">
           <EditableField
             label={t("fields.price")}
             value={listing.price}
@@ -242,11 +268,13 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
             <label className="text-sm font-medium">{t("fields.city")}</label>
             <LocationCombobox
               value={
-                (pendingChanges.municipalityId as string | undefined)
-                ?? listing.municipalityId
-                ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+                (pendingChanges.municipalityId as string | undefined) ??
+                listing.municipalityId ??
+                UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
               }
-              onValueChange={(value) => handleFieldChange("municipalityId", value)}
+              onValueChange={(value) =>
+                handleFieldChange("municipalityId", value)
+              }
             />
           </div>
           <EditableField
@@ -288,7 +316,9 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
           <EditableField
             label={t("fields.steeringWheel")}
             value={listing.isSteeringWheelRight}
-            pendingValue={pendingChanges.isSteeringWheelRight as boolean | undefined}
+            pendingValue={
+              pendingChanges.isSteeringWheelRight as boolean | undefined
+            }
             type="toggle"
             toggleLabels={{ on: t("fields.right"), off: t("fields.left") }}
             onConfirm={(value) =>
@@ -300,7 +330,7 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
 
       {/* Defects card */}
       <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
-        <h2 className="text-xl font-semibold mb-4">{t("detail.defects")}</h2>
+        <h2 className="mb-4 text-xl font-semibold">{t("detail.defects")}</h2>
         <DefectSelector
           mode="api"
           listingId={listing.id}

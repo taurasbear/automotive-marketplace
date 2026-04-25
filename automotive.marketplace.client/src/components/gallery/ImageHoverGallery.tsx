@@ -41,7 +41,7 @@ export default function ImageHoverGallery({
 
   return (
     <div
-      className={`group relative overflow-hidden bg-muted ${className}`}
+      className={`group bg-muted relative overflow-hidden ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >

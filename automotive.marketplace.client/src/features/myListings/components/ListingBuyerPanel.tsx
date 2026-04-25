@@ -106,13 +106,16 @@ export default function ListingBuyerPanel({
   onStartChat,
 }: ListingBuyerPanelProps) {
   const { t } = useTranslation("myListings");
-  const { mutateAsync: getOrCreate, isPending: isCreating } = useGetOrCreateConversationAsSeller();
+  const { mutateAsync: getOrCreate, isPending: isCreating } =
+    useGetOrCreateConversationAsSeller();
   const engagementsQuery = useQuery(getListingEngagementsOptions(listingId));
 
   const conversations = engagementsQuery.data?.data.conversations ?? [];
   const likers = engagementsQuery.data?.data.likers ?? [];
 
-  const handleOpenConversation = (engagement: ListingConversationEngagement) => {
+  const handleOpenConversation = (
+    engagement: ListingConversationEngagement,
+  ) => {
     onStartChat({
       id: engagement.conversationId,
       listingId,

@@ -20,8 +20,8 @@ const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
   return (
     <div className="border-border bg-card fixed inset-y-0 right-0 z-50 flex w-80 flex-col border-l shadow-xl lg:w-96">
       <div className="border-border flex items-center gap-3 border-b px-4 py-3">
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold truncate">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold">
             {conversation.counterpartUsername}
           </p>
           {conversation.listingTitle && (

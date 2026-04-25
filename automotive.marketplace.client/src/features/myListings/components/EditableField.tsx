@@ -54,8 +54,7 @@ const EditableField = ({
     return String(v);
   };
 
-  const hasPendingChange =
-    pendingValue !== undefined && pendingValue !== value;
+  const hasPendingChange = pendingValue !== undefined && pendingValue !== value;
 
   if (isEditing) {
     return (
@@ -131,7 +130,7 @@ const EditableField = ({
             <span className="text-muted-foreground line-through">
               {formatDisplayValue(value)}
             </span>
-            <span className="text-amber-600 font-medium">
+            <span className="font-medium text-amber-600">
               {formatDisplayValue(pendingValue)}
             </span>
           </div>

@@ -33,7 +33,11 @@ const PROPERTY_FIELDS: {
     labelKey: "propertyMention.transmission",
     format: (v) => v as string,
   },
-  { key: "municipalityName", labelKey: "propertyMention.city", format: (v) => v as string },
+  {
+    key: "municipalityName",
+    labelKey: "propertyMention.city",
+    format: (v) => v as string,
+  },
 ];
 
 const PropertyMentionPicker = ({

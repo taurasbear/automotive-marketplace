@@ -94,7 +94,8 @@ export const CreateListingSchema = z
       .optional()
       .or(z.literal("")),
     municipalityId: z.string().regex(VALIDATION.GUID.REGEX, {
-      error: () => i18n.t("pleaseSelect", { field: "municipality", ns: "validation" }),
+      error: () =>
+        i18n.t("pleaseSelect", { field: "municipality", ns: "validation" }),
     }),
     isUsed: z.boolean(),
     isCustom: z.boolean().optional(),

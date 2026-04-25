@@ -120,7 +120,7 @@ export default function MyListingCard({
           </div>
 
           {/* Spec badges */}
-          <div className="justify-items-stretch grid grid-cols-2 gap-x-0 gap-y-4">
+          <div className="grid grid-cols-2 justify-items-stretch gap-x-0 gap-y-4">
             <div className="flex justify-self-start">
               <ListingCardBadge
                 Icon={<PiEngine className="h-8 w-8" />}
@@ -220,13 +220,17 @@ export default function MyListingCard({
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>{t("detail.cancel")}</AlertDialogCancel>
+                      <AlertDialogCancel>
+                        {t("detail.cancel")}
+                      </AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleDelete}
                         className="bg-red-600 hover:bg-red-700"
                         disabled={deleteListingMutation.isPending}
                       >
-                        {deleteListingMutation.isPending ? "..." : t("detail.confirm")}
+                        {deleteListingMutation.isPending
+                          ? "..."
+                          : t("detail.confirm")}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

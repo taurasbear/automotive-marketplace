@@ -7,7 +7,11 @@ export const ListingSearchSchema = z.object({
     .array(z.string().regex(VALIDATION.GUID.REGEX).catch(""))
     .optional()
     .catch(undefined),
-  municipalityId: z.string().regex(VALIDATION.GUID.REGEX).optional().catch(undefined),
+  municipalityId: z
+    .string()
+    .regex(VALIDATION.GUID.REGEX)
+    .optional()
+    .catch(undefined),
   isUsed: z.boolean().optional().catch(undefined),
   minYear: z.coerce.number().positive().optional().catch(undefined),
   maxYear: z.coerce.number().positive().optional().catch(undefined),

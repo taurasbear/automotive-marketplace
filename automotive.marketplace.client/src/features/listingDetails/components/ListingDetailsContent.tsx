@@ -65,7 +65,9 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
   const getDefectDisplayName = (defect: ListingDefectDto): string => {
     if (defect.customName) return defect.customName;
     if (defect.defectCategoryId && defectCategories?.data) {
-      const category = defectCategories.data.find((c) => c.id === defect.defectCategoryId);
+      const category = defectCategories.data.find(
+        (c) => c.id === defect.defectCategoryId,
+      );
       if (category) {
         return getTranslatedName(category.translations, i18n.language);
       }
@@ -121,7 +123,8 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       {getDefectDisplayName(defect)}
                       {defect.images.length > 0 && (
                         <span className="ml-1 inline-flex items-center gap-0.5">
-                          ({defect.images.length} <Camera className="inline h-3.5 w-3.5" />)
+                          ({defect.images.length}{" "}
+                          <Camera className="inline h-3.5 w-3.5" />)
                         </span>
                       )}
                     </span>

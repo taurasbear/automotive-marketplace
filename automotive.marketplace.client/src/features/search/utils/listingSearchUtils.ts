@@ -72,7 +72,8 @@ export const mapSearchParamsToSearchValues = (
   return {
     makeId: searchParams.makeId ?? UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
     models: searchParams.models ?? [],
-    municipalityId: searchParams.municipalityId ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
+    municipalityId:
+      searchParams.municipalityId ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: isUsedValue,
     minYear: searchParams.minYear?.toString() || "",
     maxYear: searchParams.maxYear?.toString() || "",

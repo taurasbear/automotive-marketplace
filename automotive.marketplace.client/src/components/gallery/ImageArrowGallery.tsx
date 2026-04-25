@@ -111,7 +111,7 @@ export default function ImageArrowGallery({
 
       {/* Thumbnail strip */}
       {images.length > 1 && (
-        <div className="mt-2 flex gap-2 overflow-x-auto p-1 rounded-b-lg">
+        <div className="mt-2 flex gap-2 overflow-x-auto rounded-b-lg p-1">
           {images.map((image, index) => {
             const isDefectImage = !!image.defectName;
             const isActive = index === activeIndex;

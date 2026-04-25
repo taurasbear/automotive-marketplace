@@ -5,9 +5,12 @@ import { queryOptions } from "@tanstack/react-query";
 import { GetListingEngagementsResponse } from "../types/GetListingEngagementsResponse";
 
 const getListingEngagements = (listingId: string) =>
-  axiosClient.get<GetListingEngagementsResponse>(ENDPOINTS.LISTING.GET_ENGAGEMENTS, {
-    params: { id: listingId },
-  });
+  axiosClient.get<GetListingEngagementsResponse>(
+    ENDPOINTS.LISTING.GET_ENGAGEMENTS,
+    {
+      params: { id: listingId },
+    },
+  );
 
 export const getListingEngagementsOptions = (listingId: string) =>
   queryOptions({

@@ -12,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { getMunicipalitiesOptions } from "@/features/listingList/api/getMunicipalitiesOptions";
+import { getMunicipalitiesOptions } from "@/features/listingList";
 import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";

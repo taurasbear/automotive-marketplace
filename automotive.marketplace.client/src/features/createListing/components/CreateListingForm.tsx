@@ -440,7 +440,9 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
                 <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
                   <LocationCombobox
-                    value={field.value || UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE}
+                    value={
+                      field.value || UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+                    }
                     onValueChange={field.onChange}
                   />
                 </FormControl>

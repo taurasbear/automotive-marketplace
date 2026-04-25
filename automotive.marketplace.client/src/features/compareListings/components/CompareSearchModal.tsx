@@ -112,7 +112,8 @@ export const CompareSearchModal = ({
                     <p className="truncate font-medium">{listing.title}</p>
                     <p className="text-muted-foreground text-sm">
                       {listing.price.toFixed(0)} € ·{" "}
-                      {formatNumber(listing.mileage)} km · {listing.municipalityName}
+                      {formatNumber(listing.mileage)} km ·{" "}
+                      {listing.municipalityName}
                     </p>
                   </div>
                   <Button size="sm" onClick={() => onSelect(listing.listingId)}>
@@ -147,7 +148,8 @@ export const CompareSearchModal = ({
                     </p>
                     <p className="text-muted-foreground text-sm">
                       {listing.price.toFixed(0)} € ·{" "}
-                      {formatNumber(listing.mileage)} km · {listing.municipalityName}
+                      {formatNumber(listing.mileage)} km ·{" "}
+                      {listing.municipalityName}
                     </p>
                     <p className="text-muted-foreground text-sm">
                       {listing.sellerName}

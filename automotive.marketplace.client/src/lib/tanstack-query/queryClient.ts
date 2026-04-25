@@ -29,7 +29,9 @@ const queryClient = new QueryClient({
         if (Array.isArray(queryToInvalidate[0])) {
           // Multiple query keys to invalidate
           for (const key of queryToInvalidate) {
-            await queryClient.invalidateQueries({ queryKey: key as readonly unknown[] });
+            await queryClient.invalidateQueries({
+              queryKey: key as readonly unknown[],
+            });
           }
         } else {
           // Single query key
