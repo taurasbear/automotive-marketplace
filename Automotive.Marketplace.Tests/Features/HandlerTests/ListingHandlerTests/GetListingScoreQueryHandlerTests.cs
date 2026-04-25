@@ -1,3 +1,4 @@
+using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingScore;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
@@ -25,7 +26,8 @@ public class GetListingScoreQueryHandlerTests(
     private GetListingScoreQueryHandler CreateHandler(IServiceScope scope)
     {
         var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
-        return new GetListingScoreQueryHandler(repository, _cardogClient);
+        var scopeFactory = scope.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+        return new GetListingScoreQueryHandler(repository, _cardogClient, scopeFactory);
     }
 
     private async Task<Guid> SeedListingAsync(AutomotiveContext context, string makeName = "Honda", string modelName = "Accord", int year = 2020, decimal price = 15000m, int mileage = 80000)
@@ -154,6 +156,97 @@ public class GetListingScoreQueryHandlerTests(
             new GetListingScoreQuery { ListingId = Guid.NewGuid() },
             CancellationToken.None);
 
-        await act.Should().ThrowAsync<Exception>();
+        await act.Should().ThrowAsync<DbEntityNotFoundException>();
+    }
+
+    [Fact]
+    public async Task Handle_CacheMiss_PersistsDataToCache()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var listingId = await SeedListingAsync(context, makeName: "BMW", modelName: "3 Series", year: 2019);
+
+        _cardogClient.GetEfficiencyAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new CardogEfficiencyResult(LitersPer100Km: 6.5, KWhPer100Km: null));
+        _cardogClient.GetMarketOverviewAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new CardogMarketResult(MedianPrice: 25000m, TotalListings: 30));
+        _cardogClient.GetReliabilityAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new CardogReliabilityResult(RecallCount: 0, ComplaintCrashes: 0, ComplaintInjuries: 0));
+
+        await handler.Handle(new GetListingScoreQuery { ListingId = listingId }, CancellationToken.None);
+
+        var efficiencyCache = await context.VehicleEfficiencyCaches
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Make == "BMW" && c.Model == "3 Series" && c.Year == 2019);
+        var marketCache = await context.VehicleMarketCaches
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Make == "BMW" && c.Model == "3 Series" && c.Year == 2019);
+        var reliabilityCache = await context.VehicleReliabilityCaches
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Make == "BMW" && c.Model == "3 Series" && c.Year == 2019);
+
+        efficiencyCache.Should().NotBeNull();
+        marketCache.Should().NotBeNull();
+        reliabilityCache.Should().NotBeNull();
+        efficiencyCache!.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+        marketCache!.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+        reliabilityCache!.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+    }
+
+    [Fact]
+    public async Task Handle_ExpiredCache_CallsApiAndUpdatesCache()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var listingId = await SeedListingAsync(context, makeName: "Ford", modelName: "Focus", year: 2018);
+
+        var expiredAt = DateTime.UtcNow.AddDays(-1);
+        await context.VehicleEfficiencyCaches.AddAsync(new Automotive.Marketplace.Domain.Entities.VehicleEfficiencyCache
+        {
+            Id = Guid.NewGuid(),
+            Make = "Ford", Model = "Focus", Year = 2018,
+            LitersPer100Km = 9.0, KWhPer100Km = null,
+            FetchedAt = expiredAt,
+            ExpiresAt = expiredAt,
+        });
+        await context.VehicleMarketCaches.AddAsync(new Automotive.Marketplace.Domain.Entities.VehicleMarketCache
+        {
+            Id = Guid.NewGuid(),
+            Make = "Ford", Model = "Focus", Year = 2018,
+            MedianPrice = 10000m, TotalListings = 15,
+            FetchedAt = expiredAt,
+            ExpiresAt = expiredAt,
+        });
+        await context.VehicleReliabilityCaches.AddAsync(new Automotive.Marketplace.Domain.Entities.VehicleReliabilityCache
+        {
+            Id = Guid.NewGuid(),
+            Make = "Ford", Model = "Focus", Year = 2018,
+            RecallCount = 3, ComplaintCrashes = 1, ComplaintInjuries = 2,
+            FetchedAt = expiredAt,
+            ExpiresAt = expiredAt,
+        });
+        await context.SaveChangesAsync();
+
+        _cardogClient.GetEfficiencyAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new CardogEfficiencyResult(LitersPer100Km: 8.0, KWhPer100Km: null));
+        _cardogClient.GetMarketOverviewAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new CardogMarketResult(MedianPrice: 11000m, TotalListings: 20));
+        _cardogClient.GetReliabilityAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new CardogReliabilityResult(RecallCount: 2, ComplaintCrashes: 0, ComplaintInjuries: 1));
+
+        await handler.Handle(new GetListingScoreQuery { ListingId = listingId }, CancellationToken.None);
+
+        await _cardogClient.Received().GetEfficiencyAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
+        await _cardogClient.Received().GetMarketOverviewAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
+        await _cardogClient.Received().GetReliabilityAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
+
+        var updatedEfficiency = await context.VehicleEfficiencyCaches
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Make == "Ford" && c.Model == "Focus" && c.Year == 2018);
+        updatedEfficiency!.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
     }
 }
