@@ -1,6 +1,7 @@
 using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Domain.Entities;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +30,8 @@ public class GetOrCreateConversationAsSellerCommandHandler(IRepository repositor
                 .AnyAsync(c => c.BuyerId == request.BuyerId && c.ListingId == request.ListingId, cancellationToken);
             
             if (!existingConversation)
-                throw new RequestValidationException(["Buyer has no relationship with this listing."]);
+                throw new RequestValidationException(
+                    [new ValidationFailure("BuyerId", "Buyer has no relationship with this listing.")]);
         }
 
         var existing = await repository.AsQueryable<Conversation>()
