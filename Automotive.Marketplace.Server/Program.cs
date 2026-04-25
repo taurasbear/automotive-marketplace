@@ -1,7 +1,7 @@
-using Automotive.Marketplace.Infrastructure.Data.Seeders;
 using Automotive.Marketplace.Application;
 using Automotive.Marketplace.Infrastructure;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
+using Automotive.Marketplace.Infrastructure.Data.Seeders;
 using Automotive.Marketplace.Infrastructure.Interfaces;
 using Automotive.Marketplace.Server.Filters;
 using Automotive.Marketplace.Server.Hubs;
