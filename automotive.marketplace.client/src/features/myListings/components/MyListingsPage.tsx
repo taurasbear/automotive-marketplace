@@ -2,9 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChatPanel } from "@/features/chat";
+import type { ConversationSummary } from "@/features/chat";
 
 import { getMyListingsOptions } from "../api/getMyListingsOptions";
 import MyListingCard from "./MyListingCard";
@@ -14,19 +17,18 @@ export default function MyListingsPage() {
   const myListingsQuery = useQuery(getMyListingsOptions);
 
   const { data, isLoading, isError } = myListingsQuery;
-
   const listings = data?.data ?? [];
+
+  const [activeChatConversation, setActiveChatConversation] =
+    useState<ConversationSummary | null>(null);
 
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        {/* Header skeleton */}
         <div className="mb-8 flex items-center justify-between">
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-10 w-32" />
         </div>
-
-        {/* Cards skeleton */}
         <div className="space-y-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="rounded-lg border p-4">
@@ -71,7 +73,6 @@ export default function MyListingsPage() {
 
       {/* Listings */}
       {!listings || listings.length === 0 ? (
-        /* Empty State */
         <div className="py-12 text-center">
           <div className="mx-auto max-w-md">
             <h2 className="mb-2 text-xl font-medium text-gray-900">
@@ -87,12 +88,23 @@ export default function MyListingsPage() {
           </div>
         </div>
       ) : (
-        /* Listings Grid */
         <div className="space-y-4">
           {listings.map((listing) => (
-            <MyListingCard key={listing.id} listing={listing} />
+            <MyListingCard
+              key={listing.id}
+              listing={listing}
+              onStartChat={setActiveChatConversation}
+            />
           ))}
         </div>
+      )}
+
+      {/* Chat slide-over — same pattern as ListingDetailsContent */}
+      {activeChatConversation && (
+        <ChatPanel
+          conversation={activeChatConversation}
+          onClose={() => setActiveChatConversation(null)}
+        />
       )}
     </div>
   );
