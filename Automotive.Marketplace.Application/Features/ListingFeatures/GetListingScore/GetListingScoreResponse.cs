@@ -9,6 +9,7 @@ public class GetListingScoreResponse
     public ScoreFactor Mileage { get; init; } = null!;
     public bool HasMissingFactors { get; init; }
     public List<string> MissingFactors { get; init; } = [];
+    public bool IsPersonalized { get; init; }
 }
 
 public record ScoreFactor(double Score, string Status, double Weight);

@@ -27,6 +27,21 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
         var model = listing.Variant.Model.Name;
         var year = listing.Year;
 
+        ScoreWeights? weights = null;
+        var isPersonalized = false;
+
+        if (request.UserId.HasValue)
+        {
+            var prefs = await repository.AsQueryable<UserPreferences>()
+                .FirstOrDefaultAsync(p => p.UserId == request.UserId.Value, cancellationToken);
+
+            if (prefs != null)
+            {
+                weights = new ScoreWeights(prefs.ValueWeight, prefs.EfficiencyWeight, prefs.ReliabilityWeight, prefs.MileageWeight);
+                isPersonalized = true;
+            }
+        }
+
         var efficiencyTask = GetEfficiencyAsync(make, model, year, cancellationToken);
         var marketTask = GetMarketAsync(make, model, year, cancellationToken);
         var reliabilityTask = GetReliabilityAsync(make, model, year, cancellationToken);
@@ -37,7 +52,18 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
         var market = marketTask.Result;
         var reliability = reliabilityTask.Result;
 
-        return ListingScoreCalculator.Calculate(listing.Price, year, listing.Mileage, market, efficiency, reliability);
+        var scoreResult = ListingScoreCalculator.Calculate(listing.Price, year, listing.Mileage, market, efficiency, reliability, weights);
+        return new GetListingScoreResponse
+        {
+            OverallScore = scoreResult.OverallScore,
+            Value = scoreResult.Value,
+            Efficiency = scoreResult.Efficiency,
+            Reliability = scoreResult.Reliability,
+            Mileage = scoreResult.Mileage,
+            HasMissingFactors = scoreResult.HasMissingFactors,
+            MissingFactors = scoreResult.MissingFactors,
+            IsPersonalized = isPersonalized,
+        };
     }
 
     private async Task<CardogEfficiencyResult?> GetEfficiencyAsync(string make, string model, int year, CancellationToken ct)
