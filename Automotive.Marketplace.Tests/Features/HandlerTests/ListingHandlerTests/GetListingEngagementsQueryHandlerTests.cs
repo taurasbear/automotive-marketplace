@@ -49,6 +49,7 @@ public class GetListingEngagementsQueryHandlerTests(
     [Fact]
     public async Task Handle_ListingDoesNotExist_ShouldThrowDbEntityNotFoundException()
     {
+        // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
 
@@ -58,14 +59,17 @@ public class GetListingEngagementsQueryHandlerTests(
             CurrentUserId = Guid.NewGuid(),
         };
 
+        // Act
         var act = () => handler.Handle(query, CancellationToken.None);
 
+        // Assert
         await act.Should().ThrowAsync<DbEntityNotFoundException>();
     }
 
     [Fact]
     public async Task Handle_CurrentUserIsNotSeller_ShouldThrowUnauthorizedAccessException()
     {
+        // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
@@ -77,14 +81,17 @@ public class GetListingEngagementsQueryHandlerTests(
             CurrentUserId = Guid.NewGuid(),
         };
 
+        // Act
         var act = () => handler.Handle(query, CancellationToken.None);
 
+        // Assert
         await act.Should().ThrowAsync<UnauthorizedAccessException>();
     }
 
     [Fact]
     public async Task Handle_NoEngagements_ShouldReturnEmptyCollections()
     {
+        // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
@@ -92,8 +99,10 @@ public class GetListingEngagementsQueryHandlerTests(
 
         var query = new GetListingEngagementsQuery { ListingId = listingId, CurrentUserId = sellerId };
 
+        // Act
         var result = await handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Conversations.Should().BeEmpty();
         result.Likers.Should().BeEmpty();
     }
@@ -101,6 +110,7 @@ public class GetListingEngagementsQueryHandlerTests(
     [Fact]
     public async Task Handle_WithConversation_ShouldReturnConversationWithCorrectLastMessageType()
     {
+        // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
@@ -126,18 +136,22 @@ public class GetListingEngagementsQueryHandlerTests(
 
         var query = new GetListingEngagementsQuery { ListingId = listingId, CurrentUserId = sellerId };
 
+        // Act
         var result = await handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Conversations.Should().HaveCount(1);
         var c = result.Conversations.First();
         c.BuyerId.Should().Be(buyer.Id);
         c.BuyerUsername.Should().Be(buyer.Username);
+        c.ConversationId.Should().Be(conversation.Id);
         c.LastMessageType.Should().Be("Offer");
     }
 
     [Fact]
     public async Task Handle_WithLikerWhoHasNoConversation_ShouldAppearInLikers()
     {
+        // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
@@ -151,8 +165,10 @@ public class GetListingEngagementsQueryHandlerTests(
 
         var query = new GetListingEngagementsQuery { ListingId = listingId, CurrentUserId = sellerId };
 
+        // Act
         var result = await handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Likers.Should().HaveCount(1);
         result.Likers.First().UserId.Should().Be(liker.Id);
         result.Likers.First().Username.Should().Be(liker.Username);
@@ -162,6 +178,7 @@ public class GetListingEngagementsQueryHandlerTests(
     [Fact]
     public async Task Handle_UserWhoLikedAndMessaged_ShouldAppearOnlyInConversations()
     {
+        // Arrange
         await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
@@ -181,8 +198,10 @@ public class GetListingEngagementsQueryHandlerTests(
 
         var query = new GetListingEngagementsQuery { ListingId = listingId, CurrentUserId = sellerId };
 
+        // Act
         var result = await handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Conversations.Should().HaveCount(1);
         result.Likers.Should().BeEmpty();
     }
