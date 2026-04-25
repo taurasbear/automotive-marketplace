@@ -19,14 +19,12 @@ public class VehicleDataInitializer(
     {
         try
         {
-            var hasSynced = await context.Set<Make>()
-                .AnyAsync(m => m.SyncedAt.HasValue, cancellationToken);
+            var oldestSync = await context.Set<Make>()
+                .Where(m => m.SyncedAt.HasValue)
+                .Select(m => (DateTime?)m.SyncedAt!.Value)
+                .MinAsync(cancellationToken);
 
-            var isStale = !hasSynced
-                || await context.Set<Make>()
-                    .Where(m => m.SyncedAt.HasValue)
-                    .MinAsync(m => m.SyncedAt!.Value, cancellationToken)
-                   < DateTime.UtcNow - SyncInterval;
+            var isStale = oldestSync is null || oldestSync.Value < DateTime.UtcNow - SyncInterval;
 
             if (!isStale)
             {
@@ -74,7 +72,7 @@ public class VehicleDataInitializer(
                         CreatedAt = syncedAt,
                         CreatedBy = "system"
                     };
-                    await context.Set<Make>().AddAsync(newMake, cancellationToken);
+                    context.Set<Make>().Add(newMake);
                     upsertedMakes[dto.VpicId] = newMake.Id;
                 }
             }
@@ -82,7 +80,7 @@ public class VehicleDataInitializer(
             await context.SaveChangesAsync(cancellationToken);
             logger.LogInformation("Makes upserted: {Count}.", allowedMakes.Count);
 
-            var semaphore = new SemaphoreSlim(10);
+            using var semaphore = new SemaphoreSlim(10);
             var modelFetchTasks = allowedMakes.Select(async make =>
             {
                 await semaphore.WaitAsync(cancellationToken);
@@ -131,12 +129,13 @@ public class VehicleDataInitializer(
                             CreatedAt = syncedAt,
                             CreatedBy = "system"
                         };
-                        await context.Set<Model>().AddAsync(newModel, cancellationToken);
+                        context.Set<Model>().Add(newModel);
                         existingModelsByVpicId[dto.VpicId] = newModel;
                     }
                 }
 
                 await context.SaveChangesAsync(cancellationToken);
+                context.ChangeTracker.Clear();
             }
 
             logger.LogInformation("Vehicle data sync complete.");
