@@ -1,6 +1,7 @@
 import {
   getListingComparisonOptions,
   CompareHeader,
+  CompareScoreBanner,
   CompareSearchModal,
   CompareTable,
   DiffToggleFab,
@@ -56,6 +57,7 @@ const Compare = () => {
         onChangeA={() => setSwapSlot("a")}
         onChangeB={() => setSwapSlot("b")}
       />
+      <CompareScoreBanner listingAId={listingA.id} listingBId={listingB.id} />
       <CompareTable
         listingA={listingA}
         listingB={listingB}
