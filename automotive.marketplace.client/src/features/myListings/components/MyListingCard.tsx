@@ -83,7 +83,7 @@ export default function MyListingCard({
 
   return (
     <div className={isSold ? "opacity-50" : ""}>
-      <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
+      <div className="bg-card border-border grid w-204 gap-8 border-1 md:grid-cols-2">
         {/* Left — Image gallery */}
         <div className="relative flex flex-shrink-0 py-5">
           <ImageHoverGallery
@@ -103,7 +103,7 @@ export default function MyListingCard({
         </div>
 
         {/* Right — Details */}
-        <div className="flex min-w-0 flex-grow flex-col justify-between gap-3 pt-4 pr-4 pb-2">
+        <div className="flex min-w-0 flex-grow flex-col justify-between gap-2 pt-4 pr-4 pb-2">
           <div className="truncate">
             <p className="truncate font-sans text-xs">
               {listing.isUsed ? t("fields.used") : t("fields.new")}
@@ -120,25 +120,25 @@ export default function MyListingCard({
           </div>
 
           {/* Spec badges */}
-          <div className="justify-items-stretched grid grid-cols-2 gap-x-0 gap-y-2">
+          <div className="justify-items-stretch grid grid-cols-2 gap-x-0 gap-y-4">
             <div className="flex justify-self-start">
               <ListingCardBadge
                 Icon={<PiEngine className="h-8 w-8" />}
-                title={t("vehicleInfo.engineSizeMl").replace(":", "")}
+                title="Variklis"
                 stat={`${listing.engineSizeMl / 1000} l ${listing.powerKw} kW`}
               />
             </div>
             <div className="flex justify-self-end">
               <ListingCardBadge
                 Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
-                title={t("vehicleInfo.fuel").replace(":", "")}
+                title="Kuras"
                 stat={listing.fuelName}
               />
             </div>
             <div className="flex justify-self-start">
               <ListingCardBadge
                 Icon={<TbManualGearbox className="h-8 w-8" />}
-                title={t("vehicleInfo.transmission").replace(":", "")}
+                title="Pavarų dėžė"
                 stat={listing.transmissionName}
               />
             </div>
@@ -151,8 +151,9 @@ export default function MyListingCard({
             </div>
           </div>
 
-          {/* Bottom row — defect badge, spacer, buyer panel toggle, edit/delete */}
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Bottom row — status, buyer stats, and actions */}
+          <div className="flex items-center gap-2">
+            {/* Defect badge */}
             {listing.defectCount > 0 && (
               <Badge
                 variant="outline"
@@ -163,31 +164,30 @@ export default function MyListingCard({
               </Badge>
             )}
 
+            {/* Spacer */}
             <div className="flex-1" />
 
-            {/* Buyer panel toggle — only when not sold */}
+            {/* Action buttons — only when not sold */}
             {!isSold && (
-              <button
-                type="button"
-                onClick={() => setPanelOpen((o) => !o)}
-                className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm"
-              >
-                <Heart className="h-4 w-4" />
-                <span>{listing.likeCount}</span>
-                <MessageSquare className="ml-1 h-4 w-4" />
-                <span>{listing.conversationCount}</span>
-                <span className="ml-1">{t("buyerPanel.buyers")}</span>
-                {panelOpen ? (
-                  <ChevronUp className="h-4 w-4" />
-                ) : (
-                  <ChevronDown className="h-4 w-4" />
-                )}
-              </button>
-            )}
+              <div className="flex items-center gap-2">
+                {/* Buyer panel toggle */}
+                <button
+                  type="button"
+                  onClick={() => setPanelOpen((o) => !o)}
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-xs"
+                >
+                  <Heart className="h-4 w-4" />
+                  <span>{listing.likeCount}</span>
+                  <MessageSquare className="h-4 w-4" />
+                  <span>{listing.conversationCount}</span>
+                  {panelOpen ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
 
-            {/* Edit / Delete — only when not sold */}
-            {!isSold && (
-              <>
+                {/* Edit button */}
                 <Button asChild size="sm" variant="outline">
                   <Link to="/my-listings/$id" params={{ id: listing.id }}>
                     <Pencil className="mr-1 h-4 w-4" />
@@ -195,6 +195,7 @@ export default function MyListingCard({
                   </Link>
                 </Button>
 
+                {/* Delete button */}
                 <AlertDialog
                   open={deleteDialogOpen}
                   onOpenChange={setDeleteDialogOpen}
@@ -230,7 +231,7 @@ export default function MyListingCard({
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-              </>
+              </div>
             )}
           </div>
         </div>

@@ -88,7 +88,7 @@ export default function MyListingsPage() {
           </div>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 mx-auto w-fit">
           {listings.map((listing) => (
             <MyListingCard
               key={listing.id}
