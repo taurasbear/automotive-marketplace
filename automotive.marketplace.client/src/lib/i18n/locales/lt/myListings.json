@@ -52,5 +52,20 @@
     "doors": "Durys:",
     "powerKw": "Galia (kW):",
     "engineSizeMl": "Variklio tūris (ml):"
+  },
+  "buyerPanel": {
+    "buyers": "Pirkėjai",
+    "conversations": "Pokalbiai",
+    "likes": "Patiktukai",
+    "moreConversations": "daugiau pokalbių",
+    "moreLikes": "daugiau patiktukų",
+    "chat": "Rašyti",
+    "interactionTypes": {
+      "offer": "Kainos pasiūlymas",
+      "meeting": "Susitikimo pasiūlymas",
+      "availability": "Laisvas laikas",
+      "message": "Žinutė",
+      "liked": "Patiko"
+    }
   }
 }

@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     UPDATE: "/Listing/Update",
     SEARCH: "/Listing/Search",
     COMPARE: "/Listing/Compare",
+    GET_ENGAGEMENTS: "/Listing/GetEngagements",
   },
   AUTH: {
     REFRESH: "/Auth/Refresh",

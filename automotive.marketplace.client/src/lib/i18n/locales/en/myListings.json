@@ -52,5 +52,20 @@
     "doors": "Doors:",
     "powerKw": "Power (kW):",
     "engineSizeMl": "Engine Size (ml):"
+  },
+  "buyerPanel": {
+    "buyers": "Buyers",
+    "conversations": "Conversations",
+    "likes": "Likes",
+    "moreConversations": "more conversations",
+    "moreLikes": "more likes",
+    "chat": "Chat",
+    "interactionTypes": {
+      "offer": "Price offer",
+      "meeting": "Meeting proposal",
+      "availability": "Availability",
+      "message": "Message",
+      "liked": "Liked"
+    }
   }
 }

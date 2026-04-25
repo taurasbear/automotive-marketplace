@@ -1,4 +1,4 @@
-type Thumbnail = {
+type Image = {
   url: string;
   altText: string;
 };
@@ -13,11 +13,14 @@ export type GetMyListingsResponse = {
   year: number;
   makeName: string;
   modelName: string;
-  thumbnail: Thumbnail | null;
+  thumbnail: Image | null;
+  images: Image[];
   imageCount: number;
   defectCount: number;
   fuelName: string;
   transmissionName: string;
   engineSizeMl: number;
   powerKw: number;
+  likeCount: number;
+  conversationCount: number;
 };
