@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import ImageArrowGallery from "@/components/gallery/ImageArrowGallery";
 import DefectSelector from "@/components/forms/DefectSelector";
+import LocationCombobox from "@/components/forms/select/LocationCombobox";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { getDefectCategoriesOptions } from "@/api/defect/getDefectCategoriesOptions";
 import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
 import { getListingByIdOptions } from "@/features/listingDetails/api/getListingByIdOptions";
@@ -78,7 +80,7 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
       id: listing.id,
       price: (pendingChanges.price as number) ?? listing.price,
       mileage: (pendingChanges.mileage as number) ?? listing.mileage,
-      city: (pendingChanges.city as string) ?? listing.city,
+      municipalityId: (pendingChanges.municipalityId as string) ?? listing.municipalityId,
       description:
         (pendingChanges.description as string) ?? listing.description,
       colour: (pendingChanges.colour as string) ?? listing.colour,
@@ -236,13 +238,17 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
             type="number"
             onConfirm={(value) => handleFieldChange("price", value)}
           />
-          <EditableField
-            label={t("fields.city")}
-            value={listing.city}
-            pendingValue={pendingChanges.city as string | undefined}
-            type="text"
-            onConfirm={(value) => handleFieldChange("city", value)}
-          />
+          <div>
+            <label className="text-sm font-medium">{t("fields.city")}</label>
+            <LocationCombobox
+              value={
+                (pendingChanges.municipalityId as string | undefined)
+                ?? listing.municipalityId
+                ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+              }
+              onValueChange={(value) => handleFieldChange("municipalityId", value)}
+            />
+          </div>
           <EditableField
             label={t("fields.mileage")}
             value={listing.mileage}
