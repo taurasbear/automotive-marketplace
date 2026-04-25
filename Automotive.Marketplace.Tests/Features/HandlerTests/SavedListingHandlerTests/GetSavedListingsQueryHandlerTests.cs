@@ -46,6 +46,7 @@ public class GetSavedListingsQueryHandlerTests(
         result[0].ListingId.Should().Be(listing.Id);
         result[0].Price.Should().Be(listing.Price);
         result[0].Mileage.Should().Be(listing.Mileage);
+        result[0].MunicipalityName.Should().NotBeNullOrEmpty();
         result[0].NoteContent.Should().BeNull();
     }
 

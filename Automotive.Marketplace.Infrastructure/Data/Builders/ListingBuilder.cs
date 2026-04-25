@@ -16,7 +16,6 @@ public class ListingBuilder
             .RuleFor(listing => listing.Price, f => f.Random.Decimal(100, 50000))
             .RuleFor(listing => listing.Description, f => f.Lorem.Sentences(2))
             .RuleFor(listing => listing.Status, Status.Available)
-            .RuleFor(listing => listing.Status, Status.Available)
             .RuleFor(listing => listing.Vin, f => f.Vehicle.Vin())
             .RuleFor(listing => listing.Colour, f => f.Commerce.Color())
             .RuleFor(listing => listing.IsUsed, f => f.Random.Bool())
