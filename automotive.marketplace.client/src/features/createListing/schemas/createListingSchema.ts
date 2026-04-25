@@ -93,18 +93,9 @@ export const CreateListingSchema = z
       .regex(VALIDATION.GUID.REGEX)
       .optional()
       .or(z.literal("")),
-    city: z
-      .string()
-      .nonempty({
-        error: () => i18n.t("cityCannotBeEmpty", { ns: "validation" }),
-      })
-      .max(VALIDATION.NAME.LONG, {
-        error: () =>
-          validation.maxLength({
-            label: "City",
-            length: VALIDATION.NAME.LONG,
-          }),
-      }),
+    municipalityId: z.string().regex(VALIDATION.GUID.REGEX, {
+      error: () => i18n.t("pleaseSelect", { field: "municipality", ns: "validation" }),
+    }),
     isUsed: z.boolean(),
     isCustom: z.boolean().optional(),
     year: z.coerce.number<number>().int().optional(),

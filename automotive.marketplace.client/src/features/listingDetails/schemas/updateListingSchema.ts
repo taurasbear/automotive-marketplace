@@ -10,7 +10,7 @@ export const UpdateListingSchema = z.object({
   engineSizeMl: CreateListingSchema.shape.engineSizeMl.unwrap(),
   mileage: CreateListingSchema.shape.mileage,
   isSteeringWheelRight: CreateListingSchema.shape.isSteeringWheelRight,
-  city: CreateListingSchema.shape.city,
+  municipalityId: CreateListingSchema.shape.municipalityId,
   isUsed: CreateListingSchema.shape.isUsed,
   year: CreateListingSchema.shape.year,
 });

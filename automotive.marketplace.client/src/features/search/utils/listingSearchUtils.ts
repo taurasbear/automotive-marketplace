@@ -35,10 +35,10 @@ export const mapSearchValuesToSearchParams = (
       searchValues.models.length === 0
         ? undefined
         : searchValues.models,
-    city:
-      searchValues.city === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+    municipalityId:
+      searchValues.municipalityId === UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
         ? undefined
-        : searchValues.city,
+        : searchValues.municipalityId,
     isUsed: isUsedMapping[searchValues.isUsed],
     minYear: Number(searchValues.minYear),
     maxYear: Number(searchValues.maxYear),
@@ -72,7 +72,7 @@ export const mapSearchParamsToSearchValues = (
   return {
     makeId: searchParams.makeId ?? UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
     models: searchParams.models ?? [],
-    city: searchParams.city ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
+    municipalityId: searchParams.municipalityId ?? UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: isUsedValue,
     minYear: searchParams.minYear?.toString() || "",
     maxYear: searchParams.maxYear?.toString() || "",
