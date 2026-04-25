@@ -52,8 +52,8 @@ const ListingSearchFilters = ({
         <div className="col-span-1">
           <LocationCombobox
             className="min-h-15 rounded-none border-0 border-x shadow-none sm:rounded-tr-md sm:border-x-0 sm:border-t sm:border-r"
-            value={searchValues.city}
-            onValueChange={(value) => updateSearchValue("city", value)}
+            value={searchValues.municipalityId}
+            onValueChange={(value) => updateSearchValue("municipalityId", value)}
           />
         </div>
       </div>

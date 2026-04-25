@@ -35,7 +35,7 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
           filters={{
             makeId: filterValues.makeId,
             isUsed: filterValues.isUsed,
-            city: filterValues.city,
+            municipalityId: filterValues.municipalityId,
           }}
           onFilterChange={handleFilterChange}
         />

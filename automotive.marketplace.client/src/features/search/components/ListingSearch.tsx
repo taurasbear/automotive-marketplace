@@ -17,7 +17,7 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
   const [searchValues, setSearchValues] = useState<ListingSearchStateValues>({
     makeId: UI_CONSTANTS.SELECT.ALL_MAKES.VALUE,
     models: [UI_CONSTANTS.SELECT.ALL_MODELS.VALUE],
-    city: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
+    municipalityId: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
     isUsed: "newUsed",
     minYear: "",
     maxYear: "",
