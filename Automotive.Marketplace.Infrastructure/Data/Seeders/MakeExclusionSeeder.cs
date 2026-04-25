@@ -126,20 +126,40 @@ public class MakeExclusionSeeder(AutomotiveContext context)
         (13391, "FALCON MOTORS"),
         (13585, "MAYHEM AUTOWORKZ"),
         (13887, "HEDLEY STUDIOS"),
+        // Additional exclusions — niche/US-only brands not sold in European markets
+        (468, "BUICK"),
+        (1755, "TH!NK"),
+        (3766, "SPYKER"),
+        (4644, "BLUECAR"),
+        (5122, "KARMA"),
+        (5657, "DATSUN"),
+        (5661, "PININFARINA"),
+        (8549, "MOKE"),
+        (9759, "SCUDERIA CAMERON GLICKENHAUS (SCG)"),
+        (10256, "CZINGER"),
+        (10393, "GLICKENHAUS"),
+        (11346, "AUTOMOBILI PININFARINA"),
+        (11792, "ALLARD MOTOR WORKS"),
+        (12550, "RUF"),
+        (12991, "MK SPORTSCARS"),
+        (13026, "BERTONE"),
     ];
 
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
-        if (await context.Set<MakeExclusion>().AnyAsync(cancellationToken))
+        var existingIds = await context.Set<MakeExclusion>()
+            .Select(e => e.VpicId)
+            .ToHashSetAsync(cancellationToken);
+
+        var toInsert = Exclusions
+            .Where(e => !existingIds.Contains(e.VpicId))
+            .Select(e => new MakeExclusion { VpicId = e.VpicId, VpicName = e.VpicName })
+            .ToList();
+
+        if (toInsert.Count == 0)
             return;
 
-        var exclusions = Exclusions.Select(e => new MakeExclusion
-        {
-            VpicId = e.VpicId,
-            VpicName = e.VpicName
-        });
-
-        await context.Set<MakeExclusion>().AddRangeAsync(exclusions, cancellationToken);
+        context.Set<MakeExclusion>().AddRange(toInsert);
         await context.SaveChangesAsync(cancellationToken);
     }
 }
