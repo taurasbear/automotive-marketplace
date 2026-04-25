@@ -4,14 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Automotive.Marketplace.Infrastructure.Data.Configuration;
 
-public class ModelConfiguration : IEntityTypeConfiguration<Model>
+public class MakeConfiguration : IEntityTypeConfiguration<Make>
 {
-    public void Configure(EntityTypeBuilder<Model> builder)
+    public void Configure(EntityTypeBuilder<Make> builder)
     {
-        builder.HasOne(model => model.Make)
-            .WithMany(make => make.Models)
-            .HasForeignKey(model => model.MakeId);
-
         builder.HasIndex(m => m.VpicId).IsUnique();
         builder.Property(m => m.VpicName).HasMaxLength(200);
     }

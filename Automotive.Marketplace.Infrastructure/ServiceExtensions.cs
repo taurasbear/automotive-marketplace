@@ -26,8 +26,7 @@ public static class ServiceExtensions
         services.AddScoped<IImageStorageService, S3ImageStorageService>();
 
         services.AddScoped<IDevelopmentSeeder, UserSeeder>();
-        services.AddScoped<IDevelopmentSeeder, MakeSeeder>();
-        services.AddScoped<IDevelopmentSeeder, ModelSeeder>();
+
         services.AddScoped<IDevelopmentSeeder, FuelSeeder>();
         services.AddScoped<IDevelopmentSeeder, TransmissionSeeder>();
         services.AddScoped<IDevelopmentSeeder, BodyTypeSeeder>();
@@ -38,6 +37,10 @@ public static class ServiceExtensions
 
         services.AddHttpClient<IMunicipalityApiClient, LithuanianMunicipalityApiClient>();
         services.AddScoped<IMunicipalityInitializer, MunicipalityInitializer>();
+
+        services.AddHttpClient<IVehicleDataApiClient, VpicVehicleDataApiClient>();
+        services.AddScoped<IVehicleDataInitializer, VehicleDataInitializer>();
+        services.AddScoped<MakeExclusionSeeder>();
 
         var minioServerURL = configuration["MinIO:ServerURL"];
         var accessKey = configuration["MinIO:AccessKey"];
