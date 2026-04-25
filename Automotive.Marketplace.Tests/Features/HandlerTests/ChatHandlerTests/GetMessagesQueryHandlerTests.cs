@@ -118,7 +118,7 @@ public class GetMessagesQueryHandlerTests(
         var drivetrain = new DrivetrainBuilder().Build();
         var municipality = new MunicipalityBuilder().Build();
         var variant = new VariantBuilder().WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).WithPrice(15000m).Build();
         var conversation = new ConversationBuilder()
             .WithBuyer(buyer.Id)
             .WithListing(listing.Id)
