@@ -10,7 +10,8 @@ export type GetListingByIdResponse = {
   engineSizeMl: number;
   mileage: number;
   isSteeringWheelRight: boolean;
-  city: string;
+  municipalityId: string;
+  municipalityName: string;
   isUsed: boolean;
   year: number;
   transmissionName: string;

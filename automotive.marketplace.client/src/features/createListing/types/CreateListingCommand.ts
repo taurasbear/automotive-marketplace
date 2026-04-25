@@ -9,7 +9,7 @@ export type CreateListingCommand = {
   isSteeringWheelRight: boolean;
   modelId?: string;
   variantId?: string;
-  city: string;
+  municipalityId: string;
   isUsed: boolean;
   year?: number;
   transmissionId?: string;

@@ -56,6 +56,9 @@ export const ENDPOINTS = {
   DRIVETRAIN: {
     GET_ALL: "/Drivetrain/GetAll",
   },
+  MUNICIPALITY: {
+    GET_ALL: "/Municipality/GetAll",
+  },
   ENUM: {
     GET_TRANSMISSIONS_TYPES: "/Enum/GetTransmissionTypes",
     GET_FUEL_TYPES: "/Enum/GetFuelTypes",

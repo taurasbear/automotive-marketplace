@@ -8,7 +8,7 @@ export type GetMyListingsResponse = {
   price: number;
   mileage: number;
   isUsed: boolean;
-  city: string;
+  municipalityName: string;
   status: string;
   year: number;
   makeName: string;

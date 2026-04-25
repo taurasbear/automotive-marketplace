@@ -10,7 +10,7 @@ export type GetAllListingsResponse = {
   powerKw: number;
   fuelName: string;
   transmissionName: string;
-  city: string;
+  municipalityName: string;
   description: string;
   thumbnail: Thumbnail | null;
   isLiked: boolean;
