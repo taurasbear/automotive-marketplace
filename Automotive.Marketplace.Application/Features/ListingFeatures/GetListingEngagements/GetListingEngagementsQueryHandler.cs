@@ -25,7 +25,7 @@ public class GetListingEngagementsQueryHandler(IRepository repository)
             .AsQueryable<Conversation>()
             .Include(c => c.Messages)
             .Include(c => c.Buyer)
-            .Where(c => c.ListingId == request.ListingId)
+            .Where(c => c.ListingId == request.ListingId && c.Messages.Any())
             .ToListAsync(cancellationToken);
 
         var buyerIds = conversations.Select(c => c.BuyerId).ToHashSet();

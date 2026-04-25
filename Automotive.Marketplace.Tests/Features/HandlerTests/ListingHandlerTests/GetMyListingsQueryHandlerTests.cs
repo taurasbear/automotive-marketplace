@@ -177,13 +177,12 @@ public class GetMyListingsQueryHandlerTests(
         var buyer1 = new UserBuilder().Build();
         var buyer2 = new UserBuilder().Build();
         var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
-        var conversations = new[]
-        {
-            new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer1.Id).Build(),
-            new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer2.Id).Build()
-        };
+        var conv1 = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer1.Id).Build();
+        var conv2 = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer2.Id).Build();
+        var msg1 = new MessageBuilder().WithConversation(conv1.Id).WithSender(buyer1.Id).Build();
+        var msg2 = new MessageBuilder().WithConversation(conv2.Id).WithSender(buyer2.Id).Build();
         await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, buyer1, buyer2, listing);
-        await context.AddRangeAsync(conversations);
+        await context.AddRangeAsync(conv1, conv2, msg1, msg2);
         await context.SaveChangesAsync();
 
         var query = new GetMyListingsQuery { SellerId = seller.Id };
@@ -193,5 +192,43 @@ public class GetMyListingsQueryHandlerTests(
 
         // Assert
         result.Single().ConversationCount.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task Handle_ListingWithMixedConversations_ShouldCountOnlyConversationsWithMessages()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var make = new MakeBuilder().Build();
+        var model = new ModelBuilder().WithMake(make.Id).Build();
+        var fuel = new FuelBuilder().Build();
+        var transmission = new TransmissionBuilder().Build();
+        var bodyType = new BodyTypeBuilder().Build();
+        var drivetrain = new DrivetrainBuilder().Build();
+        var variant = new VariantBuilder().WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
+        var seller = new UserBuilder().Build();
+        var buyer1 = new UserBuilder().Build();
+        var buyer2 = new UserBuilder().Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+        // conversation with a message
+        var conversationWithMessage = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer1.Id).Build();
+        var message = new MessageBuilder().WithConversation(conversationWithMessage.Id).WithSender(buyer1.Id).Build();
+        // conversation with no messages (buyer opened chat but sent nothing)
+        var emptyConversation = new ConversationBuilder().WithListing(listing.Id).WithBuyer(buyer2.Id).Build();
+
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, buyer1, buyer2, listing);
+        await context.AddRangeAsync(conversationWithMessage, message, emptyConversation);
+        await context.SaveChangesAsync();
+
+        var query = new GetMyListingsQuery { SellerId = seller.Id };
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Single().ConversationCount.Should().Be(1);
     }
 }

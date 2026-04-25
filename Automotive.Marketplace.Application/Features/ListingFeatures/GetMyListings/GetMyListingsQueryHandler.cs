@@ -27,10 +27,20 @@ public class GetMyListingsQueryHandler(
             .Include(l => l.Images)
             .Include(l => l.Defects)
             .Include(l => l.Likes)
-            .Include(l => l.Conversations)
             .Where(l => l.SellerId == request.SellerId)
             .OrderByDescending(l => l.CreatedAt)
             .ToListAsync(cancellationToken);
+
+        // Count only conversations that have at least one message (exclude ghost conversations
+        // created when a buyer opened the chat panel but never sent anything)
+        var listingIds = listings.Select(l => l.Id).ToList();
+        var conversationCounts = await repository
+            .AsQueryable<Conversation>()
+            .Where(c => listingIds.Contains(c.ListingId) && c.Messages.Any())
+            .GroupBy(c => c.ListingId)
+            .Select(g => new { ListingId = g.Key, Count = g.Count() })
+            .ToListAsync(cancellationToken);
+        var countByListingId = conversationCounts.ToDictionary(x => x.ListingId, x => x.Count);
 
         List<GetMyListingsResponse> response = [];
         foreach (var listing in listings)
@@ -58,7 +68,7 @@ public class GetMyListingsQueryHandler(
             mappedListing.ImageCount = listing.Images.Count;
             mappedListing.DefectCount = listing.Defects.Count;
             mappedListing.LikeCount = listing.Likes.Count;
-            mappedListing.ConversationCount = listing.Conversations.Count;
+            mappedListing.ConversationCount = countByListingId.GetValueOrDefault(listing.Id, 0);
 
             response.Add(mappedListing);
         }

@@ -176,6 +176,31 @@ public class GetListingEngagementsQueryHandlerTests(
     }
 
     [Fact]
+    public async Task Handle_WithConversationHavingNoMessages_ShouldNotAppearInConversations()
+    {
+        // Arrange
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+        var (listingId, sellerId) = await SeedListingAsync(context);
+
+        var buyer = new UserBuilder().Build();
+        var emptyConversation = new ConversationBuilder().WithListing(listingId).WithBuyer(buyer.Id).Build();
+        // No messages seeded
+
+        await context.AddRangeAsync(buyer, emptyConversation);
+        await context.SaveChangesAsync();
+
+        var query = new GetListingEngagementsQuery { ListingId = listingId, CurrentUserId = sellerId };
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Conversations.Should().BeEmpty();
+    }
+
+    [Fact]
     public async Task Handle_UserWhoLikedAndMessaged_ShouldAppearOnlyInConversations()
     {
         // Arrange
