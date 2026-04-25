@@ -113,7 +113,7 @@ using (var scope = app.Services.CreateScope())
     await automotiveContext.Database.MigrateAsync();
 
     var municipalityInitializer = scope.ServiceProvider.GetRequiredService<IMunicipalityInitializer>();
-    await municipalityInitializer.RunAsync();
+    await municipalityInitializer.RunAsync(app.Lifetime.ApplicationStopping);
 
     if (app.Environment.IsDevelopment())
     {
