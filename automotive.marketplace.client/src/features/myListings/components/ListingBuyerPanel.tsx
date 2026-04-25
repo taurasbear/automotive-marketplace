@@ -131,22 +131,26 @@ export default function ListingBuyerPanel({
   };
 
   const handleOpenLikerChat = async (liker: ListingLikerEngagement) => {
-    const res = await getOrCreate({ listingId, buyerId: liker.userId });
-    onStartChat({
-      id: res.data.conversationId,
-      listingId,
-      listingTitle,
-      listingThumbnail,
-      listingPrice,
-      counterpartId: liker.userId,
-      counterpartUsername: liker.username,
-      lastMessage: null,
-      lastMessageAt: new Date().toISOString(),
-      unreadCount: 0,
-      buyerId: liker.userId,
-      sellerId,
-      buyerHasEngaged: false,
-    });
+    try {
+      const res = await getOrCreate({ listingId, buyerId: liker.userId });
+      onStartChat({
+        id: res.data.conversationId,
+        listingId,
+        listingTitle,
+        listingThumbnail,
+        listingPrice,
+        counterpartId: liker.userId,
+        counterpartUsername: liker.username,
+        lastMessage: null,
+        lastMessageAt: new Date().toISOString(),
+        unreadCount: 0,
+        buyerId: liker.userId,
+        sellerId,
+        buyerHasEngaged: false,
+      });
+    } catch {
+      // error already handled via mutation meta toast
+    }
   };
 
   if (engagementsQuery.isPending) {
@@ -163,7 +167,7 @@ export default function ListingBuyerPanel({
   if (engagementsQuery.isError) {
     return (
       <div className="border-border border-t px-4 py-4">
-        <p className="text-destructive text-sm">{t("page.loadError")}</p>
+        <p className="text-destructive text-sm">{t("buyerPanel.loadError")}</p>
       </div>
     );
   }

@@ -18,6 +18,20 @@ public class GetOrCreateConversationAsSellerCommandHandler(IRepository repositor
         if (listing.SellerId != request.SellerId)
             throw new UnauthorizedAccessException("You are not the seller of this listing.");
 
+        var buyerHasRelationship = await repository
+            .AsQueryable<UserListingLike>()
+            .AnyAsync(l => l.UserId == request.BuyerId && l.ListingId == request.ListingId, cancellationToken);
+
+        if (!buyerHasRelationship)
+        {
+            var existingConversation = await repository
+                .AsQueryable<Conversation>()
+                .AnyAsync(c => c.BuyerId == request.BuyerId && c.ListingId == request.ListingId, cancellationToken);
+            
+            if (!existingConversation)
+                throw new RequestValidationException(["Buyer has no relationship with this listing."]);
+        }
+
         var existing = await repository.AsQueryable<Conversation>()
             .FirstOrDefaultAsync(
                 c => c.BuyerId == request.BuyerId && c.ListingId == request.ListingId,

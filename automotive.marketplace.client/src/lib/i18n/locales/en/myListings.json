@@ -60,6 +60,7 @@
     "moreConversations": "more conversations",
     "moreLikes": "more likes",
     "chat": "Chat",
+    "loadError": "Failed to load buyer activity.",
     "interactionTypes": {
       "offer": "Price offer",
       "meeting": "Meeting proposal",

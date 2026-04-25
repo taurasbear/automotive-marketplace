@@ -60,6 +60,7 @@
     "moreConversations": "daugiau pokalbių",
     "moreLikes": "daugiau patiktukų",
     "chat": "Rašyti",
+    "loadError": "Nepavyko įkelti pirkėjų veiklos.",
     "interactionTypes": {
       "offer": "Kainos pasiūlymas",
       "meeting": "Susitikimo pasiūlymas",
