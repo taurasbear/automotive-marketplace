@@ -11,7 +11,8 @@
     "sold": "Sold",
     "defects": "{{count}} defects",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "location": "Location"
   },
   "detail": {
     "backToMyListings": "Back to My Listings",

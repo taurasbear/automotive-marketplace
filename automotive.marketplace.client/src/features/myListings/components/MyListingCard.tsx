@@ -95,9 +95,9 @@ export default function MyListingCard({
             <StatusBadge status={listing.status} />
           </div>
           {/* Image count — top-right overlay */}
-          {listing.imageCount > 1 && (
+          {listing.images.length > 1 && (
             <div className="absolute top-7 right-2 rounded bg-black/60 px-1.5 py-0.5 text-xs text-white">
-              {listing.imageCount}
+              {listing.images.length}
             </div>
           )}
         </div>
@@ -145,7 +145,7 @@ export default function MyListingCard({
             <div className="flex justify-self-end">
               <ListingCardBadge
                 Icon={<IoLocationOutline className="h-8 w-8" />}
-                title={t("vehicleInfo.make").replace(":", "")}
+                title={t("card.location")}
                 stat={listing.city}
               />
             </div>
