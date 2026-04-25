@@ -46,7 +46,7 @@ const SavedListingRow = ({ listing }: SavedListingRowProps) => {
           <div className="min-w-0">
             <p className="truncate font-medium">{listing.title}</p>
             <p className="text-muted-foreground text-sm">
-              {formatCurrency(listing.price)} € · {listing.city} ·{" "}
+              {formatCurrency(listing.price)} € · {listing.municipalityName} ·{" "}
               {formatNumber(listing.mileage)} km · {listing.fuelName} ·{" "}
               {listing.transmissionName}
             </p>

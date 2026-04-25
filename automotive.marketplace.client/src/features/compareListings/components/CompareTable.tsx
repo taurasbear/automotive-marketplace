@@ -50,7 +50,7 @@ export const CompareTable = ({
           label: t("table.mileage"),
           format: (v) => `${formatNumber(v as number)} km`,
         },
-        { field: "city", label: t("table.city") },
+        { field: "municipalityName", label: t("table.city") },
       ],
     },
     {

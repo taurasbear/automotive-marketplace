@@ -91,7 +91,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<IoLocationOutline className="h-8 w-8" />}
               title={t("card.location")}
-              stat={listing.city}
+              stat={listing.municipalityName}
             />
           </div>
         </div>

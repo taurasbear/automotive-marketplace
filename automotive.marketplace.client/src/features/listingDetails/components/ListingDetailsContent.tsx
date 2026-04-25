@@ -160,7 +160,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   {listing.isUsed ? t("card.used") : t("card.new")}
                 </span>
                 <span className="bg-secondary text-secondary-foreground rounded-full border px-3 py-1 text-sm">
-                  {listing.city}
+                  {listing.municipalityName}
                 </span>
               </div>
               {userId && !isSeller && (

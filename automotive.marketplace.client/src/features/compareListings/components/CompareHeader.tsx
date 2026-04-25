@@ -25,7 +25,7 @@ const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => {
         {listing.year} {listing.makeName} {listing.modelName}
       </p>
       <p className="text-primary font-bold">{listing.price.toFixed(0)} €</p>
-      <p className="text-muted-foreground text-sm">{listing.city}</p>
+      <p className="text-muted-foreground text-sm">{listing.municipalityName}</p>
       {onChange && (
         <Button
           variant="outline"
