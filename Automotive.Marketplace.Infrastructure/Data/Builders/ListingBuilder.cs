@@ -36,6 +36,12 @@ public class ListingBuilder
         return this;
     }
 
+    public ListingBuilder WithMileage(int mileage)
+    {
+        _faker.RuleFor(listing => listing.Mileage, _ => mileage);
+        return this;
+    }
+
     public ListingBuilder WithListing(Guid listingId)
     {
         _faker.RuleFor(listing => listing.Id, listingId);
