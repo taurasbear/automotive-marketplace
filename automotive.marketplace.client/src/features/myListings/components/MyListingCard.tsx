@@ -120,7 +120,7 @@ export default function MyListingCard({
           </div>
 
           {/* Spec badges */}
-          <div className="grid grid-cols-2 gap-x-0 gap-y-4">
+          <div className="justify-items-stretched grid grid-cols-2 gap-x-0 gap-y-2">
             <div className="flex justify-self-start">
               <ListingCardBadge
                 Icon={<PiEngine className="h-8 w-8" />}
