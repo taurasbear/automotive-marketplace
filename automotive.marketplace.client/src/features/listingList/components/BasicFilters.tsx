@@ -36,8 +36,8 @@ const BasicFilters = ({ filters, onFilterChange }: BasicFiltersProps) => {
       <div>
         <LocationCombobox
           className="min-h-15 rounded-t-none border-0 shadow-none"
-          value={filters.city}
-          onValueChange={(value) => onFilterChange("city", value)}
+          value={filters.municipalityId}
+          onValueChange={(value) => onFilterChange("municipalityId", value)}
         />
       </div>
     </div>

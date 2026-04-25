@@ -2,7 +2,7 @@ export type SavedListing = {
   listingId: string;
   title: string;
   price: number;
-  city: string;
+  municipalityName: string;
   mileage: number;
   fuelName: string;
   transmissionName: string;

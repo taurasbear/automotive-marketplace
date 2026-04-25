@@ -8,7 +8,7 @@ public sealed record SearchListingsResponse
     public int Year { get; set; }
     public decimal Price { get; set; }
     public int Mileage { get; set; }
-    public string City { get; set; } = string.Empty;
+    public string MunicipalityName { get; set; } = string.Empty;
     public string SellerName { get; set; } = string.Empty;
     public string? FirstImageUrl { get; set; }
 }

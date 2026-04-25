@@ -30,6 +30,7 @@
   },
   "details": {
     "description": "Aprašymas",
+    "defects": "Žinomi defektai",
     "specifications": "Specifikacijos",
     "mileage": "Rida",
     "engine": "Variklis",

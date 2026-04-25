@@ -5,7 +5,7 @@ export type SearchListingsResponse = {
   year: number;
   price: number;
   mileage: number;
-  city: string;
+  municipalityName: string;
   sellerName: string;
   firstImageUrl?: string;
 };

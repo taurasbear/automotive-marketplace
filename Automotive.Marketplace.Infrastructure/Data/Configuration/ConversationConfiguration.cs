@@ -9,7 +9,7 @@ public class ConversationConfiguration : IEntityTypeConfiguration<Conversation>
     public void Configure(EntityTypeBuilder<Conversation> builder)
     {
         builder.HasOne(c => c.Listing)
-            .WithMany()
+            .WithMany(l => l.Conversations)
             .HasForeignKey(c => c.ListingId)
             .OnDelete(DeleteBehavior.Cascade);
 

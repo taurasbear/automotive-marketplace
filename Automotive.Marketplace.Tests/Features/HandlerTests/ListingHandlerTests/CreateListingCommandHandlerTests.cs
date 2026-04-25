@@ -45,7 +45,7 @@ public class CreateListingCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
-        var (_, model, fuel, transmission, bodyType, drivetrain, user) = await SeedRequiredEntitiesAsync(context);
+        var (_, model, fuel, transmission, bodyType, drivetrain, user, municipality) = await SeedRequiredEntitiesAsync(context);
 
         var existingVariant = new VariantBuilder()
             .WithModel(model.Id)
@@ -74,7 +74,7 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 100,
             EngineSizeMl: 1600,
             IsUsed: true,
-            City: "Test City",
+            MunicipalityId: municipality.Id,
             Colour: null,
             Vin: null,
             IsSteeringWheelRight: true,
@@ -104,7 +104,7 @@ public class CreateListingCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
-        var (_, model, fuel, transmission, bodyType, drivetrain, user) = await SeedRequiredEntitiesAsync(context);
+        var (_, model, fuel, transmission, bodyType, drivetrain, user, municipality) = await SeedRequiredEntitiesAsync(context);
 
         var command = new CreateListingCommand(
             Price: 25000,
@@ -123,7 +123,7 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 150,
             EngineSizeMl: 3000,
             IsUsed: false,
-            City: "Another city",
+            MunicipalityId: municipality.Id,
             Colour: null,
             Vin: null,
             IsSteeringWheelRight: true,
@@ -156,7 +156,7 @@ public class CreateListingCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
-        var (_, model, fuel, transmission, bodyType, drivetrain, user) = await SeedRequiredEntitiesAsync(context);
+        var (_, model, fuel, transmission, bodyType, drivetrain, user, municipality) = await SeedRequiredEntitiesAsync(context);
 
         var command = new CreateListingCommand(
             Price: 15000,
@@ -175,7 +175,7 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 110,
             EngineSizeMl: 2000,
             IsUsed: true,
-            City: "Super cool city",
+            MunicipalityId: municipality.Id,
             Colour: null,
             Vin: null,
             IsSteeringWheelRight: true,
@@ -200,7 +200,7 @@ public class CreateListingCommandHandlerTests(
         createdListing.Mileage.Should().Be(command.Mileage);
         createdListing.Description.Should().Be(command.Description);
         createdListing.SellerId.Should().Be(command.SellerId);
-        createdListing.City.Should().Be(command.City);
+        createdListing.MunicipalityId.Should().Be(command.MunicipalityId);
         createdListing.IsUsed.Should().Be(command.IsUsed);
         createdListing.Status.Should().Be(Status.Available);
         createdListing.VariantId.Should().Be(createdVariant.Id);
@@ -216,7 +216,7 @@ public class CreateListingCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
-        var (_, model, fuel, transmission, bodyType, drivetrain, user) = await SeedRequiredEntitiesAsync(context);
+        var (_, model, fuel, transmission, bodyType, drivetrain, user, municipality) = await SeedRequiredEntitiesAsync(context);
 
         var preExistingVariant = new VariantBuilder()
             .WithModel(model.Id)
@@ -246,7 +246,7 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 90,
             EngineSizeMl: 1400,
             IsUsed: true,
-            City: "Old city",
+            MunicipalityId: municipality.Id,
             Colour: null,
             Vin: null,
             IsSteeringWheelRight: true,
@@ -275,7 +275,7 @@ public class CreateListingCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
-        var (_, _, fuel, transmission, bodyType, drivetrain, user) = await SeedRequiredEntitiesAsync(context);
+        var (_, _, fuel, transmission, bodyType, drivetrain, user, municipality) = await SeedRequiredEntitiesAsync(context);
 
         var command = new CreateListingCommand(
             Price: 15000,
@@ -294,7 +294,7 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 110,
             EngineSizeMl: 2000,
             IsUsed: true,
-            City: "Test city",
+            MunicipalityId: municipality.Id,
             Colour: null,
             Vin: null,
             IsSteeringWheelRight: true,
@@ -316,7 +316,7 @@ public class CreateListingCommandHandlerTests(
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
         var handler = CreateHandler(scope);
 
-        var (_, model, fuel, transmission, bodyType, drivetrain, _) = await SeedRequiredEntitiesAsync(context);
+        var (_, model, fuel, transmission, bodyType, drivetrain, _, municipality) = await SeedRequiredEntitiesAsync(context);
 
         var command = new CreateListingCommand(
             Price: 15000,
@@ -335,7 +335,7 @@ public class CreateListingCommandHandlerTests(
             PowerKw: 110,
             EngineSizeMl: 2000,
             IsUsed: true,
-            City: "Test city",
+            MunicipalityId: municipality.Id,
             Colour: null,
             Vin: null,
             IsSteeringWheelRight: true,
@@ -349,7 +349,7 @@ public class CreateListingCommandHandlerTests(
         await handleDelegate.Should().ThrowAsync<DbUpdateException>();
     }
 
-    private static async Task<(Make make, Model model, Fuel fuel, Transmission transmission, BodyType bodyType, Drivetrain drivetrain, User user)>
+    private static async Task<(Make make, Model model, Fuel fuel, Transmission transmission, BodyType bodyType, Drivetrain drivetrain, User user, Municipality municipality)>
         SeedRequiredEntitiesAsync(AutomotiveContext context)
     {
         var make = new MakeBuilder().Build();
@@ -359,10 +359,11 @@ public class CreateListingCommandHandlerTests(
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
         var user = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
 
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, user);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, user, municipality);
         await context.SaveChangesAsync();
 
-        return (make, model, fuel, transmission, bodyType, drivetrain, user);
+        return (make, model, fuel, transmission, bodyType, drivetrain, user, municipality);
     }
 }

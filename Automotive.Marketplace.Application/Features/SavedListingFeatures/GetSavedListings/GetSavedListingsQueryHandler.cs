@@ -29,6 +29,8 @@ public class GetSavedListingsQueryHandler(IRepository repository, IImageStorageS
                     .ThenInclude(variant => variant.Transmission)
             .Include(like => like.Listing)
                 .ThenInclude(listing => listing.Images)
+            .Include(like => like.Listing)
+                .ThenInclude(listing => listing.Municipality)
             .ToListAsync(cancellationToken);
 
         var listingIds = likes.Select(l => l.ListingId).ToList();
@@ -57,7 +59,7 @@ public class GetSavedListingsQueryHandler(IRepository repository, IImageStorageS
                 ListingId = listing.Id,
                 Title = $"{listing.Year} {variant.Model.Make.Name} {variant.Model.Name}",
                 Price = listing.Price,
-                City = listing.City,
+                MunicipalityName = listing.Municipality?.Name ?? string.Empty,
                 Mileage = listing.Mileage,
                 FuelName = variant.Fuel.Name,
                 TransmissionName = variant.Transmission.Name,

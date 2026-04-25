@@ -16,19 +16,22 @@ public class ListingSeeder(AutomotiveContext context) : IDevelopmentSeeder
         var users = await context.Set<User>().ToListAsync(cancellationToken);
         var variants = await context.Set<Variant>().ToListAsync(cancellationToken);
         var drivetrains = await context.Set<Drivetrain>().ToListAsync(cancellationToken);
+        var municipalities = await context.Set<Municipality>().ToListAsync(cancellationToken);
 
-        if (!users.Any() || !variants.Any() || !drivetrains.Any())
+        if (!users.Any() || !variants.Any() || !drivetrains.Any() || !municipalities.Any())
             return;
 
         for (int i = 0; i < variants.Count; i++)
         {
             var user = users.Skip(i % users.Count).First();
             var drivetrain = drivetrains[i % drivetrains.Count];
+            var municipality = municipalities[i % municipalities.Count];
 
             var listing = new ListingBuilder()
                 .WithVariant(variants[i].Id)
                 .WithSeller(user.Id)
                 .WithDrivetrain(drivetrain.Id)
+                .WithMunicipality(municipality.Id)
                 .Build();
 
             await context.AddAsync(listing, cancellationToken);

@@ -3,7 +3,9 @@ using Automotive.Marketplace.Application.Features.ListingFeatures.DeleteListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingById;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComparison;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetMyListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.SearchListings;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingEngagements;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
@@ -35,12 +37,12 @@ public class ListingController(IMediator mediator) : BaseController
 
     [HttpPost]
     [Protect(Permission.CreateListings, Permission.ManageListings)]
-    public async Task<ActionResult> Create(
+    public async Task<ActionResult<CreateListingResponse>> Create(
         [FromForm] CreateListingCommand command,
         CancellationToken cancellationToken)
     {
-        await mediator.Send(command with { SellerId = UserId }, cancellationToken);
-        return Created();
+        var result = await mediator.Send(command with { SellerId = UserId }, cancellationToken);
+        return Created("", result);
     }
 
     [HttpDelete]
@@ -75,6 +77,27 @@ public class ListingController(IMediator mediator) : BaseController
         CancellationToken cancellationToken)
     {
         var query = new GetListingComparisonQuery { ListingAId = a, ListingBId = b };
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
+    public async Task<ActionResult<IEnumerable<GetMyListingsResponse>>> GetMy(
+        CancellationToken cancellationToken)
+    {
+        var query = new GetMyListingsQuery { SellerId = UserId };
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
+    public async Task<ActionResult<GetListingEngagementsResponse>> GetEngagements(
+        [FromQuery] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetListingEngagementsQuery { ListingId = id, CurrentUserId = UserId };
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }

@@ -1,10 +1,11 @@
 import { Input } from "@/components/ui/input";
 import imageCompression from "browser-image-compression";
 import { ControllerRenderProps } from "react-hook-form";
-import { CreateListingFormData } from "../types/CreateListingFormData";
+import { z } from "zod";
+import { CreateListingSchema } from "../schemas/createListingSchema";
 
 type ImageUploadInputProps = {
-  field: ControllerRenderProps<CreateListingFormData, "images">;
+  field: ControllerRenderProps<z.infer<typeof CreateListingSchema>, "images">;
 };
 
 const ImageUploadInput = ({ field }: ImageUploadInputProps) => {

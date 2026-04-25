@@ -30,6 +30,7 @@
   },
   "details": {
     "description": "Description",
+    "defects": "Known Defects",
     "specifications": "Specifications",
     "mileage": "Mileage",
     "engine": "Engine",

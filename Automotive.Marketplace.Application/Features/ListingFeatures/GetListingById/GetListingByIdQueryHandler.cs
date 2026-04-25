@@ -30,13 +30,18 @@ public class GetListingByIdQueryHandler(
             .Include(l => l.Drivetrain)
             .Include(l => l.Seller)
             .Include(l => l.Images)
+            .Include(l => l.Defects)
+                .ThenInclude(d => d.DefectCategory)
+            .Include(l => l.Defects)
+                .ThenInclude(d => d.Images)
+            .Include(l => l.Municipality)
             .FirstOrDefaultAsync(l => l.Id == request.Id, cancellationToken)
             ?? throw new DbEntityNotFoundException(nameof(Listing), request.Id);
 
         var response = mapper.Map<GetListingByIdResponse>(listing);
 
         var images = new List<Automotive.Marketplace.Application.Models.ImageDto>();
-        foreach (var image in listing.Images)
+        foreach (var image in listing.Images.Where(i => i.ListingDefectId == null))
         {
             images.Add(new Automotive.Marketplace.Application.Models.ImageDto
             {
@@ -45,6 +50,29 @@ public class GetListingByIdQueryHandler(
             });
         }
         response.Images = images;
+
+        var defects = new List<Automotive.Marketplace.Application.Models.ListingDefectDto>();
+        foreach (var defect in listing.Defects)
+        {
+            var defectImages = new List<Automotive.Marketplace.Application.Models.ImageDto>();
+            foreach (var img in defect.Images)
+            {
+                defectImages.Add(new Automotive.Marketplace.Application.Models.ImageDto
+                {
+                    Url = await imageStorageService.GetPresignedUrlAsync(img.ObjectKey),
+                    AltText = img.AltText,
+                });
+            }
+            defects.Add(new Automotive.Marketplace.Application.Models.ListingDefectDto
+            {
+                Id = defect.Id,
+                DefectCategoryId = defect.DefectCategoryId,
+                DefectCategoryName = defect.DefectCategory?.Name,
+                CustomName = defect.CustomName,
+                Images = defectImages,
+            });
+        }
+        response.Defects = defects;
 
         return response;
     }

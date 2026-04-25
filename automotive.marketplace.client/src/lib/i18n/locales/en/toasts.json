@@ -1,0 +1,62 @@
+{
+  "defect": {
+    "addError": "Failed to add defect",
+    "removeError": "Failed to remove defect",
+    "addImageSuccess": "Photo added!",
+    "addImageError": "Failed to upload photo",
+    "removeImageSuccess": "Photo removed!",
+    "removeImageError": "Failed to remove photo"
+  },
+  "listing": {
+    "createSuccess": "Successfully created listing!",
+    "createError": "Sorry, we had trouble creating your listing.",
+    "updateSuccess": "Successfully updated listing!",
+    "updateError": "Sorry, we couldn't update listing",
+    "deleteSuccess": "Successfully deleted listing!",
+    "deleteError": "Sorry, we had trouble deleting your listing"
+  },
+  "myListing": {
+    "deleteSuccess": "Listing deleted successfully!",
+    "deleteError": "Failed to delete listing"
+  },
+  "auth": {
+    "loginSuccess": "Successfully logged in!",
+    "loginError": "Sorry, couldn't log you in. Please try again.",
+    "logoutSuccess": "Successfully logged out",
+    "logoutError": "Sorry, had trouble logging you out. Please try again.",
+    "registerSuccess": "Successfully registered!",
+    "registerError": "Sorry, couldn't register an account. Please try again."
+  },
+  "make": {
+    "createSuccess": "Successfully created make!",
+    "createError": "Sorry, we couldn't create your make",
+    "updateSuccess": "Successfully updated make!",
+    "updateError": "Sorry, we couldn't update your make",
+    "deleteSuccess": "Successfully deleted make!",
+    "deleteError": "Sorry, we had trouble deleting your make"
+  },
+  "model": {
+    "createSuccess": "Successfully created model!",
+    "createError": "Sorry, we couldn't create your model",
+    "updateSuccess": "Successfully updated model!",
+    "updateError": "Sorry, we couldn't update model",
+    "deleteSuccess": "Successfully deleted model!",
+    "deleteError": "Sorry, we had trouble deleting your model"
+  },
+  "variant": {
+    "createSuccess": "Successfully created variant!",
+    "createError": "Sorry, we couldn't create your variant",
+    "updateSuccess": "Successfully updated variant!",
+    "updateError": "Sorry, we couldn't update the variant",
+    "deleteSuccess": "Successfully deleted variant!",
+    "deleteError": "Sorry, we had trouble deleting the variant"
+  },
+  "saved": {
+    "likeError": "Could not update like. Please try again.",
+    "noteError": "Could not save note. Please try again.",
+    "noteDeleteError": "Could not delete note. Please try again."
+  },
+  "chat": {
+    "conversationError": "Could not open conversation. Please try again."
+  }
+}

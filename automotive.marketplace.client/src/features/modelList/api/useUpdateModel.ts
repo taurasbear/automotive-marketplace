@@ -11,8 +11,8 @@ export const useUpdateModel = () =>
   useMutation({
     mutationFn: updateModel,
     meta: {
-      successMessage: "Successfully updated model!",
-      errorMessage: "Sorry, we couldn't update model",
+      successMessage: "toasts:model.updateSuccess",
+      errorMessage: "toasts:model.updateError",
       invalidatesQuery: modelKeys.all(),
     },
   });

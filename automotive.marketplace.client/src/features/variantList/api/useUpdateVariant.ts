@@ -11,8 +11,8 @@ export const useUpdateVariant = () =>
   useMutation({
     mutationFn: updateVariant,
     meta: {
-      successMessage: "Successfully updated variant!",
-      errorMessage: "Sorry, we couldn't update the variant",
+      successMessage: "toasts:variant.updateSuccess",
+      errorMessage: "toasts:variant.updateError",
       invalidatesQuery: variantKeys.all(),
     },
   });

@@ -1,3 +1,6 @@
+import { getAllBodyTypesOptions } from "@/api/enum/getAllBodyTypesOptions";
+import { getAllFuelsOptions } from "@/api/enum/getAllFuelsOptions";
+import { getAllTransmissionsOptions } from "@/api/enum/getAllTransmissionsOptions";
 import {
   Table,
   TableBody,
@@ -8,6 +11,8 @@ import {
 } from "@/components/ui/table";
 import { getVariantsByModelIdOptions } from "@/features/variantList/api/getVariantsByModelIdOptions";
 import { Variant } from "@/features/variantList/types/Variant";
+import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
+import type { Translation } from "@/types/shared/Translation";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
@@ -24,16 +29,34 @@ const VariantTable = ({
   onSelect,
   disabled,
 }: VariantTableProps) => {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
   const {
     data: variantsQuery,
     isPending,
     isError,
   } = useQuery(getVariantsByModelIdOptions(modelId || undefined));
 
+  const { data: fuelsQuery } = useQuery(getAllFuelsOptions);
+  const { data: transmissionsQuery } = useQuery(getAllTransmissionsOptions);
+  const { data: bodyTypesQuery } = useQuery(getAllBodyTypesOptions);
+
   if (!modelId || disabled) return null;
 
   const variants = variantsQuery?.data ?? [];
+  const fuels = fuelsQuery?.data ?? [];
+  const transmissions = transmissionsQuery?.data ?? [];
+  const bodyTypes = bodyTypesQuery?.data ?? [];
+
+  const getEnumTranslation = (
+    items: { id: string; translations: Translation[] }[],
+    id: string,
+    fallback: string,
+  ) => {
+    const item = items.find((i) => i.id === id);
+    return item
+      ? getTranslatedName(item.translations, i18n.language)
+      : fallback;
+  };
 
   const handleRowClick = (variant: Variant) => {
     if (variant.id === selectedVariantId) {
@@ -92,11 +115,21 @@ const VariantTable = ({
             onClick={() => handleRowClick(v)}
             className={`cursor-pointer ${v.id === selectedVariantId ? "bg-primary/10 font-medium" : "hover:bg-muted/50"}`}
           >
-            <TableCell>{v.fuelName}</TableCell>
-            <TableCell>{v.transmissionName}</TableCell>
+            <TableCell>
+              {getEnumTranslation(fuels, v.fuelId, v.fuelName)}
+            </TableCell>
+            <TableCell>
+              {getEnumTranslation(
+                transmissions,
+                v.transmissionId,
+                v.transmissionName,
+              )}
+            </TableCell>
             <TableCell>{v.powerKw}</TableCell>
             <TableCell>{v.engineSizeMl}</TableCell>
-            <TableCell>{v.bodyTypeName}</TableCell>
+            <TableCell>
+              {getEnumTranslation(bodyTypes, v.bodyTypeId, v.bodyTypeName)}
+            </TableCell>
             <TableCell>{v.doorCount}</TableCell>
           </TableRow>
         ))}

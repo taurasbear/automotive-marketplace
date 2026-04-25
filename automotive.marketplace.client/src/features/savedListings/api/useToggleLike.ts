@@ -25,7 +25,7 @@ export const useToggleLike = () => {
       void queryClient.invalidateQueries({ queryKey: listingKeys.all() });
     },
     meta: {
-      errorMessage: "Could not update like. Please try again.",
+      errorMessage: "toasts:saved.likeError",
     },
   });
 };

@@ -11,8 +11,8 @@ export const useDeleteModel = () =>
   useMutation({
     mutationFn: deleteModel,
     meta: {
-      successMessage: "Successfully deleted model!",
-      errorMessage: "Sorry, we had trouble deleting your model",
+      successMessage: "toasts:model.deleteSuccess",
+      errorMessage: "toasts:model.deleteError",
       invalidatesQuery: modelKeys.all(),
     },
   });

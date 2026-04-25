@@ -16,5 +16,9 @@ public class Image : BaseEntity
 
     public Guid ListingId { get; set; }
 
+    public Guid? ListingDefectId { get; set; }
+
     public virtual Listing Listing { get; set; } = null!;
+
+    public virtual ListingDefect? ListingDefect { get; set; }
 }

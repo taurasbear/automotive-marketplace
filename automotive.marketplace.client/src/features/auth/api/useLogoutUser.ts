@@ -8,7 +8,7 @@ export const useLogoutUser = () =>
   useMutation({
     mutationFn: logoutUser,
     meta: {
-      successMessage: "Successfully logged out",
-      errorMessage: "Sorry, had trouble logging you out. Please try again.",
+      successMessage: "toasts:auth.logoutSuccess",
+      errorMessage: "toasts:auth.logoutError",
     },
   });

@@ -11,8 +11,8 @@ export const useDeleteVariant = () =>
   useMutation({
     mutationFn: deleteVariant,
     meta: {
-      successMessage: "Successfully deleted variant!",
-      errorMessage: "Sorry, we had trouble deleting the variant",
+      successMessage: "toasts:variant.deleteSuccess",
+      errorMessage: "toasts:variant.deleteError",
       invalidatesQuery: variantKeys.all(),
     },
   });

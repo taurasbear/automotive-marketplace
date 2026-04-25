@@ -1,6 +1,8 @@
 import DrivetrainToggleGroup from "@/components/forms/DrivetrainToggleGroup";
+import DefectSelector from "@/components/forms/DefectSelector";
 import BodyTypeSelect from "@/components/forms/select/BodyTypeSelect";
 import FuelSelect from "@/components/forms/select/FuelSelect";
+import LocationCombobox from "@/components/forms/select/LocationCombobox";
 import MakeSelect from "@/components/forms/select/MakeSelect";
 import ModelSelect from "@/components/forms/select/ModelSelect";
 import VariantTable from "@/components/forms/VariantTable";
@@ -18,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { VALIDATION } from "@/constants/validation";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 import { Variant } from "@/features/variantList/types/Variant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Unlock } from "lucide-react";
@@ -29,6 +32,9 @@ import { CreateListingSchema } from "../schemas/createListingSchema";
 import { CreateListingFormData } from "../types/CreateListingFormData";
 import ImagePreview from "./ImagePreview";
 import ImageUploadInput from "./ImageUploadInput";
+import type { FormDefect } from "@/components/forms/DefectSelector";
+import { useAddListingDefect } from "@/api/defect/useAddListingDefect";
+import { useAddDefectImage } from "@/api/defect/useAddDefectImage";
 
 type CreateListingFormProps = {
   className?: string;
@@ -50,7 +56,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       makeId: "",
       modelId: "",
       variantId: "",
-      city: "",
+      municipalityId: UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE,
       colour: "",
       isUsed: false,
       isCustom: true,
@@ -61,17 +67,44 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
       drivetrainId: "",
       doorCount: 0,
       images: [],
+      defects: [],
     },
   });
 
   const { mutateAsync: createListingAsync } = useCreateListing();
+  const { mutateAsync: addDefectAsync } = useAddListingDefect();
+  const { mutateAsync: addDefectImageAsync } = useAddDefectImage();
 
   const onSubmit = async (formData: CreateListingFormData) => {
-    const { makeId, ...command } = formData;
-    await createListingAsync({
+    const { makeId, defects: formDefects, ...command } = formData;
+    const response = await createListingAsync({
       ...command,
       variantId: isModified ? undefined : command.variantId || undefined,
     });
+
+    // Add defects after listing creation
+    const listingId = response.data.id;
+    if (formDefects && formDefects.length > 0 && listingId) {
+      for (const defect of formDefects) {
+        const defectResponse = await addDefectAsync({
+          listingId: listingId,
+          defectCategoryId: defect.defectCategoryId || undefined,
+          customName: defect.customName || undefined,
+        });
+
+        // Upload defect images
+        const defectId = defectResponse.data;
+        if (defect.images && defect.images.length > 0 && defectId) {
+          for (const image of defect.images) {
+            await addDefectImageAsync({
+              listingDefectId: defectId,
+              image: image as File,
+            });
+          }
+        }
+      }
+    }
+
     form.reset();
     setIsModified(false);
   };
@@ -80,6 +113,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
   const selectedModelId = form.watch("modelId") ?? "";
   const variantId = form.watch("variantId") ?? "";
   const images = form.watch("images") ?? [];
+  const defects = form.watch("defects") ?? [];
 
   const specLocked = !!variantId && !isModified;
 
@@ -399,16 +433,17 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
             )}
           />
           <FormField
-            name="city"
+            name="municipalityId"
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col justify-start">
                 <FormLabel>{t("form.city")}</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder={t("form.cityPlaceholder")}
-                    type="text"
-                    {...field}
+                  <LocationCombobox
+                    value={
+                      field.value || UI_CONSTANTS.SELECT.ANY_LOCATION.VALUE
+                    }
+                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
@@ -437,13 +472,24 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               <FormItem className="flex flex-col justify-start">
                 <FormLabel>{t("form.vehicleImages")}</FormLabel>
                 <FormControl>
-                  <ImageUploadInput field={field} />
+                  <ImageUploadInput field={field as any} />
                 </FormControl>
                 <ImagePreview images={images} onRemove={handleRemoveImage} />
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {/* Row 6.5: Defects */}
+          <div className="col-span-1 md:col-span-3">
+            <DefectSelector
+              mode="form"
+              selectedDefects={(defects as FormDefect[]) ?? []}
+              onDefectsChange={(newDefects) =>
+                form.setValue("defects", newDefects)
+              }
+            />
+          </div>
 
           {/* Row 7: Steering wheel, Used car, Submit */}
           <FormField

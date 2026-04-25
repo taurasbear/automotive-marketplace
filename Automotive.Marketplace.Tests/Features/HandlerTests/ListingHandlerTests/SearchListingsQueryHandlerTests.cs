@@ -56,10 +56,12 @@ public class SearchListingsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
 
         var result = await handler.Handle(new SearchListingsQuery { Q = "toyota" }, CancellationToken.None);
@@ -84,10 +86,12 @@ public class SearchListingsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
 
         var result = await handler.Handle(new SearchListingsQuery { Q = "camry" }, CancellationToken.None);
@@ -112,11 +116,13 @@ public class SearchListingsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
             .WithYear(2020)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
 
         var result = await handler.Handle(new SearchListingsQuery { Q = "2020" }, CancellationToken.None);
@@ -141,10 +147,12 @@ public class SearchListingsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().With(u => u.Username, "johndoe").Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
 
         var result = await handler.Handle(new SearchListingsQuery { Q = "johndoe" }, CancellationToken.None);
@@ -170,11 +178,13 @@ public class SearchListingsQueryHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
             .Build();
         var seller = new UserBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var listing = new ListingBuilder()
             .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
             .WithListing(listingId)
+            .WithMunicipality(municipality.Id)
             .Build();
-        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, listing);
+        await context.AddRangeAsync(make, model, fuel, transmission, bodyType, drivetrain, variant, seller, municipality, listing);
         await context.SaveChangesAsync();
 
         var result = await handler.Handle(
@@ -204,10 +214,12 @@ public class SearchListingsQueryHandlerTests(
                 .WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id)
                 .Build();
             var seller = new UserBuilder().Build();
+            var municipality = new MunicipalityBuilder().Build();
             var listing = new ListingBuilder()
                 .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id)
+                .WithMunicipality(municipality.Id)
                 .Build();
-            await context.AddRangeAsync(fuel, variant, seller, listing);
+            await context.AddRangeAsync(fuel, variant, seller, municipality, listing);
         }
         await context.SaveChangesAsync();
 

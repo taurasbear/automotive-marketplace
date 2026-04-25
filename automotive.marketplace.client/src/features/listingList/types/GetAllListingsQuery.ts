@@ -1,7 +1,7 @@
 export type GetAllListingsQuery = {
   makeId?: string;
   models?: string[];
-  city?: string;
+  municipalityId?: string;
   isUsed?: boolean;
   minYear?: number;
   maxYear?: number;

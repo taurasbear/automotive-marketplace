@@ -12,7 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithMany(listing => listing.LikeUsers)
             .UsingEntity<UserListingLike>(
                 like => like.HasOne(like => like.Listing)
-                .WithMany()
+                .WithMany(l => l.Likes)
                 .HasForeignKey(like => like.ListingId),
                 like => like.HasOne(like => like.User)
                 .WithMany()

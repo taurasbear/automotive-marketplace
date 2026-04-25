@@ -109,13 +109,14 @@ public class ToggleLikeCommandHandlerTests(
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var variant = new VariantBuilder()
             .WithModel(model.Id).WithFuel(fuel.Id)
             .WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
         var listing = new ListingBuilder()
-            .WithSeller(user.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+            .WithSeller(user.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).Build();
 
-        await context.AddRangeAsync(user, make, model, fuel, transmission, bodyType, drivetrain, variant, listing);
+        await context.AddRangeAsync(user, make, model, fuel, transmission, bodyType, drivetrain, municipality, variant, listing);
         await context.SaveChangesAsync();
 
         return (user, listing);

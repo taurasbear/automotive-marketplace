@@ -11,7 +11,7 @@ export const useLoginUser = () =>
   useMutation({
     mutationFn: loginUser,
     meta: {
-      successMessage: "Successfully logged in!",
-      errorMessage: "Sorry, couldn't log you in. Please try again.",
+      successMessage: "toasts:auth.loginSuccess",
+      errorMessage: "toasts:auth.loginError",
     },
   });

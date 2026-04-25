@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { BadgeCheck, BadgeX, Clock, HandCoins, Undo2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { formatCurrency } from "@/lib/i18n/formatNumber";
 import type { Offer } from "../types/Offer";
 import MakeOfferModal from "./MakeOfferModal";
 
@@ -114,11 +115,11 @@ const OfferCard = ({
         <div className="bg-card px-4 py-3">
           <div className="mb-1 flex items-baseline gap-2">
             <span className={`text-xl font-bold ${config.priceClass}`}>
-              €{offer.amount.toLocaleString()}
+              €{formatCurrency(offer.amount)}
             </span>
             {offer.status !== "Declined" && offer.status !== "Expired" && (
               <span className="text-muted-foreground text-xs line-through">
-                €{listingPrice.toLocaleString()}
+                €{formatCurrency(listingPrice)}
               </span>
             )}
             <span

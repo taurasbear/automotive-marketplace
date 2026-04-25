@@ -61,4 +61,15 @@ public class S3ImageStorageService(IAmazonS3 s3Client, IConfiguration configurat
 
         return presignedURL;
     }
+
+    public async Task DeleteImageAsync(string objectKey)
+    {
+        var request = new DeleteObjectRequest
+        {
+            BucketName = _bucketName,
+            Key = objectKey
+        };
+
+        await s3Client.DeleteObjectAsync(request);
+    }
 }

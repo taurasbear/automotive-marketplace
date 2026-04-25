@@ -8,7 +8,7 @@ export type UpdateListingCommand = {
   engineSizeMl: number;
   mileage: number;
   isSteeringWheelRight: boolean;
-  city: string;
+  municipalityId: string;
   isUsed: boolean;
   year?: number;
 };

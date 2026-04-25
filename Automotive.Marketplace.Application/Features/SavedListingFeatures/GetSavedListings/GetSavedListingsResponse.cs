@@ -10,7 +10,7 @@ public sealed record GetSavedListingsResponse
 
     public decimal Price { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public string MunicipalityName { get; set; } = string.Empty;
 
     public int Mileage { get; set; }
 

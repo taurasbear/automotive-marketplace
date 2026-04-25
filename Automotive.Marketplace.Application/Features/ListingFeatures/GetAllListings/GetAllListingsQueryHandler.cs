@@ -28,10 +28,12 @@ public class GetAllListingsQueryHandler(
                 .ThenInclude(v => v.Transmission)
             .Include(l => l.Seller)
             .Include(l => l.Images)
+            .Include(l => l.Defects)
+            .Include(l => l.Municipality)
             .Where(listing => listing.Status == Status.Available)
             .Where(listing => request.MakeId == null || request.MakeId == listing.Variant.Model.MakeId)
             .Where(listing => !request.Models.Any() || request.Models.Contains(listing.Variant.ModelId))
-            .Where(listing => request.City == null || request.City.ToLower() == listing.City.ToLower())
+            .Where(listing => request.MunicipalityId == null || request.MunicipalityId == listing.MunicipalityId)
             .Where(listing => request.IsUsed == null || request.IsUsed == listing.IsUsed)
             .Where(listing => request.MinYear == null || request.MinYear <= listing.Year)
             .Where(listing => request.MaxYear == null || request.MaxYear >= listing.Year)
@@ -53,7 +55,7 @@ public class GetAllListingsQueryHandler(
         foreach (var listing in listings)
         {
             var mappedListing = mapper.Map<GetAllListingsResponse>(listing);
-            var firstImage = listing.Images.FirstOrDefault();
+            var firstImage = listing.Images.Where(i => i.ListingDefectId == null).FirstOrDefault();
             if (firstImage != null)
             {
                 mappedListing.Thumbnail = new Automotive.Marketplace.Application.Models.ImageDto
@@ -62,6 +64,20 @@ public class GetAllListingsQueryHandler(
                     AltText = firstImage.AltText
                 };
             }
+            
+            var allImages = new List<Automotive.Marketplace.Application.Models.ImageDto>();
+            foreach (var img in listing.Images.Where(i => i.ListingDefectId == null))
+            {
+                allImages.Add(new Automotive.Marketplace.Application.Models.ImageDto
+                {
+                    Url = await imageStorageService.GetPresignedUrlAsync(img.ObjectKey),
+                    AltText = img.AltText,
+                });
+            }
+            mappedListing.Images = allImages;
+            mappedListing.ImageCount = listing.Images.Count;
+            mappedListing.DefectCount = listing.Defects.Count;
+            
             if (request.UserId.HasValue && request.UserId.Value != Guid.Empty)
             {
                 mappedListing.IsLiked = listing.LikeUsers.Any(u => u.Id == request.UserId.Value);

@@ -116,14 +116,15 @@ public class GetMessagesQueryHandlerTests(
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var variant = new VariantBuilder().WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).WithPrice(15000m).Build();
         var conversation = new ConversationBuilder()
             .WithBuyer(buyer.Id)
             .WithListing(listing.Id)
             .Build();
 
-        await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, variant, listing, conversation);
+        await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, municipality, variant, listing, conversation);
         await context.SaveChangesAsync();
 
         return (buyer, seller, conversation);
@@ -140,8 +141,9 @@ public class GetMessagesQueryHandlerTests(
         var transmission = new TransmissionBuilder().Build();
         var bodyType = new BodyTypeBuilder().Build();
         var drivetrain = new DrivetrainBuilder().Build();
+        var municipality = new MunicipalityBuilder().Build();
         var variant = new VariantBuilder().WithModel(model.Id).WithFuel(fuel.Id).WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
-        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).Build();
+        var listing = new ListingBuilder().WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).Build();
         var conversation = new ConversationBuilder()
             .WithBuyer(buyer.Id)
             .WithListing(listing.Id)
@@ -158,7 +160,7 @@ public class GetMessagesQueryHandlerTests(
             .With(m => m.SentAt, DateTime.UtcNow)
             .Build();
 
-        await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, variant, listing,
+        await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, municipality, variant, listing,
             conversation, msg1, msg2);
         await context.SaveChangesAsync();
 

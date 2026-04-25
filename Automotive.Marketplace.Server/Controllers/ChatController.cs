@@ -1,6 +1,7 @@
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetConversations;
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetMessages;
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConversation;
+using Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConversationAsSeller;
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetUnreadCount;
 using Automotive.Marketplace.Application.Features.ChatFeatures.MarkMessagesRead;
 using Automotive.Marketplace.Server.Hubs;
@@ -20,6 +21,16 @@ public class ChatController(IMediator mediator, IHubContext<ChatHub> hubContext)
         CancellationToken cancellationToken)
     {
         command.BuyerId = UserId;
+        var result = await mediator.Send(command, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<GetOrCreateConversationAsSellerResponse>> GetOrCreateConversationAsSeller(
+        [FromBody] GetOrCreateConversationAsSellerCommand command,
+        CancellationToken cancellationToken)
+    {
+        command.SellerId = UserId;
         var result = await mediator.Send(command, cancellationToken);
         return Ok(result);
     }

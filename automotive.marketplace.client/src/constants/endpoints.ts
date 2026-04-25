@@ -2,11 +2,13 @@ export const ENDPOINTS = {
   LISTING: {
     GET_BY_ID: "/Listing/GetById",
     GET_ALL: "/Listing/GetAll",
+    GET_MY: "/Listing/GetMy",
     CREATE: "/Listing/Create",
     DELETE: "/Listing/Delete",
     UPDATE: "/Listing/Update",
     SEARCH: "/Listing/Search",
     COMPARE: "/Listing/Compare",
+    GET_ENGAGEMENTS: "/Listing/GetEngagements",
   },
   AUTH: {
     REFRESH: "/Auth/Refresh",
@@ -54,6 +56,9 @@ export const ENDPOINTS = {
   DRIVETRAIN: {
     GET_ALL: "/Drivetrain/GetAll",
   },
+  MUNICIPALITY: {
+    GET_ALL: "/Municipality/GetAll",
+  },
   ENUM: {
     GET_TRANSMISSIONS_TYPES: "/Enum/GetTransmissionTypes",
     GET_FUEL_TYPES: "/Enum/GetFuelTypes",
@@ -62,6 +67,8 @@ export const ENDPOINTS = {
   },
   CHAT: {
     GET_OR_CREATE_CONVERSATION: "/Chat/GetOrCreateConversation",
+    GET_OR_CREATE_CONVERSATION_AS_SELLER:
+      "/Chat/GetOrCreateConversationAsSeller",
     GET_CONVERSATIONS: "/Chat/GetConversations",
     GET_MESSAGES: "/Chat/GetMessages",
     MARK_MESSAGES_READ: "/Chat/MarkMessagesRead",
@@ -72,5 +79,12 @@ export const ENDPOINTS = {
     GET_ALL: "/SavedListing/GetAll",
     UPSERT_NOTE: "/SavedListing/UpsertNote",
     DELETE_NOTE: "/SavedListing/DeleteNote",
+  },
+  DEFECT: {
+    GET_CATEGORIES: "/Defect/GetCategories",
+    ADD: "/Defect/Add",
+    REMOVE: "/Defect/Remove",
+    ADD_IMAGE: "/Defect/AddImage",
+    REMOVE_IMAGE: "/Defect/RemoveImage",
   },
 } as const;

@@ -9,7 +9,7 @@ public sealed record GetAllListingsResponse
     public int Mileage { get; set; }
     public string Description { get; set; } = string.Empty;
     public bool IsUsed { get; set; }
-    public string City { get; set; } = string.Empty;
+    public string MunicipalityName { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
     public Guid VariantId { get; set; }
     public int Year { get; set; }
@@ -23,4 +23,7 @@ public sealed record GetAllListingsResponse
     public int EngineSizeMl { get; set; }
     public ImageDto? Thumbnail { get; set; }
     public bool IsLiked { get; set; }
+    public IEnumerable<ImageDto> Images { get; set; } = [];
+    public int ImageCount { get; set; }
+    public int DefectCount { get; set; }
 }

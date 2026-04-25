@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { formatCurrency } from "@/lib/i18n/formatNumber";
 
 type ListingCardProps = {
   listingId: string;
@@ -27,7 +28,7 @@ const ListingCard = ({
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold">{listingTitle}</p>
         <p className="text-muted-foreground text-xs">
-          {listingPrice.toLocaleString()} €
+          {formatCurrency(listingPrice)} €
         </p>
       </div>
       <Link

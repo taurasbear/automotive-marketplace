@@ -15,7 +15,7 @@ export const useGetOrCreateConversation = () =>
   useMutation({
     mutationFn: getOrCreateConversation,
     meta: {
-      errorMessage: "Could not open conversation. Please try again.",
+      errorMessage: "toasts:chat.conversationError",
       invalidatesQuery: chatKeys.conversations(),
     },
   });

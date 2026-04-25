@@ -20,7 +20,9 @@ import { Route as InboxRouteImport } from './app/routes/inbox'
 import { Route as CompareRouteImport } from './app/routes/compare'
 import { Route as AboutRouteImport } from './app/routes/about'
 import { Route as IndexRouteImport } from './app/routes/index'
+import { Route as MyListingsIndexRouteImport } from './app/routes/my-listings/index'
 import { Route as InboxIndexRouteImport } from './app/routes/inbox/index'
+import { Route as MyListingsIdRouteImport } from './app/routes/my-listings/$id'
 import { Route as ListingCreateRouteImport } from './app/routes/listing/create'
 import { Route as ListingIdRouteImport } from './app/routes/listing/$id'
 import { Route as InboxConversationIdRouteImport } from './app/routes/inbox/$conversationId'
@@ -80,10 +82,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MyListingsIndexRoute = MyListingsIndexRouteImport.update({
+  id: '/my-listings/',
+  path: '/my-listings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InboxIndexRoute = InboxIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => InboxRoute,
+} as any)
+const MyListingsIdRoute = MyListingsIdRouteImport.update({
+  id: '/my-listings/$id',
+  path: '/my-listings/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ListingCreateRoute = ListingCreateRouteImport.update({
   id: '/listing/create',
@@ -116,7 +128,9 @@ export interface FileRoutesByFullPath {
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox/': typeof InboxIndexRoute
+  '/my-listings/': typeof MyListingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -132,7 +146,9 @@ export interface FileRoutesByTo {
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox': typeof InboxIndexRoute
+  '/my-listings': typeof MyListingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -150,7 +166,9 @@ export interface FileRoutesById {
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
   '/listing/create': typeof ListingCreateRoute
+  '/my-listings/$id': typeof MyListingsIdRoute
   '/inbox/': typeof InboxIndexRoute
+  '/my-listings/': typeof MyListingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -169,7 +187,9 @@ export interface FileRouteTypes {
     | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/my-listings/$id'
     | '/inbox/'
+    | '/my-listings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -185,7 +205,9 @@ export interface FileRouteTypes {
     | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/my-listings/$id'
     | '/inbox'
+    | '/my-listings'
   id:
     | '__root__'
     | '/'
@@ -202,7 +224,9 @@ export interface FileRouteTypes {
     | '/inbox/$conversationId'
     | '/listing/$id'
     | '/listing/create'
+    | '/my-listings/$id'
     | '/inbox/'
+    | '/my-listings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -219,6 +243,8 @@ export interface RootRouteChildren {
   VariantsRoute: typeof VariantsRoute
   ListingIdRoute: typeof ListingIdRoute
   ListingCreateRoute: typeof ListingCreateRoute
+  MyListingsIdRoute: typeof MyListingsIdRoute
+  MyListingsIndexRoute: typeof MyListingsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -300,12 +326,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/my-listings/': {
+      id: '/my-listings/'
+      path: '/my-listings'
+      fullPath: '/my-listings/'
+      preLoaderRoute: typeof MyListingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inbox/': {
       id: '/inbox/'
       path: '/'
       fullPath: '/inbox/'
       preLoaderRoute: typeof InboxIndexRouteImport
       parentRoute: typeof InboxRoute
+    }
+    '/my-listings/$id': {
+      id: '/my-listings/$id'
+      path: '/my-listings/$id'
+      fullPath: '/my-listings/$id'
+      preLoaderRoute: typeof MyListingsIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/listing/create': {
       id: '/listing/create'
@@ -357,6 +397,8 @@ const rootRouteChildren: RootRouteChildren = {
   VariantsRoute: VariantsRoute,
   ListingIdRoute: ListingIdRoute,
   ListingCreateRoute: ListingCreateRoute,
+  MyListingsIdRoute: MyListingsIdRoute,
+  MyListingsIndexRoute: MyListingsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

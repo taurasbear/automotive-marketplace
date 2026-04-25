@@ -6,7 +6,9 @@ public class Listing : BaseEntity
 {
     public decimal Price { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public Guid MunicipalityId { get; set; }
+
+    public virtual Municipality Municipality { get; set; } = null!;
 
     public Status Status { get; set; }
 
@@ -38,5 +40,9 @@ public class Listing : BaseEntity
 
     public virtual ICollection<Image> Images { get; set; } = [];
 
+    public virtual ICollection<ListingDefect> Defects { get; set; } = [];
+
     public virtual ICollection<User> LikeUsers { get; set; } = [];
+    public virtual ICollection<UserListingLike> Likes { get; set; } = [];
+    public virtual ICollection<Conversation> Conversations { get; set; } = [];
 }

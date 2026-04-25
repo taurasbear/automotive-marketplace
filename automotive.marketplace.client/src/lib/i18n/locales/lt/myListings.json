@@ -1,0 +1,76 @@
+{
+  "page": {
+    "title": "Mano skelbimai",
+    "createListing": "Sukurti skelbimą",
+    "emptyState": "Jūs dar nesukūrėte jokių skelbimų.",
+    "createFirst": "Sukurkite savo pirmą skelbimą!",
+    "loadError": "Nepavyko įkelti skelbimų. Pabandykite dar kartą."
+  },
+  "card": {
+    "active": "Aktyvus",
+    "sold": "Parduotas",
+    "defects": "{{count}} defektai",
+    "edit": "Redaguoti",
+    "delete": "Ištrinti",
+    "location": "Vieta"
+  },
+  "detail": {
+    "backToMyListings": "Grįžti į mano skelbimus",
+    "deleteListing": "Ištrinti skelbimą",
+    "unsavedChanges": "{{count}} neišsaugoti pakeitimai",
+    "discard": "Atmesti",
+    "saveChanges": "Išsaugoti pakeitimus",
+    "defects": "Defektai",
+    "addDefect": "Pridėti defektą",
+    "deleteConfirmTitle": "Ištrinti skelbimą?",
+    "deleteConfirmDescription": "Šis veiksmas negali būti atšauktas. Skelbimas bus negrįžtamai ištrintas.",
+    "cancel": "Atšaukti",
+    "confirm": "Ištrinti"
+  },
+  "fields": {
+    "price": "Kaina",
+    "city": "Miestas",
+    "mileage": "Rida",
+    "description": "Aprašymas",
+    "colour": "Spalva",
+    "vin": "VIN",
+    "isUsed": "Būklė",
+    "steeringWheel": "Vairas",
+    "used": "Naudotas",
+    "new": "Naujas",
+    "left": "Kairė",
+    "right": "Dešinė"
+  },
+  "vehicleInfo": {
+    "title": "Automobilio informacija",
+    "editableTitle": "Redaguojama informacija",
+    "make": "Markė:",
+    "model": "Modelis:",
+    "fuel": "Kuras:",
+    "transmission": "Pavarų dėžė:",
+    "bodyType": "Kėbulo tipas:",
+    "drivetrain": "Pavara:",
+    "doors": "Durys:",
+    "powerKw": "Galia (kW):",
+    "engineSizeMl": "Variklio tūris (ml):"
+  },
+  "buyerPanel": {
+    "buyers": "Pirkėjai",
+    "conversations": "Pokalbiai",
+    "likes": "Patiktukai",
+    "likedOnly": "Tik patiko",
+    "moreConversations": "daugiau pokalbių",
+    "moreLikes": "daugiau patiktukų",
+    "chat": "Rašyti",
+    "loadError": "Nepavyko įkelti pirkėjų veiklos.",
+    "interactionTypes": {
+      "offer": "Kainos pasiūlymas",
+      "meeting": "Susitikimo pasiūlymas",
+      "availability": "Laisvas laikas",
+      "message": "Žinutė",
+      "liked": "Patiko"
+    },
+    "noConversations": "Pokalbių dar nėra.",
+    "noLikes": "Niekas dar nepatiko šio skelbimo."
+  }
+}

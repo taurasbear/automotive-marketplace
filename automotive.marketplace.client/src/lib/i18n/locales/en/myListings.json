@@ -1,0 +1,76 @@
+{
+  "page": {
+    "title": "My Listings",
+    "createListing": "Create Listing",
+    "emptyState": "You haven't created any listings yet.",
+    "createFirst": "Create your first listing!",
+    "loadError": "Failed to load listings. Please try again."
+  },
+  "card": {
+    "active": "Active",
+    "sold": "Sold",
+    "defects": "{{count}} defects",
+    "edit": "Edit",
+    "delete": "Delete",
+    "location": "Location"
+  },
+  "detail": {
+    "backToMyListings": "Back to My Listings",
+    "deleteListing": "Delete Listing",
+    "unsavedChanges": "{{count}} unsaved changes",
+    "discard": "Discard",
+    "saveChanges": "Save Changes",
+    "defects": "Defects",
+    "addDefect": "Add defect",
+    "deleteConfirmTitle": "Delete listing?",
+    "deleteConfirmDescription": "This action cannot be undone. This will permanently delete your listing.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "fields": {
+    "price": "Price",
+    "city": "City",
+    "mileage": "Mileage",
+    "description": "Description",
+    "colour": "Colour",
+    "vin": "VIN",
+    "isUsed": "Condition",
+    "steeringWheel": "Steering Wheel",
+    "used": "Used",
+    "new": "New",
+    "left": "Left",
+    "right": "Right"
+  },
+  "vehicleInfo": {
+    "title": "Vehicle Information",
+    "editableTitle": "Editable Information",
+    "make": "Make:",
+    "model": "Model:",
+    "fuel": "Fuel:",
+    "transmission": "Transmission:",
+    "bodyType": "Body Type:",
+    "drivetrain": "Drivetrain:",
+    "doors": "Doors:",
+    "powerKw": "Power (kW):",
+    "engineSizeMl": "Engine Size (ml):"
+  },
+  "buyerPanel": {
+    "buyers": "Buyers",
+    "conversations": "Conversations",
+    "likes": "Likes",
+    "likedOnly": "Liked only",
+    "moreConversations": "more conversations",
+    "moreLikes": "more likes",
+    "chat": "Chat",
+    "loadError": "Failed to load buyer activity.",
+    "interactionTypes": {
+      "offer": "Price offer",
+      "meeting": "Meeting proposal",
+      "availability": "Availability",
+      "message": "Message",
+      "liked": "Liked"
+    },
+    "noConversations": "No conversations yet.",
+    "noLikes": "No one has liked this listing yet."
+  }
+}

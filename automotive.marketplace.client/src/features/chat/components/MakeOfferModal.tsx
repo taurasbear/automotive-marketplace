@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { formatCurrency } from "@/lib/i18n/formatNumber";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -69,7 +70,7 @@ const MakeOfferModal = ({
               <p className="text-muted-foreground text-xs">
                 {t("makeOfferModal.listedPrice")}
               </p>
-              <p className="font-semibold">€{listingPrice.toLocaleString()}</p>
+              <p className="font-semibold">€{formatCurrency(listingPrice)}</p>
             </div>
             {percentageOff !== null && percentageOff > 0 && (
               <div className="text-right">
@@ -99,14 +100,14 @@ const MakeOfferModal = ({
             {isTooLow && (
               <p className="text-destructive text-xs">
                 {t("makeOfferModal.minOffer", {
-                  amount: Math.ceil(minAmount).toLocaleString(),
+                  amount: formatCurrency(Math.ceil(minAmount)),
                 })}
               </p>
             )}
             {isTooHigh && (
               <p className="text-destructive text-xs">
                 {t("makeOfferModal.maxOffer", {
-                  price: listingPrice.toLocaleString(),
+                  price: formatCurrency(listingPrice),
                 })}
               </p>
             )}

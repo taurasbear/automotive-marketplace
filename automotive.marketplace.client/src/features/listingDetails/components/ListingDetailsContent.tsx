@@ -5,24 +5,30 @@ import type { ConversationSummary } from "@/features/chat";
 import { CompareSearchModal } from "@/features/compareListings";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Trash } from "lucide-react";
+import { formatNumber } from "@/lib/i18n/formatNumber";
+import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
+import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
+import { Trash, Camera } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getDefectCategoriesOptions } from "@/api/defect/getDefectCategoriesOptions";
 import { getListingByIdOptions } from "../api/getListingByIdOptions";
 import { useDeleteListing } from "../api/useDeleteListing";
 import EditListingDialog from "./EditListingDialog";
+import ImageArrowGallery from "@/components/gallery/ImageArrowGallery";
+import type { ListingDefectDto } from "@/features/listingDetails/types/GetListingByIdResponse";
 
 type ListingDetailsProps = {
   id: string;
 };
 
 const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
-  const { t } = useTranslation("listings");
+  const { t, i18n } = useTranslation("listings");
   const { data: listingQuery } = useSuspenseQuery(
     getListingByIdOptions({ id }),
   );
 
+  const { data: defectCategories } = useQuery(getDefectCategoriesOptions);
   const { mutateAsync: deleteListingAsync } = useDeleteListing();
 
   const listing = listingQuery.data;
@@ -56,27 +62,44 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
     });
   };
 
+  const getDefectDisplayName = (defect: ListingDefectDto): string => {
+    if (defect.customName) return defect.customName;
+    if (defect.defectCategoryId && defectCategories?.data) {
+      const category = defectCategories.data.find(
+        (c) => c.id === defect.defectCategoryId,
+      );
+      if (category) {
+        return getTranslatedName(category.translations, i18n.language);
+      }
+    }
+    return defect.defectCategoryName ?? t("common:defects.unknownDefect");
+  };
+
   const handleDelete = async () => {
     await deleteListingAsync({ id });
     await router.navigate({ to: "/" });
   };
+
+  // Build the gallery images array by combining listing images + defect images
+  const galleryImages = [
+    ...listing.images.map((img) => ({ url: img.url, altText: img.altText })),
+    ...listing.defects.flatMap((defect) =>
+      defect.images.map((img) => ({
+        url: img.url,
+        altText: img.altText,
+        defectName: getDefectDisplayName(defect),
+      })),
+    ),
+  ];
 
   return (
     <>
       <div className="container mx-auto max-w-6xl p-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <img
-              className="aspect-video w-full rounded-lg object-cover shadow-lg"
-              alt={
-                listing.images[0]?.altText ||
-                `${listing.year} ${listing.makeName} ${listing.modelName}`
-              }
-              src={
-                listing.images.length > 0
-                  ? listing.images[0].url
-                  : "https://placehold.co/1280x720?text=Image+Not+Available"
-              }
+            <ImageArrowGallery
+              images={galleryImages}
+              className="w-full rounded-lg shadow-lg"
             />
             {listing.description && (
               <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
@@ -84,6 +107,29 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   {t("details.description")}
                 </h2>
                 <p className="text-muted-foreground">{listing.description}</p>
+              </div>
+            )}
+            {listing.defects.length > 0 && (
+              <div className="bg-card text-card-foreground rounded-lg border p-6 shadow-sm">
+                <h2 className="mb-4 text-2xl font-semibold">
+                  {t("details.defects")}
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {listing.defects.map((defect) => (
+                    <span
+                      key={defect.id}
+                      className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-sm text-amber-700 dark:text-amber-400"
+                    >
+                      {getDefectDisplayName(defect)}
+                      {defect.images.length > 0 && (
+                        <span className="ml-1 inline-flex items-center gap-0.5">
+                          ({defect.images.length}{" "}
+                          <Camera className="inline h-3.5 w-3.5" />)
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -117,7 +163,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                   {listing.isUsed ? t("card.used") : t("card.new")}
                 </span>
                 <span className="bg-secondary text-secondary-foreground rounded-full border px-3 py-1 text-sm">
-                  {listing.city}
+                  {listing.municipalityName}
                 </span>
               </div>
               {userId && !isSeller && (
@@ -147,7 +193,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       {t("details.mileage")}
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.mileage.toLocaleString()} km
+                      {formatNumber(listing.mileage)} km
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">

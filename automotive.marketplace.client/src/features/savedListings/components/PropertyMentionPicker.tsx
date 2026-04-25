@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
 import type { SavedListing } from "../types/SavedListing";
 
 interface PropertyMentionPickerProps {
@@ -15,12 +16,12 @@ const PROPERTY_FIELDS: {
   {
     key: "mileage",
     labelKey: "propertyMention.mileage",
-    format: (v) => `${(v as number).toLocaleString()} km`,
+    format: (v) => `${formatNumber(v as number)} km`,
   },
   {
     key: "price",
     labelKey: "propertyMention.price",
-    format: (v) => `${(v as number).toLocaleString()} €`,
+    format: (v) => `${formatCurrency(v as number)} €`,
   },
   {
     key: "fuelName",
@@ -32,7 +33,11 @@ const PROPERTY_FIELDS: {
     labelKey: "propertyMention.transmission",
     format: (v) => v as string,
   },
-  { key: "city", labelKey: "propertyMention.city", format: (v) => v as string },
+  {
+    key: "municipalityName",
+    labelKey: "propertyMention.city",
+    format: (v) => v as string,
+  },
 ];
 
 const PropertyMentionPicker = ({
