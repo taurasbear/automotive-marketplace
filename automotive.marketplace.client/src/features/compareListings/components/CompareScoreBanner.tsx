@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
+import { useAppSelector } from "@/hooks/redux";
+import { QuizModal, getUserPreferencesOptions } from "@/features/userPreferences";
 import { getListingScoreOptions } from "@/features/listingDetails";
 import type {
   GetListingScoreResponse,
@@ -76,6 +79,12 @@ export function CompareScoreBanner({
   listingAId,
   listingBId,
 }: CompareScoreBannerProps) {
+  const [quizOpen, setQuizOpen] = useState(false);
+  const { userId } = useAppSelector((state) => state.auth);
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
+  const isAuthenticated = !!userId;
+  const prefs = prefsData?.data;
+
   const { data: aData, isLoading: aLoading } = useQuery(
     getListingScoreOptions(listingAId),
   );
@@ -85,6 +94,18 @@ export function CompareScoreBanner({
 
   return (
     <div className="bg-card border-border mb-4 rounded-lg border p-4">
+      {isAuthenticated && (
+        <div className="mb-3 flex items-center justify-between">
+          <span className="text-muted-foreground text-sm">Vehicle Score</span>
+          <button
+            onClick={() => setQuizOpen(true)}
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-xs"
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Personalize
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
         <ScoreColumn score={aData?.data} loading={aLoading} />
         <div className="flex flex-col items-center gap-2 pt-16 text-xs">
@@ -95,6 +116,16 @@ export function CompareScoreBanner({
         </div>
         <ScoreColumn score={bData?.data} loading={bLoading} />
       </div>
+      <QuizModal
+        open={quizOpen}
+        onOpenChange={setQuizOpen}
+        initialWeights={prefs?.hasPreferences ? {
+          valueWeight: prefs.valueWeight,
+          efficiencyWeight: prefs.efficiencyWeight,
+          reliabilityWeight: prefs.reliabilityWeight,
+          mileageWeight: prefs.mileageWeight,
+        } : undefined}
+      />
     </div>
   );
 }

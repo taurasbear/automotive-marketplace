@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
+import { AlertTriangle, ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { useAppSelector } from "@/hooks/redux";
+import { QuizModal, getUserPreferencesOptions } from "@/features/userPreferences";
 import { getListingScoreOptions } from "../api/getListingScoreOptions";
 import type { ScoreFactor } from "../types/GetListingScoreResponse";
 
@@ -51,7 +53,12 @@ function FactorBar({ label, factor }: { label: string; factor: ScoreFactor }) {
 
 export function ScoreCard({ listingId }: ScoreCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const { userId } = useAppSelector((state) => state.auth);
   const { data, isLoading } = useQuery(getListingScoreOptions(listingId));
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
+  const isAuthenticated = !!userId;
+  const prefs = prefsData?.data;
 
   if (isLoading) {
     return (
@@ -84,7 +91,9 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           <div className="flex items-center justify-between">
             <div>
               <p className="font-semibold">Vehicle Score</p>
-              <p className="text-muted-foreground text-xs">Un-personalized</p>
+              <p className="text-muted-foreground text-xs">
+                  {score.isPersonalized ? "Personalized" : "Un-personalized"}
+                </p>
             </div>
             <button
               onClick={() => setExpanded(!expanded)}
@@ -93,6 +102,15 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
             >
               {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </button>
+            {isAuthenticated && (
+              <button
+                onClick={() => setQuizOpen(true)}
+                className="text-muted-foreground hover:text-foreground ml-2"
+                aria-label="Personalize score weights"
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+              </button>
+            )}
           </div>
           {score.hasMissingFactors && !expanded && (
             <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
@@ -111,6 +129,16 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           <FactorBar label={FACTOR_LABELS.mileage} factor={score.mileage} />
         </div>
       )}
+      <QuizModal
+        open={quizOpen}
+        onOpenChange={setQuizOpen}
+        initialWeights={prefs?.hasPreferences ? {
+          valueWeight: prefs.valueWeight,
+          efficiencyWeight: prefs.efficiencyWeight,
+          reliabilityWeight: prefs.reliabilityWeight,
+          mileageWeight: prefs.mileageWeight,
+        } : undefined}
+      />
     </div>
   );
 }
