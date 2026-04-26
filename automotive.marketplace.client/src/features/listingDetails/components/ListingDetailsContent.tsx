@@ -18,6 +18,7 @@ import EditListingDialog from "./EditListingDialog";
 import ImageArrowGallery from "@/components/gallery/ImageArrowGallery";
 import type { ListingDefectDto } from "@/features/listingDetails/types/GetListingByIdResponse";
 import { ScoreCard } from "./ScoreCard";
+import { AiSummarySection } from "./AiSummarySection";
 
 type ListingDetailsProps = {
   id: string;
@@ -182,6 +183,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
             </div>
 
             <ScoreCard listingId={id} />
+            <AiSummarySection listingId={id} />
 
             <div className="bg-card text-card-foreground rounded-lg border shadow-sm">
               <div className="p-6">
