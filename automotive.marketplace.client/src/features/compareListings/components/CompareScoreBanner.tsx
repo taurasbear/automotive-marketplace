@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/hooks/redux";
 import { QuizModal, getUserPreferencesOptions } from "@/features/userPreferences";
 import { getListingScoreOptions } from "@/features/listingDetails";
@@ -39,9 +40,11 @@ function MiniFactorRow({ factor }: { factor: ScoreFactor }) {
 function ScoreColumn({
   score,
   loading,
+  t,
 }: {
   score: GetListingScoreResponse | undefined;
   loading: boolean;
+  t: (key: string) => string;
 }) {
   if (loading) {
     return (
@@ -52,7 +55,7 @@ function ScoreColumn({
     );
   }
   if (!score)
-    return <div className="text-muted-foreground text-sm">No score</div>;
+    return <div className="text-muted-foreground text-sm">{t("score.noData")}</div>;
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -64,12 +67,15 @@ function ScoreColumn({
         </span>
         <span className="text-xs">/100</span>
       </div>
-      <p className="text-muted-foreground text-xs">Un-personalized</p>
+      <p className="text-muted-foreground text-xs">
+        {score.isPersonalized ? t("score.personalized") : t("score.unPersonalized")}
+      </p>
       <div className="w-full space-y-0.5 text-center">
         <MiniFactorRow factor={score.value} />
         <MiniFactorRow factor={score.efficiency} />
         <MiniFactorRow factor={score.reliability} />
         <MiniFactorRow factor={score.mileage} />
+        <MiniFactorRow factor={score.condition} />
       </div>
     </div>
   );
@@ -79,42 +85,57 @@ export function CompareScoreBanner({
   listingAId,
   listingBId,
 }: CompareScoreBannerProps) {
+  const { t } = useTranslation("userPreferences");
   const [quizOpen, setQuizOpen] = useState(false);
   const { userId } = useAppSelector((state) => state.auth);
   const { data: prefsData } = useQuery(getUserPreferencesOptions);
   const isAuthenticated = !!userId;
   const prefs = prefsData?.data;
+  const scoringEnabled = prefs?.enableVehicleScoring ?? false;
 
-  const { data: aData, isLoading: aLoading } = useQuery(
-    getListingScoreOptions(listingAId),
-  );
-  const { data: bData, isLoading: bLoading } = useQuery(
-    getListingScoreOptions(listingBId),
-  );
+  const { data: aData, isLoading: aLoading } = useQuery({
+    ...getListingScoreOptions(listingAId),
+    enabled: scoringEnabled,
+  });
+  const { data: bData, isLoading: bLoading } = useQuery({
+    ...getListingScoreOptions(listingBId),
+    enabled: scoringEnabled,
+  });
+
+  if (!scoringEnabled) {
+    return (
+      <div className="bg-card border-border mb-4 rounded-lg border p-4">
+        <p className="text-muted-foreground text-sm">
+          {t("score.enableScoring")}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-card border-border mb-4 rounded-lg border p-4">
       {isAuthenticated && (
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-muted-foreground text-sm">Vehicle Score</span>
+          <span className="text-muted-foreground text-sm">{t("score.title")}</span>
           <button
             onClick={() => setQuizOpen(true)}
             className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-xs"
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
-            Personalize
+            {t("score.customize")}
           </button>
         </div>
       )}
       <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
-        <ScoreColumn score={aData?.data} loading={aLoading} />
+        <ScoreColumn score={aData?.data} loading={aLoading} t={t} />
         <div className="flex flex-col items-center gap-2 pt-16 text-xs">
-          <div className="text-muted-foreground">Value</div>
-          <div className="text-muted-foreground">Efficiency</div>
-          <div className="text-muted-foreground">Reliability</div>
-          <div className="text-muted-foreground">Mileage</div>
+          <div className="text-muted-foreground">{t("score.value")}</div>
+          <div className="text-muted-foreground">{t("score.efficiency")}</div>
+          <div className="text-muted-foreground">{t("score.reliability")}</div>
+          <div className="text-muted-foreground">{t("score.mileage")}</div>
+          <div className="text-muted-foreground">{t("score.condition")}</div>
         </div>
-        <ScoreColumn score={bData?.data} loading={bLoading} />
+        <ScoreColumn score={bData?.data} loading={bLoading} t={t} />
       </div>
       <QuizModal
         open={quizOpen}
@@ -126,6 +147,7 @@ export function CompareScoreBanner({
           mileageWeight: prefs.mileageWeight,
           conditionWeight: prefs.conditionWeight,
         } : undefined}
+        initialStep={prefs?.hasPreferences ? 2 : undefined}
       />
     </div>
   );
