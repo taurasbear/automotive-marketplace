@@ -29,7 +29,7 @@ public class CancelContractCommandHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (buyer, _, _, card) = await SeedCardAsync(context, ContractCardStatus.Pending, initiatorIsBuyer: true);
+        var (buyer, seller, conversation, card) = await SeedCardAsync(context, ContractCardStatus.Pending, initiatorIsBuyer: true);
 
         var command = new CancelContractCommand
         {
@@ -40,6 +40,9 @@ public class CancelContractCommandHandlerTests(
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.NewStatus.Should().Be(ContractCardStatus.Cancelled);
+        result.RecipientId.Should().Be(seller.Id);
+        result.InitiatorId.Should().Be(buyer.Id);
+        result.ConversationId.Should().Be(conversation.Id);
         await context.Entry(card).ReloadAsync();
         card.Status.Should().Be(ContractCardStatus.Cancelled);
     }
@@ -83,6 +86,30 @@ public class CancelContractCommandHandlerTests(
         var act = () => handler.Handle(command, CancellationToken.None);
 
         await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_SellerInitiatorCancelsPending_SetsRecipientToBuyer()
+    {
+        await using var scope = fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (buyer, seller, conversation, card) = await SeedCardAsync(context, ContractCardStatus.Pending, initiatorIsBuyer: false);
+
+        var command = new CancelContractCommand
+        {
+            ContractCardId = card.Id,
+            RequesterId = seller.Id,
+        };
+
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        result.NewStatus.Should().Be(ContractCardStatus.Cancelled);
+        result.InitiatorId.Should().Be(seller.Id);
+        result.RecipientId.Should().Be(buyer.Id);
+        await context.Entry(card).ReloadAsync();
+        card.Status.Should().Be(ContractCardStatus.Cancelled);
     }
 
     private static async Task<(User buyer, User seller, Conversation conversation, ContractCard card)>
