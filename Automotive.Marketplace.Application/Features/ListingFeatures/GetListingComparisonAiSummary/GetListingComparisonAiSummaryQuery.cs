@@ -6,4 +6,5 @@ public class GetListingComparisonAiSummaryQuery : IRequest<GetListingComparisonA
 {
     public Guid ListingAId { get; set; }
     public Guid ListingBId { get; set; }
+    public string Language { get; set; } = "lt";
 }
