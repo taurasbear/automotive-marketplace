@@ -66,6 +66,7 @@ public class RespondToContractCommandHandlerTests(
         result.NewStatus.Should().Be(ContractCardStatus.Declined);
         await context.Entry(card).ReloadAsync();
         card.Status.Should().Be(ContractCardStatus.Declined);
+        card.AcceptedAt.Should().BeNull();
     }
 
     [Fact]
@@ -111,6 +112,30 @@ public class RespondToContractCommandHandlerTests(
 
         await act.Should().ThrowAsync<RequestValidationException>()
             .Where(ex => ex.Errors.ContainsKey("ContractCardId"));
+    }
+
+    [Fact]
+    public async Task Handle_ThirdPartyResponds_ThrowsUnauthorized()
+    {
+        await using var scope = fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (_, _, _, card) = await SeedPendingCardAsync(context, initiatorId: b => b.Id);
+        var stranger = new UserBuilder().Build();
+        await context.AddAsync(stranger);
+        await context.SaveChangesAsync();
+
+        var command = new RespondToContractCommand
+        {
+            ContractCardId = card.Id,
+            ResponderId = stranger.Id,
+            Action = ContractResponseAction.Accept,
+        };
+
+        var act = () => handler.Handle(command, CancellationToken.None);
+
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
     }
 
     private static async Task<(User buyer, User seller, Conversation conversation, ContractCard card)>
