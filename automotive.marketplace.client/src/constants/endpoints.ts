@@ -10,6 +10,9 @@ export const ENDPOINTS = {
     COMPARE: "/Listing/Compare",
     GET_ENGAGEMENTS: "/Listing/GetEngagements",
     GET_SCORE: "/Listing/GetScore",
+    GET_AI_SUMMARY: "/Listing/GetAiSummary",
+    GET_COMPARISON_AI_SUMMARY: "/Listing/GetComparisonAiSummary",
+    GET_SELLER_INSIGHTS: "/Listing/GetSellerInsights",
   },
   AUTH: {
     REFRESH: "/Auth/Refresh",
