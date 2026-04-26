@@ -49,6 +49,17 @@ public static class ServiceExtensions
             client.DefaultRequestHeaders.Add("x-api-key", cardogApiKey);
         });
 
+        services.AddHttpClient<INhtsaApiClient, NhtsaApiClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.nhtsa.gov/");
+        });
+
+        services.AddHttpClient<IFuelEconomyApiClient, FuelEconomyApiClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://www.fueleconomy.gov/ws/rest/");
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+
         var openAiApiKey = configuration["OpenAI:ApiKey"] ?? string.Empty;
         services.AddHttpClient<IOpenAiClient, OpenAiClient>(client =>
         {
