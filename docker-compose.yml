@@ -16,6 +16,7 @@ services:
       - MINIO__ACCESSKEY=${MINIO_ACCESSKEY}
       - MINIO__SECRETKEY=${MINIO_SECRETKEY}
       - OPENAI__APIKEY=${OPENAI_APIKEY}
+      - CARDOG__APIKEY=${CARDOG_APIKEY}
     depends_on:
       - db
     networks:
