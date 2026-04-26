@@ -4,6 +4,10 @@ using Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConver
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetOrCreateConversationAsSeller;
 using Automotive.Marketplace.Application.Features.ChatFeatures.GetUnreadCount;
 using Automotive.Marketplace.Application.Features.ChatFeatures.MarkMessagesRead;
+using Automotive.Marketplace.Application.Features.ChatFeatures.GetContractCard;
+using Automotive.Marketplace.Application.Features.ChatFeatures.ExportContractPdf;
+using Automotive.Marketplace.Application.Features.ChatFeatures.GetUserContractProfile;
+using Automotive.Marketplace.Application.Features.ChatFeatures.UpdateUserContractProfile;
 using Automotive.Marketplace.Server.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -74,5 +78,46 @@ public class ChatController(IMediator mediator, IHubContext<ChatHub> hubContext)
         var result = await mediator.Send(
             new GetUnreadCountQuery { UserId = UserId }, cancellationToken);
         return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetContractCardResponse>> GetContractCard(
+        [FromQuery] Guid contractCardId,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetContractCardQuery { ContractCardId = contractCardId, RequesterId = UserId },
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> ExportContractPdf(
+        [FromQuery] Guid contractCardId,
+        CancellationToken cancellationToken)
+    {
+        var bytes = await mediator.Send(
+            new ExportContractPdfQuery { ContractCardId = contractCardId, RequesterId = UserId },
+            cancellationToken);
+        return File(bytes, "application/pdf", "contract.pdf");
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetUserContractProfileResponse>> GetUserContractProfile(
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetUserContractProfileQuery { UserId = UserId }, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPut]
+    public async Task<ActionResult> UpdateUserContractProfile(
+        [FromBody] UpdateUserContractProfileCommand command,
+        CancellationToken cancellationToken)
+    {
+        command.UserId = UserId;
+        await mediator.Send(command, cancellationToken);
+        return NoContent();
     }
 }

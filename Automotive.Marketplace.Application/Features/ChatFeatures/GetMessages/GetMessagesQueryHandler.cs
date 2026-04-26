@@ -71,6 +71,20 @@ public class GetMessagesQueryHandler(IRepository repository)
                         StartTime = s.StartTime,
                         EndTime = s.EndTime
                     }).ToList()
+                },
+                ContractCard = m.ContractCard is null ? null : new GetMessagesResponse.Message.ContractCardData
+                {
+                    Id = m.ContractCard.Id,
+                    Status = m.ContractCard.Status,
+                    InitiatorId = m.ContractCard.InitiatorId,
+                    AcceptedAt = m.ContractCard.AcceptedAt,
+                    CreatedAt = m.ContractCard.CreatedAt,
+                    SellerSubmittedAt = m.ContractCard.SellerSubmission != null
+                        ? m.ContractCard.SellerSubmission.SubmittedAt
+                        : null,
+                    BuyerSubmittedAt = m.ContractCard.BuyerSubmission != null
+                        ? m.ContractCard.BuyerSubmission.SubmittedAt
+                        : null,
                 }
             })
             .ToList();
