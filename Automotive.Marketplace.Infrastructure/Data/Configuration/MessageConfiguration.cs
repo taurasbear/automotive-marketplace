@@ -31,5 +31,8 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
 
         builder.Property(m => m.AvailabilityCardId)
             .IsRequired(false);
+
+        builder.Property(m => m.ContractCardId)
+            .IsRequired(false);
     }
 }
