@@ -22,11 +22,15 @@ public class Message : BaseEntity
 
     public Guid? AvailabilityCardId { get; set; }
 
+    public Guid? ContractCardId { get; set; }
+
     public virtual Offer? Offer { get; set; }
 
     public virtual Meeting? Meeting { get; set; }
 
     public virtual AvailabilityCard? AvailabilityCard { get; set; }
+
+    public virtual ContractCard? ContractCard { get; set; }
 
     public virtual Conversation Conversation { get; set; } = null!;
 

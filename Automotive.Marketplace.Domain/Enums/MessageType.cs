@@ -6,4 +6,5 @@ public enum MessageType
     Offer = 1,
     Meeting = 2,
     Availability = 3,
+    Contract = 4,
 }
