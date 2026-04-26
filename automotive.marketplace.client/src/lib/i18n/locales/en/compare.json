@@ -40,5 +40,12 @@
   "diffToggle": {
     "showAll": "Show All",
     "diffOnly": "Diff Only"
+  },
+  "aiSummary": {
+    "title": "AI Comparison Summary",
+    "generate": "Compare with AI",
+    "regenerate": "Regenerate",
+    "unavailableFactors": "Some data was unavailable ({{factors}}). The comparison may be incomplete.",
+    "prompt": "Click \"Compare with AI\" to get a recommendation between these two listings."
   }
 }

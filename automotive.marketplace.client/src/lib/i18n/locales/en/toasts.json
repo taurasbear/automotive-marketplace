@@ -58,5 +58,9 @@
   },
   "chat": {
     "conversationError": "Could not open conversation. Please try again."
+  },
+  "preferences": {
+    "saved": "Preferences saved!",
+    "saveError": "Failed to save preferences"
   }
 }

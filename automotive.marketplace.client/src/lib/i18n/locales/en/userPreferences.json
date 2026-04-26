@@ -1,0 +1,52 @@
+{
+  "score": {
+    "title": "Vehicle Score",
+    "overallScore": "Overall Score",
+    "value": "Market Value",
+    "efficiency": "Efficiency",
+    "reliability": "Reliability",
+    "mileage": "Mileage",
+    "condition": "Condition",
+    "defects": "{{count}} known defect(s)",
+    "defectsNone": "No known defects",
+    "noData": "No data",
+    "missingFactors": "Missing: {{factors}}",
+    "personalized": "Personalized",
+    "unPersonalized": "Un-personalized",
+    "customize": "Personalize",
+    "enableScoring": "Enable vehicle scoring in Settings to see a score for this listing.",
+    "limitedNotice": "Score is limited — CarDog data is unavailable. Enable the API key for a full score."
+  },
+  "quiz": {
+    "step0Title": "What describes your driving style?",
+    "step1Title": "What matters most to you?",
+    "step2Title": "Review your priorities",
+    "styleCity": "City Commuter",
+    "styleCityDesc": "Mostly urban stop-and-go driving",
+    "styleHighway": "Highway Driver",
+    "styleHighwayDesc": "Long-distance highway cruising",
+    "styleMixed": "Mixed Use",
+    "styleMixedDesc": "A bit of everything",
+    "priorityValue": "Value for Money",
+    "priorityEfficiency": "Eco-Friendly",
+    "priorityReliability": "Dependability",
+    "priorityMileage": "Low Mileage",
+    "priorityCondition": "Vehicle Condition",
+    "sliderTotal": "Total: {{total}}%",
+    "normalizeNotice": "(will be normalized to 100%)",
+    "save": "Save preferences",
+    "saving": "Saving...",
+    "back": "Back",
+    "next": "Next"
+  },
+  "settings": {
+    "title": "Settings",
+    "listingPreferences": "Listing Preferences",
+    "scoringLabel": "Vehicle Scoring",
+    "scoringDescription": "Calculate scores for listings using CarDog market data",
+    "scoringPreferencesLabel": "Scoring Preferences",
+    "scoringPreferencesButton": "Customize",
+    "aiSummaryLabel": "AI Summaries",
+    "aiSummaryDescription": "Auto-generate AI buyer verdicts for listings"
+  }
+}

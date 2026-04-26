@@ -1,0 +1,52 @@
+{
+  "score": {
+    "title": "Automobilio Įvertinimas",
+    "overallScore": "Bendras Įvertinimas",
+    "value": "Rinkos Vertė",
+    "efficiency": "Efektyvumas",
+    "reliability": "Patikimumas",
+    "mileage": "Rida",
+    "condition": "Būklė",
+    "defects": "{{count}} žinomas(-i) defektas(-ai)",
+    "defectsNone": "Jokių žinomų defektų",
+    "noData": "Nėra duomenų",
+    "missingFactors": "Trūksta: {{factors}}",
+    "personalized": "Personalizuotas",
+    "unPersonalized": "Nepersonalizuotas",
+    "customize": "Pritaikyti",
+    "enableScoring": "Įjunkite automobilio įvertinimą Nustatymuose, kad matytumėte šio skelbimo balą.",
+    "limitedNotice": "Balas ribotas — CarDog duomenys neprieinami. Įjunkite API raktą pilnam balui."
+  },
+  "quiz": {
+    "step0Title": "Koks jūsų vairavimo stilius?",
+    "step1Title": "Kas jums svarbiausia?",
+    "step2Title": "Peržiūrėkite savo prioritetus",
+    "styleCity": "Miesto vairuotojas",
+    "styleCityDesc": "Daugiausia miesto eismo kamščiai",
+    "styleHighway": "Magistralės vairuotojas",
+    "styleHighwayDesc": "Ilgų atstumų kelionės greitkeliu",
+    "styleMixed": "Mišrus naudojimas",
+    "styleMixedDesc": "Viskas po truputį",
+    "priorityValue": "Kainos ir vertės santykis",
+    "priorityEfficiency": "Ekologiškumas",
+    "priorityReliability": "Patikimumas",
+    "priorityMileage": "Maža rida",
+    "priorityCondition": "Automobilio būklė",
+    "sliderTotal": "Iš viso: {{total}}%",
+    "normalizeNotice": "(bus normalizuota iki 100%)",
+    "save": "Išsaugoti nustatymus",
+    "saving": "Saugoma...",
+    "back": "Atgal",
+    "next": "Toliau"
+  },
+  "settings": {
+    "title": "Nustatymai",
+    "listingPreferences": "Skelbimų Nustatymai",
+    "scoringLabel": "Automobilio Įvertinimas",
+    "scoringDescription": "Skaičiuoti skelbimų balus naudojant CarDog rinkos duomenis",
+    "scoringPreferencesLabel": "Įvertinimo Nustatymai",
+    "scoringPreferencesButton": "Pritaikyti",
+    "aiSummaryLabel": "AI Apžvalgos",
+    "aiSummaryDescription": "Automatiškai generuoti AI pirkėjo verdiktus skelbimams"
+  }
+}
