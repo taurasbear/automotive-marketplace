@@ -19,6 +19,8 @@ public class GetListingScoreQueryHandlerTests(
 {
     private readonly DatabaseFixture<GetListingScoreQueryHandlerTests> _fixture = fixture;
     private readonly ICardogApiClient _cardogClient = Substitute.For<ICardogApiClient>();
+    private readonly IFuelEconomyApiClient _fuelEconomyClient = Substitute.For<IFuelEconomyApiClient>();
+    private readonly INhtsaApiClient _nhtsaClient = Substitute.For<INhtsaApiClient>();
 
     public Task InitializeAsync() => Task.CompletedTask;
     public async Task DisposeAsync() => await _fixture.ResetDatabaseAsync();
@@ -27,7 +29,7 @@ public class GetListingScoreQueryHandlerTests(
     {
         var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
         var scopeFactory = scope.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
-        return new GetListingScoreQueryHandler(repository, _cardogClient, scopeFactory);
+        return new GetListingScoreQueryHandler(repository, _cardogClient, _fuelEconomyClient, _nhtsaClient, scopeFactory);
     }
 
     private async Task<Guid> SeedListingAsync(AutomotiveContext context, string makeName = "Honda", string modelName = "Accord", int year = 2020, decimal price = 15000m, int mileage = 80000)

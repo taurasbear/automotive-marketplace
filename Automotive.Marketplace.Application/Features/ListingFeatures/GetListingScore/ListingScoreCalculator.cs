@@ -16,8 +16,10 @@ public static class ListingScoreCalculator
         int mileageKm,
         int defectCount,
         CardogMarketResult? market,
-        CardogEfficiencyResult? efficiency,
-        CardogReliabilityResult? reliability,
+        FuelEconomyEfficiencyResult? efficiency,
+        NhtsaRecallsResult? recalls,
+        NhtsaComplaintsResult? complaints,
+        NhtsaSafetyRatingResult? safetyRating,
         ScoreWeights? weights = null)
     {
         var w = weights ?? new ScoreWeights(ValueWeight, EfficiencyWeight, ReliabilityWeight, MileageWeight, ConditionWeight);
@@ -30,8 +32,9 @@ public static class ListingScoreCalculator
             ? ScoreEfficiency(efficiency, w.Efficiency)
             : MissingFactor(w.Efficiency);
 
-        var reliabilityFactor = reliability != null
-            ? ScoreReliability(reliability, w.Reliability)
+        var hasAnyReliabilityData = recalls != null || complaints != null || safetyRating != null;
+        var reliabilityFactor = hasAnyReliabilityData
+            ? ScoreReliability(recalls, complaints, safetyRating, w.Reliability)
             : MissingFactor(w.Reliability);
 
         var mileageFactor = ScoreMileage(year, mileageKm, w.Mileage);
@@ -70,7 +73,7 @@ public static class ListingScoreCalculator
         return new ScoreFactor(Score: score, Status: "scored", Weight: weight);
     }
 
-    private static ScoreFactor ScoreEfficiency(CardogEfficiencyResult efficiency, double weight)
+    private static ScoreFactor ScoreEfficiency(FuelEconomyEfficiencyResult efficiency, double weight)
     {
         double score;
         if (efficiency.KWhPer100Km.HasValue)
@@ -88,10 +91,29 @@ public static class ListingScoreCalculator
         return new ScoreFactor(Score: score, Status: "scored", Weight: weight);
     }
 
-    private static ScoreFactor ScoreReliability(CardogReliabilityResult reliability, double weight)
+    private static ScoreFactor ScoreReliability(
+        NhtsaRecallsResult? recalls,
+        NhtsaComplaintsResult? complaints,
+        NhtsaSafetyRatingResult? safetyRating,
+        double weight)
     {
-        var penalty = reliability.RecallCount * 2 + reliability.ComplaintCrashes * 3 + reliability.ComplaintInjuries * 2;
-        var score = 100.0 - Math.Clamp(penalty / 50.0, 0, 1) * 100.0;
+        var recallCount = recalls?.RecallCount ?? 0;
+        var complaintTotal = complaints?.ComplaintCount ?? 0;
+
+        var recallScore = 100.0 - Math.Clamp(recallCount / 10.0, 0, 1) * 100.0;
+        var complaintScore = 100.0 - Math.Clamp(complaintTotal / 500.0, 0, 1) * 100.0;
+
+        double score;
+        if (safetyRating != null)
+        {
+            var safetyScore = (safetyRating.OverallRating - 1) / 4.0 * 100.0;
+            score = 0.40 * recallScore + 0.20 * complaintScore + 0.40 * safetyScore;
+        }
+        else
+        {
+            score = 0.60 * recallScore + 0.40 * complaintScore;
+        }
+
         return new ScoreFactor(Score: score, Status: "scored", Weight: weight);
     }
 

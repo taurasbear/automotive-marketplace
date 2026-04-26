@@ -8,12 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListingScore;
 
-public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClient cardogClient, IServiceScopeFactory scopeFactory)
+public class GetListingScoreQueryHandler(
+    IRepository repository,
+    ICardogApiClient cardogClient,
+    IFuelEconomyApiClient fuelEconomyClient,
+    INhtsaApiClient nhtsaClient,
+    IServiceScopeFactory scopeFactory)
     : IRequestHandler<GetListingScoreQuery, GetListingScoreResponse>
 {
     private const int EfficiencyCacheDays = 30;
     private const int MarketCacheDays = 1;
-    private const int ReliabilityCacheDays = 7;
 
     public async Task<GetListingScoreResponse> Handle(GetListingScoreQuery request, CancellationToken cancellationToken)
     {
@@ -45,15 +49,21 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
 
         var efficiencyTask = GetEfficiencyAsync(make, model, year, cancellationToken);
         var marketTask = GetMarketAsync(make, model, year, cancellationToken);
-        var reliabilityTask = GetReliabilityAsync(make, model, year, cancellationToken);
+        var recallsTask = nhtsaClient.GetRecallsAsync(make, model, year, cancellationToken);
+        var complaintsTask = nhtsaClient.GetComplaintsAsync(make, model, year, cancellationToken);
+        var safetyRatingTask = nhtsaClient.GetSafetyRatingAsync(make, model, year, cancellationToken);
 
-        await Task.WhenAll(efficiencyTask, marketTask, reliabilityTask);
+        await Task.WhenAll(efficiencyTask, marketTask, recallsTask, complaintsTask, safetyRatingTask);
 
-        var efficiency = efficiencyTask.Result;
-        var market = marketTask.Result;
-        var reliability = reliabilityTask.Result;
+        var scoreResult = ListingScoreCalculator.Calculate(
+            listing.Price, year, listing.Mileage, listing.Defects.Count,
+            marketTask.Result,
+            efficiencyTask.Result,
+            recallsTask.Result,
+            complaintsTask.Result,
+            safetyRatingTask.Result,
+            weights);
 
-        var scoreResult = ListingScoreCalculator.Calculate(listing.Price, year, listing.Mileage, listing.Defects.Count, market, efficiency, reliability, weights);
         return new GetListingScoreResponse
         {
             OverallScore = scoreResult.OverallScore,
@@ -68,7 +78,7 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
         };
     }
 
-    private async Task<CardogEfficiencyResult?> GetEfficiencyAsync(string make, string model, int year, CancellationToken ct)
+    private async Task<FuelEconomyEfficiencyResult?> GetEfficiencyAsync(string make, string model, int year, CancellationToken ct)
     {
         await using var scope = scopeFactory.CreateAsyncScope();
         var repo = scope.ServiceProvider.GetRequiredService<IRepository>();
@@ -77,9 +87,9 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
             .FirstOrDefaultAsync(c => c.Make == make && c.Model == model && c.Year == year && c.ExpiresAt > DateTime.UtcNow, ct);
 
         if (cache != null)
-            return new CardogEfficiencyResult(cache.LitersPer100Km, cache.KWhPer100Km);
+            return new FuelEconomyEfficiencyResult(cache.LitersPer100Km, cache.KWhPer100Km);
 
-        var result = await cardogClient.GetEfficiencyAsync(make, model, year, ct);
+        var result = await fuelEconomyClient.GetFuelEfficiencyAsync(make, model, year, ct);
         if (result != null)
             await UpsertEfficiencyCacheAsync(repo, make, model, year, result, ct);
 
@@ -104,25 +114,7 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
         return result;
     }
 
-    private async Task<CardogReliabilityResult?> GetReliabilityAsync(string make, string model, int year, CancellationToken ct)
-    {
-        await using var scope = scopeFactory.CreateAsyncScope();
-        var repo = scope.ServiceProvider.GetRequiredService<IRepository>();
-
-        var cache = await repo.AsQueryable<VehicleReliabilityCache>()
-            .FirstOrDefaultAsync(c => c.Make == make && c.Model == model && c.Year == year && c.ExpiresAt > DateTime.UtcNow, ct);
-
-        if (cache != null)
-            return new CardogReliabilityResult(cache.RecallCount, cache.ComplaintCrashes, cache.ComplaintInjuries);
-
-        var result = await cardogClient.GetReliabilityAsync(make, model, year, ct);
-        if (result != null)
-            await UpsertReliabilityCacheAsync(repo, make, model, year, result, ct);
-
-        return result;
-    }
-
-    private static async Task UpsertEfficiencyCacheAsync(IRepository repo, string make, string model, int year, CardogEfficiencyResult result, CancellationToken ct)
+    private static async Task UpsertEfficiencyCacheAsync(IRepository repo, string make, string model, int year, FuelEconomyEfficiencyResult result, CancellationToken ct)
     {
         var now = DateTime.UtcNow;
         var existing = await repo.AsQueryable<VehicleEfficiencyCache>()
@@ -187,45 +179,6 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
                     TotalListings = result.TotalListings,
                     FetchedAt = now,
                     ExpiresAt = now.AddDays(MarketCacheDays),
-                }, ct);
-            }
-            catch (DbUpdateException)
-            {
-                // Concurrent insert by another request — ignore, data is equivalent
-            }
-        }
-    }
-
-    private static async Task UpsertReliabilityCacheAsync(IRepository repo, string make, string model, int year, CardogReliabilityResult result, CancellationToken ct)
-    {
-        var now = DateTime.UtcNow;
-        var existing = await repo.AsQueryable<VehicleReliabilityCache>()
-            .FirstOrDefaultAsync(c => c.Make == make && c.Model == model && c.Year == year, ct);
-
-        if (existing != null)
-        {
-            existing.RecallCount = result.RecallCount;
-            existing.ComplaintCrashes = result.ComplaintCrashes;
-            existing.ComplaintInjuries = result.ComplaintInjuries;
-            existing.FetchedAt = now;
-            existing.ExpiresAt = now.AddDays(ReliabilityCacheDays);
-            await repo.UpdateAsync(existing, ct);
-        }
-        else
-        {
-            try
-            {
-                await repo.CreateAsync(new VehicleReliabilityCache
-                {
-                    Id = Guid.NewGuid(),
-                    Make = make,
-                    Model = model,
-                    Year = year,
-                    RecallCount = result.RecallCount,
-                    ComplaintCrashes = result.ComplaintCrashes,
-                    ComplaintInjuries = result.ComplaintInjuries,
-                    FetchedAt = now,
-                    ExpiresAt = now.AddDays(ReliabilityCacheDays),
                 }, ct);
             }
             catch (DbUpdateException)
