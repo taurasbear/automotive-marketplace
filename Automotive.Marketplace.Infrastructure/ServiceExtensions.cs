@@ -49,6 +49,13 @@ public static class ServiceExtensions
             client.DefaultRequestHeaders.Add("x-api-key", cardogApiKey);
         });
 
+        var openAiApiKey = configuration["OpenAI:ApiKey"] ?? string.Empty;
+        services.AddHttpClient<IOpenAiClient, OpenAiClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.openai.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiApiKey}");
+        });
+
         var minioServerURL = configuration["MinIO:ServerURL"];
         var accessKey = configuration["MinIO:AccessKey"];
         var secretKey = configuration["MinIO:SecretKey"];
