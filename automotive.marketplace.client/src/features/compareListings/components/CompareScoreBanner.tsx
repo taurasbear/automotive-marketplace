@@ -124,6 +124,7 @@ export function CompareScoreBanner({
           efficiencyWeight: prefs.efficiencyWeight,
           reliabilityWeight: prefs.reliabilityWeight,
           mileageWeight: prefs.mileageWeight,
+          conditionWeight: prefs.conditionWeight,
         } : undefined}
       />
     </div>

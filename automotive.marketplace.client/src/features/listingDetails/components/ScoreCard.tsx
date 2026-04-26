@@ -137,6 +137,7 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           efficiencyWeight: prefs.efficiencyWeight,
           reliabilityWeight: prefs.reliabilityWeight,
           mileageWeight: prefs.mileageWeight,
+          conditionWeight: prefs.conditionWeight,
         } : undefined}
       />
     </div>

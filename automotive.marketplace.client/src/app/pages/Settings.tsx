@@ -105,7 +105,9 @@ export default function Settings() {
           efficiencyWeight: prefs.efficiencyWeight,
           reliabilityWeight: prefs.reliabilityWeight,
           mileageWeight: prefs.mileageWeight,
+          conditionWeight: prefs.conditionWeight,
         } : undefined}
+        initialStep={prefs?.hasPreferences ? 2 : undefined}
       />
     </div>
   );

@@ -15,9 +15,13 @@ import {
   Leaf,
   ShieldCheck,
   TrendingDown,
+  ShieldAlert,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
 import { useUpsertUserPreferences } from "../api/useUpsertUserPreferences";
+import { getUserPreferencesOptions } from "../api/getUserPreferencesOptions";
 
 type Props = {
   open: boolean;
@@ -27,35 +31,24 @@ type Props = {
     efficiencyWeight: number;
     reliabilityWeight: number;
     mileageWeight: number;
+    conditionWeight: number;
   };
+  initialStep?: number;
 };
 
 type DrivingStyle = "city" | "highway" | "mixed";
-type Priority = "value" | "efficiency" | "reliability" | "mileage";
-
-const DRIVING_STYLES = [
-  { id: "city" as DrivingStyle, label: "City Commuter", icon: Car, description: "Mostly urban stop-and-go driving" },
-  { id: "highway" as DrivingStyle, label: "Highway Driver", icon: Gauge, description: "Long-distance highway cruising" },
-  { id: "mixed" as DrivingStyle, label: "Mixed Use", icon: Compass, description: "A bit of everything" },
-];
-
-const PRIORITIES = [
-  { id: "value" as Priority, label: "Value for Money", icon: BadgeDollarSign },
-  { id: "efficiency" as Priority, label: "Eco-Friendly", icon: Leaf },
-  { id: "reliability" as Priority, label: "Dependability", icon: ShieldCheck },
-  { id: "mileage" as Priority, label: "Low Mileage", icon: TrendingDown },
-];
+type Priority = "value" | "efficiency" | "reliability" | "mileage" | "condition";
 
 const STYLE_ADJUSTMENTS: Record<DrivingStyle, Record<Priority, number>> = {
-  city: { efficiency: 15, reliability: 10, value: -15, mileage: -10 },
-  highway: { efficiency: 15, value: 10, reliability: -15, mileage: -10 },
-  mixed: { efficiency: 0, value: 0, reliability: 0, mileage: 0 },
+  city: { efficiency: 15, reliability: 10, value: -15, mileage: -10, condition: 0 },
+  highway: { efficiency: 15, value: 10, reliability: -15, mileage: -10, condition: 0 },
+  mixed: { efficiency: 0, value: 0, reliability: 0, mileage: 0, condition: 0 },
 };
 
-const PRIORITY_BONUSES = [15, 10, 5, 0];
+const PRIORITY_BONUSES = [15, 10, 5, 3, 0];
 
 function computeSliders(style: DrivingStyle, priorities: Priority[]): Record<Priority, number> {
-  const base: Record<Priority, number> = { value: 25, efficiency: 25, reliability: 25, mileage: 25 };
+  const base: Record<Priority, number> = { value: 20, efficiency: 20, reliability: 20, mileage: 20, condition: 20 };
   const adj = STYLE_ADJUSTMENTS[style];
   (Object.keys(base) as Priority[]).forEach((k) => {
     base[k] = Math.max(5, Math.min(60, base[k] + (adj[k] ?? 0)));
@@ -72,7 +65,7 @@ function computeSliders(style: DrivingStyle, priorities: Priority[]): Record<Pri
 
 function normalizeSliders(sliders: Record<Priority, number>): Record<Priority, number> {
   const total = Object.values(sliders).reduce((a, b) => a + b, 0);
-  if (total === 0) return { value: 25, efficiency: 25, reliability: 25, mileage: 25 };
+  if (total === 0) return { value: 20, efficiency: 20, reliability: 20, mileage: 20, condition: 20 };
   const result = { ...sliders };
   (Object.keys(result) as Priority[]).forEach((k) => {
     result[k] = Math.round((result[k] / total) * 100);
@@ -80,8 +73,9 @@ function normalizeSliders(sliders: Record<Priority, number>): Record<Priority, n
   return result;
 }
 
-export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
-  const [step, setStep] = useState(0);
+export function QuizModal({ open, onOpenChange, initialWeights, initialStep }: Props) {
+  const { t } = useTranslation("userPreferences");
+  const [step, setStep] = useState(initialStep ?? 0);
   const [drivingStyle, setDrivingStyle] = useState<DrivingStyle>("mixed");
   const [priorities, setPriorities] = useState<Priority[]>([]);
   const [sliders, setSliders] = useState<Record<Priority, number>>(() => {
@@ -91,12 +85,28 @@ export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
         efficiency: Math.round(initialWeights.efficiencyWeight * 100),
         reliability: Math.round(initialWeights.reliabilityWeight * 100),
         mileage: Math.round(initialWeights.mileageWeight * 100),
+        condition: Math.round(initialWeights.conditionWeight * 100),
       };
     }
-    return { value: 25, efficiency: 25, reliability: 25, mileage: 25 };
+    return { value: 20, efficiency: 20, reliability: 20, mileage: 20, condition: 20 };
   });
 
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
   const { mutateAsync: upsert, isPending } = useUpsertUserPreferences();
+
+  const DRIVING_STYLES = [
+    { id: "city" as DrivingStyle, label: t("quiz.styleCity"), icon: Car, description: t("quiz.styleCityDesc") },
+    { id: "highway" as DrivingStyle, label: t("quiz.styleHighway"), icon: Gauge, description: t("quiz.styleHighwayDesc") },
+    { id: "mixed" as DrivingStyle, label: t("quiz.styleMixed"), icon: Compass, description: t("quiz.styleMixedDesc") },
+  ];
+
+  const PRIORITIES = [
+    { id: "value" as Priority, label: t("quiz.priorityValue"), icon: BadgeDollarSign },
+    { id: "efficiency" as Priority, label: t("quiz.priorityEfficiency"), icon: Leaf },
+    { id: "reliability" as Priority, label: t("quiz.priorityReliability"), icon: ShieldCheck },
+    { id: "mileage" as Priority, label: t("quiz.priorityMileage"), icon: TrendingDown },
+    { id: "condition" as Priority, label: t("quiz.priorityCondition"), icon: ShieldAlert },
+  ];
 
   const handleStyleSelect = (style: DrivingStyle) => setDrivingStyle(style);
 
@@ -121,17 +131,18 @@ export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
     const normalized = normalizeSliders(sliders);
     const total = Object.values(normalized).reduce((a, b) => a + b, 0);
     const fraction = (v: number) => Math.round((v / total) * 1000) / 1000;
+    const prefs = prefsData?.data;
     await upsert({
       valueWeight: fraction(normalized.value),
       efficiencyWeight: fraction(normalized.efficiency),
       reliabilityWeight: fraction(normalized.reliability),
       mileageWeight: fraction(normalized.mileage),
-      conditionWeight: 0.2, // Default condition weight
-      autoGenerateAiSummary: false,
-      enableVehicleScoring: false,
+      conditionWeight: fraction(normalized.condition),
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+      enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
     });
     onOpenChange(false);
-    setStep(0);
+    setStep(initialStep ?? 0);
   };
 
   const sliderTotal = Object.values(sliders).reduce((a, b) => a + b, 0);
@@ -141,9 +152,9 @@ export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {step === 0 && "What describes your driving style?"}
-            {step === 1 && "What matters most to you?"}
-            {step === 2 && "Review your priorities"}
+            {step === 0 && t("quiz.step0Title")}
+            {step === 1 && t("quiz.step1Title")}
+            {step === 2 && t("quiz.step2Title")}
           </DialogTitle>
         </DialogHeader>
 
@@ -198,9 +209,9 @@ export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
         {step === 2 && (
           <div className="space-y-4">
             <p className="text-muted-foreground text-sm">
-              Drag the sliders to fine-tune. Total: {sliderTotal}%
+              {t("quiz.sliderTotal", { total: sliderTotal })}
               {sliderTotal !== 100 && (
-                <span className="ml-1 text-orange-500">(will be normalized to 100%)</span>
+                <span className="ml-1 text-orange-500">{t("quiz.normalizeNotice")}</span>
               )}
             </p>
             {PRIORITIES.map(({ id, label }) => (
@@ -224,17 +235,17 @@ export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
         <DialogFooter className="gap-2">
           {step > 0 && (
             <Button variant="outline" onClick={() => setStep(step - 1)}>
-              Back
+              {t("quiz.back")}
             </Button>
           )}
           {step < 2 && (
             <Button onClick={step === 0 ? handleNextToStep2 : handleNextToStep3}>
-              Next
+              {t("quiz.next")}
             </Button>
           )}
           {step === 2 && (
             <Button onClick={handleSave} disabled={isPending}>
-              {isPending ? "Saving..." : "Save preferences"}
+              {isPending ? t("quiz.saving") : t("quiz.save")}
             </Button>
           )}
         </DialogFooter>
