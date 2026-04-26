@@ -90,6 +90,6 @@
     "loading": "Generuojama AI apžvalga...",
     "unavailableFactors": "Kai kurie duomenys neprieinami ({{factors}}). Verdiktas gali būti nepilnas.",
     "unavailable": "AI apžvalga šiuo metu nepasiekiama.",
-    "prompt": "Spauskite „Generuoti", kad gautumėte AI pirkėjo verdiktą šiam skelbimui."
+    "prompt": "Spauskite \"Generuoti\", kad gautumėte AI pirkėjo verdiktą šiam skelbimui."
   }
 }

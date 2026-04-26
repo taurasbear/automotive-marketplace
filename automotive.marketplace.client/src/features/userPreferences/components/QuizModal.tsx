@@ -126,7 +126,9 @@ export function QuizModal({ open, onOpenChange, initialWeights }: Props) {
       efficiencyWeight: fraction(normalized.efficiency),
       reliabilityWeight: fraction(normalized.reliability),
       mileageWeight: fraction(normalized.mileage),
+      conditionWeight: 0.2, // Default condition weight
       autoGenerateAiSummary: false,
+      enableVehicleScoring: false,
     });
     onOpenChange(false);
     setStep(0);
