@@ -64,6 +64,8 @@ public class RespondToContractCommandHandlerTests(
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.NewStatus.Should().Be(ContractCardStatus.Declined);
+        await context.Entry(card).ReloadAsync();
+        card.Status.Should().Be(ContractCardStatus.Declined);
     }
 
     [Fact]
