@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using Bogus;
@@ -35,6 +36,12 @@ public class ContractCardBuilder
     public ContractCardBuilder WithStatus(ContractCardStatus status)
     {
         _faker.RuleFor(c => c.Status, status);
+        return this;
+    }
+
+    public ContractCardBuilder With<T>(Expression<Func<ContractCard, T>> property, T value)
+    {
+        _faker.RuleFor(property, value);
         return this;
     }
 

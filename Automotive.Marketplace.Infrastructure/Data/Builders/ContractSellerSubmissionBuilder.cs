@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Automotive.Marketplace.Domain.Entities;
 using Bogus;
 
@@ -26,7 +27,7 @@ public class ContractSellerSubmissionBuilder
             .RuleFor(s => s.DefectExhaust, false)
             .RuleFor(s => s.DefectLighting, false)
             .RuleFor(s => s.Price, f => f.Random.Decimal(2000, 80000))
-            .RuleFor(s => s.PersonalIdCode, f => f.Random.AlphaNumeric(11))
+            .RuleFor(s => s.PersonalIdCode, f => f.Random.String2(11, "0123456789"))
             .RuleFor(s => s.FullName, f => f.Name.FullName())
             .RuleFor(s => s.Phone, f => f.Phone.PhoneNumber())
             .RuleFor(s => s.Email, f => f.Internet.Email())
@@ -40,6 +41,12 @@ public class ContractSellerSubmissionBuilder
     public ContractSellerSubmissionBuilder WithContractCard(Guid contractCardId)
     {
         _faker.RuleFor(s => s.ContractCardId, contractCardId);
+        return this;
+    }
+
+    public ContractSellerSubmissionBuilder With<T>(Expression<Func<ContractSellerSubmission, T>> property, T value)
+    {
+        _faker.RuleFor(property, value);
         return this;
     }
 
