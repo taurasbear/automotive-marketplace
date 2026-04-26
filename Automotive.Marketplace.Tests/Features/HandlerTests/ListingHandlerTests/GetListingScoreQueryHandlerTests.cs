@@ -178,7 +178,9 @@ public class GetListingScoreQueryHandlerTests(
         _nhtsaClient.GetSafetyRatingAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns((NhtsaSafetyRatingResult?)null);
 
-        await handler.Handle(new GetListingScoreQuery { ListingId = listingId }, CancellationToken.None);
+        var result = await handler.Handle(new GetListingScoreQuery { ListingId = listingId }, CancellationToken.None);
+
+        result.Value.Status.Should().Be("missing");
 
         var marketCache = await context.VehicleMarketCaches
             .AsNoTracking()
@@ -266,17 +268,17 @@ public class GetListingScoreQueryHandlerTests(
             .FirstOrDefaultAsync(c => c.Make == "BMW" && c.Model == "3 Series" && c.Year == 2019);
 
         efficiencyCache.Should().NotBeNull();
-        efficiencyCache!.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+        efficiencyCache!.ExpiresAt.Should().BeCloseTo(DateTime.UtcNow.AddDays(90), TimeSpan.FromMinutes(1));
 
         marketCache.Should().NotBeNull();
         marketCache!.IsFetchFailed.Should().BeFalse();
-        marketCache.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+        marketCache.ExpiresAt.Should().BeCloseTo(DateTime.UtcNow.AddDays(1), TimeSpan.FromMinutes(1));
 
         reliabilityCache.Should().NotBeNull();
         reliabilityCache!.RecallCount.Should().Be(0);
         reliabilityCache.ComplaintCount.Should().Be(10);
         reliabilityCache.OverallSafetyRating.Should().Be(5);
-        reliabilityCache.ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+        reliabilityCache.ExpiresAt.Should().BeCloseTo(DateTime.UtcNow.AddDays(30), TimeSpan.FromMinutes(1));
     }
 
     [Fact]
