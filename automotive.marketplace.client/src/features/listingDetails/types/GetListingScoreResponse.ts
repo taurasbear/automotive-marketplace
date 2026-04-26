@@ -10,6 +10,7 @@ export type GetListingScoreResponse = {
   efficiency: ScoreFactor;
   reliability: ScoreFactor;
   mileage: ScoreFactor;
+  condition: ScoreFactor;
   hasMissingFactors: boolean;
   missingFactors: string[];
   isPersonalized: boolean;

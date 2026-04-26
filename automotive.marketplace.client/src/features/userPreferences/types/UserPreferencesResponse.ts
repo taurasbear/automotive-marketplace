@@ -3,6 +3,8 @@ export type UserPreferencesResponse = {
   efficiencyWeight: number;
   reliabilityWeight: number;
   mileageWeight: number;
+  conditionWeight: number;
   autoGenerateAiSummary: boolean;
+  enableVehicleScoring: boolean;
   hasPreferences: boolean;
 };

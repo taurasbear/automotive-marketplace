@@ -3,5 +3,7 @@ export type UpsertUserPreferencesCommand = {
   efficiencyWeight: number;
   reliabilityWeight: number;
   mileageWeight: number;
+  conditionWeight: number;
   autoGenerateAiSummary: boolean;
+  enableVehicleScoring: boolean;
 };
