@@ -27,4 +27,13 @@ export const HUB_METHODS = {
   AVAILABILITY_RESPONDED: "AvailabilityResponded",
   AVAILABILITY_EXPIRED: "AvailabilityExpired",
   AVAILABILITY_CANCELLED: "AvailabilityCancelled",
+  // Contract card — Client → Server
+  REQUEST_CONTRACT: "RequestContract",
+  RESPOND_TO_CONTRACT: "RespondToContract",
+  CANCEL_CONTRACT: "CancelContract",
+  SUBMIT_CONTRACT_SELLER_FORM: "SubmitContractSellerForm",
+  SUBMIT_CONTRACT_BUYER_FORM: "SubmitContractBuyerForm",
+  // Contract card — Server → Client
+  CONTRACT_REQUESTED: "ContractRequested",
+  CONTRACT_STATUS_UPDATED: "ContractStatusUpdated",
 } as const;
