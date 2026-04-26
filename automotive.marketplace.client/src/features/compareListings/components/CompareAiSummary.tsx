@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Sparkles, RefreshCw } from "lucide-react";
+import { Sparkles, RefreshCw, Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getListingComparisonAiSummaryOptions } from "../api/getListingComparisonAiSummaryOptions";
 
 type Props = {
@@ -9,19 +11,22 @@ type Props = {
 };
 
 export function CompareAiSummary({ listingAId, listingBId }: Props) {
+  const { t, i18n } = useTranslation("compare");
+
   const { data, isFetching, refetch } = useQuery(
-    getListingComparisonAiSummaryOptions(listingAId, listingBId),
+    getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
   );
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
+  const unavailable = summary?.unavailableFactors ?? [];
 
   return (
     <div className="border-border mb-4 rounded-lg border p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Sparkles className="text-primary h-4 w-4" />
-          <span className="text-sm font-semibold">AI Comparison Summary</span>
+          <span className="text-sm font-semibold">{t("aiSummary.title")}</span>
         </div>
         <Button
           variant="outline"
@@ -35,7 +40,7 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
           ) : (
             <Sparkles className="h-3.5 w-3.5" />
           )}
-          {hasResult ? "Regenerate" : "Compare with AI"}
+          {hasResult ? t("aiSummary.regenerate") : t("aiSummary.generate")}
         </Button>
       </div>
 
@@ -47,12 +52,22 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
       )}
 
       {!isFetching && hasResult && summary?.summary && (
-        <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{summary.summary}</p>
+        <>
+          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{summary.summary}</p>
+          {unavailable.length > 0 && (
+            <Alert variant="default" className="mt-3">
+              <Info className="h-4 w-4" />
+              <AlertDescription className="text-xs">
+                {t("aiSummary.unavailableFactors", { factors: unavailable.join(", ") })}
+              </AlertDescription>
+            </Alert>
+          )}
+        </>
       )}
 
       {!isFetching && !hasResult && !data && (
         <p className="text-muted-foreground mt-3 text-sm">
-          Click "Compare with AI" to get a recommendation between these two listings.
+          {t("aiSummary.prompt")}
         </p>
       )}
     </div>

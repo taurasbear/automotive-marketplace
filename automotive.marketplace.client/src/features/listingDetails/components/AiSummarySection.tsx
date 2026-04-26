@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Sparkles, RefreshCw } from "lucide-react";
+import { Sparkles, RefreshCw, Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getListingAiSummaryOptions } from "../api/getListingAiSummaryOptions";
 
 type Props = {
@@ -8,21 +10,24 @@ type Props = {
 };
 
 export function AiSummarySection({ listingId }: Props) {
+  const { t, i18n } = useTranslation("listings");
+
   const {
     data,
     isFetching,
     refetch,
-  } = useQuery(getListingAiSummaryOptions(listingId));
+  } = useQuery(getListingAiSummaryOptions(listingId, i18n.language));
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
+  const unavailable = summary?.unavailableFactors ?? [];
 
   return (
     <div className="border-border rounded-lg border p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Sparkles className="text-primary h-4 w-4" />
-          <span className="text-sm font-semibold">AI Buyer Verdict</span>
+          <span className="text-sm font-semibold">{t("aiSummary.title")}</span>
         </div>
         <Button
           variant="outline"
@@ -36,7 +41,7 @@ export function AiSummarySection({ listingId }: Props) {
           ) : (
             <Sparkles className="h-3.5 w-3.5" />
           )}
-          {hasResult ? "Regenerate" : "Generate"}
+          {hasResult ? t("aiSummary.regenerate") : t("aiSummary.generate")}
         </Button>
       </div>
 
@@ -49,18 +54,28 @@ export function AiSummarySection({ listingId }: Props) {
       )}
 
       {!isFetching && hasResult && summary?.summary && (
-        <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{summary.summary}</p>
+        <>
+          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{summary.summary}</p>
+          {unavailable.length > 0 && (
+            <Alert variant="default" className="mt-3">
+              <Info className="h-4 w-4" />
+              <AlertDescription className="text-xs">
+                {t("aiSummary.unavailableFactors", { factors: unavailable.join(", ") })}
+              </AlertDescription>
+            </Alert>
+          )}
+        </>
       )}
 
       {!isFetching && data && !hasResult && (
         <p className="text-muted-foreground mt-3 text-sm italic">
-          AI summary unavailable at this time.
+          {t("aiSummary.unavailable")}
         </p>
       )}
 
       {!isFetching && !hasResult && !data && (
         <p className="text-muted-foreground mt-3 text-sm">
-          Click "Generate" to get an AI-powered buyer verdict for this listing.
+          {t("aiSummary.prompt")}
         </p>
       )}
     </div>

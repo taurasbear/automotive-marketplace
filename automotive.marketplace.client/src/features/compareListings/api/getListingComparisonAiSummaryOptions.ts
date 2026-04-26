@@ -4,12 +4,12 @@ import axiosClient from "@/lib/axios/axiosClient";
 import { queryOptions } from "@tanstack/react-query";
 import type { GetListingComparisonAiSummaryResponse } from "../types/GetListingComparisonAiSummaryResponse";
 
-export const getListingComparisonAiSummaryOptions = (listingAId: string, listingBId: string) =>
+export const getListingComparisonAiSummaryOptions = (listingAId: string, listingBId: string, language: string = "lt") =>
   queryOptions({
-    queryKey: listingKeys.comparisonAiSummary(listingAId, listingBId),
+    queryKey: listingKeys.comparisonAiSummary(listingAId, listingBId, language),
     queryFn: () =>
       axiosClient.get<GetListingComparisonAiSummaryResponse>(ENDPOINTS.LISTING.GET_COMPARISON_AI_SUMMARY, {
-        params: { listingAId, listingBId },
+        params: { listingAId, listingBId, language },
       }),
     enabled: false,
   });
