@@ -62,6 +62,7 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
     public DbSet<VehicleMarketCache> VehicleMarketCaches { get; set; }
     public DbSet<VehicleReliabilityCache> VehicleReliabilityCaches { get; set; }
     public DbSet<UserPreferences> UserPreferences { get; set; }
+    public DbSet<ListingAiSummaryCache> ListingAiSummaryCaches { get; set; }
 
     public DbSet<Municipality> Municipalities { get; set; }
 
