@@ -52,6 +52,12 @@ public class AutomotiveContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; }
 
+    public DbSet<ContractCard> ContractCards { get; set; }
+
+    public DbSet<ContractSellerSubmission> ContractSellerSubmissions { get; set; }
+
+    public DbSet<ContractBuyerSubmission> ContractBuyerSubmissions { get; set; }
+
     public DbSet<DefectCategory> DefectCategories { get; set; }
 
     public DbSet<DefectCategoryTranslation> DefectCategoryTranslations { get; set; }
