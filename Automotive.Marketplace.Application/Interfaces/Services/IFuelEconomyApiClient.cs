@@ -2,7 +2,7 @@ namespace Automotive.Marketplace.Application.Interfaces.Services;
 
 public interface IFuelEconomyApiClient
 {
-    Task<FuelEfficiencyResult?> GetFuelEfficiencyAsync(string make, string model, int year, CancellationToken ct);
+    Task<FuelEconomyEfficiencyResult?> GetFuelEfficiencyAsync(string make, string model, int year, CancellationToken cancellationToken);
 }
 
-public record FuelEfficiencyResult(double? LitersPer100Km, double? KWhPer100Km);
+public record FuelEconomyEfficiencyResult(double? LitersPer100Km, double? KWhPer100Km);
