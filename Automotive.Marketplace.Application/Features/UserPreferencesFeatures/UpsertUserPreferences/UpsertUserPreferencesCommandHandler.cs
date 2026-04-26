@@ -10,7 +10,8 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
 {
     public async Task Handle(UpsertUserPreferencesCommand request, CancellationToken cancellationToken)
     {
-        var total = request.ValueWeight + request.EfficiencyWeight + request.ReliabilityWeight + request.MileageWeight;
+        var total = request.ValueWeight + request.EfficiencyWeight + request.ReliabilityWeight
+                    + request.MileageWeight + request.ConditionWeight;
         if (Math.Abs(total - 1.0) > 0.01)
             throw new ArgumentException("Score weights must sum to 1.0");
 
@@ -23,7 +24,9 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
             existing.EfficiencyWeight = request.EfficiencyWeight;
             existing.ReliabilityWeight = request.ReliabilityWeight;
             existing.MileageWeight = request.MileageWeight;
+            existing.ConditionWeight = request.ConditionWeight;
             existing.AutoGenerateAiSummary = request.AutoGenerateAiSummary;
+            existing.EnableVehicleScoring = request.EnableVehicleScoring;
             await repository.UpdateAsync(existing, cancellationToken);
         }
         else
@@ -36,7 +39,9 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
                 EfficiencyWeight = request.EfficiencyWeight,
                 ReliabilityWeight = request.ReliabilityWeight,
                 MileageWeight = request.MileageWeight,
+                ConditionWeight = request.ConditionWeight,
                 AutoGenerateAiSummary = request.AutoGenerateAiSummary,
+                EnableVehicleScoring = request.EnableVehicleScoring,
             }, cancellationToken);
         }
     }

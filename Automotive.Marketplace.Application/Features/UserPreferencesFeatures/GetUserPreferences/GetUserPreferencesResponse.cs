@@ -6,6 +6,8 @@ public class GetUserPreferencesResponse
     public double EfficiencyWeight { get; init; }
     public double ReliabilityWeight { get; init; }
     public double MileageWeight { get; init; }
+    public double ConditionWeight { get; init; }
     public bool AutoGenerateAiSummary { get; init; }
+    public bool EnableVehicleScoring { get; init; }
     public bool HasPreferences { get; init; }
 }

@@ -17,11 +17,13 @@ public class GetUserPreferencesQueryHandler(IRepository repository)
         {
             return new GetUserPreferencesResponse
             {
-                ValueWeight = 0.30,
-                EfficiencyWeight = 0.25,
-                ReliabilityWeight = 0.25,
-                MileageWeight = 0.20,
+                ValueWeight = 0.26,
+                EfficiencyWeight = 0.21,
+                ReliabilityWeight = 0.21,
+                MileageWeight = 0.17,
+                ConditionWeight = 0.15,
                 AutoGenerateAiSummary = false,
+                EnableVehicleScoring = false,
                 HasPreferences = false,
             };
         }
@@ -32,7 +34,9 @@ public class GetUserPreferencesQueryHandler(IRepository repository)
             EfficiencyWeight = prefs.EfficiencyWeight,
             ReliabilityWeight = prefs.ReliabilityWeight,
             MileageWeight = prefs.MileageWeight,
+            ConditionWeight = prefs.ConditionWeight,
             AutoGenerateAiSummary = prefs.AutoGenerateAiSummary,
+            EnableVehicleScoring = prefs.EnableVehicleScoring,
             HasPreferences = true,
         };
     }
