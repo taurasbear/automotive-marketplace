@@ -9,7 +9,9 @@
     "confirmedMeetupWarning": "You have a confirmed meetup on {{date}} at {{time}}. Starting a new negotiation will cancel it.",
     "activeMeetupWarning": "Starting a new negotiation will cancel the existing meetup.",
     "keepExisting": "Keep existing",
-    "continue": "Continue"
+    "continue": "Continue",
+    "contractAlreadyActive": "A contract request is already active in this conversation",
+    "requestContract": "Purchase-Sale Agreement"
   },
   "meetingCard": {
     "statusLabels": {
@@ -130,5 +132,63 @@
     "to": "To ({{timezone}})",
     "addAnotherSlot": "+ Add another slot",
     "shareAvailability": "Share Availability"
+  },
+  "contractCard": {
+    "statusLabels": {
+      "pending": "Contract Requested",
+      "active": "Contract Agreement",
+      "complete": "Contract Complete",
+      "declined": "Contract Declined",
+      "cancelled": "Contract Cancelled"
+    },
+    "declinedMessage": "The contract request was declined.",
+    "cancelledMessage": "The contract request was cancelled.",
+    "recipientPendingMessage": "A purchase-sale contract has been requested.",
+    "waitingForResponse": "Waiting for response...",
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel request",
+    "seller": "Seller",
+    "buyer": "Buyer",
+    "submitted": "Submitted",
+    "pending": "Pending",
+    "fillOut": "Fill out",
+    "viewSubmittedData": "Submitted",
+    "exportPdf": "Export PDF"
+  },
+  "contractForm": {
+    "title": "Purchase-Sale Agreement",
+    "titleReadOnly": "Submitted on {{date}}",
+    "step1": "Vehicle details",
+    "step2": "Personal info",
+    "make": "Make",
+    "commercialName": "Commercial name",
+    "vin": "VIN",
+    "mileage": "Mileage (km)",
+    "price": "Price (EUR)",
+    "registrationNumber": "Registration number",
+    "sdkCode": "SDK code (Transporto priemonės savininko deklaravimo kodas)",
+    "registrationCertificate": "Registration certificate (series & no.)",
+    "technicalInspectionValid": "Technical inspection valid",
+    "wasDamaged": "Vehicle was damaged",
+    "damageKnown": "Damage / repairs are known to buyer",
+    "defects": "Technical defects",
+    "defectBrakes": "Brake system",
+    "defectSafety": "Safety systems",
+    "defectSteering": "Steering & suspension",
+    "defectExhaust": "Exhaust system",
+    "defectLighting": "Lighting system",
+    "defectDetails": "Defect / incident details",
+    "email": "Email (from account)",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "personalIdCode": "Personal ID / company code",
+    "personalIdCodePlaceholder": "e.g. 38901011234",
+    "country": "Country",
+    "address": "Address",
+    "rememberForNextTime": "Remember phone, ID code, and address for next time",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit"
   }
 }
