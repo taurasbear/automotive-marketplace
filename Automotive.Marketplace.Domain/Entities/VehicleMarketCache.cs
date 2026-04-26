@@ -7,6 +7,7 @@ public class VehicleMarketCache : BaseEntity
     public int Year { get; set; }
     public decimal MedianPrice { get; set; }
     public int TotalListings { get; set; }
+    public bool IsFetchFailed { get; set; }
     public DateTime FetchedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
 }
