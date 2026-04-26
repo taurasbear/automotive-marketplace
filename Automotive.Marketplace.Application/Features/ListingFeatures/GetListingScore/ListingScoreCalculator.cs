@@ -4,21 +4,23 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListing
 
 public static class ListingScoreCalculator
 {
-    private const double ValueWeight = 0.30;
-    private const double EfficiencyWeight = 0.25;
-    private const double ReliabilityWeight = 0.25;
-    private const double MileageWeight = 0.20;
+    private const double ValueWeight = 0.26;
+    private const double EfficiencyWeight = 0.21;
+    private const double ReliabilityWeight = 0.21;
+    private const double MileageWeight = 0.17;
+    private const double ConditionWeight = 0.15;
 
     public static GetListingScoreResponse Calculate(
         decimal listingPrice,
         int year,
         int mileageKm,
+        int defectCount,
         CardogMarketResult? market,
         CardogEfficiencyResult? efficiency,
         CardogReliabilityResult? reliability,
         ScoreWeights? weights = null)
     {
-        var w = weights ?? new ScoreWeights(ValueWeight, EfficiencyWeight, ReliabilityWeight, MileageWeight);
+        var w = weights ?? new ScoreWeights(ValueWeight, EfficiencyWeight, ReliabilityWeight, MileageWeight, ConditionWeight);
 
         var valueFactor = market != null
             ? ScoreValue(listingPrice, market.MedianPrice, w.Value)
@@ -33,8 +35,9 @@ public static class ListingScoreCalculator
             : MissingFactor(w.Reliability);
 
         var mileageFactor = ScoreMileage(year, mileageKm, w.Mileage);
+        var conditionFactor = ScoreCondition(defectCount, w.Condition);
 
-        var allFactors = new[] { valueFactor, efficiencyFactor, reliabilityFactor, mileageFactor };
+        var allFactors = new[] { valueFactor, efficiencyFactor, reliabilityFactor, mileageFactor, conditionFactor };
         var scoredFactors = allFactors.Where(f => f.Status == "scored").ToArray();
         var totalWeight = scoredFactors.Sum(f => f.Weight);
         var overallScore = totalWeight > 0
@@ -53,6 +56,7 @@ public static class ListingScoreCalculator
             Efficiency = efficiencyFactor,
             Reliability = reliabilityFactor,
             Mileage = mileageFactor,
+            Condition = conditionFactor,
             HasMissingFactors = missingFactors.Count > 0,
             MissingFactors = missingFactors,
         };
@@ -99,6 +103,12 @@ public static class ListingScoreCalculator
 
         var expectedKm = ageYears * 15000.0;
         var score = Math.Clamp((expectedKm - mileageKm) / expectedKm, 0, 1) * 100.0;
+        return new ScoreFactor(Score: score, Status: "scored", Weight: weight);
+    }
+
+    private static ScoreFactor ScoreCondition(int defectCount, double weight)
+    {
+        var score = Math.Max(0, 100 - defectCount * 20);
         return new ScoreFactor(Score: score, Status: "scored", Weight: weight);
     }
 

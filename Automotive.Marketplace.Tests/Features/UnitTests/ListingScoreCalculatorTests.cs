@@ -13,6 +13,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 8000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: new CardogMarketResult(MedianPrice: 10000m, TotalListings: 50),
             efficiency: null,
             reliability: null);
@@ -29,6 +30,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: new CardogMarketResult(MedianPrice: 10000m, TotalListings: 50),
             efficiency: null,
             reliability: null);
@@ -44,6 +46,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 8000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: null,
             reliability: null);
@@ -61,6 +64,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: new CardogEfficiencyResult(LitersPer100Km: 6.0, KWhPer100Km: null),
             reliability: null);
@@ -77,6 +81,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: new CardogEfficiencyResult(LitersPer100Km: 15.0, KWhPer100Km: null),
             reliability: null);
@@ -92,6 +97,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: new CardogEfficiencyResult(LitersPer100Km: null, KWhPer100Km: 15.0),
             reliability: null);
@@ -107,6 +113,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: null,
             reliability: null);
@@ -122,6 +129,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: null,
             reliability: new CardogReliabilityResult(RecallCount: 0, ComplaintCrashes: 0, ComplaintInjuries: 0));
@@ -137,6 +145,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: null,
             reliability: null);
@@ -157,6 +166,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: carYear,
             mileageKm: actualKm,
+            defectCount: 0,
             market: null,
             efficiency: null,
             reliability: null);
@@ -172,6 +182,7 @@ public class ListingScoreCalculatorTests
             listingPrice: 10000m,
             year: 2020,
             mileageKm: 60000,
+            defectCount: 0,
             market: null,
             efficiency: null,
             reliability: null);
@@ -193,11 +204,58 @@ public class ListingScoreCalculatorTests
             listingPrice: 8000m,
             year: 2020,
             mileageKm: 30000,
+            defectCount: 0,
             market: new CardogMarketResult(MedianPrice: 10000m, TotalListings: 50),
             efficiency: new CardogEfficiencyResult(LitersPer100Km: 6.0, KWhPer100Km: null),
             reliability: new CardogReliabilityResult(RecallCount: 0, ComplaintCrashes: 0, ComplaintInjuries: 0));
 
         result.OverallScore.Should().BeGreaterThan(70);
         result.HasMissingFactors.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Calculate_ZeroDefects_ConditionScore100()
+    {
+        var result = ListingScoreCalculator.Calculate(
+            listingPrice: 10000m,
+            year: 2020,
+            mileageKm: 60000,
+            defectCount: 0,
+            market: null,
+            efficiency: null,
+            reliability: null);
+
+        result.Condition.Score.Should().Be(100);
+        result.Condition.Status.Should().Be("scored");
+    }
+
+    [Fact]
+    public void Calculate_ThreeDefects_ConditionScore40()
+    {
+        var result = ListingScoreCalculator.Calculate(
+            listingPrice: 10000m,
+            year: 2020,
+            mileageKm: 60000,
+            defectCount: 3,
+            market: null,
+            efficiency: null,
+            reliability: null);
+
+        result.Condition.Score.Should().Be(40);
+    }
+
+    [Fact]
+    public void Calculate_FiveOrMoreDefects_ConditionScoreZero()
+    {
+        var result = ListingScoreCalculator.Calculate(
+            listingPrice: 10000m,
+            year: 2020,
+            mileageKm: 60000,
+            defectCount: 7,
+            market: null,
+            efficiency: null,
+            reliability: null);
+
+        result.Condition.Score.Should().Be(0);
     }
 }

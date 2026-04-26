@@ -20,6 +20,7 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
         var listing = await repository.AsQueryable<Listing>()
             .Include(l => l.Variant).ThenInclude(v => v.Fuel)
             .Include(l => l.Variant).ThenInclude(v => v.Model).ThenInclude(m => m.Make)
+            .Include(l => l.Defects)
             .FirstOrDefaultAsync(l => l.Id == request.ListingId, cancellationToken)
             ?? throw new DbEntityNotFoundException("Listing", request.ListingId);
 
@@ -37,7 +38,7 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
 
             if (prefs != null)
             {
-                weights = new ScoreWeights(prefs.ValueWeight, prefs.EfficiencyWeight, prefs.ReliabilityWeight, prefs.MileageWeight);
+                weights = new ScoreWeights(prefs.ValueWeight, prefs.EfficiencyWeight, prefs.ReliabilityWeight, prefs.MileageWeight, prefs.ConditionWeight);
                 isPersonalized = true;
             }
         }
@@ -52,7 +53,7 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
         var market = marketTask.Result;
         var reliability = reliabilityTask.Result;
 
-        var scoreResult = ListingScoreCalculator.Calculate(listing.Price, year, listing.Mileage, market, efficiency, reliability, weights);
+        var scoreResult = ListingScoreCalculator.Calculate(listing.Price, year, listing.Mileage, listing.Defects.Count, market, efficiency, reliability, weights);
         return new GetListingScoreResponse
         {
             OverallScore = scoreResult.OverallScore,
@@ -60,6 +61,7 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
             Efficiency = scoreResult.Efficiency,
             Reliability = scoreResult.Reliability,
             Mileage = scoreResult.Mileage,
+            Condition = scoreResult.Condition,
             HasMissingFactors = scoreResult.HasMissingFactors,
             MissingFactors = scoreResult.MissingFactors,
             IsPersonalized = isPersonalized,
