@@ -52,6 +52,10 @@ public class RequestContractCommandHandlerTests(
         savedMessage.Should().NotBeNull();
         savedMessage!.MessageType.Should().Be(MessageType.Contract);
         savedMessage.ContractCardId.Should().Be(savedCard.Id);
+
+        var savedConversation = await context.Conversations.FindAsync(conversation.Id);
+        await context.Entry(savedConversation!).ReloadAsync();
+        savedConversation!.LastMessageAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(1));
     }
 
     [Fact]
@@ -103,6 +107,29 @@ public class RequestContractCommandHandlerTests(
         var act = () => handler.Handle(command, CancellationToken.None);
 
         await act.Should().ThrowAsync<UnauthorizedAccessException>();
+    }
+
+    [Fact]
+    public async Task Handle_SellerInitiates_SetsRecipientToBuyer()
+    {
+        await using var scope = fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (buyer, seller, conversation, _) = await SeedConversationAsync(context);
+
+        var command = new RequestContractCommand
+        {
+            ConversationId = conversation.Id,
+            InitiatorId = seller.Id,
+        };
+
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        result.SenderId.Should().Be(seller.Id);
+        result.RecipientId.Should().Be(buyer.Id);
+        result.SenderUsername.Should().Be(seller.Username);
+        result.ContractCard.InitiatorId.Should().Be(seller.Id);
     }
 
     private static async Task<(User buyer, User seller, Conversation conversation, Listing listing)>
