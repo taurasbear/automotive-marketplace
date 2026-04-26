@@ -82,5 +82,14 @@
     "steeringWheelRight": "Steering wheel on right",
     "usedCar": "Used car",
     "submit": "Submit"
+  },
+  "aiSummary": {
+    "title": "AI Buyer Verdict",
+    "generate": "Generate",
+    "regenerate": "Regenerate",
+    "loading": "Generating AI summary...",
+    "unavailableFactors": "Some data was unavailable ({{factors}}). The verdict may be incomplete.",
+    "unavailable": "AI summary unavailable at this time.",
+    "prompt": "Click \"Generate\" to get an AI-powered buyer verdict for this listing."
   }
 }

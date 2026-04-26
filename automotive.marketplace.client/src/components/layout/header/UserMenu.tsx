@@ -64,12 +64,11 @@ const UserMenu = () => {
         <DropdownMenuLabel>
           {t("common:userMenu.sectionAccount")}
         </DropdownMenuLabel>
-        <DropdownMenuItem disabled>
-          <Settings className="mr-2 h-4 w-4" />
-          {t("common:userMenu.profileSettings")}
-          <span className="text-muted-foreground ml-auto text-xs">
-            ({t("common:userMenu.comingSoon")})
-          </span>
+        <DropdownMenuItem asChild>
+          <Link to="/settings">
+            <Settings className="mr-2 h-4 w-4" />
+            {t("common:userMenu.profileSettings")}
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           className="text-red-600"

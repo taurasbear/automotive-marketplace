@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './app/routes/__root'
 import { Route as VariantsRouteImport } from './app/routes/variants'
+import { Route as SettingsRouteImport } from './app/routes/settings'
 import { Route as SavedRouteImport } from './app/routes/saved'
 import { Route as RegisterRouteImport } from './app/routes/register'
 import { Route as ModelsRouteImport } from './app/routes/models'
@@ -30,6 +31,11 @@ import { Route as InboxConversationIdRouteImport } from './app/routes/inbox/$con
 const VariantsRoute = VariantsRouteImport.update({
   id: '/variants',
   path: '/variants',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SavedRoute = SavedRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
+  '/settings': typeof SettingsRoute
   '/variants': typeof VariantsRoute
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
+  '/settings': typeof SettingsRoute
   '/variants': typeof VariantsRoute
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/models': typeof ModelsRoute
   '/register': typeof RegisterRoute
   '/saved': typeof SavedRoute
+  '/settings': typeof SettingsRoute
   '/variants': typeof VariantsRoute
   '/inbox/$conversationId': typeof InboxConversationIdRoute
   '/listing/$id': typeof ListingIdRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/models'
     | '/register'
     | '/saved'
+    | '/settings'
     | '/variants'
     | '/inbox/$conversationId'
     | '/listing/$id'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/models'
     | '/register'
     | '/saved'
+    | '/settings'
     | '/variants'
     | '/inbox/$conversationId'
     | '/listing/$id'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/models'
     | '/register'
     | '/saved'
+    | '/settings'
     | '/variants'
     | '/inbox/$conversationId'
     | '/listing/$id'
@@ -240,6 +252,7 @@ export interface RootRouteChildren {
   ModelsRoute: typeof ModelsRoute
   RegisterRoute: typeof RegisterRoute
   SavedRoute: typeof SavedRoute
+  SettingsRoute: typeof SettingsRoute
   VariantsRoute: typeof VariantsRoute
   ListingIdRoute: typeof ListingIdRoute
   ListingCreateRoute: typeof ListingCreateRoute
@@ -254,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/variants'
       fullPath: '/variants'
       preLoaderRoute: typeof VariantsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/saved': {
@@ -394,6 +414,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModelsRoute: ModelsRoute,
   RegisterRoute: RegisterRoute,
   SavedRoute: SavedRoute,
+  SettingsRoute: SettingsRoute,
   VariantsRoute: VariantsRoute,
   ListingIdRoute: ListingIdRoute,
   ListingCreateRoute: ListingCreateRoute,

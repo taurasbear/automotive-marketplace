@@ -40,5 +40,12 @@
   "diffToggle": {
     "showAll": "Rodyti viską",
     "diffOnly": "Tik skirtumai"
+  },
+  "aiSummary": {
+    "title": "AI Palyginimo Apžvalga",
+    "generate": "Palyginti su AI",
+    "regenerate": "Pergeneruoti",
+    "unavailableFactors": "Kai kurie duomenys neprieinami ({{factors}}). Palyginimas gali būti nepilnas.",
+    "prompt": "Spauskite \"Palyginti su AI\", kad gautumėte rekomendaciją tarp šių dviejų skelbimų."
   }
 }

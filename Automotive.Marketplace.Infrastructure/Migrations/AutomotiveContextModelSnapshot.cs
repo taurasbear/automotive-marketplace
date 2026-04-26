@@ -544,6 +544,62 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("Listings");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ListingAiSummaryCache", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ComparisonListingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasDefaultValue("lt");
+
+                    b.Property<Guid>("ListingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SummaryType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListingId", "SummaryType", "ComparisonListingId", "Language")
+                        .IsUnique();
+
+                    b.ToTable("ListingAiSummaryCaches");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ListingDefect", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1160,6 +1216,58 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("UserPermissions");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserPreferences", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("AutoGenerateAiSummary")
+                        .HasColumnType("boolean");
+
+                    b.Property<double>("ConditionWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("EfficiencyWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool>("EnableVehicleScoring")
+                        .HasColumnType("boolean");
+
+                    b.Property<double>("MileageWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("ReliabilityWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("ValueWeight")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserPreferences");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Variant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1217,6 +1325,180 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasFilter("\"IsCustom\" = false");
 
                     b.ToTable("Variants");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.VehicleEfficiencyCache", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("FetchedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FetchedTrimName")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("KWhPer100Km")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("LitersPer100Km")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Make", "Model", "Year")
+                        .IsUnique();
+
+                    b.ToTable("VehicleEfficiencyCaches");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.VehicleMarketCache", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("FetchedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsFetchFailed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<decimal>("MedianPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TotalListings")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Make", "Model", "Year")
+                        .IsUnique();
+
+                    b.ToTable("VehicleMarketCaches");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.VehicleReliabilityCache", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ComplaintCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ComplaintCrashes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ComplaintInjuries")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("FetchedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("OverallSafetyRating")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RecallCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Make", "Model", "Year")
+                        .IsUnique();
+
+                    b.ToTable("VehicleReliabilityCaches");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.AvailabilityCard", b =>
@@ -1548,6 +1830,17 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.User", "User")
                         .WithMany("UserPermissions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.UserPreferences", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

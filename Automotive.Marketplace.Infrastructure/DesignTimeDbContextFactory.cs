@@ -9,7 +9,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Automotive
     public AutomotiveContext CreateDbContext(string[] args)
     {
         var options = new DbContextOptionsBuilder<AutomotiveContext>()
-            .UseNpgsql("Host=localhost;Database=automotive_migrations_design;Username=postgres;Password=postgres")
+            .UseNpgsql("Host=localhost;Port=5433;Database=automotive_marketplace;Username=postgres;Password=postgres")
             .UseLazyLoadingProxies()
             .Options;
 

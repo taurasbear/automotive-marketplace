@@ -6,6 +6,10 @@ using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComp
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetMyListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.SearchListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingEngagements;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingScore;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingAiSummary;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComparisonAiSummary;
+using Automotive.Marketplace.Application.Features.ListingFeatures.GetSellerListingInsights;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
@@ -98,6 +102,45 @@ public class ListingController(IMediator mediator) : BaseController
         CancellationToken cancellationToken)
     {
         var query = new GetListingEngagementsQuery { ListingId = id, CurrentUserId = UserId };
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetListingScoreResponse>> GetScore(
+        [FromQuery] GetListingScoreQuery query,
+        CancellationToken cancellationToken)
+    {
+        query.UserId = UserId != Guid.Empty ? UserId : null;
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetListingAiSummaryResponse>> GetAiSummary(
+        [FromQuery] GetListingAiSummaryQuery query,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetListingComparisonAiSummaryResponse>> GetComparisonAiSummary(
+        [FromQuery] GetListingComparisonAiSummaryQuery query,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Protect(Permission.ManageListings)]
+    public async Task<ActionResult<GetSellerListingInsightsResponse>> GetSellerInsights(
+        [FromQuery] GetSellerListingInsightsQuery query,
+        CancellationToken cancellationToken)
+    {
+        query.UserId = UserId;
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }

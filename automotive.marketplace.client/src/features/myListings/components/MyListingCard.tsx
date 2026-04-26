@@ -37,6 +37,7 @@ import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
 import { GetMyListingsResponse } from "../types/GetMyListingsResponse";
 import { useDeleteMyListing } from "../api/useDeleteMyListing";
 import ListingBuyerPanel from "./ListingBuyerPanel";
+import { SellerInsightsPanel } from "./SellerInsightsPanel";
 
 type MyListingCardProps = {
   listing: GetMyListingsResponse;
@@ -252,6 +253,7 @@ export default function MyListingCard({
           onStartChat={onStartChat}
         />
       )}
+      <SellerInsightsPanel listingId={listing.id} />
     </div>
   );
 }
