@@ -5,4 +5,5 @@ public class GetListingAiSummaryResponse
     public string? Summary { get; init; }
     public bool IsGenerated { get; init; }
     public bool FromCache { get; init; }
+    public List<string> UnavailableFactors { get; init; } = [];
 }
