@@ -30,11 +30,13 @@ public class GetUserPreferencesQueryHandlerTests(
         var result = await handler.Handle(new GetUserPreferencesQuery { UserId = Guid.NewGuid() }, CancellationToken.None);
 
         result.HasPreferences.Should().BeFalse();
-        result.ValueWeight.Should().Be(0.30);
-        result.EfficiencyWeight.Should().Be(0.25);
-        result.ReliabilityWeight.Should().Be(0.25);
-        result.MileageWeight.Should().Be(0.20);
+        result.ValueWeight.Should().Be(0.26);
+        result.EfficiencyWeight.Should().Be(0.21);
+        result.ReliabilityWeight.Should().Be(0.21);
+        result.MileageWeight.Should().Be(0.17);
+        result.ConditionWeight.Should().Be(0.15);
         result.AutoGenerateAiSummary.Should().BeFalse();
+        result.EnableVehicleScoring.Should().BeFalse();
     }
 
     [Fact]
