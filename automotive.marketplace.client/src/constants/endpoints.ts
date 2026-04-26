@@ -88,4 +88,8 @@ export const ENDPOINTS = {
     ADD_IMAGE: "/Defect/AddImage",
     REMOVE_IMAGE: "/Defect/RemoveImage",
   },
+  USER_PREFERENCES: {
+    GET: "/UserPreferences/Get",
+    UPSERT: "/UserPreferences/Upsert",
+  },
 } as const;

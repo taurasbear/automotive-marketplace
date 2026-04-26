@@ -12,4 +12,5 @@ export type GetListingScoreResponse = {
   mileage: ScoreFactor;
   hasMissingFactors: boolean;
   missingFactors: string[];
+  isPersonalized: boolean;
 };
