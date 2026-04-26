@@ -11,6 +11,7 @@ public class ListingAiSummaryCacheConfiguration : IEntityTypeConfiguration<Listi
         builder.HasKey(e => e.Id);
         builder.Property(e => e.SummaryType).HasMaxLength(20).IsRequired();
         builder.Property(e => e.Summary).IsRequired();
-        builder.HasIndex(e => new { e.ListingId, e.SummaryType, e.ComparisonListingId }).IsUnique();
+        builder.Property(e => e.Language).HasMaxLength(8).HasDefaultValue("lt");
+        builder.HasIndex(e => new { e.ListingId, e.SummaryType, e.ComparisonListingId, e.Language }).IsUnique();
     }
 }
