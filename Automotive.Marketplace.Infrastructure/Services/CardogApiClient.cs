@@ -66,15 +66,15 @@ public class CardogApiClient(HttpClient httpClient, ILogger<CardogApiClient> log
 
             var recallsTask = httpClient.GetFromJsonAsync<CountResponse>(
                 $"recalls/us/search?makes={makeEncoded}&models={modelEncoded}&year={year}&limit=1",
-                cancellationToken);
+                cancellationToken); // this seems fine
 
             var crashesTask = httpClient.GetFromJsonAsync<CountResponse>(
                 $"complaints/search?makes={makeEncoded}&models={modelEncoded}&yearMin={year}&yearMax={year}&crashInvolved=true&limit=1",
-                cancellationToken);
+                cancellationToken); // broken
 
             var injuriesTask = httpClient.GetFromJsonAsync<CountResponse>(
                 $"complaints/search?makes={makeEncoded}&models={modelEncoded}&yearMin={year}&yearMax={year}&hasInjuries=true&limit=1",
-                cancellationToken);
+                cancellationToken); // broken
 
             await Task.WhenAll(recallsTask, crashesTask, injuriesTask);
 

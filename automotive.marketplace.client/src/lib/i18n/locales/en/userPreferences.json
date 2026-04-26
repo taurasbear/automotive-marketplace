@@ -47,6 +47,9 @@
     "scoringPreferencesLabel": "Scoring Preferences",
     "scoringPreferencesButton": "Customize",
     "aiSummaryLabel": "AI Summaries",
-    "aiSummaryDescription": "Auto-generate AI buyer verdicts for listings"
+    "aiSummaryDescription": "Auto-generate AI buyer verdicts for listings",
+    "resetLabel": "Reset Preferences",
+    "resetDescription": "Reset all scoring weights to factory defaults",
+    "resetButton": "Reset"
   }
 }

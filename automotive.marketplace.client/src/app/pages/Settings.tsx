@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { BarChart2, SlidersHorizontal, Sparkles } from "lucide-react";
+import {
+  BarChart2,
+  RotateCcw,
+  SlidersHorizontal,
+  Sparkles,
+} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +48,18 @@ export default function Settings() {
       conditionWeight: prefs.conditionWeight,
       autoGenerateAiSummary: checked,
       enableVehicleScoring: prefs.enableVehicleScoring,
+    });
+  };
+
+  const handleResetDefaults = async () => {
+    await upsert({
+      valueWeight: 0.26,
+      efficiencyWeight: 0.21,
+      reliabilityWeight: 0.21,
+      mileageWeight: 0.17,
+      conditionWeight: 0.15,
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+      enableVehicleScoring: true,
     });
   };
 
@@ -113,6 +130,25 @@ export default function Settings() {
               checked={prefs?.autoGenerateAiSummary ?? false}
               onCheckedChange={handleAiSummaryToggle}
             />
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center gap-3">
+              <RotateCcw className="text-muted-foreground h-5 w-5" />
+              <div>
+                <p className="text-sm font-medium">
+                  {t("settings.resetLabel")}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  {t("settings.resetDescription")}
+                </p>
+              </div>
+            </div>
+            <Button variant="outline" size="sm" onClick={handleResetDefaults}>
+              {t("settings.resetButton")}
+            </Button>
           </div>
         </CardContent>
       </Card>

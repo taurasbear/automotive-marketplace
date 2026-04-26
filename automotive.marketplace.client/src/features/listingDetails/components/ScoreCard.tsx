@@ -20,6 +20,12 @@ type ScoreCardProps = {
   listingId: string;
 };
 
+const factorTranslationKeys: Record<string, string> = {
+  "Market Value": "score.value",
+  Efficiency: "score.efficiency",
+  Reliability: "score.reliability",
+};
+
 function scoreColor(score: number): string {
   if (score >= 70) return "text-green-600";
   if (score >= 50) return "text-blue-600";
@@ -178,7 +184,9 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
             <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
               <AlertTriangle className="h-3 w-3 text-orange-400" />
               {t("score.missingFactors", {
-                factors: score.missingFactors.join(", "),
+                factors: score.missingFactors
+                  .map((f) => t(factorTranslationKeys[f] ?? f))
+                  .join(", "),
               })}
             </p>
           )}

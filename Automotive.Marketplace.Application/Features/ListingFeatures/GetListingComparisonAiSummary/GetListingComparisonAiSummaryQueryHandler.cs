@@ -134,6 +134,7 @@ public class GetListingComparisonAiSummaryQueryHandler(IRepository repository, I
             lines.Add($"Note: the following data was unavailable: {string.Join(", ", unavailableFactors)}.");
 
         lines.Add("Give a direct recommendation with the main reason. Be concise.");
+        lines.Add("Do not use markdown formatting. Respond in plain text only.");
         lines.Add($"Respond in {languageName}.");
 
         return string.Join("\n", lines);

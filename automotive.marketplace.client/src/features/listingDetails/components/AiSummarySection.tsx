@@ -9,8 +9,15 @@ type Props = {
   listingId: string;
 };
 
+const factorTranslationKeys: Record<string, string> = {
+  MarketValue: "score.value",
+  Efficiency: "score.efficiency",
+  Reliability: "score.reliability",
+};
+
 export function AiSummarySection({ listingId }: Props) {
   const { t, i18n } = useTranslation("listings");
+  const { t: tPrefs } = useTranslation("userPreferences");
 
   const { data, isFetching, refetch } = useQuery(
     getListingAiSummaryOptions(listingId, i18n.language),
@@ -19,6 +26,9 @@ export function AiSummarySection({ listingId }: Props) {
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
   const unavailable = summary?.unavailableFactors ?? [];
+  const translatedUnavailable = unavailable.map((f) =>
+    tPrefs(factorTranslationKeys[f] ?? f),
+  );
 
   return (
     <div className="border-border rounded-lg border p-4">
@@ -61,7 +71,7 @@ export function AiSummarySection({ listingId }: Props) {
               <Info className="h-4 w-4" />
               <AlertDescription className="text-xs">
                 {t("aiSummary.unavailableFactors", {
-                  factors: unavailable.join(", "),
+                  factors: translatedUnavailable.join(", "),
                 })}
               </AlertDescription>
             </Alert>

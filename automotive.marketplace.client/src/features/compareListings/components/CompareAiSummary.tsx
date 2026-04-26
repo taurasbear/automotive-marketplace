@@ -10,8 +10,15 @@ type Props = {
   listingBId: string;
 };
 
+const factorTranslationKeys: Record<string, string> = {
+  MarketValue: "score.value",
+  Efficiency: "score.efficiency",
+  Reliability: "score.reliability",
+};
+
 export function CompareAiSummary({ listingAId, listingBId }: Props) {
   const { t, i18n } = useTranslation("compare");
+  const { t: tPrefs } = useTranslation("userPreferences");
 
   const { data, isFetching, refetch } = useQuery(
     getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
@@ -20,6 +27,9 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
   const unavailable = summary?.unavailableFactors ?? [];
+  const translatedUnavailable = unavailable.map((f) =>
+    tPrefs(factorTranslationKeys[f] ?? f),
+  );
 
   return (
     <div className="border-border mb-4 rounded-lg border p-4">
@@ -61,7 +71,7 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
               <Info className="h-4 w-4" />
               <AlertDescription className="text-xs">
                 {t("aiSummary.unavailableFactors", {
-                  factors: unavailable.join(", "),
+                  factors: translatedUnavailable.join(", "),
                 })}
               </AlertDescription>
             </Alert>

@@ -47,6 +47,9 @@
     "scoringPreferencesLabel": "Įvertinimo Nustatymai",
     "scoringPreferencesButton": "Pritaikyti",
     "aiSummaryLabel": "AI Apžvalgos",
-    "aiSummaryDescription": "Automatiškai generuoti AI pirkėjo verdiktus skelbimams"
+    "aiSummaryDescription": "Automatiškai generuoti AI pirkėjo verdiktus skelbimams",
+    "resetLabel": "Atstatyti Nustatymus",
+    "resetDescription": "Atstatyti visus įvertinimo svorius į numatytuosius",
+    "resetButton": "Atstatyti"
   }
 }

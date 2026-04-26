@@ -143,7 +143,9 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
                 await repo.CreateAsync(new VehicleEfficiencyCache
                 {
                     Id = Guid.NewGuid(),
-                    Make = make, Model = model, Year = year,
+                    Make = make,
+                    Model = model,
+                    Year = year,
                     LitersPer100Km = result.LitersPer100Km,
                     KWhPer100Km = result.KWhPer100Km,
                     FetchedAt = now,
@@ -178,7 +180,9 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
                 await repo.CreateAsync(new VehicleMarketCache
                 {
                     Id = Guid.NewGuid(),
-                    Make = make, Model = model, Year = year,
+                    Make = make,
+                    Model = model,
+                    Year = year,
                     MedianPrice = result.MedianPrice,
                     TotalListings = result.TotalListings,
                     FetchedAt = now,
@@ -214,7 +218,9 @@ public class GetListingScoreQueryHandler(IRepository repository, ICardogApiClien
                 await repo.CreateAsync(new VehicleReliabilityCache
                 {
                     Id = Guid.NewGuid(),
-                    Make = make, Model = model, Year = year,
+                    Make = make,
+                    Model = model,
+                    Year = year,
                     RecallCount = result.RecallCount,
                     ComplaintCrashes = result.ComplaintCrashes,
                     ComplaintInjuries = result.ComplaintInjuries,

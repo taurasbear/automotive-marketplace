@@ -106,6 +106,7 @@ public class GetListingAiSummaryQueryHandler(IRepository repository, IOpenAiClie
             lines.Add($"Note: the following data was unavailable and was not factored into your response: {string.Join(", ", unavailableFactors)}.");
 
         lines.Add("Be direct and practical. Focus on value, practicality, and any notable considerations.");
+        lines.Add("Do not use markdown formatting. Respond in plain text only.");
         lines.Add($"Respond in {languageName}.");
 
         return string.Join("\n", lines);
