@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
+import { AlertTriangle, ChevronDown, ChevronUp, SlidersHorizontal, Info } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/hooks/redux";
 import { QuizModal, getUserPreferencesOptions } from "@/features/userPreferences";
 import { getListingScoreOptions } from "../api/getListingScoreOptions";
@@ -10,27 +11,20 @@ type ScoreCardProps = {
   listingId: string;
 };
 
-const FACTOR_LABELS: Record<string, string> = {
-  value: "Market Value",
-  efficiency: "Efficiency",
-  reliability: "Reliability",
-  mileage: "Mileage",
-};
-
 function scoreColor(score: number): string {
   if (score >= 70) return "text-green-600";
   if (score >= 50) return "text-blue-600";
   return "text-orange-500";
 }
 
-function FactorBar({ label, factor }: { label: string; factor: ScoreFactor }) {
+function FactorBar({ label, factor, secondaryText, t }: { label: string; factor: ScoreFactor; secondaryText?: string; t: (key: string, opts?: Record<string, unknown>) => string }) {
   if (factor.status === "missing") {
     return (
       <div className="flex items-center justify-between py-1 text-sm">
         <span className="text-muted-foreground">{label}</span>
         <span className="text-muted-foreground flex items-center gap-1">
           <AlertTriangle className="h-3.5 w-3.5 text-orange-400" />
-          No data
+          {t("score.noData")}
         </span>
       </div>
     );
@@ -47,18 +41,37 @@ function FactorBar({ label, factor }: { label: string; factor: ScoreFactor }) {
           style={{ width: `${Math.round(factor.score)}%` }}
         />
       </div>
+      {secondaryText && (
+        <p className="text-muted-foreground mt-0.5 text-xs">{secondaryText}</p>
+      )}
     </div>
   );
 }
 
 export function ScoreCard({ listingId }: ScoreCardProps) {
+  const { t } = useTranslation("userPreferences");
   const [expanded, setExpanded] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const { userId } = useAppSelector((state) => state.auth);
-  const { data, isLoading } = useQuery(getListingScoreOptions(listingId));
   const { data: prefsData } = useQuery(getUserPreferencesOptions);
   const isAuthenticated = !!userId;
   const prefs = prefsData?.data;
+  const scoringEnabled = prefs?.enableVehicleScoring ?? false;
+
+  const { data, isLoading } = useQuery({
+    ...getListingScoreOptions(listingId),
+    enabled: scoringEnabled,
+  });
+
+  if (!scoringEnabled) {
+    return (
+      <div className="border-border rounded-lg border p-4">
+        <p className="text-muted-foreground text-sm">
+          {t("score.enableScoring")}
+        </p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -77,6 +90,15 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
   if (!data) return null;
 
   const score = data.data;
+  const scoredCount = [score.value, score.efficiency, score.reliability, score.mileage, score.condition]
+    .filter(f => f.status === "scored").length;
+
+  const defectCount = score.condition.status === "scored"
+    ? Math.round((100 - score.condition.score) / 20)
+    : 0;
+  const conditionSecondary = defectCount > 0
+    ? t("score.defects", { count: defectCount })
+    : t("score.defectsNone");
 
   return (
     <div className="border-border rounded-lg border p-4">
@@ -90,10 +112,10 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold">Vehicle Score</p>
+              <p className="font-semibold">{t("score.title")}</p>
               <p className="text-muted-foreground text-xs">
-                  {score.isPersonalized ? "Personalized" : "Un-personalized"}
-                </p>
+                {score.isPersonalized ? t("score.personalized") : t("score.unPersonalized")}
+              </p>
             </div>
             <button
               onClick={() => setExpanded(!expanded)}
@@ -115,7 +137,7 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           {score.hasMissingFactors && !expanded && (
             <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
               <AlertTriangle className="h-3 w-3 text-orange-400" />
-              Missing: {score.missingFactors.join(", ")}
+              {t("score.missingFactors", { factors: score.missingFactors.join(", ") })}
             </p>
           )}
         </div>
@@ -123,10 +145,17 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
 
       {expanded && (
         <div className="mt-4 space-y-1 border-t pt-3">
-          <FactorBar label={FACTOR_LABELS.value} factor={score.value} />
-          <FactorBar label={FACTOR_LABELS.efficiency} factor={score.efficiency} />
-          <FactorBar label={FACTOR_LABELS.reliability} factor={score.reliability} />
-          <FactorBar label={FACTOR_LABELS.mileage} factor={score.mileage} />
+          <FactorBar label={t("score.value")} factor={score.value} t={t} />
+          <FactorBar label={t("score.efficiency")} factor={score.efficiency} t={t} />
+          <FactorBar label={t("score.reliability")} factor={score.reliability} t={t} />
+          <FactorBar label={t("score.mileage")} factor={score.mileage} t={t} />
+          <FactorBar label={t("score.condition")} factor={score.condition} secondaryText={conditionSecondary} t={t} />
+          {scoredCount < 3 && (
+            <p className="text-muted-foreground mt-2 flex items-center gap-1 text-xs">
+              <Info className="h-3 w-3" />
+              {t("score.limitedNotice")}
+            </p>
+          )}
         </div>
       )}
       <QuizModal
@@ -139,6 +168,7 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           mileageWeight: prefs.mileageWeight,
           conditionWeight: prefs.conditionWeight,
         } : undefined}
+        initialStep={prefs?.hasPreferences ? 2 : undefined}
       />
     </div>
   );
