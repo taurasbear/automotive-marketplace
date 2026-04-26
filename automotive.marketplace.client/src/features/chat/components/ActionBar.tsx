@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/popover";
 import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { format } from "date-fns";
-import { Calendar, Clock, DollarSign, Plus } from "lucide-react";
+import { Calendar, Clock, DollarSign, FileText, Plus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Meeting } from "../types/Meeting";
@@ -46,6 +46,8 @@ type ActionBarProps = {
     slots: { startTime: string; endTime: string }[],
   ) => void;
   onCancelMeeting: (meetingId: string) => void;
+  hasActiveContract: boolean;
+  onRequestContract: () => void;
 };
 
 const ActionBar = ({
@@ -62,6 +64,8 @@ const ActionBar = ({
   onProposeMeeting,
   onShareAvailability,
   onCancelMeeting,
+  hasActiveContract,
+  onRequestContract,
 }: ActionBarProps) => {
   const { t } = useTranslation(["chat", "common"]);
   const locale = useDateLocale();
@@ -145,6 +149,18 @@ const ActionBar = ({
           >
             <Clock className="mr-2 h-4 w-4" />
             {t("actionBar.shareAvailability")}
+          </button>
+          <button
+            className="hover:bg-muted flex w-full items-center rounded-md px-3 py-2 text-left text-sm disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={hasActiveContract}
+            title={hasActiveContract ? t("actionBar.contractAlreadyActive") : undefined}
+            onClick={() => {
+              setActionsPopoverOpen(false);
+              onRequestContract();
+            }}
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            {t("actionBar.requestContract")}
           </button>
         </PopoverContent>
       </Popover>
