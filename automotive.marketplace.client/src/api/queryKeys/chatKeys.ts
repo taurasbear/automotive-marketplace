@@ -4,4 +4,7 @@ export const chatKeys = {
   messages: (conversationId: string) =>
     [...chatKeys.all(), "messages", conversationId] as const,
   unreadCount: () => [...chatKeys.all(), "unreadCount"] as const,
+  contractCard: (contractCardId: string) =>
+    [...chatKeys.all(), "contractCard", contractCardId] as const,
+  userContractProfile: () => [...chatKeys.all(), "userContractProfile"] as const,
 };
