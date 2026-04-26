@@ -3,7 +3,10 @@ import { AlertTriangle, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/hooks/redux";
-import { QuizModal, getUserPreferencesOptions } from "@/features/userPreferences";
+import {
+  QuizModal,
+  getUserPreferencesOptions,
+} from "@/features/userPreferences";
 import { getListingScoreOptions } from "@/features/listingDetails";
 import type {
   GetListingScoreResponse,
@@ -55,20 +58,24 @@ function ScoreColumn({
     );
   }
   if (!score)
-    return <div className="text-muted-foreground text-sm">{t("score.noData")}</div>;
+    return (
+      <div className="text-muted-foreground text-sm">{t("score.noData")}</div>
+    );
 
   return (
     <div className="flex flex-col items-center gap-2">
       <div
         className={`flex h-16 w-16 flex-col items-center justify-center rounded-full border-2 border-current ${scoreColor(score.overallScore)}`}
       >
-        <span className="text-xl font-bold leading-none">
+        <span className="text-xl leading-none font-bold">
           {score.overallScore}
         </span>
         <span className="text-xs">/100</span>
       </div>
       <p className="text-muted-foreground text-xs">
-        {score.isPersonalized ? t("score.personalized") : t("score.unPersonalized")}
+        {score.isPersonalized
+          ? t("score.personalized")
+          : t("score.unPersonalized")}
       </p>
       <div className="w-full space-y-0.5 text-center">
         <MiniFactorRow factor={score.value} />
@@ -116,7 +123,9 @@ export function CompareScoreBanner({
     <div className="bg-card border-border mb-4 rounded-lg border p-4">
       {isAuthenticated && (
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-muted-foreground text-sm">{t("score.title")}</span>
+          <span className="text-muted-foreground text-sm">
+            {t("score.title")}
+          </span>
           <button
             onClick={() => setQuizOpen(true)}
             className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-xs"
@@ -140,13 +149,17 @@ export function CompareScoreBanner({
       <QuizModal
         open={quizOpen}
         onOpenChange={setQuizOpen}
-        initialWeights={prefs?.hasPreferences ? {
-          valueWeight: prefs.valueWeight,
-          efficiencyWeight: prefs.efficiencyWeight,
-          reliabilityWeight: prefs.reliabilityWeight,
-          mileageWeight: prefs.mileageWeight,
-          conditionWeight: prefs.conditionWeight,
-        } : undefined}
+        initialWeights={
+          prefs?.hasPreferences
+            ? {
+                valueWeight: prefs.valueWeight,
+                efficiencyWeight: prefs.efficiencyWeight,
+                reliabilityWeight: prefs.reliabilityWeight,
+                mileageWeight: prefs.mileageWeight,
+                conditionWeight: prefs.conditionWeight,
+              }
+            : undefined
+        }
         initialStep={prefs?.hasPreferences ? 2 : undefined}
       />
     </div>

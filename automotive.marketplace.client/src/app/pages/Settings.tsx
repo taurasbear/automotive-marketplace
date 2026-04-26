@@ -6,8 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { getUserPreferencesOptions, QuizModal } from "@/features/userPreferences";
-import { useUpsertUserPreferences } from "@/features/userPreferences/api/useUpsertUserPreferences";
+import {
+  getUserPreferencesOptions,
+  QuizModal,
+  useUpsertUserPreferences,
+} from "@/features/userPreferences";
 
 export default function Settings() {
   const { t } = useTranslation("userPreferences");
@@ -50,24 +53,37 @@ export default function Settings() {
       <h1 className="mb-6 text-2xl font-bold">{t("settings.title")}</h1>
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{t("settings.listingPreferences")}</CardTitle>
+          <CardTitle className="text-lg">
+            {t("settings.listingPreferences")}
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-0">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-3">
               <BarChart2 className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-sm font-medium">{t("settings.scoringLabel")}</p>
-                <p className="text-muted-foreground text-xs">{t("settings.scoringDescription")}</p>
+                <p className="text-sm font-medium">
+                  {t("settings.scoringLabel")}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  {t("settings.scoringDescription")}
+                </p>
               </div>
             </div>
-            <Switch checked={scoringEnabled} onCheckedChange={handleScoringToggle} />
+            <Switch
+              checked={scoringEnabled}
+              onCheckedChange={handleScoringToggle}
+            />
           </div>
 
-          <div className={`flex items-center justify-between py-3 pl-8 ${!scoringEnabled ? "opacity-50" : ""}`}>
+          <div
+            className={`flex items-center justify-between py-3 pl-8 ${!scoringEnabled ? "opacity-50" : ""}`}
+          >
             <div className="flex items-center gap-3">
               <SlidersHorizontal className="text-muted-foreground h-4 w-4" />
-              <p className="text-sm font-medium">{t("settings.scoringPreferencesLabel")}</p>
+              <p className="text-sm font-medium">
+                {t("settings.scoringPreferencesLabel")}
+              </p>
             </div>
             <Button
               variant="outline"
@@ -85,8 +101,12 @@ export default function Settings() {
             <div className="flex items-center gap-3">
               <Sparkles className="text-muted-foreground h-5 w-5" />
               <div>
-                <p className="text-sm font-medium">{t("settings.aiSummaryLabel")}</p>
-                <p className="text-muted-foreground text-xs">{t("settings.aiSummaryDescription")}</p>
+                <p className="text-sm font-medium">
+                  {t("settings.aiSummaryLabel")}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  {t("settings.aiSummaryDescription")}
+                </p>
               </div>
             </div>
             <Switch
@@ -100,13 +120,17 @@ export default function Settings() {
       <QuizModal
         open={quizOpen}
         onOpenChange={setQuizOpen}
-        initialWeights={prefs?.hasPreferences ? {
-          valueWeight: prefs.valueWeight,
-          efficiencyWeight: prefs.efficiencyWeight,
-          reliabilityWeight: prefs.reliabilityWeight,
-          mileageWeight: prefs.mileageWeight,
-          conditionWeight: prefs.conditionWeight,
-        } : undefined}
+        initialWeights={
+          prefs?.hasPreferences
+            ? {
+                valueWeight: prefs.valueWeight,
+                efficiencyWeight: prefs.efficiencyWeight,
+                reliabilityWeight: prefs.reliabilityWeight,
+                mileageWeight: prefs.mileageWeight,
+                conditionWeight: prefs.conditionWeight,
+              }
+            : undefined
+        }
         initialStep={prefs?.hasPreferences ? 2 : undefined}
       />
     </div>

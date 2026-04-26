@@ -12,11 +12,9 @@ type Props = {
 export function AiSummarySection({ listingId }: Props) {
   const { t, i18n } = useTranslation("listings");
 
-  const {
-    data,
-    isFetching,
-    refetch,
-  } = useQuery(getListingAiSummaryOptions(listingId, i18n.language));
+  const { data, isFetching, refetch } = useQuery(
+    getListingAiSummaryOptions(listingId, i18n.language),
+  );
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
@@ -55,12 +53,16 @@ export function AiSummarySection({ listingId }: Props) {
 
       {!isFetching && hasResult && summary?.summary && (
         <>
-          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{summary.summary}</p>
+          <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+            {summary.summary}
+          </p>
           {unavailable.length > 0 && (
             <Alert variant="default" className="mt-3">
               <Info className="h-4 w-4" />
               <AlertDescription className="text-xs">
-                {t("aiSummary.unavailableFactors", { factors: unavailable.join(", ") })}
+                {t("aiSummary.unavailableFactors", {
+                  factors: unavailable.join(", "),
+                })}
               </AlertDescription>
             </Alert>
           )}

@@ -1,9 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, ChevronDown, ChevronUp, SlidersHorizontal, Info } from "lucide-react";
+import {
+  AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+  SlidersHorizontal,
+  Info,
+} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/hooks/redux";
-import { QuizModal, getUserPreferencesOptions } from "@/features/userPreferences";
+import {
+  QuizModal,
+  getUserPreferencesOptions,
+} from "@/features/userPreferences";
 import { getListingScoreOptions } from "../api/getListingScoreOptions";
 import type { ScoreFactor } from "../types/GetListingScoreResponse";
 
@@ -17,7 +26,17 @@ function scoreColor(score: number): string {
   return "text-orange-500";
 }
 
-function FactorBar({ label, factor, secondaryText, t }: { label: string; factor: ScoreFactor; secondaryText?: string; t: (key: string, opts?: Record<string, unknown>) => string }) {
+function FactorBar({
+  label,
+  factor,
+  secondaryText,
+  t,
+}: {
+  label: string;
+  factor: ScoreFactor;
+  secondaryText?: string;
+  t: (key: string, opts?: Record<string, unknown>) => string;
+}) {
   if (factor.status === "missing") {
     return (
       <div className="flex items-center justify-between py-1 text-sm">
@@ -90,39 +109,60 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
   if (!data) return null;
 
   const score = data.data;
-  const scoredCount = [score.value, score.efficiency, score.reliability, score.mileage, score.condition]
-    .filter(f => f.status === "scored").length;
+  const scoredCount = [
+    score.value,
+    score.efficiency,
+    score.reliability,
+    score.mileage,
+    score.condition,
+  ].filter((f) => f.status === "scored").length;
 
-  const defectCount = score.condition.status === "scored"
-    ? Math.round((100 - score.condition.score) / 20)
-    : 0;
-  const conditionSecondary = defectCount > 0
-    ? t("score.defects", { count: defectCount })
-    : t("score.defectsNone");
+  const defectCount =
+    score.condition.status === "scored"
+      ? Math.round((100 - score.condition.score) / 20)
+      : 0;
+  const conditionSecondary =
+    defectCount > 0
+      ? t("score.defects", { count: defectCount })
+      : t("score.defectsNone");
 
   return (
     <div className="border-border rounded-lg border p-4">
       <div className="flex items-center gap-4">
         <div className="flex h-[72px] w-[72px] flex-shrink-0 flex-col items-center justify-center rounded-full border-2 border-current">
-          <span className={`text-2xl font-bold leading-none ${scoreColor(score.overallScore)}`}>
+          <span
+            className={`text-2xl leading-none font-bold ${scoreColor(score.overallScore)}`}
+          >
             {score.overallScore}
           </span>
-          <span className={`text-xs font-medium ${scoreColor(score.overallScore)}`}>/100</span>
+          <span
+            className={`text-xs font-medium ${scoreColor(score.overallScore)}`}
+          >
+            /100
+          </span>
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-semibold">{t("score.title")}</p>
               <p className="text-muted-foreground text-xs">
-                {score.isPersonalized ? t("score.personalized") : t("score.unPersonalized")}
+                {score.isPersonalized
+                  ? t("score.personalized")
+                  : t("score.unPersonalized")}
               </p>
             </div>
             <button
               onClick={() => setExpanded(!expanded)}
               className="text-muted-foreground hover:text-foreground"
-              aria-label={expanded ? "Collapse score breakdown" : "Expand score breakdown"}
+              aria-label={
+                expanded ? "Collapse score breakdown" : "Expand score breakdown"
+              }
             >
-              {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {expanded ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </button>
             {isAuthenticated && (
               <button
@@ -137,7 +177,9 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           {score.hasMissingFactors && !expanded && (
             <p className="text-muted-foreground mt-1 flex items-center gap-1 text-xs">
               <AlertTriangle className="h-3 w-3 text-orange-400" />
-              {t("score.missingFactors", { factors: score.missingFactors.join(", ") })}
+              {t("score.missingFactors", {
+                factors: score.missingFactors.join(", "),
+              })}
             </p>
           )}
         </div>
@@ -146,10 +188,23 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
       {expanded && (
         <div className="mt-4 space-y-1 border-t pt-3">
           <FactorBar label={t("score.value")} factor={score.value} t={t} />
-          <FactorBar label={t("score.efficiency")} factor={score.efficiency} t={t} />
-          <FactorBar label={t("score.reliability")} factor={score.reliability} t={t} />
+          <FactorBar
+            label={t("score.efficiency")}
+            factor={score.efficiency}
+            t={t}
+          />
+          <FactorBar
+            label={t("score.reliability")}
+            factor={score.reliability}
+            t={t}
+          />
           <FactorBar label={t("score.mileage")} factor={score.mileage} t={t} />
-          <FactorBar label={t("score.condition")} factor={score.condition} secondaryText={conditionSecondary} t={t} />
+          <FactorBar
+            label={t("score.condition")}
+            factor={score.condition}
+            secondaryText={conditionSecondary}
+            t={t}
+          />
           {scoredCount < 3 && (
             <p className="text-muted-foreground mt-2 flex items-center gap-1 text-xs">
               <Info className="h-3 w-3" />
@@ -161,13 +216,17 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
       <QuizModal
         open={quizOpen}
         onOpenChange={setQuizOpen}
-        initialWeights={prefs?.hasPreferences ? {
-          valueWeight: prefs.valueWeight,
-          efficiencyWeight: prefs.efficiencyWeight,
-          reliabilityWeight: prefs.reliabilityWeight,
-          mileageWeight: prefs.mileageWeight,
-          conditionWeight: prefs.conditionWeight,
-        } : undefined}
+        initialWeights={
+          prefs?.hasPreferences
+            ? {
+                valueWeight: prefs.valueWeight,
+                efficiencyWeight: prefs.efficiencyWeight,
+                reliabilityWeight: prefs.reliabilityWeight,
+                mileageWeight: prefs.mileageWeight,
+                conditionWeight: prefs.conditionWeight,
+              }
+            : undefined
+        }
         initialStep={prefs?.hasPreferences ? 2 : undefined}
       />
     </div>

@@ -37,18 +37,44 @@ type Props = {
 };
 
 type DrivingStyle = "city" | "highway" | "mixed";
-type Priority = "value" | "efficiency" | "reliability" | "mileage" | "condition";
+type Priority =
+  | "value"
+  | "efficiency"
+  | "reliability"
+  | "mileage"
+  | "condition";
 
 const STYLE_ADJUSTMENTS: Record<DrivingStyle, Record<Priority, number>> = {
-  city: { efficiency: 15, reliability: 10, value: -15, mileage: -10, condition: 0 },
-  highway: { efficiency: 15, value: 10, reliability: -15, mileage: -10, condition: 0 },
+  city: {
+    efficiency: 15,
+    reliability: 10,
+    value: -15,
+    mileage: -10,
+    condition: 0,
+  },
+  highway: {
+    efficiency: 15,
+    value: 10,
+    reliability: -15,
+    mileage: -10,
+    condition: 0,
+  },
   mixed: { efficiency: 0, value: 0, reliability: 0, mileage: 0, condition: 0 },
 };
 
 const PRIORITY_BONUSES = [15, 10, 5, 3, 0];
 
-function computeSliders(style: DrivingStyle, priorities: Priority[]): Record<Priority, number> {
-  const base: Record<Priority, number> = { value: 20, efficiency: 20, reliability: 20, mileage: 20, condition: 20 };
+function computeSliders(
+  style: DrivingStyle,
+  priorities: Priority[],
+): Record<Priority, number> {
+  const base: Record<Priority, number> = {
+    value: 20,
+    efficiency: 20,
+    reliability: 20,
+    mileage: 20,
+    condition: 20,
+  };
   const adj = STYLE_ADJUSTMENTS[style];
   (Object.keys(base) as Priority[]).forEach((k) => {
     base[k] = Math.max(5, Math.min(60, base[k] + (adj[k] ?? 0)));
@@ -63,9 +89,18 @@ function computeSliders(style: DrivingStyle, priorities: Priority[]): Record<Pri
   return base;
 }
 
-function normalizeSliders(sliders: Record<Priority, number>): Record<Priority, number> {
+function normalizeSliders(
+  sliders: Record<Priority, number>,
+): Record<Priority, number> {
   const total = Object.values(sliders).reduce((a, b) => a + b, 0);
-  if (total === 0) return { value: 20, efficiency: 20, reliability: 20, mileage: 20, condition: 20 };
+  if (total === 0)
+    return {
+      value: 20,
+      efficiency: 20,
+      reliability: 20,
+      mileage: 20,
+      condition: 20,
+    };
   const result = { ...sliders };
   (Object.keys(result) as Priority[]).forEach((k) => {
     result[k] = Math.round((result[k] / total) * 100);
@@ -73,7 +108,12 @@ function normalizeSliders(sliders: Record<Priority, number>): Record<Priority, n
   return result;
 }
 
-export function QuizModal({ open, onOpenChange, initialWeights, initialStep }: Props) {
+export function QuizModal({
+  open,
+  onOpenChange,
+  initialWeights,
+  initialStep,
+}: Props) {
   const { t } = useTranslation("userPreferences");
   const [step, setStep] = useState(initialStep ?? 0);
   const [drivingStyle, setDrivingStyle] = useState<DrivingStyle>("mixed");
@@ -88,31 +128,74 @@ export function QuizModal({ open, onOpenChange, initialWeights, initialStep }: P
         condition: Math.round(initialWeights.conditionWeight * 100),
       };
     }
-    return { value: 20, efficiency: 20, reliability: 20, mileage: 20, condition: 20 };
+    return {
+      value: 20,
+      efficiency: 20,
+      reliability: 20,
+      mileage: 20,
+      condition: 20,
+    };
   });
 
   const { data: prefsData } = useQuery(getUserPreferencesOptions);
   const { mutateAsync: upsert, isPending } = useUpsertUserPreferences();
 
   const DRIVING_STYLES = [
-    { id: "city" as DrivingStyle, label: t("quiz.styleCity"), icon: Car, description: t("quiz.styleCityDesc") },
-    { id: "highway" as DrivingStyle, label: t("quiz.styleHighway"), icon: Gauge, description: t("quiz.styleHighwayDesc") },
-    { id: "mixed" as DrivingStyle, label: t("quiz.styleMixed"), icon: Compass, description: t("quiz.styleMixedDesc") },
+    {
+      id: "city" as DrivingStyle,
+      label: t("quiz.styleCity"),
+      icon: Car,
+      description: t("quiz.styleCityDesc"),
+    },
+    {
+      id: "highway" as DrivingStyle,
+      label: t("quiz.styleHighway"),
+      icon: Gauge,
+      description: t("quiz.styleHighwayDesc"),
+    },
+    {
+      id: "mixed" as DrivingStyle,
+      label: t("quiz.styleMixed"),
+      icon: Compass,
+      description: t("quiz.styleMixedDesc"),
+    },
   ];
 
   const PRIORITIES = [
-    { id: "value" as Priority, label: t("quiz.priorityValue"), icon: BadgeDollarSign },
-    { id: "efficiency" as Priority, label: t("quiz.priorityEfficiency"), icon: Leaf },
-    { id: "reliability" as Priority, label: t("quiz.priorityReliability"), icon: ShieldCheck },
-    { id: "mileage" as Priority, label: t("quiz.priorityMileage"), icon: TrendingDown },
-    { id: "condition" as Priority, label: t("quiz.priorityCondition"), icon: ShieldAlert },
+    {
+      id: "value" as Priority,
+      label: t("quiz.priorityValue"),
+      icon: BadgeDollarSign,
+    },
+    {
+      id: "efficiency" as Priority,
+      label: t("quiz.priorityEfficiency"),
+      icon: Leaf,
+    },
+    {
+      id: "reliability" as Priority,
+      label: t("quiz.priorityReliability"),
+      icon: ShieldCheck,
+    },
+    {
+      id: "mileage" as Priority,
+      label: t("quiz.priorityMileage"),
+      icon: TrendingDown,
+    },
+    {
+      id: "condition" as Priority,
+      label: t("quiz.priorityCondition"),
+      icon: ShieldAlert,
+    },
   ];
 
   const handleStyleSelect = (style: DrivingStyle) => setDrivingStyle(style);
 
   const handlePriorityToggle = (priority: Priority) => {
     setPriorities((prev) =>
-      prev.includes(priority) ? prev.filter((p) => p !== priority) : [...prev, priority],
+      prev.includes(priority)
+        ? prev.filter((p) => p !== priority)
+        : [...prev, priority],
     );
   };
 
@@ -172,7 +255,9 @@ export function QuizModal({ open, onOpenChange, initialWeights, initialStep }: P
               >
                 <Icon className="h-6 w-6" />
                 <span className="text-sm font-medium">{label}</span>
-                <span className="text-muted-foreground text-xs">{description}</span>
+                <span className="text-muted-foreground text-xs">
+                  {description}
+                </span>
               </button>
             ))}
           </div>
@@ -211,7 +296,9 @@ export function QuizModal({ open, onOpenChange, initialWeights, initialStep }: P
             <p className="text-muted-foreground text-sm">
               {t("quiz.sliderTotal", { total: sliderTotal })}
               {sliderTotal !== 100 && (
-                <span className="ml-1 text-orange-500">{t("quiz.normalizeNotice")}</span>
+                <span className="ml-1 text-orange-500">
+                  {t("quiz.normalizeNotice")}
+                </span>
               )}
             </p>
             {PRIORITIES.map(({ id, label }) => (
@@ -239,7 +326,9 @@ export function QuizModal({ open, onOpenChange, initialWeights, initialStep }: P
             </Button>
           )}
           {step < 2 && (
-            <Button onClick={step === 0 ? handleNextToStep2 : handleNextToStep3}>
+            <Button
+              onClick={step === 0 ? handleNextToStep2 : handleNextToStep3}
+            >
               {t("quiz.next")}
             </Button>
           )}

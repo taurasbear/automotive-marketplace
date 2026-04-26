@@ -8,7 +8,10 @@ export const getSellerListingInsightsOptions = (listingId: string) =>
   queryOptions({
     queryKey: listingKeys.sellerInsights(listingId),
     queryFn: () =>
-      axiosClient.get<GetSellerListingInsightsResponse>(ENDPOINTS.LISTING.GET_SELLER_INSIGHTS, {
-        params: { listingId },
-      }),
+      axiosClient.get<GetSellerListingInsightsResponse>(
+        ENDPOINTS.LISTING.GET_SELLER_INSIGHTS,
+        {
+          params: { listingId },
+        },
+      ),
   });
