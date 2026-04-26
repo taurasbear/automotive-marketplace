@@ -12,6 +12,14 @@ public sealed record ConversationSummaryResponse
 
     public decimal ListingPrice { get; set; }
 
+    public string ListingMake { get; set; } = string.Empty;
+
+    public string ListingCommercialName { get; set; } = string.Empty;
+
+    public string? ListingVin { get; set; }
+
+    public int ListingMileage { get; set; }
+
     public Guid CounterpartId { get; set; }
 
     public string CounterpartUsername { get; set; } = string.Empty;

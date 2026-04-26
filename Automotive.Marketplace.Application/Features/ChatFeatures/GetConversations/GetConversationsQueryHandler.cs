@@ -61,6 +61,10 @@ public class GetConversationsQueryHandler(IRepository repository, IImageStorageS
                       }
                     : null,
                 ListingPrice = listing.Price,
+                ListingMake = variant.Model.Make.Name,
+                ListingCommercialName = variant.Model.Name,
+                ListingVin = listing.Vin,
+                ListingMileage = listing.Mileage,
                 CounterpartId = counterpart.Id,
                 CounterpartUsername = counterpart.Username,
                 LastMessage = lastMessage?.Content,
