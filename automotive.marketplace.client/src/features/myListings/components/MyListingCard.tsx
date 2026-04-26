@@ -247,6 +247,8 @@ export default function MyListingCard({
           listingId={listing.id}
           listingTitle={`${listing.year} ${listing.makeName} ${listing.modelName}`}
           listingPrice={listing.price}
+          listingMake={listing.makeName}
+          listingMileage={listing.mileage}
           listingThumbnail={listing.thumbnail}
           sellerId={userId ?? ""}
           onStartChat={onStartChat}
