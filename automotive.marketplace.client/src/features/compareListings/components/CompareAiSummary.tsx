@@ -34,10 +34,14 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
   );
 
   const handleRegenerate = async () => {
-    await queryClient.fetchQuery({
-      ...getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language, true),
-      staleTime: 0,
-    });
+    try {
+      await queryClient.fetchQuery({
+        ...getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language, true),
+        staleTime: 0,
+      });
+    } catch {
+      // error is stored in the query cache; isError on the observer will reflect it
+    }
   };
 
   return (
