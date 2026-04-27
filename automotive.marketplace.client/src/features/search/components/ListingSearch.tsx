@@ -29,7 +29,13 @@ const ListingSearch = ({ className }: ListingSearchProps) => {
     key: K,
     value: string | string[],
   ) => {
-    setSearchValues((prev) => ({ ...prev, [key]: value }));
+    setSearchValues((prev) => {
+      const updated = { ...prev, [key]: value };
+      if (key === "makeId" && value === UI_CONSTANTS.SELECT.ALL_MAKES.VALUE) {
+        updated.models = [UI_CONSTANTS.SELECT.ALL_MODELS.VALUE];
+      }
+      return updated;
+    });
   };
 
   return (
