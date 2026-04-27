@@ -222,4 +222,36 @@ public class GetSellerListingInsightsQueryHandlerTests(
         marketCache!.IsFetchFailed.Should().BeTrue();
         marketCache.ExpiresAt.Should().BeCloseTo(DateTime.UtcNow.AddHours(2), TimeSpan.FromMinutes(5));
     }
+
+    [Fact]
+    public async Task Handle_IsFetchFailedCacheExists_DoesNotCallCardog()
+    {
+        await using var scope = _fixture.ServiceProvider.CreateAsyncScope();
+        var handler = CreateHandler(scope);
+        var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
+
+        var (listingId, sellerId) = await SeedListingAsync(context, makeName: "Hyundai", modelName: "Elantra", year: 2020);
+
+        await context.UserPreferences.AddAsync(new UserPreferences
+        {
+            Id = Guid.NewGuid(),
+            UserId = sellerId,
+            EnableVehicleScoring = true,
+        });
+        await context.VehicleMarketCaches.AddAsync(new VehicleMarketCache
+        {
+            Id = Guid.NewGuid(),
+            Make = "Hyundai", Model = "Elantra", Year = 2020,
+            MedianPrice = 0m, TotalListings = 0,
+            IsFetchFailed = true,
+            FetchedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddHours(1),
+        });
+        await context.SaveChangesAsync();
+
+        var result = await handler.Handle(new GetSellerListingInsightsQuery { ListingId = listingId, UserId = sellerId }, CancellationToken.None);
+
+        await _cardogClient.DidNotReceive().GetMarketOverviewAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
+        result.MarketPosition.HasMarketData.Should().BeFalse();
+    }
 }

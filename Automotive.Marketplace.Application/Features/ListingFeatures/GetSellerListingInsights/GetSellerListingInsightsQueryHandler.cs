@@ -31,9 +31,11 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardo
                 cancellationToken);
 
         if (marketCache?.IsFetchFailed == true)
+        {
+            // Failure sentinel active — respect cooldown, no data
             marketCache = null;
-
-        if (marketCache == null)
+        }
+        else if (marketCache == null)
         {
             var prefs = await repository.AsQueryable<UserPreferences>()
                 .FirstOrDefaultAsync(p => p.UserId == request.UserId, cancellationToken);
