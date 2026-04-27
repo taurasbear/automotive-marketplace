@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/hooks/redux";
 import {
-  QuizModal,
+  UserPreferencesDialog,
   getUserPreferencesOptions,
 } from "@/features/userPreferences";
 import { getListingScoreOptions } from "../api/getListingScoreOptions";
@@ -221,22 +221,7 @@ export function ScoreCard({ listingId }: ScoreCardProps) {
           )}
         </div>
       )}
-      <QuizModal
-        open={quizOpen}
-        onOpenChange={setQuizOpen}
-        initialWeights={
-          prefs?.hasPreferences
-            ? {
-                valueWeight: prefs.valueWeight,
-                efficiencyWeight: prefs.efficiencyWeight,
-                reliabilityWeight: prefs.reliabilityWeight,
-                mileageWeight: prefs.mileageWeight,
-                conditionWeight: prefs.conditionWeight,
-              }
-            : undefined
-        }
-        initialStep={prefs?.hasPreferences ? 2 : undefined}
-      />
+      <UserPreferencesDialog open={quizOpen} onOpenChange={setQuizOpen} />
     </div>
   );
 }
