@@ -2,7 +2,7 @@ using AutoMapper;
 using Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
-using Automotive.Marketplace.Domain.Constants;
+using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Tests.Infrastructure;
@@ -74,6 +74,14 @@ public class RegisterUserCommandHandlerTests(
 
         user.Should().NotBeNull();
         user!.UserPermissions.Select(p => p.Permission)
-            .Should().BeEquivalentTo(DefaultUserPermissions.All);
+            .Should().BeEquivalentTo(new[]
+            {
+                Permission.ViewListings,
+                Permission.CreateListings,
+                Permission.ManageListings,
+                Permission.ViewModels,
+                Permission.ViewVariants,
+                Permission.ViewMakes,
+            });
     }
 }
