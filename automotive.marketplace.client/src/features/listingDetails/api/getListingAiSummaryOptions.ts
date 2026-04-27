@@ -7,6 +7,7 @@ import type { GetListingAiSummaryResponse } from "../types/GetListingAiSummaryRe
 export const getListingAiSummaryOptions = (
   listingId: string,
   language: string = "lt",
+  forceRegenerate: boolean = false,
 ) =>
   queryOptions({
     queryKey: listingKeys.aiSummary(listingId, language),
@@ -14,7 +15,7 @@ export const getListingAiSummaryOptions = (
       axiosClient.get<GetListingAiSummaryResponse>(
         ENDPOINTS.LISTING.GET_AI_SUMMARY,
         {
-          params: { listingId, language },
+          params: { listingId, language, forceRegenerate },
         },
       ),
     enabled: false,

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Sparkles, RefreshCw, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -19,8 +20,10 @@ export function AiSummarySection({ listingId }: Props) {
   const { t, i18n } = useTranslation("listings");
   const { t: tPrefs } = useTranslation("userPreferences");
 
+  const [forceRegenerate, setForceRegenerate] = useState(false);
+
   const { data, isFetching, refetch } = useQuery(
-    getListingAiSummaryOptions(listingId, i18n.language),
+    getListingAiSummaryOptions(listingId, i18n.language, forceRegenerate),
   );
 
   const summary = data?.data;
@@ -29,6 +32,12 @@ export function AiSummarySection({ listingId }: Props) {
   const translatedUnavailable = unavailable.map((f) =>
     tPrefs(factorTranslationKeys[f] ?? f),
   );
+
+  const handleRegenerate = async () => {
+    setForceRegenerate(true);
+    await refetch();
+    setForceRegenerate(false);
+  };
 
   return (
     <div className="border-border rounded-lg border p-4">
@@ -40,7 +49,7 @@ export function AiSummarySection({ listingId }: Props) {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => refetch()}
+          onClick={handleRegenerate}
           disabled={isFetching}
           className="flex items-center gap-1"
         >

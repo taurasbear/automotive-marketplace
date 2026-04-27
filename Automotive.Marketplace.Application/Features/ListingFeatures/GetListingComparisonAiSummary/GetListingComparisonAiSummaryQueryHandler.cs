@@ -33,7 +33,7 @@ public class GetListingComparisonAiSummaryQueryHandler(IRepository repository, I
                      && c.SummaryType == SummaryType && c.Language == lang,
                 cancellationToken);
 
-        if (cache != null && cache.ExpiresAt > DateTime.UtcNow)
+        if (!request.ForceRegenerate && cache != null && cache.ExpiresAt > DateTime.UtcNow)
         {
             var aModified = listingA.ModifiedAt ?? listingA.CreatedAt;
             var bModified = listingB.ModifiedAt ?? listingB.CreatedAt;
