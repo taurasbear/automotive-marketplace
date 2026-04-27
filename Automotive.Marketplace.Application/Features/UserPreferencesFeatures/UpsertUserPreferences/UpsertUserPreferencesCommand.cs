@@ -12,4 +12,5 @@ public class UpsertUserPreferencesCommand : IRequest
     public double ConditionWeight { get; set; }
     public bool AutoGenerateAiSummary { get; set; }
     public bool EnableVehicleScoring { get; set; }
+    public bool HasCompletedQuiz { get; set; }
 }
