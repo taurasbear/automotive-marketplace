@@ -17,6 +17,7 @@ export type GetAllListingsResponse = {
   images: { url: string; altText: string }[];
   imageCount: number;
   defectCount: number;
+  sellerId: string;
 };
 
 type Thumbnail = {
