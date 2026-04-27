@@ -32,9 +32,9 @@ public class ToggleLikeCommandHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (user, listing) = await SeedUserAndListingAsync(context);
+        var (buyer, listing) = await SeedUserAndListingAsync(context);
 
-        var command = new ToggleLikeCommand { UserId = user.Id, ListingId = listing.Id };
+        var command = new ToggleLikeCommand { UserId = buyer.Id, ListingId = listing.Id };
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -42,7 +42,7 @@ public class ToggleLikeCommandHandlerTests(
         // Assert
         result.IsLiked.Should().BeTrue();
         var likeInDb = await context.Set<UserListingLike>()
-            .FirstOrDefaultAsync(l => l.UserId == user.Id && l.ListingId == listing.Id);
+            .FirstOrDefaultAsync(l => l.UserId == buyer.Id && l.ListingId == listing.Id);
         likeInDb.Should().NotBeNull();
     }
 
@@ -54,12 +54,12 @@ public class ToggleLikeCommandHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (user, listing) = await SeedUserAndListingAsync(context);
-        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
+        var (buyer, listing) = await SeedUserAndListingAsync(context);
+        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = buyer.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = buyer.Id.ToString() };
         await context.AddAsync(like);
         await context.SaveChangesAsync();
 
-        var command = new ToggleLikeCommand { UserId = user.Id, ListingId = listing.Id };
+        var command = new ToggleLikeCommand { UserId = buyer.Id, ListingId = listing.Id };
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -67,7 +67,7 @@ public class ToggleLikeCommandHandlerTests(
         // Assert
         result.IsLiked.Should().BeFalse();
         var likeInDb = await context.Set<UserListingLike>()
-            .FirstOrDefaultAsync(l => l.UserId == user.Id && l.ListingId == listing.Id);
+            .FirstOrDefaultAsync(l => l.UserId == buyer.Id && l.ListingId == listing.Id);
         likeInDb.Should().BeNull();
     }
 
@@ -79,13 +79,13 @@ public class ToggleLikeCommandHandlerTests(
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (user, listing) = await SeedUserAndListingAsync(context);
-        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = user.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = user.Id.ToString() };
-        var note = new UserListingNoteBuilder().WithUser(user.Id).WithListing(listing.Id).WithContent("Great car!").Build();
+        var (buyer, listing) = await SeedUserAndListingAsync(context);
+        var like = new UserListingLike { Id = Guid.NewGuid(), UserId = buyer.Id, ListingId = listing.Id, CreatedAt = DateTime.UtcNow, CreatedBy = buyer.Id.ToString() };
+        var note = new UserListingNoteBuilder().WithUser(buyer.Id).WithListing(listing.Id).WithContent("Great car!").Build();
         await context.AddRangeAsync(like, note);
         await context.SaveChangesAsync();
 
-        var command = new ToggleLikeCommand { UserId = user.Id, ListingId = listing.Id };
+        var command = new ToggleLikeCommand { UserId = buyer.Id, ListingId = listing.Id };
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -93,16 +93,17 @@ public class ToggleLikeCommandHandlerTests(
         // Assert
         result.IsLiked.Should().BeFalse();
         var likeInDb = await context.Set<UserListingLike>()
-            .FirstOrDefaultAsync(l => l.UserId == user.Id && l.ListingId == listing.Id);
+            .FirstOrDefaultAsync(l => l.UserId == buyer.Id && l.ListingId == listing.Id);
         likeInDb.Should().BeNull();
         var noteInDb = await context.Set<UserListingNote>()
-            .FirstOrDefaultAsync(n => n.UserId == user.Id && n.ListingId == listing.Id);
+            .FirstOrDefaultAsync(n => n.UserId == buyer.Id && n.ListingId == listing.Id);
         noteInDb.Should().BeNull();
     }
 
-    private static async Task<(User user, Listing listing)> SeedUserAndListingAsync(AutomotiveContext context)
+    private static async Task<(User buyer, Listing listing)> SeedUserAndListingAsync(AutomotiveContext context)
     {
-        var user = new UserBuilder().Build();
+        var seller = new UserBuilder().Build();
+        var buyer = new UserBuilder().Build();
         var make = new MakeBuilder().Build();
         var model = new ModelBuilder().WithMake(make.Id).Build();
         var fuel = new FuelBuilder().Build();
@@ -114,11 +115,11 @@ public class ToggleLikeCommandHandlerTests(
             .WithModel(model.Id).WithFuel(fuel.Id)
             .WithTransmission(transmission.Id).WithBodyType(bodyType.Id).Build();
         var listing = new ListingBuilder()
-            .WithSeller(user.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).Build();
+            .WithSeller(seller.Id).WithVariant(variant.Id).WithDrivetrain(drivetrain.Id).WithMunicipality(municipality.Id).Build();
 
-        await context.AddRangeAsync(user, make, model, fuel, transmission, bodyType, drivetrain, municipality, variant, listing);
+        await context.AddRangeAsync(seller, buyer, make, model, fuel, transmission, bodyType, drivetrain, municipality, variant, listing);
         await context.SaveChangesAsync();
 
-        return (user, listing);
+        return (buyer, listing);
     }
 }
