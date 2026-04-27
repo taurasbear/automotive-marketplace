@@ -105,8 +105,10 @@ public class GetListingComparisonAiSummaryQueryHandler(IRepository repository, I
         var languageName = LanguageNames.GetValueOrDefault(lang, "Lithuanian");
 
         var sameIdentity = a.Year == b.Year && makeA == makeB && modelA == modelB;
-        var labelA = sameIdentity ? $"{a.Year} {makeA} {modelA} (skelbimas 1)" : $"{a.Year} {makeA} {modelA}";
-        var labelB = sameIdentity ? $"{b.Year} {makeB} {modelB} (skelbimas 2)" : $"{b.Year} {makeB} {modelB}";
+        var disambiguationA = lang == "lt" ? " (skelbimas 1)" : " (listing 1)";
+        var disambiguationB = lang == "lt" ? " (skelbimas 2)" : " (listing 2)";
+        var labelA = sameIdentity ? $"{a.Year} {makeA} {modelA}{disambiguationA}" : $"{a.Year} {makeA} {modelA}";
+        var labelB = sameIdentity ? $"{b.Year} {makeB} {modelB}{disambiguationB}" : $"{b.Year} {makeB} {modelB}";
 
         var lines = new List<string>
         {
