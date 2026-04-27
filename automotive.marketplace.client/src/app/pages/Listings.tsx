@@ -1,11 +1,14 @@
 import { Route } from "@/app/routes/listings";
 import { Filters, ListingList } from "@/features/listingList";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
+
+const SKELETON_COUNT = 3;
 
 const ListingListSkeleton = () => (
   <div className="flex w-204 flex-col gap-10">
-    {Array.from({ length: 3 }).map((_, i) => (
-      <div key={i} className="bg-card border-border h-48 w-full animate-pulse rounded border-1" />
+    {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+      <Skeleton key={i} className="border-border h-48 w-full border-1" />
     ))}
   </div>
 );

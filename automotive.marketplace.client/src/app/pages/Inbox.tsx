@@ -1,5 +1,6 @@
 import { ConversationList, MessageThread } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { useNavigate } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,8 +48,8 @@ const Inbox = ({ initialConversationId }: InboxProps) => {
       <main className="flex min-w-0 flex-1 flex-col">
         {selected ? (
           <Suspense fallback={
-            <div className="flex h-full items-center justify-center">
-              <div className="border-primary h-6 w-6 animate-spin rounded-full border-2 border-t-transparent" />
+            <div className="flex h-full items-center justify-center" role="status" aria-label="Loading">
+              <Spinner />
             </div>
           }>
             <MessageThread conversation={selected} />
