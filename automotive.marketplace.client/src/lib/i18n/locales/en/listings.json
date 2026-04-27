@@ -91,5 +91,42 @@
     "unavailableFactors": "Some data was unavailable ({{factors}}). The verdict may be incomplete.",
     "unavailable": "AI summary unavailable at this time.",
     "prompt": "Click \"Generate\" to get an AI-powered buyer verdict for this listing."
+  },
+  "vehicleAttributes": {
+    "fuel": {
+      "Diesel": "Diesel",
+      "Petrol": "Petrol",
+      "Electric": "Electric",
+      "Petrol/LPG": "Petrol/LPG",
+      "Petrol/Electric": "Petrol/Electric",
+      "Plug-in Hybrid": "Plug-in Hybrid"
+    },
+    "transmission": {
+      "Automatic": "Automatic",
+      "Manual": "Manual"
+    },
+    "drivetrain": {
+      "Front-Wheel Drive": "Front-Wheel Drive",
+      "Rear-Wheel Drive": "Rear-Wheel Drive",
+      "All-Wheel Drive": "All-Wheel Drive",
+      "4WD": "4WD"
+    },
+    "bodyType": {
+      "Sedan": "Sedan",
+      "Hatchback": "Hatchback",
+      "SUV": "SUV",
+      "Coupe": "Coupe",
+      "Convertible": "Convertible",
+      "Minivan": "Minivan",
+      "Pickup": "Pickup",
+      "Van": "Van",
+      "Wagon": "Wagon"
+    },
+    "status": {
+      "Available": "Available",
+      "Sold": "Sold",
+      "Reserved": "Reserved",
+      "Pending": "Pending"
+    }
   }
 }
