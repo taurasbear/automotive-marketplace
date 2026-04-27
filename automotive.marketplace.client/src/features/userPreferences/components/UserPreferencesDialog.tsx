@@ -231,7 +231,7 @@ export function UserPreferencesDialog({
   const handleQuizSave = async () => {
     await upsert({
       ...buildWeights(),
-      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
       hasCompletedQuiz: true,
     });
@@ -241,7 +241,7 @@ export function UserPreferencesDialog({
   const handleSettingsSave = async () => {
     await upsert({
       ...buildWeights(),
-      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
       hasCompletedQuiz: true,
     });

@@ -22,7 +22,7 @@ public class GetUserPreferencesQueryHandler(IRepository repository)
                 ReliabilityWeight = 0.21,
                 MileageWeight = 0.17,
                 ConditionWeight = 0.15,
-                AutoGenerateAiSummary = false,
+                AutoGenerateAiSummary = true,
                 EnableVehicleScoring = false,
                 HasCompletedQuiz = false,
                 HasPreferences = false,

@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getListingComparisonAiSummaryOptions } from "../api/getListingComparisonAiSummaryOptions";
+import { getUserPreferencesOptions } from "@/features/userPreferences";
+import { useAppSelector } from "@/hooks/redux";
 
 type Props = {
   listingAId: string;
@@ -22,9 +24,14 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
 
   const queryClient = useQueryClient();
 
-  const { data, isFetching } = useQuery(
-    getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
-  );
+  const userId = useAppSelector((state) => state.auth.userId);
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
+  const autoGenerate = userId ? (prefsData?.data?.autoGenerateAiSummary ?? true) : false;
+
+  const { data, isFetching } = useQuery({
+    ...getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
+    enabled: autoGenerate,
+  });
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;

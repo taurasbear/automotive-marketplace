@@ -60,7 +60,7 @@ export default function Settings() {
       reliabilityWeight: 0.21,
       mileageWeight: 0.17,
       conditionWeight: 0.15,
-      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: true,
       hasCompletedQuiz: prefs?.hasCompletedQuiz ?? false,
     });
@@ -130,7 +130,7 @@ export default function Settings() {
               </div>
             </div>
             <Switch
-              checked={prefs?.autoGenerateAiSummary ?? false}
+              checked={prefs?.autoGenerateAiSummary ?? true}
               onCheckedChange={handleAiSummaryToggle}
             />
           </div>

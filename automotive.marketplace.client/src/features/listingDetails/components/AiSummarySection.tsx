@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getListingAiSummaryOptions } from "../api/getListingAiSummaryOptions";
+import { getUserPreferencesOptions } from "@/features/userPreferences";
+import { useAppSelector } from "@/hooks/redux";
 
 type Props = {
   listingId: string;
@@ -21,9 +23,14 @@ export function AiSummarySection({ listingId }: Props) {
 
   const queryClient = useQueryClient();
 
-  const { data, isFetching } = useQuery(
-    getListingAiSummaryOptions(listingId, i18n.language),
-  );
+  const userId = useAppSelector((state) => state.auth.userId);
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
+  const autoGenerate = userId ? (prefsData?.data?.autoGenerateAiSummary ?? true) : false;
+
+  const { data, isFetching } = useQuery({
+    ...getListingAiSummaryOptions(listingId, i18n.language),
+    enabled: autoGenerate,
+  });
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
