@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Domain.Constants;
 using Automotive.Marketplace.Domain.Entities;
-using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 
 namespace Automotive.Marketplace.Application.Features.AuthFeatures.RegisterUser;
@@ -20,15 +20,9 @@ public class RegisterUserCommandHandler(
             Username = request.Username,
             Email = request.Email,
             HashedPassword = passwordHasher.Hash(request.Password),
-            UserPermissions =
-            [
-                new() { Permission = Permission.ViewListings },
-                new() { Permission = Permission.CreateListings },
-                new() { Permission = Permission.ManageListings },
-                new() { Permission = Permission.ViewModels },
-                new() { Permission = Permission.ViewVariants },
-                new() { Permission = Permission.ViewMakes },
-            ],
+            UserPermissions = DefaultUserPermissions.All
+                .Select(p => new UserPermission { Permission = p })
+                .ToList(),
         };
 
         await repository.CreateAsync(user, cancellationToken);
