@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { GetListingByIdResponse } from "@/features/listingDetails/types/GetListingByIdResponse";
+import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 type ListingCardProps = {
@@ -21,9 +22,13 @@ const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => {
         alt={`${listing.year} ${listing.makeName} ${listing.modelName}`}
         className="mx-auto h-32 w-48 rounded object-cover"
       />
-      <p className="mt-2 font-semibold">
+      <Link
+        to="/listing/$id"
+        params={{ id: listing.id }}
+        className="mt-2 block font-semibold text-foreground hover:underline"
+      >
         {listing.year} {listing.makeName} {listing.modelName}
-      </p>
+      </Link>
       <p className="text-primary font-bold">{listing.price.toFixed(0)} €</p>
       <p className="text-muted-foreground text-sm">
         {listing.municipalityName}
