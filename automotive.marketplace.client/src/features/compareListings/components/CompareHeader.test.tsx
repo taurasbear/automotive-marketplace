@@ -3,6 +3,30 @@ import { describe, it, expect, vi } from "vitest";
 import { CompareHeader } from "./CompareHeader";
 import type { GetListingByIdResponse } from "@/features/listingDetails/types/GetListingByIdResponse";
 
+vi.mock("@tanstack/react-router", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@tanstack/react-router")>();
+  return {
+    ...actual,
+    Link: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+      <a className={className}>{children}</a>
+    ),
+  };
+});
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        "header.specification": "Specification",
+        "header.change": "Change",
+        "header.changeListingA": "Change listing A",
+        "header.changeListingB": "Change listing B",
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 const listingA: GetListingByIdResponse = {
   id: "a1",
   makeName: "Toyota",

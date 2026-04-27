@@ -15,19 +15,21 @@ const ListingCard = ({ listing, onChange, ariaLabel }: ListingCardProps) => {
 
   return (
     <div className="text-center">
-      <img
-        src={
-          listing.images[0]?.url ?? "https://placehold.co/200x150?text=No+Image"
-        }
-        alt={`${listing.year} ${listing.makeName} ${listing.modelName}`}
-        className="mx-auto h-32 w-48 rounded object-cover"
-      />
       <Link
         to="/listing/$id"
         params={{ id: listing.id }}
-        className="mt-2 block font-semibold text-foreground hover:underline"
+        className="group block text-center"
       >
-        {listing.year} {listing.makeName} {listing.modelName}
+        <img
+          src={
+            listing.images[0]?.url ?? "https://placehold.co/200x150?text=No+Image"
+          }
+          alt={`${listing.year} ${listing.makeName} ${listing.modelName}`}
+          className="mx-auto h-32 w-48 rounded object-cover"
+        />
+        <p className="mt-2 font-semibold text-foreground group-hover:underline">
+          {listing.year} {listing.makeName} {listing.modelName}
+        </p>
       </Link>
       <p className="text-primary font-bold">{listing.price.toFixed(0)} €</p>
       <p className="text-muted-foreground text-sm">
