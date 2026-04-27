@@ -21,4 +21,5 @@ export const ListingSearchSchema = z.object({
   maxMileage: z.coerce.number().positive().optional().catch(undefined),
   minPower: z.coerce.number().positive().optional().catch(undefined),
   maxPower: z.coerce.number().positive().optional().catch(undefined),
+  page: z.coerce.number().int().positive().optional().catch(undefined),
 });
