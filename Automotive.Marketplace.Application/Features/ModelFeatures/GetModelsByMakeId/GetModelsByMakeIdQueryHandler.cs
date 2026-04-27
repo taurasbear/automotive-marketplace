@@ -2,6 +2,7 @@
 using AutoMapper;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Domain.Entities;
+using Automotive.Marketplace.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,17 @@ public class GetModelsByMakeIdQueryHandler(
 {
     public async Task<IEnumerable<GetModelsByMakeIdResponse>> Handle(GetModelsByMakeIdQuery request, CancellationToken cancellationToken)
     {
-        var models = await repository
+        var query = repository
             .AsQueryable<Model>()
-            .Where(model => model.MakeId == request.MakeId)
+            .Where(model => model.MakeId == request.MakeId);
+
+        if (request.OnlyWithListings)
+        {
+            query = query.Where(model =>
+                model.Variants.Any(v => v.Listings.Any(l => l.Status == Status.Available)));
+        }
+
+        var models = await query
             .OrderBy(model => model.Name)
             .ToListAsync(cancellationToken);
 

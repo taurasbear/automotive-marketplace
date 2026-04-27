@@ -1,7 +1,7 @@
 import { ConversationList, MessageThread } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type InboxProps = {
@@ -46,7 +46,13 @@ const Inbox = ({ initialConversationId }: InboxProps) => {
 
       <main className="flex min-w-0 flex-1 flex-col">
         {selected ? (
-          <MessageThread conversation={selected} />
+          <Suspense fallback={
+            <div className="flex h-full items-center justify-center">
+              <div className="border-primary h-6 w-6 animate-spin rounded-full border-2 border-t-transparent" />
+            </div>
+          }>
+            <MessageThread conversation={selected} />
+          </Suspense>
         ) : (
           <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
             {t("inbox.emptyState")}

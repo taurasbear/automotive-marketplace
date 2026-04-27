@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { ConversationSummary } from "../types/ConversationSummary";
 import MessageThread from "./MessageThread";
@@ -41,7 +41,13 @@ const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
         </Button>
       </div>
       <div className="flex-1 overflow-hidden">
-        <MessageThread conversation={conversation} showListingCard={false} />
+        <Suspense fallback={
+          <div className="flex h-full items-center justify-center">
+            <div className="border-primary h-6 w-6 animate-spin rounded-full border-2 border-t-transparent" />
+          </div>
+        }>
+          <MessageThread conversation={conversation} showListingCard={false} />
+        </Suspense>
       </div>
     </div>
   );

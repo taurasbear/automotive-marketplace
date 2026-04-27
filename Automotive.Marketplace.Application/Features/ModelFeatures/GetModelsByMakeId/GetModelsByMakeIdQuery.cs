@@ -5,4 +5,5 @@ namespace Automotive.Marketplace.Application.Features.ModelFeatures.GetModelsByM
 public sealed record GetModelsByMakeIdQuery : IRequest<IEnumerable<GetModelsByMakeIdResponse>>
 {
     public Guid MakeId { get; set; }
+    public bool OnlyWithListings { get; set; } = false;
 };
