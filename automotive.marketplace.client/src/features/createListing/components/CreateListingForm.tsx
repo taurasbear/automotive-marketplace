@@ -38,9 +38,10 @@ import { useAddDefectImage } from "@/api/defect/useAddDefectImage";
 
 type CreateListingFormProps = {
   className?: string;
+  isGuest?: boolean;
 };
 
-const CreateListingForm = ({ className }: CreateListingFormProps) => {
+const CreateListingForm = ({ className, isGuest = false }: CreateListingFormProps) => {
   const { t } = useTranslation("listings");
   const [isModified, setIsModified] = useState(false);
 
@@ -528,7 +529,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit">{t("form.submit")}</Button>
+          <Button type="submit" disabled={isGuest}>{t("form.submit")}</Button>
         </form>
       </Form>
     </div>

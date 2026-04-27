@@ -53,7 +53,14 @@
     "saveChanges": "Išsaugoti pakeitimus"
   },
   "createPage": {
-    "title": "Sukurkite savo skelbimą"
+    "title": "Sukurkite savo skelbimą",
+    "guestWarning": {
+      "message": "Norėdami sukurti skelbimą, turite turėti paskyrą.",
+      "signIn": "Prisijunkite",
+      "or": "arba",
+      "createAccount": "sukurkite paskyrą",
+      "toContinue": "norėdami tęsti."
+    }
   },
   "form": {
     "carMake": "Automobilio markė*",
