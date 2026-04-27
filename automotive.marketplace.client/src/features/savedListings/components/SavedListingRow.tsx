@@ -50,7 +50,7 @@ const SavedListingRow = ({ listing }: SavedListingRowProps) => {
             <Link
               to="/listing/$id"
               params={{ id: listing.listingId }}
-              className="truncate font-medium text-primary hover:underline"
+              className="block truncate font-medium text-primary hover:underline"
             >
               {listing.title}
             </Link>
