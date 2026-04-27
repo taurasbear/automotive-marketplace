@@ -1,4 +1,5 @@
-﻿using Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
+﻿using Automotive.Marketplace.Application.Common.Models;
+using Automotive.Marketplace.Application.Features.ListingFeatures.CreateListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.DeleteListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetAllListings;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingById;
@@ -21,7 +22,7 @@ namespace Automotive.Marketplace.Server.Controllers;
 public class ListingController(IMediator mediator) : BaseController
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetAllListingsResponse>>> GetAll(
+    public async Task<ActionResult<PagedResult<GetAllListingsResponse>>> GetAll(
         [FromQuery] GetAllListingsQuery query,
         CancellationToken cancellationToken)
     {

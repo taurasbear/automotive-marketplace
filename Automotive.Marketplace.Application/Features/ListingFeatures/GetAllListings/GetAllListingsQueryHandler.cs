@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Automotive.Marketplace.Application.Common.Models;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
@@ -11,9 +12,9 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetAllList
 public class GetAllListingsQueryHandler(
     IMapper mapper,
     IRepository repository,
-    IImageStorageService imageStorageService) : IRequestHandler<GetAllListingsQuery, IEnumerable<GetAllListingsResponse>>
+    IImageStorageService imageStorageService) : IRequestHandler<GetAllListingsQuery, PagedResult<GetAllListingsResponse>>
 {
-    public async Task<IEnumerable<GetAllListingsResponse>> Handle(
+    public async Task<PagedResult<GetAllListingsResponse>> Handle(
         GetAllListingsQuery request,
         CancellationToken cancellationToken)
     {
@@ -49,9 +50,14 @@ public class GetAllListingsQueryHandler(
             query = query.Include(l => l.LikeUsers);
         }
 
-        var listings = await query.ToListAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken);
 
-        List<GetAllListingsResponse> response = [];
+        var listings = await query
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToListAsync(cancellationToken);
+
+        List<GetAllListingsResponse> items = [];
         foreach (var listing in listings)
         {
             var mappedListing = mapper.Map<GetAllListingsResponse>(listing);
@@ -82,9 +88,16 @@ public class GetAllListingsQueryHandler(
             {
                 mappedListing.IsLiked = listing.LikeUsers.Any(u => u.Id == request.UserId.Value);
             }
-            response.Add(mappedListing);
+            items.Add(mappedListing);
         }
 
-        return response;
+        return new PagedResult<GetAllListingsResponse>
+        {
+            Items = items,
+            Total = total,
+            Page = request.Page,
+            PageSize = request.PageSize,
+        };
     }
 }
+
