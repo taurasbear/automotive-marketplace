@@ -4,7 +4,7 @@ import { useDateLocale } from "@/lib/i18n/dateLocale";
 import axiosClient from "@/lib/axios/axiosClient";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { CheckCircle, MapPin } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getMessagesOptions } from "../api/getMessagesOptions";
@@ -185,13 +185,6 @@ const MessageThread = ({
               )}{" "}
               {getTimezoneOffsetLabel()}
             </span>
-            {acceptedMeeting.locationText && (
-              <>
-                <span className="text-green-300">·</span>
-                <MapPin className="h-3 w-3 shrink-0" />
-                <span className="truncate">{acceptedMeeting.locationText}</span>
-              </>
-            )}
           </div>
         )}
         <div className="space-y-2 p-4">

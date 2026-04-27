@@ -15,7 +15,6 @@ import {
   CalendarRange,
   CalendarX,
   Clock,
-  MapPin,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,9 +33,6 @@ type MeetingCardProps = {
     data: {
       proposedAt: string;
       durationMinutes: number;
-      locationText?: string;
-      locationLat?: number;
-      locationLng?: number;
     },
   ) => void;
   onCancel: (meetingId: string) => void;
@@ -196,13 +192,6 @@ const MeetingCard = ({
               </p>
             </div>
           </div>
-
-          {meeting.locationText && (
-            <p className={`text-xs ${isMuted ? "text-muted-foreground" : ""}`}>
-              <MapPin className="mr-1 inline h-3 w-3" />
-              {meeting.locationText}
-            </p>
-          )}
 
           {canCancel && (
             <div className="mt-3">
