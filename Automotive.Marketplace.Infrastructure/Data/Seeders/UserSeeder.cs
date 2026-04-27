@@ -71,7 +71,15 @@ public class UserSeeder(AutomotiveContext context, IPasswordHasher passwordHashe
                 },
                 new()
                 {
+                    Permission = Permission.ViewMakes,
+                },
+                new()
+                {
                     Permission = Permission.CreateListings,
+                },
+                new()
+                {
+                    Permission = Permission.ManageListings,
                 }
             ],
         };
