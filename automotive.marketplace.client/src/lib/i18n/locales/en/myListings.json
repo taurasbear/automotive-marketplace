@@ -54,6 +54,26 @@
     "powerKw": "Power (kW):",
     "engineSizeMl": "Engine Size (ml):"
   },
+  "sellerInsights": {
+    "title": "Seller Insights",
+    "marketPosition": {
+      "title": "Market Position",
+      "yourPrice": "Your price",
+      "marketMedian": "Market median",
+      "belowMarket": "below market",
+      "aboveMarket": "above market",
+      "similarListings": "similar listings",
+      "daysListed": "days listed",
+      "noData": "No market data available yet"
+    },
+    "listingQuality": {
+      "title": "Listing Quality",
+      "description": "Description",
+      "photos": "Photos ({{count}})",
+      "vin": "VIN",
+      "colour": "Colour"
+    }
+  },
   "buyerPanel": {
     "buyers": "Buyers",
     "conversations": "Conversations",
