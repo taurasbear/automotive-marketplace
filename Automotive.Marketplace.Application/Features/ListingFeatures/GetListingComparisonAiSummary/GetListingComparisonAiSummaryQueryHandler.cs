@@ -107,28 +107,28 @@ public class GetListingComparisonAiSummaryQueryHandler(IRepository repository, I
         var lines = new List<string>
         {
             "You are an automotive assistant. Compare these two vehicle listings and recommend which is the better buy in 2-3 sentences.",
-            $"Vehicle A: {a.Year} {makeA} {modelA} — {a.Price:0} EUR, {a.Mileage:N0} km, {a.Variant.Fuel.Name}, defects: {defectsA}",
-            $"Vehicle B: {b.Year} {makeB} {modelB} — {b.Price:0} EUR, {b.Mileage:N0} km, {b.Variant.Fuel.Name}, defects: {defectsB}",
+            $"{a.Year} {makeA} {modelA}: {a.Price:0} EUR, {a.Mileage:N0} km, {a.Variant.Fuel.Name}, defects: {defectsA}",
+            $"{b.Year} {makeB} {modelB}: {b.Price:0} EUR, {b.Mileage:N0} km, {b.Variant.Fuel.Name}, defects: {defectsB}",
         };
 
         if (marketA != null)
-            lines.Add($"Vehicle A market data: median price {marketA.MedianPrice:0} EUR across {marketA.TotalListings} listings.");
+            lines.Add($"{a.Year} {makeA} {modelA} market data: median price {marketA.MedianPrice:0} EUR across {marketA.TotalListings} listings.");
         if (marketB != null)
-            lines.Add($"Vehicle B market data: median price {marketB.MedianPrice:0} EUR across {marketB.TotalListings} listings.");
+            lines.Add($"{b.Year} {makeB} {modelB} market data: median price {marketB.MedianPrice:0} EUR across {marketB.TotalListings} listings.");
         if (efficiencyA != null)
         {
-            if (efficiencyA.KWhPer100Km.HasValue) lines.Add($"Vehicle A efficiency: {efficiencyA.KWhPer100Km.Value:F1} kWh/100km.");
-            else if (efficiencyA.LitersPer100Km.HasValue) lines.Add($"Vehicle A efficiency: {efficiencyA.LitersPer100Km.Value:F1} L/100km.");
+            if (efficiencyA.KWhPer100Km.HasValue) lines.Add($"{a.Year} {makeA} {modelA} efficiency: {efficiencyA.KWhPer100Km.Value:F1} kWh/100km.");
+            else if (efficiencyA.LitersPer100Km.HasValue) lines.Add($"{a.Year} {makeA} {modelA} efficiency: {efficiencyA.LitersPer100Km.Value:F1} L/100km.");
         }
         if (efficiencyB != null)
         {
-            if (efficiencyB.KWhPer100Km.HasValue) lines.Add($"Vehicle B efficiency: {efficiencyB.KWhPer100Km.Value:F1} kWh/100km.");
-            else if (efficiencyB.LitersPer100Km.HasValue) lines.Add($"Vehicle B efficiency: {efficiencyB.LitersPer100Km.Value:F1} L/100km.");
+            if (efficiencyB.KWhPer100Km.HasValue) lines.Add($"{b.Year} {makeB} {modelB} efficiency: {efficiencyB.KWhPer100Km.Value:F1} kWh/100km.");
+            else if (efficiencyB.LitersPer100Km.HasValue) lines.Add($"{b.Year} {makeB} {modelB} efficiency: {efficiencyB.LitersPer100Km.Value:F1} L/100km.");
         }
         if (reliabilityA != null)
-            lines.Add($"Vehicle A reliability: {reliabilityA.RecallCount} recalls, {reliabilityA.ComplaintCrashes} crash complaints, {reliabilityA.ComplaintInjuries} injury complaints.");
+            lines.Add($"{a.Year} {makeA} {modelA} reliability: {reliabilityA.RecallCount} recalls, {reliabilityA.ComplaintCrashes} crash complaints, {reliabilityA.ComplaintInjuries} injury complaints.");
         if (reliabilityB != null)
-            lines.Add($"Vehicle B reliability: {reliabilityB.RecallCount} recalls, {reliabilityB.ComplaintCrashes} crash complaints, {reliabilityB.ComplaintInjuries} injury complaints.");
+            lines.Add($"{b.Year} {makeB} {modelB} reliability: {reliabilityB.RecallCount} recalls, {reliabilityB.ComplaintCrashes} crash complaints, {reliabilityB.ComplaintInjuries} injury complaints.");
 
         if (unavailableFactors.Count > 0)
             lines.Add($"Note: the following data was unavailable: {string.Join(", ", unavailableFactors)}.");
