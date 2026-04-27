@@ -33,6 +33,7 @@ import { ListingCardBadge } from "@/features/listingList";
 import type { ConversationSummary } from "@/features/chat";
 import { useAppSelector } from "@/hooks/redux";
 import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
+import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
 
 import { GetMyListingsResponse } from "../types/GetMyListingsResponse";
 import { useDeleteMyListing } from "../api/useDeleteMyListing";
@@ -68,6 +69,7 @@ export default function MyListingCard({
   onStartChat,
 }: MyListingCardProps) {
   const { t } = useTranslation("myListings");
+  const { t: tListings } = useTranslation("listings");
   const { userId } = useAppSelector((state) => state.auth);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -133,14 +135,14 @@ export default function MyListingCard({
               <ListingCardBadge
                 Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
                 title="Kuras"
-                stat={listing.fuelName}
+                stat={translateVehicleAttr("fuel", listing.fuelName, tListings)}
               />
             </div>
             <div className="flex justify-self-start">
               <ListingCardBadge
                 Icon={<TbManualGearbox className="h-8 w-8" />}
                 title="Pavarų dėžė"
-                stat={listing.transmissionName}
+                stat={translateVehicleAttr("transmission", listing.transmissionName, tListings)}
               />
             </div>
             <div className="flex justify-self-end">

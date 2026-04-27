@@ -12,6 +12,7 @@ import { TbManualGearbox } from "react-icons/tb";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
+import { translateVehicleAttr } from "../utils/translateVehicleAttr";
 import ListingCardBadge from "./ListingCardBadge";
 import ImageHoverGallery from "@/components/gallery/ImageHoverGallery";
 
@@ -82,14 +83,14 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
               title={t("card.fuelType")}
-              stat={listing.fuelName}
+              stat={translateVehicleAttr("fuel", listing.fuelName, t)}
             />
           </div>
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<TbManualGearbox className="h-8 w-8" />}
               title={t("card.gearBox")}
-              stat={listing.transmissionName}
+              stat={translateVehicleAttr("transmission", listing.transmissionName, t)}
             />
           </div>
           <div className="flex justify-self-end">

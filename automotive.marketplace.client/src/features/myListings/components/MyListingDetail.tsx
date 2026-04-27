@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,6 +36,7 @@ type MyListingDetailProps = {
 
 const MyListingDetail = ({ id }: MyListingDetailProps) => {
   const { t, i18n } = useTranslation("myListings");
+  const { t: tListings } = useTranslation("listings");
   const navigate = useNavigate();
   const [pendingChanges, setPendingChanges] = useState<
     Record<string, string | number | boolean>
@@ -203,25 +205,25 @@ const MyListingDetail = ({ id }: MyListingDetailProps) => {
               <dt className="text-muted-foreground text-sm font-medium">
                 {t("vehicleInfo.fuel")}
               </dt>
-              <dd className="text-right text-sm">{listing.fuelName}</dd>
+              <dd className="text-right text-sm">{translateVehicleAttr("fuel", listing.fuelName, tListings)}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
               <dt className="text-muted-foreground text-sm font-medium">
                 {t("vehicleInfo.transmission")}
               </dt>
-              <dd className="text-right text-sm">{listing.transmissionName}</dd>
+              <dd className="text-right text-sm">{translateVehicleAttr("transmission", listing.transmissionName, tListings)}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
               <dt className="text-muted-foreground text-sm font-medium">
                 {t("vehicleInfo.bodyType")}
               </dt>
-              <dd className="text-right text-sm">{listing.bodyTypeName}</dd>
+              <dd className="text-right text-sm">{translateVehicleAttr("bodyType", listing.bodyTypeName, tListings)}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
               <dt className="text-muted-foreground text-sm font-medium">
                 {t("vehicleInfo.drivetrain")}
               </dt>
-              <dd className="text-right text-sm">{listing.drivetrainName}</dd>
+              <dd className="text-right text-sm">{translateVehicleAttr("drivetrain", listing.drivetrainName, tListings)}</dd>
             </div>
             <div className="grid grid-cols-2 px-6 py-3">
               <dt className="text-muted-foreground text-sm font-medium">

@@ -1,6 +1,7 @@
 import type { GetListingByIdResponse } from "@/features/listingDetails/types/GetListingByIdResponse";
 import { useTranslation } from "react-i18next";
 import { formatNumber } from "@/lib/i18n/formatNumber";
+import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
 import type { DiffMap } from "../types/diff";
 import { CompareRow } from "./CompareRow";
 
@@ -31,6 +32,7 @@ export const CompareTable = ({
   diffOnly,
 }: CompareTableProps) => {
   const { t } = useTranslation("compare");
+  const { t: tListings } = useTranslation("listings");
 
   const TABLE_SECTIONS: SectionSpec[] = [
     {
@@ -38,7 +40,7 @@ export const CompareTable = ({
       rows: [
         { field: "makeName", label: t("table.make") },
         { field: "modelName", label: t("table.model") },
-        { field: "bodyTypeName", label: t("table.bodyType") },
+        { field: "bodyTypeName", label: t("table.bodyType"), format: (v) => translateVehicleAttr("bodyType", String(v ?? ""), tListings) },
         { field: "year", label: t("table.year") },
         {
           field: "isUsed",
@@ -58,9 +60,9 @@ export const CompareTable = ({
       rows: [
         { field: "powerKw", label: t("table.powerKw") },
         { field: "engineSizeMl", label: t("table.engineSizeMl") },
-        { field: "fuelName", label: t("table.fuelType") },
-        { field: "transmissionName", label: t("table.transmission") },
-        { field: "drivetrainName", label: t("table.drivetrain") },
+        { field: "fuelName", label: t("table.fuelType"), format: (v) => translateVehicleAttr("fuel", String(v ?? ""), tListings) },
+        { field: "transmissionName", label: t("table.transmission"), format: (v) => translateVehicleAttr("transmission", String(v ?? ""), tListings) },
+        { field: "drivetrainName", label: t("table.drivetrain"), format: (v) => translateVehicleAttr("drivetrain", String(v ?? ""), tListings) },
       ],
     },
     {
@@ -71,7 +73,7 @@ export const CompareTable = ({
           label: t("table.price"),
           format: (v) => `${(v as number).toFixed(0)} €`,
         },
-        { field: "status", label: t("table.status") },
+        { field: "status", label: t("table.status"), format: (v) => translateVehicleAttr("status", String(v ?? ""), tListings) },
         { field: "sellerName", label: t("table.seller") },
       ],
     },
