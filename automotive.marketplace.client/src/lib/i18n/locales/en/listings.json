@@ -54,13 +54,7 @@
   },
   "createPage": {
     "title": "Create your own listing",
-    "guestWarning": {
-      "message": "You need an account to create a listing.",
-      "signIn": "Sign in",
-      "or": "or",
-      "createAccount": "create an account",
-      "toContinue": "to continue."
-    }
+    "guestWarning": "You need an account to create a listing. <signIn>Sign in</signIn> or <register>create an account</register> to continue."
   },
   "form": {
     "carMake": "Car make*",
