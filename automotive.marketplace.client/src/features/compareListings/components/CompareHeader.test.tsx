@@ -7,8 +7,8 @@ vi.mock("@tanstack/react-router", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@tanstack/react-router")>();
   return {
     ...actual,
-    Link: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-      <a className={className}>{children}</a>
+    Link: ({ children, className, to }: { children: React.ReactNode; className?: string; to?: string }) => (
+      <a href={String(to ?? "")} className={className}>{children}</a>
     ),
   };
 });
@@ -61,6 +61,21 @@ const listingB: GetListingByIdResponse = {
 };
 
 describe("CompareHeader — Change buttons", () => {
+  it("wraps both listing image and title in a navigable link", () => {
+    render(<CompareHeader listingA={listingA} listingB={listingB} />);
+
+    const links = screen.getAllByRole("link");
+    expect(links).toHaveLength(2);
+
+    const linkA = links[0];
+    expect(linkA.querySelector("img")).toBeInTheDocument();
+    expect(linkA).toHaveTextContent("2020 Toyota Camry");
+
+    const linkB = links[1];
+    expect(linkB.querySelector("img")).toBeInTheDocument();
+    expect(linkB).toHaveTextContent("2020 Honda Civic");
+  });
+
   it("does not render any Change button when no onChange callbacks are provided", () => {
     render(<CompareHeader listingA={listingA} listingB={listingB} />);
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
