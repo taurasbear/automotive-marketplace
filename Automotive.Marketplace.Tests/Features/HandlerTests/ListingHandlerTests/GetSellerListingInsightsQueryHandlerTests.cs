@@ -89,7 +89,7 @@ public class GetSellerListingInsightsQueryHandlerTests(
         var result = await handler.Handle(new GetSellerListingInsightsQuery { ListingId = listingId, UserId = sellerId }, CancellationToken.None);
 
         result.ListingQuality.HasDescription.Should().BeFalse();
-        result.ListingQuality.Suggestions.Should().Contain(s => s.Contains("description"));
+        result.ListingQuality.Suggestions.Should().Contain(s => s.Contains("Description"));
     }
 
     [Fact]
