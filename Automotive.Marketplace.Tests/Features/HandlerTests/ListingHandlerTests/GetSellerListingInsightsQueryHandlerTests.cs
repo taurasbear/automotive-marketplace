@@ -1,10 +1,12 @@
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetSellerListingInsights;
 using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Infrastructure.Data.Builders;
 using Automotive.Marketplace.Infrastructure.Data.DatabaseContext;
 using Automotive.Marketplace.Tests.Infrastructure;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using ModelBuilder = Automotive.Marketplace.Infrastructure.Data.Builders.ModelBuilder;
 
 namespace Automotive.Marketplace.Tests.Features.HandlerTests.ListingHandlerTests;
@@ -14,12 +16,13 @@ public class GetSellerListingInsightsQueryHandlerTests(
     : IClassFixture<DatabaseFixture<GetSellerListingInsightsQueryHandlerTests>>, IAsyncLifetime
 {
     private readonly DatabaseFixture<GetSellerListingInsightsQueryHandlerTests> _fixture = fixture;
+    private readonly ICardogApiClient _cardogClient = Substitute.For<ICardogApiClient>();
 
     public Task InitializeAsync() => Task.CompletedTask;
     public async Task DisposeAsync() => await _fixture.ResetDatabaseAsync();
 
     private GetSellerListingInsightsQueryHandler CreateHandler(IServiceScope scope) =>
-        new(scope.ServiceProvider.GetRequiredService<IRepository>());
+        new(scope.ServiceProvider.GetRequiredService<IRepository>(), _cardogClient);
 
     private async Task<(Guid listingId, Guid sellerId)> SeedListingAsync(AutomotiveContext context, bool hasDescription = false, bool hasVin = false, bool hasColour = false)
     {
