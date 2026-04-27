@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -8,6 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Eye, EyeOff } from "lucide-react";
 import { LoginSchema, setCredentials, useLoginUser } from "@/features/auth";
 import { useAppDispatch } from "@/hooks/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const { t } = useTranslation("auth");
   const { mutateAsync: loginUserAsync } = useLoginUser();
   const navigate = useNavigate();
@@ -80,11 +83,22 @@ const Login = () => {
               <FormItem>
                 <FormLabel>{t("login.fields.password")}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("login.fields.passwordPlaceholder")}
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={t("login.fields.passwordPlaceholder")}
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((p) => !p)}
+                      aria-label={showPassword ? t("login.fields.hidePassword") : t("login.fields.showPassword")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

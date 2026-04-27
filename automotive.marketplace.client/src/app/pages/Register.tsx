@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Eye, EyeOff } from "lucide-react";
 import {
   RegisterSchema,
   setCredentials,
@@ -22,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const { t } = useTranslation("auth");
   const { mutateAsync: registerUserAsync } = useRegisterUser();
   const navigate = useNavigate();
@@ -109,11 +112,22 @@ const Register = () => {
               <FormItem>
                 <FormLabel>{t("register.fields.password")}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("register.fields.passwordPlaceholder")}
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={t("register.fields.passwordPlaceholder")}
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((p) => !p)}
+                      aria-label={showPassword ? t("register.fields.hidePassword") : t("register.fields.showPassword")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormDescription>
                   {t("register.fields.passwordDescription")}
