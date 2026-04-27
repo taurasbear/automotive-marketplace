@@ -190,5 +190,12 @@
     "next": "Next",
     "back": "Back",
     "submit": "Submit"
+  },
+  "notifications": {
+    "newMessage": "New message",
+    "offerReceived": "New price offer",
+    "meetingProposed": "New meeting proposal",
+    "meetingCancelled": "Meeting cancelled",
+    "contractRequested": "Contract requested"
   }
 }
