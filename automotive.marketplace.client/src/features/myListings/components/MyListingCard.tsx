@@ -47,7 +47,7 @@ type MyListingCardProps = {
 function StatusBadge({ status }: { status: string }) {
   const { t } = useTranslation("myListings");
   const isSold = status === "Sold";
-  const isActive = status === "Active" || status === "Approved";
+  const isActive = status === "Active" || status === "Approved" || status === "Available";
   return (
     <span
       className={`rounded px-2 py-0.5 text-xs font-medium ${

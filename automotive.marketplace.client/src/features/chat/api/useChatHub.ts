@@ -342,6 +342,9 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.messages(payload.conversationId),
         });
+        void queryClient.invalidateQueries({
+          queryKey: chatKeys.conversations(),
+        });
       },
     );
 
