@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Sparkles, RefreshCw, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -21,10 +20,10 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
   const { t, i18n } = useTranslation("compare");
   const { t: tPrefs } = useTranslation("userPreferences");
 
-  const [forceRegenerate, setForceRegenerate] = useState(false);
+  const queryClient = useQueryClient();
 
-  const { data, isFetching, refetch } = useQuery(
-    getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language, forceRegenerate),
+  const { data, isFetching } = useQuery(
+    getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
   );
 
   const summary = data?.data;
@@ -35,9 +34,10 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
   );
 
   const handleRegenerate = async () => {
-    setForceRegenerate(true);
-    await refetch();
-    setForceRegenerate(false);
+    await queryClient.fetchQuery({
+      ...getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language, true),
+      staleTime: 0,
+    });
   };
 
   return (
