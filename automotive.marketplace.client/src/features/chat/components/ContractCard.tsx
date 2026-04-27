@@ -162,7 +162,7 @@ const ContractCardComponent = ({
         {/* Active / SellerSubmitted / BuyerSubmitted — show badges */}
         {["Active", "SellerSubmitted", "BuyerSubmitted"].includes(card.status) && (
           <div className="space-y-2">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Badge
                 variant={sellerSubmitted ? "default" : "secondary"}
                 className={sellerSubmitted ? "bg-green-600 text-white" : "bg-yellow-600/20 text-yellow-700 dark:text-yellow-400"}

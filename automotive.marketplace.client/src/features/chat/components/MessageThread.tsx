@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/redux";
 import { useDateLocale } from "@/lib/i18n/dateLocale";
+import axiosClient from "@/lib/axios/axiosClient";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CheckCircle, MapPin } from "lucide-react";
@@ -121,9 +122,17 @@ const MessageThread = ({
     return () => observer.disconnect();
   }, [acceptedMeeting]);
 
-  const handleExportPdf = (cardId: string) => {
-    const url = `${import.meta.env.VITE_APP_API_URL ?? ""}/api/Chat/ExportContractPdf?contractCardId=${cardId}`;
-    window.open(url, "_blank");
+  const handleExportPdf = async (cardId: string) => {
+    const response = await axiosClient.get<Blob>(
+      `/Chat/ExportContractPdf?contractCardId=${cardId}`,
+      { responseType: "blob" },
+    );
+    const objectUrl = URL.createObjectURL(response.data);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = "contract.pdf";
+    a.click();
+    URL.revokeObjectURL(objectUrl);
   };
 
   const handleSend = () => {
@@ -413,7 +422,7 @@ const MessageThread = ({
           price:
             messages.find(
               (m) => m.messageType === "Offer" && m.offer?.status === "Accepted",
-            )?.offer?.amount ?? null,
+            )?.offer?.amount ?? conversation.listingPrice,
         }}
         userEmail=""
         onSubmitSeller={(cardId, data, updateProfile) =>
