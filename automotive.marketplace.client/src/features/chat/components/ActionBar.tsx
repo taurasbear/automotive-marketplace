@@ -38,9 +38,6 @@ type ActionBarProps = {
   onProposeMeeting: (data: {
     proposedAt: string;
     durationMinutes: number;
-    locationText?: string;
-    locationLat?: number;
-    locationLng?: number;
   }) => void;
   onShareAvailability: (
     slots: { startTime: string; endTime: string }[],
