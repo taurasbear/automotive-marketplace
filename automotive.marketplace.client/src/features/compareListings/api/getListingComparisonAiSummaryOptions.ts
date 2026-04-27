@@ -19,5 +19,5 @@ export const getListingComparisonAiSummaryOptions = (
           params: { listingAId, listingBId, language, forceRegenerate },
         },
       ),
-    enabled: false,
+    enabled: true,
   });
