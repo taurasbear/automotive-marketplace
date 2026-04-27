@@ -5,7 +5,7 @@ import { GetAllListingsQuery } from "../types/GetAllListingsQuery";
 import ListingCard from "./ListingCard";
 
 type ListingListProps = {
-  listingSearchQuery: GetAllListingsQuery;
+  listingSearchQuery: Omit<GetAllListingsQuery, "page" | "pageSize">;
   page: number;
   onPageChange: (page: number) => void;
 };

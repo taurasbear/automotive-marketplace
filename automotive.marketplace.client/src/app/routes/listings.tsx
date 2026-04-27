@@ -11,7 +11,7 @@ export const Route = createFileRoute("/listings")({
   loader: async ({ context: { queryClient }, deps: { search } }) => {
     await authReady;
     await queryClient.prefetchQuery({
-      ...getAllListingsOptions(search),
+      ...getAllListingsOptions({ ...search, page: search.page ?? 1, pageSize: 20 }),
       retry: false,
     });
   },

@@ -18,6 +18,8 @@ const Listings = () => {
   const navigate = Route.useNavigate();
 
   const currentPage = searchParams.page ?? 1;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { page: _page, ...filterParams } = searchParams;
 
   return (
     <div className="mt-12 mb-24 flex w-full flex-col items-start justify-start space-x-12 md:flex-row">
@@ -25,15 +27,16 @@ const Listings = () => {
         <Filters
           searchParams={searchParams}
           onSearchParamChange={(updatedParams) =>
+            // mapFilterValuesToSearchParams excludes `page`; page: 1 resets pagination on filter change
             navigate({ search: { ...updatedParams, page: 1 } })
           }
         />
       </div>
       <Suspense fallback={<ListingListSkeleton />}>
         <ListingList
-          listingSearchQuery={searchParams}
+          listingSearchQuery={filterParams}
           page={currentPage}
-          onPageChange={(p) => navigate({ search: { ...searchParams, page: p } })}
+          onPageChange={(p) => navigate({ search: { ...filterParams, page: p } })}
         />
       </Suspense>
     </div>
