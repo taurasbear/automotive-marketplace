@@ -3,6 +3,7 @@ import { PERMISSIONS } from "@/constants/permissions";
 import { ChatPanel, useGetOrCreateConversation } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
 import { CompareSearchModal } from "@/features/compareListings";
+import { selectUserId } from "@/features/auth";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { formatNumber } from "@/lib/i18n/formatNumber";
@@ -35,7 +36,8 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
   const { mutateAsync: deleteListingAsync } = useDeleteListing();
 
   const listing = listingQuery.data;
-  const { permissions, userId } = useAppSelector((state) => state.auth);
+  const permissions = useAppSelector((state) => state.auth.permissions);
+  const userId = useAppSelector(selectUserId);
 
   const canManageListing = permissions.includes(PERMISSIONS.ManageListings);
 

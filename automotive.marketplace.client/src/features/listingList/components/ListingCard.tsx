@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { selectAccessToken, selectUserId } from "@/features/auth";
+import { selectUserId } from "@/features/auth";
 // eslint-disable-next-line no-restricted-imports
 import { useToggleLike } from "@/features/savedListings/api/useToggleLike";
 import { useAppSelector } from "@/hooks/redux";
@@ -22,7 +22,6 @@ interface ListingCardProps {
 
 const ListingCard = ({ listing }: ListingCardProps) => {
   const { t } = useTranslation("listings");
-  const accessToken = useAppSelector(selectAccessToken);
   const userId = useAppSelector(selectUserId);
   const toggleLike = useToggleLike();
 
@@ -35,7 +34,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
     toggleLike.mutate({ listingId: listing.id });
   };
 
-  const showLikeButton = accessToken && userId !== listing.sellerId;
+  const showLikeButton = !!userId && userId !== listing.sellerId;
 
   return (
     <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
