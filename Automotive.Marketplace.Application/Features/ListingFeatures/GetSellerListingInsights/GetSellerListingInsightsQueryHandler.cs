@@ -1,4 +1,5 @@
 using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Application.Features.ListingFeatures.Common;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
@@ -10,9 +11,6 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetSellerL
 public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardogApiClient cardogClient)
     : IRequestHandler<GetSellerListingInsightsQuery, GetSellerListingInsightsResponse>
 {
-    private const int MarketCacheDays = 1;
-    private const int MarketFailureCacheHours = 2;
-
     public async Task<GetSellerListingInsightsResponse> Handle(GetSellerListingInsightsQuery request, CancellationToken cancellationToken)
     {
         var listing = await repository.AsQueryable<Listing>()
@@ -32,6 +30,9 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardo
                 c => c.Make == make && c.Model == model && c.Year == listing.Year && c.ExpiresAt > DateTime.UtcNow,
                 cancellationToken);
 
+        if (marketCache?.IsFetchFailed == true)
+            marketCache = null;
+
         if (marketCache == null)
         {
             var prefs = await repository.AsQueryable<UserPreferences>()
@@ -40,7 +41,7 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardo
             if (prefs?.EnableVehicleScoring == true)
             {
                 var result = await cardogClient.GetMarketOverviewAsync(make, model, listing.Year, cancellationToken);
-                await UpsertMarketCacheAsync(repository, make, model, listing.Year, result, cancellationToken);
+                await MarketCacheHelper.UpsertMarketCacheAsync(repository, make, model, listing.Year, result, cancellationToken);
 
                 if (result != null)
                     marketCache = new VehicleMarketCache { MedianPrice = result.MedianPrice, TotalListings = result.TotalListings };
@@ -72,46 +73,6 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardo
             DaysListed = (int)(DateTime.UtcNow - listing.CreatedAt).TotalDays,
             HasMarketData = cache != null,
         };
-    }
-
-    private static async Task UpsertMarketCacheAsync(IRepository repo, string make, string model, int year, CardogMarketResult? result, CancellationToken ct)
-    {
-        var now = DateTime.UtcNow;
-        var isFailed = result is null;
-        var expiry = isFailed ? now.AddHours(MarketFailureCacheHours) : now.AddDays(MarketCacheDays);
-
-        var existing = await repo.AsQueryable<VehicleMarketCache>()
-            .FirstOrDefaultAsync(c => c.Make == make && c.Model == model && c.Year == year, ct);
-
-        if (existing != null)
-        {
-            existing.MedianPrice = result?.MedianPrice ?? 0;
-            existing.TotalListings = result?.TotalListings ?? 0;
-            existing.IsFetchFailed = isFailed;
-            existing.FetchedAt = now;
-            existing.ExpiresAt = expiry;
-            await repo.UpdateAsync(existing, ct);
-        }
-        else
-        {
-            try
-            {
-                await repo.CreateAsync(new VehicleMarketCache
-                {
-                    Id = Guid.NewGuid(),
-                    Make = make, Model = model, Year = year,
-                    MedianPrice = result?.MedianPrice ?? 0,
-                    TotalListings = result?.TotalListings ?? 0,
-                    IsFetchFailed = isFailed,
-                    FetchedAt = now,
-                    ExpiresAt = expiry,
-                }, ct);
-            }
-            catch (DbUpdateException)
-            {
-                // Concurrent insert — ignore
-            }
-        }
     }
 
     private static ListingQualityInsight BuildListingQuality(Listing listing)
