@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "@tanstack/react-router";
 import { IoHeart } from "react-icons/io5";
 import { formatCurrency, formatNumber } from "@/lib/i18n/formatNumber";
 import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
@@ -46,7 +47,13 @@ const SavedListingRow = ({ listing }: SavedListingRowProps) => {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-start justify-between">
           <div className="min-w-0">
-            <p className="truncate font-medium">{listing.title}</p>
+            <Link
+              to="/listing/$id"
+              params={{ id: listing.listingId }}
+              className="truncate font-medium text-primary hover:underline"
+            >
+              {listing.title}
+            </Link>
             <p className="text-muted-foreground text-sm">
               {formatCurrency(listing.price)} € · {listing.municipalityName} ·{" "}
               {formatNumber(listing.mileage)} km ·{" "}
