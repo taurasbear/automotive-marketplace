@@ -29,6 +29,7 @@ public class SearchListingsQueryHandler(
             .Where(l =>
                 l.Variant.Model.Make.Name.ToLower().Contains(q) ||
                 l.Variant.Model.Name.ToLower().Contains(q) ||
+                (l.Variant.Model.Make.Name.ToLower() + " " + l.Variant.Model.Name.ToLower()).Contains(q) ||
                 (isYear && l.Year == yearValue) ||
                 l.Seller.Username.ToLower().Contains(q) ||
                 l.Id.ToString() == request.Q.Trim())
