@@ -18,5 +18,5 @@ export const getListingAiSummaryOptions = (
           params: { listingId, language, forceRegenerate },
         },
       ),
-    enabled: false,
+    enabled: true,
   });

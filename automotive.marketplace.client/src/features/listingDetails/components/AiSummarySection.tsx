@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Sparkles, RefreshCw, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -20,10 +19,10 @@ export function AiSummarySection({ listingId }: Props) {
   const { t, i18n } = useTranslation("listings");
   const { t: tPrefs } = useTranslation("userPreferences");
 
-  const [forceRegenerate, setForceRegenerate] = useState(false);
+  const queryClient = useQueryClient();
 
-  const { data, isFetching, refetch } = useQuery(
-    getListingAiSummaryOptions(listingId, i18n.language, forceRegenerate),
+  const { data, isFetching } = useQuery(
+    getListingAiSummaryOptions(listingId, i18n.language),
   );
 
   const summary = data?.data;
@@ -34,9 +33,14 @@ export function AiSummarySection({ listingId }: Props) {
   );
 
   const handleRegenerate = async () => {
-    setForceRegenerate(true);
-    await refetch();
-    setForceRegenerate(false);
+    try {
+      await queryClient.fetchQuery({
+        ...getListingAiSummaryOptions(listingId, i18n.language, true),
+        staleTime: 0,
+      });
+    } catch {
+      // fetchQuery throws on error — swallow silently, UI stays as-is
+    }
   };
 
   return (
