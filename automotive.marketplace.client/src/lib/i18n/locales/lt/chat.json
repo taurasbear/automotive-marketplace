@@ -9,7 +9,9 @@
     "confirmedMeetupWarning": "Turite patvirtintą susitikimą {{date}}, {{time}}. Pradėjus naujas derybas, jis bus atšauktas.",
     "activeMeetupWarning": "Pradėjus naujas derybas, esamas susitikimas bus atšauktas.",
     "keepExisting": "Palikti esamą",
-    "continue": "Tęsti"
+    "continue": "Tęsti",
+    "contractAlreadyActive": "Šiame pokalbyje jau yra aktyvi pirkimo-pardavimo sutarties užklausa",
+    "requestContract": "Pirkimo–pardavimo sutartis"
   },
   "meetingCard": {
     "statusLabels": {
@@ -130,5 +132,63 @@
     "to": "Iki ({{timezone}})",
     "addAnotherSlot": "+ Pridėti kitą laiką",
     "shareAvailability": "Dalintis prieinamumu"
+  },
+  "contractCard": {
+    "statusLabels": {
+      "pending": "Sutarties užklausa",
+      "active": "Pirkimo–pardavimo sutartis",
+      "complete": "Sutartis užbaigta",
+      "declined": "Sutartis atmesta",
+      "cancelled": "Sutartis atšaukta"
+    },
+    "declinedMessage": "Sutarties užklausa buvo atmesta.",
+    "cancelledMessage": "Sutarties užklausa buvo atšaukta.",
+    "recipientPendingMessage": "Pateikta pirkimo–pardavimo sutarties užklausa.",
+    "waitingForResponse": "Laukiama atsakymo...",
+    "accept": "Priimti",
+    "decline": "Atmesti",
+    "cancel": "Atšaukti užklausą",
+    "seller": "Pardavėjas",
+    "buyer": "Pirkėjas",
+    "submitted": "Pateikta",
+    "pending": "Laukiama",
+    "fillOut": "Pildyti",
+    "viewSubmittedData": "Pateikta",
+    "exportPdf": "Eksportuoti PDF"
+  },
+  "contractForm": {
+    "title": "Pirkimo–pardavimo sutartis",
+    "titleReadOnly": "Pateikta {{date}}",
+    "step1": "Transporto priemonės duomenys",
+    "step2": "Asmeninė informacija",
+    "make": "Markė",
+    "commercialName": "Komercinis pavadinimas",
+    "vin": "VIN kodas",
+    "mileage": "Rida (km)",
+    "price": "Kaina (EUR)",
+    "registrationNumber": "Valstybinis numeris",
+    "sdkCode": "Transporto priemonės savininko deklaravimo kodas (SDK)",
+    "registrationCertificate": "Registracijos liudijimas (serija ir nr.)",
+    "technicalInspectionValid": "Techninė apžiūra galiojanti",
+    "wasDamaged": "Transporto priemonė buvo sugadinta",
+    "damageKnown": "Žala / remontas žinomas pirkėjui",
+    "defects": "Techniniai defektai",
+    "defectBrakes": "Stabdžių sistema",
+    "defectSafety": "Saugos sistemos",
+    "defectSteering": "Vairo ir pakabos sistema",
+    "defectExhaust": "Išmetimo sistema",
+    "defectLighting": "Apšvietimo sistema",
+    "defectDetails": "Defektų / incidentų aprašymas",
+    "email": "El. paštas (iš paskyros)",
+    "fullName": "Vardas, pavardė",
+    "phone": "Telefonas",
+    "personalIdCode": "Asmens kodas / įmonės kodas",
+    "personalIdCodePlaceholder": "pvz. 38901011234",
+    "country": "Šalis",
+    "address": "Adresas",
+    "rememberForNextTime": "Įsiminti telefoną, asmens kodą ir adresą kitam kartui",
+    "next": "Toliau",
+    "back": "Atgal",
+    "submit": "Pateikti"
   }
 }

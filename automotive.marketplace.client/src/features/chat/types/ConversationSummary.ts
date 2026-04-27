@@ -4,6 +4,10 @@ export type ConversationSummary = {
   listingTitle: string;
   listingThumbnail: { url: string; altText: string } | null;
   listingPrice: number;
+  listingMake: string;
+  listingCommercialName: string;
+  listingVin: string | null;
+  listingMileage: number;
   counterpartId: string;
   counterpartUsername: string;
   lastMessage: string | null;

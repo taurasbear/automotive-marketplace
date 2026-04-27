@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/redux";
 import { useDateLocale } from "@/lib/i18n/dateLocale";
+import axiosClient from "@/lib/axios/axiosClient";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CheckCircle, MapPin } from "lucide-react";
@@ -13,6 +14,8 @@ import type { ConversationSummary } from "../types/ConversationSummary";
 import { getTimezoneOffsetLabel } from "../utils/timezone";
 import ActionBar from "./ActionBar";
 import AvailabilityCardComponent from "./AvailabilityCardComponent";
+import ContractCardComponent from "./ContractCard";
+import ContractFormDialog from "./ContractFormDialog";
 import ListingCard from "./ListingCard";
 import MeetingCard from "./MeetingCard";
 import OfferCard from "./OfferCard";
@@ -43,6 +46,11 @@ const MessageThread = ({
     respondToAvailability,
     cancelMeeting,
     cancelAvailability,
+    requestContract,
+    respondToContract,
+    cancelContract,
+    submitContractSellerForm,
+    submitContractBuyerForm,
   } = useChatHub();
   const { mutate: markRead } = useMarkMessagesRead();
   const [input, setInput] = useState("");
@@ -68,6 +76,15 @@ const MessageThread = ({
         m.availabilityCard?.status === "Pending"),
   );
 
+  const hasActiveContract = messages.some(
+    (m) =>
+      m.messageType === "Contract" &&
+      m.contractCard &&
+      ["Pending", "Active", "SellerSubmitted", "BuyerSubmitted"].includes(
+        m.contractCard.status,
+      ),
+  );
+
   const acceptedMeeting =
     messages.find(
       (m) => m.messageType === "Meeting" && m.meeting?.status === "Accepted",
@@ -76,6 +93,11 @@ const MessageThread = ({
   const [showStickyBar, setShowStickyBar] = useState(false);
   const acceptedCardRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [contractFormOpen, setContractFormOpen] = useState(false);
+  const [contractFormCardId, setContractFormCardId] = useState<string>("");
+  const [contractFormReadOnly, setContractFormReadOnly] = useState(false);
+  const [contractFormSubmittedAt, setContractFormSubmittedAt] = useState<string | null>(null);
 
   const acceptedCardRefCallback = useCallback((node: HTMLDivElement | null) => {
     acceptedCardRef.current = node;
@@ -100,9 +122,21 @@ const MessageThread = ({
     return () => observer.disconnect();
   }, [acceptedMeeting]);
 
+  const handleExportPdf = async (cardId: string) => {
+    const response = await axiosClient.get<Blob>(
+      `/Chat/ExportContractPdf?contractCardId=${cardId}`,
+      { responseType: "blob" },
+    );
+    const objectUrl = URL.createObjectURL(response.data);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = "contract.pdf";
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  };
+
   const handleSend = () => {
     const trimmed = input.trim();
-    if (!trimmed) return;
     try {
       sendMessage({ conversationId: conversation.id, content: trimmed });
       setInput("");
@@ -263,6 +297,49 @@ const MessageThread = ({
               );
             }
 
+            if (m.messageType === "Contract" && m.contractCard) {
+              const isOwn = m.senderId === userId;
+              const isSeller = userId === conversation.sellerId;
+              return (
+                <div
+                  key={m.id}
+                  className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
+                >
+                  <ContractCardComponent
+                    card={m.contractCard}
+                    currentUserId={userId}
+                    isSeller={isSeller}
+                    onAccept={(cardId) =>
+                      respondToContract({ contractCardId: cardId, action: "Accept" })
+                    }
+                    onDecline={(cardId) =>
+                      respondToContract({ contractCardId: cardId, action: "Decline" })
+                    }
+                    onCancel={(cardId) =>
+                      cancelContract({ contractCardId: cardId })
+                    }
+                    onFillOut={(cardId) => {
+                      setContractFormCardId(cardId);
+                      setContractFormReadOnly(false);
+                      setContractFormSubmittedAt(null);
+                      setContractFormOpen(true);
+                    }}
+                    onViewSubmitted={(cardId) => {
+                      setContractFormCardId(cardId);
+                      setContractFormReadOnly(true);
+                      setContractFormSubmittedAt(
+                        isSeller
+                          ? m.contractCard!.sellerSubmittedAt
+                          : m.contractCard!.buyerSubmittedAt,
+                      );
+                      setContractFormOpen(true);
+                    }}
+                    onExportPdf={handleExportPdf}
+                  />
+                </div>
+              );
+            }
+
             const isOwn = m.senderId === userId;
             return (
               <div
@@ -311,6 +388,8 @@ const MessageThread = ({
             })
           }
           onCancelMeeting={(meetingId) => cancelMeeting({ meetingId })}
+          hasActiveContract={hasActiveContract}
+          onRequestContract={() => requestContract({ conversationId: conversation.id })}
         />
         <input
           className="border-input bg-background focus:ring-ring flex-1 rounded-full border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
@@ -328,6 +407,37 @@ const MessageThread = ({
           {t("messageThread.send")}
         </Button>
       </div>
+      <ContractFormDialog
+        open={contractFormOpen}
+        onOpenChange={setContractFormOpen}
+        contractCardId={contractFormCardId}
+        isSeller={userId === conversation.sellerId}
+        isReadOnly={contractFormReadOnly}
+        submittedAt={contractFormSubmittedAt}
+        vehicleDefaults={{
+          make: conversation.listingMake,
+          commercialName: conversation.listingCommercialName,
+          vin: conversation.listingVin,
+          mileage: conversation.listingMileage,
+          price:
+            messages.find(
+              (m) => m.messageType === "Offer" && m.offer?.status === "Accepted",
+            )?.offer?.amount ?? conversation.listingPrice,
+        }}
+        userEmail=""
+        onSubmitSeller={(cardId, data, updateProfile) =>
+          submitContractSellerForm({
+            contractCardId: cardId,
+            formData: { ...data, updateProfile },
+          })
+        }
+        onSubmitBuyer={(cardId, data, updateProfile) =>
+          submitContractBuyerForm({
+            contractCardId: cardId,
+            formData: { ...data, updateProfile },
+          })
+        }
+      />
     </div>
   );
 };

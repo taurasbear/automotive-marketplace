@@ -8,6 +8,11 @@ using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToMeeting;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToOffer;
 using Automotive.Marketplace.Application.Features.ChatFeatures.SendMessage;
 using Automotive.Marketplace.Application.Features.ChatFeatures.ShareAvailability;
+using Automotive.Marketplace.Application.Features.ChatFeatures.RequestContract;
+using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToContract;
+using Automotive.Marketplace.Application.Features.ChatFeatures.CancelContract;
+using Automotive.Marketplace.Application.Features.ChatFeatures.SubmitContractSellerForm;
+using Automotive.Marketplace.Application.Features.ChatFeatures.SubmitContractBuyerForm;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -177,5 +182,62 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync("AvailabilityCancelled", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("AvailabilityCancelled", result);
+    }
+
+    public async Task RequestContract(Guid conversationId)
+    {
+        var result = await mediator.Send(new RequestContractCommand
+        {
+            ConversationId = conversationId,
+            InitiatorId = UserId,
+        });
+
+        await Clients.Group($"user-{UserId}").SendAsync("ContractRequested", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("ContractRequested", result);
+    }
+
+    public async Task RespondToContract(Guid contractCardId, string action)
+    {
+        var result = await mediator.Send(new RespondToContractCommand
+        {
+            ContractCardId = contractCardId,
+            ResponderId = UserId,
+            Action = Enum.Parse<ContractResponseAction>(action, ignoreCase: true),
+        });
+
+        await Clients.Group($"user-{result.InitiatorId}").SendAsync("ContractStatusUpdated", result);
+        await Clients.Group($"user-{result.ResponderId}").SendAsync("ContractStatusUpdated", result);
+    }
+
+    public async Task CancelContract(Guid contractCardId)
+    {
+        var result = await mediator.Send(new CancelContractCommand
+        {
+            ContractCardId = contractCardId,
+            RequesterId = UserId,
+        });
+
+        await Clients.Group($"user-{result.InitiatorId}").SendAsync("ContractStatusUpdated", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("ContractStatusUpdated", result);
+    }
+
+    public async Task SubmitContractSellerForm(Guid contractCardId, SubmitContractSellerFormCommand formData)
+    {
+        formData.ContractCardId = contractCardId;
+        formData.SellerId = UserId;
+        var result = await mediator.Send(formData);
+
+        await Clients.Group($"user-{result.BuyerId}").SendAsync("ContractStatusUpdated", result);
+        await Clients.Group($"user-{result.SellerId}").SendAsync("ContractStatusUpdated", result);
+    }
+
+    public async Task SubmitContractBuyerForm(Guid contractCardId, SubmitContractBuyerFormCommand formData)
+    {
+        formData.ContractCardId = contractCardId;
+        formData.BuyerId = UserId;
+        var result = await mediator.Send(formData);
+
+        await Clients.Group($"user-{result.BuyerId}").SendAsync("ContractStatusUpdated", result);
+        await Clients.Group($"user-{result.SellerId}").SendAsync("ContractStatusUpdated", result);
     }
 }

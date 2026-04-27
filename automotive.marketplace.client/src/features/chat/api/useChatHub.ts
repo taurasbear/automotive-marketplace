@@ -29,6 +29,10 @@ import type {
   MeetingCancelledPayload,
   AvailabilityCancelledPayload,
 } from "../types/MeetingEventPayloads";
+import type {
+  ContractRequestedPayload,
+  ContractStatusUpdatedPayload,
+} from "../types/ContractEventPayloads";
 
 const apiBase =
   (import.meta.env.VITE_APP_API_URL as string) ||
@@ -503,9 +507,81 @@ export const useChatHub = () => {
       },
     );
 
+    connection.on(
+      HUB_METHODS.CONTRACT_REQUESTED,
+      (payload: ContractRequestedPayload) => {
+        queryClient.setQueryData<{ data: GetMessagesResponse }>(
+          chatKeys.messages(payload.conversationId),
+          (old) => {
+            if (!old) return old;
+            const newMessage: Message = {
+              id: payload.messageId,
+              senderId: payload.senderId,
+              senderUsername: payload.senderUsername,
+              content: "",
+              sentAt: payload.sentAt,
+              isRead: false,
+              messageType: "Contract",
+              contractCard: {
+                id: payload.contractCard.id,
+                status: payload.contractCard.status,
+                initiatorId: payload.contractCard.initiatorId,
+                acceptedAt: null,
+                createdAt: payload.contractCard.createdAt,
+                sellerSubmittedAt: null,
+                buyerSubmittedAt: null,
+              },
+            };
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                messages: [...old.data.messages, newMessage],
+              },
+            };
+          },
+        );
+        void queryClient.invalidateQueries({
+          queryKey: chatKeys.conversations(),
+        });
+      },
+    );
+
+    connection.on(
+      HUB_METHODS.CONTRACT_STATUS_UPDATED,
+      (payload: ContractStatusUpdatedPayload) => {
+        queryClient.setQueryData<{ data: GetMessagesResponse }>(
+          chatKeys.messages(payload.conversationId),
+          (old) => {
+            if (!old) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                messages: old.data.messages.map((m) =>
+                  m.contractCard?.id === payload.contractCardId
+                    ? {
+                        ...m,
+                        contractCard: {
+                          ...m.contractCard,
+                          status: payload.newStatus,
+                          sellerSubmittedAt:
+                            payload.sellerSubmittedAt ?? m.contractCard.sellerSubmittedAt,
+                          buyerSubmittedAt:
+                            payload.buyerSubmittedAt ?? m.contractCard.buyerSubmittedAt,
+                        },
+                      }
+                    : m,
+                ),
+              },
+            };
+          },
+        );
+      },
+    );
+
     connectionRef.current = connection;
     connection.start().catch(console.error);
-
     return () => {
       if (isOwner.current) {
         void connection.stop();
@@ -726,6 +802,59 @@ export const useChatHub = () => {
     [],
   );
 
+  const requestContract = useCallback(
+    ({ conversationId }: { conversationId: string }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected)
+        throw new Error("Not connected.");
+      void connectionRef.current.invoke(HUB_METHODS.REQUEST_CONTRACT, conversationId);
+    },
+    [],
+  );
+
+  const respondToContract = useCallback(
+    ({ contractCardId, action }: { contractCardId: string; action: "Accept" | "Decline" }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected)
+        throw new Error("Not connected.");
+      void connectionRef.current.invoke(HUB_METHODS.RESPOND_TO_CONTRACT, contractCardId, action);
+    },
+    [],
+  );
+
+  const cancelContract = useCallback(
+    ({ contractCardId }: { contractCardId: string }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected)
+        throw new Error("Not connected.");
+      void connectionRef.current.invoke(HUB_METHODS.CANCEL_CONTRACT, contractCardId);
+    },
+    [],
+  );
+
+  const submitContractSellerForm = useCallback(
+    ({ contractCardId, formData }: { contractCardId: string; formData: object }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected)
+        throw new Error("Not connected.");
+      void connectionRef.current.invoke(
+        HUB_METHODS.SUBMIT_CONTRACT_SELLER_FORM,
+        contractCardId,
+        formData,
+      );
+    },
+    [],
+  );
+
+  const submitContractBuyerForm = useCallback(
+    ({ contractCardId, formData }: { contractCardId: string; formData: object }) => {
+      if (connectionRef.current?.state !== signalR.HubConnectionState.Connected)
+        throw new Error("Not connected.");
+      void connectionRef.current.invoke(
+        HUB_METHODS.SUBMIT_CONTRACT_BUYER_FORM,
+        contractCardId,
+        formData,
+      );
+    },
+    [],
+  );
+
   return {
     sendMessage,
     sendOffer,
@@ -736,5 +865,10 @@ export const useChatHub = () => {
     respondToAvailability,
     cancelMeeting,
     cancelAvailability,
+    requestContract,
+    respondToContract,
+    cancelContract,
+    submitContractSellerForm,
+    submitContractBuyerForm,
   };
 };

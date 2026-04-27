@@ -25,6 +25,8 @@ type ListingBuyerPanelProps = {
   listingId: string;
   listingTitle: string;
   listingPrice: number;
+  listingMake: string;
+  listingMileage: number;
   listingThumbnail: { url: string; altText: string } | null;
   sellerId: string;
   onStartChat: (conversation: ConversationSummary) => void;
@@ -101,6 +103,8 @@ export default function ListingBuyerPanel({
   listingId,
   listingTitle,
   listingPrice,
+  listingMake,
+  listingMileage,
   listingThumbnail,
   sellerId,
   onStartChat,
@@ -122,6 +126,10 @@ export default function ListingBuyerPanel({
       listingTitle,
       listingThumbnail,
       listingPrice,
+      listingMake,
+      listingCommercialName: "",
+      listingVin: null,
+      listingMileage,
       counterpartId: engagement.buyerId,
       counterpartUsername: engagement.buyerUsername,
       lastMessage: null,
@@ -142,6 +150,10 @@ export default function ListingBuyerPanel({
         listingTitle,
         listingThumbnail,
         listingPrice,
+        listingMake,
+        listingCommercialName: "",
+        listingVin: null,
+        listingMileage,
         counterpartId: liker.userId,
         counterpartUsername: liker.username,
         lastMessage: null,

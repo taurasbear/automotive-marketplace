@@ -30,6 +30,8 @@ public sealed record GetMessagesResponse
 
         public AvailabilityCardData? AvailabilityCard { get; set; }
 
+        public ContractCardData? ContractCard { get; set; }
+
         public sealed record OfferData
         {
             public Guid Id { get; set; }
@@ -92,6 +94,17 @@ public sealed record GetMessagesResponse
 
                 public DateTime EndTime { get; set; }
             }
+        }
+
+        public sealed record ContractCardData
+        {
+            public Guid Id { get; set; }
+            public ContractCardStatus Status { get; set; }
+            public Guid InitiatorId { get; set; }
+            public DateTime? AcceptedAt { get; set; }
+            public DateTime CreatedAt { get; set; }
+            public DateTime? SellerSubmittedAt { get; set; }
+            public DateTime? BuyerSubmittedAt { get; set; }
         }
     }
 }

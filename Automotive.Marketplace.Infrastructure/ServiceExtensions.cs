@@ -24,6 +24,7 @@ public static class ServiceExtensions
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IRepository, Repository>();
         services.AddScoped<IImageStorageService, S3ImageStorageService>();
+        services.AddScoped<IContractPdfService, ContractPdfService>();
 
         services.AddScoped<IDevelopmentSeeder, UserSeeder>();
 

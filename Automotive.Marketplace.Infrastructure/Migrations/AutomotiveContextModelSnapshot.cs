@@ -170,6 +170,228 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.ToTable("BodyTypeTranslations");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractBuyerSubmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid>("ContractCardId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonalIdCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractCardId")
+                        .IsUnique();
+
+                    b.ToTable("ContractBuyerSubmissions");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractCard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("AcceptedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ConversationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("InitiatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("InitiatorId");
+
+                    b.ToTable("ContractCards");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractSellerSubmission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("CommercialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("ContractCardId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("DamageKnown")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DefectBrakes")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("DefectDetails")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("DefectExhaust")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DefectLighting")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DefectSafety")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DefectSteering")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Mileage")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonalIdCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("RegistrationCertificate")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RegistrationNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("SdkCode")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("TechnicalInspectionValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Vin")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("WasDamaged")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractCardId")
+                        .IsUnique();
+
+                    b.ToTable("ContractSellerSubmissions");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Conversation", b =>
                 {
                     b.Property<Guid>("Id")
@@ -772,6 +994,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("ContractCardId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uuid");
 
@@ -812,6 +1037,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AvailabilityCardId")
+                        .IsUnique();
+
+                    b.HasIndex("ContractCardId")
                         .IsUnique();
 
                     b.HasIndex("ConversationId");
@@ -1074,6 +1302,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1094,6 +1325,12 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonalIdCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<string>("Username")
@@ -1542,6 +1779,47 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Navigation("BodyType");
                 });
 
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractBuyerSubmission", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.ContractCard", "ContractCard")
+                        .WithOne("BuyerSubmission")
+                        .HasForeignKey("Automotive.Marketplace.Domain.Entities.ContractBuyerSubmission", "ContractCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContractCard");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractCard", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.Conversation", "Conversation")
+                        .WithMany()
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.User", "Initiator")
+                        .WithMany()
+                        .HasForeignKey("InitiatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("Initiator");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractSellerSubmission", b =>
+                {
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.ContractCard", "ContractCard")
+                        .WithOne("SellerSubmission")
+                        .HasForeignKey("Automotive.Marketplace.Domain.Entities.ContractSellerSubmission", "ContractCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContractCard");
+                });
+
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Conversation", b =>
                 {
                     b.HasOne("Automotive.Marketplace.Domain.Entities.User", "Buyer")
@@ -1696,6 +1974,11 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .HasForeignKey("Automotive.Marketplace.Domain.Entities.Message", "AvailabilityCardId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("Automotive.Marketplace.Domain.Entities.ContractCard", "ContractCard")
+                        .WithOne("Message")
+                        .HasForeignKey("Automotive.Marketplace.Domain.Entities.Message", "ContractCardId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Automotive.Marketplace.Domain.Entities.Conversation", "Conversation")
                         .WithMany("Messages")
                         .HasForeignKey("ConversationId")
@@ -1719,6 +2002,8 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("AvailabilityCard");
+
+                    b.Navigation("ContractCard");
 
                     b.Navigation("Conversation");
 
@@ -1893,6 +2178,15 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.BodyType", b =>
                 {
                     b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.ContractCard", b =>
+                {
+                    b.Navigation("BuyerSubmission");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("SellerSubmission");
                 });
 
             modelBuilder.Entity("Automotive.Marketplace.Domain.Entities.Conversation", b =>

@@ -77,6 +77,10 @@ export const ENDPOINTS = {
     GET_MESSAGES: "/Chat/GetMessages",
     MARK_MESSAGES_READ: "/Chat/MarkMessagesRead",
     GET_UNREAD_COUNT: "/Chat/GetUnreadCount",
+    GET_CONTRACT_CARD: "/Chat/GetContractCard",
+    EXPORT_CONTRACT_PDF: "/Chat/ExportContractPdf",
+    GET_USER_CONTRACT_PROFILE: "/Chat/GetUserContractProfile",
+    UPDATE_USER_CONTRACT_PROFILE: "/Chat/UpdateUserContractProfile",
   },
   SAVED_LISTING: {
     TOGGLE_LIKE: "/SavedListing/ToggleLike",
