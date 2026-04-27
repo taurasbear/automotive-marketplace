@@ -153,7 +153,7 @@ export function SellerInsightsPanel({ listingId }: Props) {
               <div className="space-y-1 border-t pt-2">
                 {listingQuality.suggestions.map((s, i) => (
                   <p key={i} className="text-muted-foreground text-xs">
-                    • {s}
+                    • {t(`sellerInsights.suggestions.${s}`, s)}
                   </p>
                 ))}
               </div>

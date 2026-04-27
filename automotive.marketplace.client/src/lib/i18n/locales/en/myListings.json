@@ -72,6 +72,12 @@
       "photos": "Photos ({{count}})",
       "vin": "VIN",
       "colour": "Colour"
+    },
+    "suggestions": {
+      "addDescription": "Add a detailed description to attract more buyers.",
+      "addPhotos": "Add at least 3 photos to significantly improve visibility.",
+      "addVin": "Include the VIN to build buyer confidence.",
+      "addColour": "Specify the colour to help buyers filter listings."
     }
   },
   "buyerPanel": {

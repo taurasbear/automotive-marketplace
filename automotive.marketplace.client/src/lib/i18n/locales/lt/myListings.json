@@ -72,6 +72,12 @@
       "photos": "Nuotraukos ({{count}})",
       "vin": "VIN",
       "colour": "Spalva"
+    },
+    "suggestions": {
+      "addDescription": "Pridėkite išsamų aprašymą, kad pritrauktumėte daugiau pirkėjų.",
+      "addPhotos": "Pridėkite bent 3 nuotraukas, kad žymiai pagerintumėte matomumą.",
+      "addVin": "Įrašykite VIN numerį, kad pirkėjai labiau pasitikėtų.",
+      "addColour": "Nurodykite spalvą, kad pirkėjai galėtų filtruoti pagal ją."
     }
   },
   "buyerPanel": {

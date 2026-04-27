@@ -94,7 +94,7 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardo
         }
         else
         {
-            suggestions.Add("Add a detailed description to attract more buyers.");
+            suggestions.Add("addDescription");
         }
 
         if (hasPhotos)
@@ -104,14 +104,14 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardo
         }
         else
         {
-            suggestions.Add("Add at least 3 photos to significantly improve visibility.");
+            suggestions.Add("addPhotos");
         }
 
         if (hasVin) points += 15;
-        else suggestions.Add("Include the VIN to build buyer confidence.");
+        else suggestions.Add("addVin");
 
         if (hasColour) points += 10;
-        else suggestions.Add("Specify the colour to help buyers filter listings.");
+        else suggestions.Add("addColour");
 
         var qualityScore = (int)Math.Round(Math.Min(points, 90) / 90.0 * 100);
 
