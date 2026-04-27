@@ -32,7 +32,7 @@ public class DatabaseFixture<T> : IAsyncLifetime where T : class
                 .UseNpgsql(_connectionString), ServiceLifetime.Transient);
 
         services.AddScoped<IRepository, Repository>();
-        services.AddAutoMapper(typeof(GetAllListingsQueryHandler).Assembly);
+        services.AddAutoMapper(cfg => cfg.AddMaps(typeof(GetAllListingsQueryHandler).Assembly));
 
         ServiceProvider = services.BuildServiceProvider();
 
