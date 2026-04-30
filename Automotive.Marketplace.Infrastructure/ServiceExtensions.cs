@@ -27,14 +27,14 @@ public static class ServiceExtensions
         services.AddScoped<IContractPdfService, ContractPdfService>();
 
         services.AddScoped<IDevelopmentSeeder, UserSeeder>();
-
-        services.AddScoped<IDevelopmentSeeder, FuelSeeder>();
-        services.AddScoped<IDevelopmentSeeder, TransmissionSeeder>();
-        services.AddScoped<IDevelopmentSeeder, BodyTypeSeeder>();
-        services.AddScoped<IDevelopmentSeeder, DrivetrainSeeder>();
-        services.AddScoped<IDevelopmentSeeder, DefectCategorySeeder>();
-        services.AddScoped<IDevelopmentSeeder, VariantSeeder>();
         services.AddScoped<IDevelopmentSeeder, ListingSeeder>();
+
+        services.AddScoped<ISeeder, FuelSeeder>();
+        services.AddScoped<ISeeder, TransmissionSeeder>();
+        services.AddScoped<ISeeder, BodyTypeSeeder>();
+        services.AddScoped<ISeeder, DrivetrainSeeder>();
+        services.AddScoped<ISeeder, DefectCategorySeeder>();
+        services.AddScoped<ISeeder, VariantSeeder>();
 
         services.AddHttpClient<IMunicipalityApiClient, LithuanianMunicipalityApiClient>();
         services.AddScoped<IMunicipalityInitializer, MunicipalityInitializer>();

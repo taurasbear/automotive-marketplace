@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Automotive.Marketplace.Infrastructure.Data.Seeders;
 
-public class BodyTypeSeeder(AutomotiveContext context) : IDevelopmentSeeder
+public class BodyTypeSeeder(AutomotiveContext context) : ISeeder
 {
     private static readonly List<(Guid Id, string En, string Lt)> BodyTypes =
     [
