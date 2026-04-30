@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Automotive.Marketplace.Infrastructure.Data.Seeders;
 
-public class VariantSeeder(AutomotiveContext context) : IDevelopmentSeeder
+public class VariantSeeder(AutomotiveContext context) : ISeeder
 {
     // IDs match FuelSeeder, TransmissionSeeder, and BodyTypeSeeder
     private static readonly Guid Petrol    = Guid.Parse("11111111-0000-0000-0000-000000000002");

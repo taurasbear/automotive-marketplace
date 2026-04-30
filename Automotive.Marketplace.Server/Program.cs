@@ -123,6 +123,11 @@ using (var scope = app.Services.CreateScope())
     var vehicleDataInitializer = scope.ServiceProvider.GetRequiredService<IVehicleDataInitializer>();
     await vehicleDataInitializer.RunAsync(app.Lifetime.ApplicationStopping);
 
+    foreach (var seeder in scope.ServiceProvider.GetServices<ISeeder>())
+    {
+        await seeder.SeedAsync(app.Lifetime.ApplicationStopping);
+    }
+
     if (app.Environment.IsDevelopment())
     {
         foreach (var seeder in scope.ServiceProvider.GetServices<IDevelopmentSeeder>())
