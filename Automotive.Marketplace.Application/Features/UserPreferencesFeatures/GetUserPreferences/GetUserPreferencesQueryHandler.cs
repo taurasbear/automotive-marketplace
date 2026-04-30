@@ -22,8 +22,9 @@ public class GetUserPreferencesQueryHandler(IRepository repository)
                 ReliabilityWeight = 0.21,
                 MileageWeight = 0.17,
                 ConditionWeight = 0.15,
-                AutoGenerateAiSummary = false,
+                AutoGenerateAiSummary = true,
                 EnableVehicleScoring = false,
+                HasCompletedQuiz = false,
                 HasPreferences = false,
             };
         }
@@ -37,6 +38,7 @@ public class GetUserPreferencesQueryHandler(IRepository repository)
             ConditionWeight = prefs.ConditionWeight,
             AutoGenerateAiSummary = prefs.AutoGenerateAiSummary,
             EnableVehicleScoring = prefs.EnableVehicleScoring,
+            HasCompletedQuiz = prefs.HasCompletedQuiz,
             HasPreferences = true,
         };
     }

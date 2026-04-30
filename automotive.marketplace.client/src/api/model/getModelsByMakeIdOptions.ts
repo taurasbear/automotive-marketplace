@@ -12,6 +12,6 @@ const getModelsByMakeId = (query: GetModelsByMakeIdQuery) =>
 
 export const getModelsByMakeIdOptions = (query: GetModelsByMakeIdQuery) =>
   queryOptions({
-    queryKey: modelKeys.byMakeId(query.makeId),
+    queryKey: modelKeys.byMakeId(query.makeId, query.onlyWithListings),
     queryFn: () => getModelsByMakeId(query),
   });

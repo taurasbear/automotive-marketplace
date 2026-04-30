@@ -37,7 +37,8 @@
     "save": "Išsaugoti nustatymus",
     "saving": "Saugoma...",
     "back": "Atgal",
-    "next": "Toliau"
+    "next": "Toliau",
+    "retakeQuiz": "Perlaikyti testą"
   },
   "settings": {
     "title": "Nustatymai",

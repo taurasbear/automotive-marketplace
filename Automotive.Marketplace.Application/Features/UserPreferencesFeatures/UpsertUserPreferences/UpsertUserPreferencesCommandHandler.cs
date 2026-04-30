@@ -27,6 +27,7 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
             existing.ConditionWeight = request.ConditionWeight;
             existing.AutoGenerateAiSummary = request.AutoGenerateAiSummary;
             existing.EnableVehicleScoring = request.EnableVehicleScoring;
+            existing.HasCompletedQuiz = request.HasCompletedQuiz;
             await repository.UpdateAsync(existing, cancellationToken);
         }
         else
@@ -42,6 +43,7 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
                 ConditionWeight = request.ConditionWeight,
                 AutoGenerateAiSummary = request.AutoGenerateAiSummary,
                 EnableVehicleScoring = request.EnableVehicleScoring,
+                HasCompletedQuiz = request.HasCompletedQuiz,
             }, cancellationToken);
         }
     }

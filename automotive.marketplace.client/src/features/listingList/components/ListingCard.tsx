@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { selectAccessToken } from "@/features/auth";
+import { selectUserId } from "@/features/auth";
 // eslint-disable-next-line no-restricted-imports
 import { useToggleLike } from "@/features/savedListings/api/useToggleLike";
 import { useAppSelector } from "@/hooks/redux";
@@ -12,6 +12,7 @@ import { TbManualGearbox } from "react-icons/tb";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { GetAllListingsResponse } from "../types/GetAllListingsResponse";
+import { translateVehicleAttr } from "../utils/translateVehicleAttr";
 import ListingCardBadge from "./ListingCardBadge";
 import ImageHoverGallery from "@/components/gallery/ImageHoverGallery";
 
@@ -21,7 +22,7 @@ interface ListingCardProps {
 
 const ListingCard = ({ listing }: ListingCardProps) => {
   const { t } = useTranslation("listings");
-  const accessToken = useAppSelector(selectAccessToken);
+  const userId = useAppSelector(selectUserId);
   const toggleLike = useToggleLike();
 
   const handleClick = async () => {
@@ -33,6 +34,8 @@ const ListingCard = ({ listing }: ListingCardProps) => {
     toggleLike.mutate({ listingId: listing.id });
   };
 
+  const showLikeButton = !!userId && userId !== listing.sellerId;
+
   return (
     <div className="bg-card border-border grid w-full gap-8 border-1 md:grid-cols-2">
       <div className="group relative flex flex-shrink-0 py-5">
@@ -40,7 +43,7 @@ const ListingCard = ({ listing }: ListingCardProps) => {
           images={listing.images}
           className="aspect-[4/3] w-full"
         />
-        {accessToken && (
+        {showLikeButton && (
           <button
             onClick={handleLikeClick}
             className={`absolute top-7 left-2 flex h-9 w-9 items-center justify-center rounded-full transition-opacity ${
@@ -82,14 +85,14 @@ const ListingCard = ({ listing }: ListingCardProps) => {
             <ListingCardBadge
               Icon={<MdOutlineLocalGasStation className="h-8 w-8" />}
               title={t("card.fuelType")}
-              stat={listing.fuelName}
+              stat={translateVehicleAttr("fuel", listing.fuelName, t)}
             />
           </div>
           <div className="flex justify-self-start">
             <ListingCardBadge
               Icon={<TbManualGearbox className="h-8 w-8" />}
               title={t("card.gearBox")}
-              stat={listing.transmissionName}
+              stat={translateVehicleAttr("transmission", listing.transmissionName, t)}
             />
           </div>
           <div className="flex justify-self-end">

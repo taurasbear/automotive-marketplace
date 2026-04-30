@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Sparkles, RefreshCw, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getListingComparisonAiSummaryOptions } from "../api/getListingComparisonAiSummaryOptions";
+import { getUserPreferencesOptions } from "@/features/userPreferences";
+import { useAppSelector } from "@/hooks/redux";
 
 type Props = {
   listingAId: string;
@@ -20,9 +22,16 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
   const { t, i18n } = useTranslation("compare");
   const { t: tPrefs } = useTranslation("userPreferences");
 
-  const { data, isFetching, refetch } = useQuery(
-    getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
-  );
+  const queryClient = useQueryClient();
+
+  const userId = useAppSelector((state) => state.auth.userId);
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
+  const autoGenerate = userId ? (prefsData?.data?.autoGenerateAiSummary ?? true) : false;
+
+  const { data, isFetching } = useQuery({
+    ...getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language),
+    enabled: autoGenerate,
+  });
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
@@ -30,6 +39,17 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
   const translatedUnavailable = unavailable.map((f) =>
     tPrefs(factorTranslationKeys[f] ?? f),
   );
+
+  const handleRegenerate = async () => {
+    try {
+      await queryClient.fetchQuery({
+        ...getListingComparisonAiSummaryOptions(listingAId, listingBId, i18n.language, true),
+        staleTime: 0,
+      });
+    } catch {
+      // error is stored in the query cache; isError on the observer will reflect it
+    }
+  };
 
   return (
     <div className="border-border mb-4 rounded-lg border p-4">
@@ -41,7 +61,7 @@ export function CompareAiSummary({ listingAId, listingBId }: Props) {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => refetch()}
+          onClick={handleRegenerate}
           disabled={isFetching}
           className="flex items-center gap-1"
         >

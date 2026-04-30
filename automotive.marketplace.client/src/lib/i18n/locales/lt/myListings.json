@@ -54,6 +54,32 @@
     "powerKw": "Galia (kW):",
     "engineSizeMl": "Variklio tūris (ml):"
   },
+  "sellerInsights": {
+    "title": "Pardavėjo įžvalgos",
+    "marketPosition": {
+      "title": "Rinkos pozicija",
+      "yourPrice": "Jūsų kaina",
+      "marketMedian": "Rinkos mediana",
+      "belowMarket": "žemiau rinkos",
+      "aboveMarket": "aukščiau rinkos",
+      "similarListings": "panašūs skelbimai",
+      "daysListed": "dienų skelbta",
+      "noData": "Rinkos duomenų dar nėra"
+    },
+    "listingQuality": {
+      "title": "Skelbimo kokybė",
+      "description": "Aprašymas",
+      "photos": "Nuotraukos ({{count}})",
+      "vin": "VIN",
+      "colour": "Spalva"
+    },
+    "suggestions": {
+      "addDescription": "Pridėkite išsamų aprašymą, kad pritrauktumėte daugiau pirkėjų.",
+      "addPhotos": "Pridėkite bent 3 nuotraukas, kad žymiai pagerintumėte matomumą.",
+      "addVin": "Įrašykite VIN numerį, kad pirkėjai labiau pasitikėtų.",
+      "addColour": "Nurodykite spalvą, kad pirkėjai galėtų filtruoti pagal ją."
+    }
+  },
   "buyerPanel": {
     "buyers": "Pirkėjai",
     "conversations": "Pokalbiai",

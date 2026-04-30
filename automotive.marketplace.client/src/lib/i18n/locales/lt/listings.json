@@ -53,7 +53,8 @@
     "saveChanges": "Išsaugoti pakeitimus"
   },
   "createPage": {
-    "title": "Sukurkite savo skelbimą"
+    "title": "Sukurkite savo skelbimą",
+    "guestWarning": "Norėdami sukurti skelbimą, turite turėti paskyrą. <signIn>Prisijunkite</signIn> arba <register>sukurkite paskyrą</register>, kad galėtumėte tęsti."
   },
   "form": {
     "carMake": "Automobilio markė*",
@@ -91,5 +92,42 @@
     "unavailableFactors": "Kai kurie duomenys neprieinami ({{factors}}). Verdiktas gali būti nepilnas.",
     "unavailable": "AI apžvalga šiuo metu nepasiekiama.",
     "prompt": "Spauskite \"Generuoti\", kad gautumėte AI pirkėjo verdiktą šiam skelbimui."
+  },
+  "vehicleAttributes": {
+    "fuel": {
+      "Diesel": "Dyzelinas",
+      "Petrol": "Benzinas",
+      "Electric": "Elektra",
+      "Petrol/LPG": "Benzinas/Dujos",
+      "Petrol/Electric": "Benzinas/Elektra",
+      "Plug-in Hybrid": "Įkraunamas hibridas"
+    },
+    "transmission": {
+      "Automatic": "Automatinis",
+      "Manual": "Mechaninis"
+    },
+    "drivetrain": {
+      "Front-Wheel Drive": "Priekinių ratų pavara",
+      "Rear-Wheel Drive": "Galinių ratų pavara",
+      "All-Wheel Drive": "Visų ratų pavara",
+      "4WD": "4x4"
+    },
+    "bodyType": {
+      "Sedan": "Sedanas",
+      "Hatchback": "Hečbekas",
+      "SUV": "Visureigis",
+      "Coupe": "Kupė",
+      "Convertible": "Kabrioletas",
+      "Minivan": "Minivenas",
+      "Pickup": "Pikapas",
+      "Van": "Furgonas",
+      "Wagon": "Universalas"
+    },
+    "status": {
+      "Available": "Parduodamas",
+      "Sold": "Parduotas",
+      "Reserved": "Rezervuotas",
+      "Pending": "Laukiamas"
+    }
   }
 }

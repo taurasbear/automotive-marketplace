@@ -9,5 +9,6 @@ public class GetUserPreferencesResponse
     public double ConditionWeight { get; init; }
     public bool AutoGenerateAiSummary { get; init; }
     public bool EnableVehicleScoring { get; init; }
+    public bool HasCompletedQuiz { get; init; }
     public bool HasPreferences { get; init; }
 }

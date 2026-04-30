@@ -17,7 +17,7 @@ import {
   TrendingDown,
   ShieldAlert,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useUpsertUserPreferences } from "../api/useUpsertUserPreferences";
@@ -26,14 +26,7 @@ import { getUserPreferencesOptions } from "../api/getUserPreferencesOptions";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  initialWeights?: {
-    valueWeight: number;
-    efficiencyWeight: number;
-    reliabilityWeight: number;
-    mileageWeight: number;
-    conditionWeight: number;
-  };
-  initialStep?: number;
+  initialView?: "quiz" | "settings";
 };
 
 type DrivingStyle = "city" | "highway" | "mixed";
@@ -108,37 +101,53 @@ function normalizeSliders(
   return result;
 }
 
-export function QuizModal({
+const DEFAULT_SLIDERS: Record<Priority, number> = {
+  value: 20,
+  efficiency: 20,
+  reliability: 20,
+  mileage: 20,
+  condition: 20,
+};
+
+export function UserPreferencesDialog({
   open,
   onOpenChange,
-  initialWeights,
-  initialStep,
+  initialView,
 }: Props) {
   const { t } = useTranslation("userPreferences");
-  const [step, setStep] = useState(initialStep ?? 0);
-  const [drivingStyle, setDrivingStyle] = useState<DrivingStyle>("mixed");
-  const [priorities, setPriorities] = useState<Priority[]>([]);
-  const [sliders, setSliders] = useState<Record<Priority, number>>(() => {
-    if (initialWeights) {
-      return {
-        value: Math.round(initialWeights.valueWeight * 100),
-        efficiency: Math.round(initialWeights.efficiencyWeight * 100),
-        reliability: Math.round(initialWeights.reliabilityWeight * 100),
-        mileage: Math.round(initialWeights.mileageWeight * 100),
-        condition: Math.round(initialWeights.conditionWeight * 100),
-      };
-    }
-    return {
-      value: 20,
-      efficiency: 20,
-      reliability: 20,
-      mileage: 20,
-      condition: 20,
-    };
-  });
-
   const { data: prefsData } = useQuery(getUserPreferencesOptions);
   const { mutateAsync: upsert, isPending } = useUpsertUserPreferences();
+
+  const [view, setView] = useState<"quiz" | "settings">("quiz");
+  const [step, setStep] = useState(0);
+  const [drivingStyle, setDrivingStyle] = useState<DrivingStyle>("mixed");
+  const [priorities, setPriorities] = useState<Priority[]>([]);
+  const [sliders, setSliders] = useState<Record<Priority, number>>(DEFAULT_SLIDERS);
+
+  useEffect(() => {
+    if (open) {
+      const prefs = prefsData?.data;
+      const hasCompleted = prefs?.hasCompletedQuiz ?? false;
+      setView(initialView ?? (hasCompleted ? "settings" : "quiz"));
+      setStep(0);
+      setDrivingStyle("mixed");
+      setPriorities([]);
+      if (prefs?.hasPreferences) {
+        setSliders({
+          value: Math.round(prefs.valueWeight * 100),
+          efficiency: Math.round(prefs.efficiencyWeight * 100),
+          reliability: Math.round(prefs.reliabilityWeight * 100),
+          mileage: Math.round(prefs.mileageWeight * 100),
+          condition: Math.round(prefs.conditionWeight * 100),
+        });
+      } else {
+        setSliders(DEFAULT_SLIDERS);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  const prefs = prefsData?.data;
 
   const DRIVING_STYLES = [
     {
@@ -189,8 +198,6 @@ export function QuizModal({
     },
   ];
 
-  const handleStyleSelect = (style: DrivingStyle) => setDrivingStyle(style);
-
   const handlePriorityToggle = (priority: Priority) => {
     setPriorities((prev) =>
       prev.includes(priority)
@@ -198,8 +205,6 @@ export function QuizModal({
         : [...prev, priority],
     );
   };
-
-  const handleNextToStep2 = () => setStep(1);
 
   const handleNextToStep3 = () => {
     setSliders(computeSliders(drivingStyle, priorities));
@@ -210,43 +215,87 @@ export function QuizModal({
     setSliders((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = async () => {
+  const buildWeights = () => {
     const normalized = normalizeSliders(sliders);
     const total = Object.values(normalized).reduce((a, b) => a + b, 0);
     const fraction = (v: number) => Math.round((v / total) * 1000) / 1000;
-    const prefs = prefsData?.data;
-    await upsert({
+    return {
       valueWeight: fraction(normalized.value),
       efficiencyWeight: fraction(normalized.efficiency),
       reliabilityWeight: fraction(normalized.reliability),
       mileageWeight: fraction(normalized.mileage),
       conditionWeight: fraction(normalized.condition),
-      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+    };
+  };
+
+  const handleQuizSave = async () => {
+    await upsert({
+      ...buildWeights(),
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
+      hasCompletedQuiz: true,
+    });
+    setView("settings");
+  };
+
+  const handleSettingsSave = async () => {
+    await upsert({
+      ...buildWeights(),
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
+      enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
+      hasCompletedQuiz: true,
     });
     onOpenChange(false);
-    setStep(initialStep ?? 0);
   };
 
   const sliderTotal = Object.values(sliders).reduce((a, b) => a + b, 0);
+
+  const sliderStep = (
+    <div className="space-y-4">
+      <p className="text-muted-foreground text-sm">
+        {t("quiz.sliderTotal", { total: sliderTotal })}
+        {sliderTotal !== 100 && (
+          <span className="ml-1 text-orange-500">
+            {t("quiz.normalizeNotice")}
+          </span>
+        )}
+      </p>
+      {PRIORITIES.map(({ id, label }) => (
+        <div key={id} className="space-y-1">
+          <div className="flex justify-between text-sm">
+            <span>{label}</span>
+            <span className="font-medium">{sliders[id]}%</span>
+          </div>
+          <Slider
+            min={5}
+            max={60}
+            step={5}
+            value={[sliders[id]]}
+            onValueChange={([v]) => handleSliderChange(id, v)}
+          />
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {step === 0 && t("quiz.step0Title")}
-            {step === 1 && t("quiz.step1Title")}
-            {step === 2 && t("quiz.step2Title")}
+            {view === "settings" && t("quiz.step2Title")}
+            {view === "quiz" && step === 0 && t("quiz.step0Title")}
+            {view === "quiz" && step === 1 && t("quiz.step1Title")}
+            {view === "quiz" && step === 2 && t("quiz.step2Title")}
           </DialogTitle>
         </DialogHeader>
 
-        {step === 0 && (
+        {view === "quiz" && step === 0 && (
           <div className="grid grid-cols-3 gap-3">
             {DRIVING_STYLES.map(({ id, label, icon: Icon, description }) => (
               <button
                 key={id}
-                onClick={() => handleStyleSelect(id)}
+                onClick={() => setDrivingStyle(id)}
                 className={`flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition-colors ${
                   drivingStyle === id
                     ? "border-primary bg-primary/5"
@@ -263,7 +312,7 @@ export function QuizModal({
           </div>
         )}
 
-        {step === 1 && (
+        {view === "quiz" && step === 1 && (
           <div className="grid grid-cols-2 gap-3">
             {PRIORITIES.map(({ id, label, icon: Icon }) => {
               const rank = priorities.indexOf(id);
@@ -291,49 +340,42 @@ export function QuizModal({
           </div>
         )}
 
-        {step === 2 && (
-          <div className="space-y-4">
-            <p className="text-muted-foreground text-sm">
-              {t("quiz.sliderTotal", { total: sliderTotal })}
-              {sliderTotal !== 100 && (
-                <span className="ml-1 text-orange-500">
-                  {t("quiz.normalizeNotice")}
-                </span>
-              )}
-            </p>
-            {PRIORITIES.map(({ id, label }) => (
-              <div key={id} className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span>{label}</span>
-                  <span className="font-medium">{sliders[id]}%</span>
-                </div>
-                <Slider
-                  min={5}
-                  max={60}
-                  step={5}
-                  value={[sliders[id]]}
-                  onValueChange={([v]) => handleSliderChange(id, v)}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        {view === "quiz" && step === 2 && sliderStep}
+
+        {view === "settings" && sliderStep}
 
         <DialogFooter className="gap-2">
-          {step > 0 && (
+          {view === "settings" && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setStep(0);
+                setDrivingStyle("mixed");
+                setPriorities([]);
+                setView("quiz");
+              }}
+              className="mr-auto"
+            >
+              {t("quiz.retakeQuiz")}
+            </Button>
+          )}
+          {view === "quiz" && step > 0 && (
             <Button variant="outline" onClick={() => setStep(step - 1)}>
               {t("quiz.back")}
             </Button>
           )}
-          {step < 2 && (
-            <Button
-              onClick={step === 0 ? handleNextToStep2 : handleNextToStep3}
-            >
+          {view === "quiz" && step < 2 && (
+            <Button onClick={step === 0 ? () => setStep(1) : handleNextToStep3}>
               {t("quiz.next")}
             </Button>
           )}
-          {step === 2 && (
-            <Button onClick={handleSave} disabled={isPending}>
+          {view === "quiz" && step === 2 && (
+            <Button onClick={handleQuizSave} disabled={isPending}>
+              {isPending ? t("quiz.saving") : t("quiz.save")}
+            </Button>
+          )}
+          {view === "settings" && (
+            <Button onClick={handleSettingsSave} disabled={isPending}>
               {isPending ? t("quiz.saving") : t("quiz.save")}
             </Button>
           )}

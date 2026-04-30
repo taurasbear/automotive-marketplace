@@ -35,7 +35,7 @@ public class GetListingAiSummaryQueryHandler(IRepository repository, IOpenAiClie
                      && c.ComparisonListingId == null && c.Language == lang,
                 cancellationToken);
 
-        if (cache != null && cache.ExpiresAt > DateTime.UtcNow)
+        if (!request.ForceRegenerate && cache != null && cache.ExpiresAt > DateTime.UtcNow)
         {
             var listingModifiedAt = listing.ModifiedAt ?? listing.CreatedAt;
             if (cache.GeneratedAt >= listingModifiedAt)

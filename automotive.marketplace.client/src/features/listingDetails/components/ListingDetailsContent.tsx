@@ -3,6 +3,7 @@ import { PERMISSIONS } from "@/constants/permissions";
 import { ChatPanel, useGetOrCreateConversation } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
 import { CompareSearchModal } from "@/features/compareListings";
+import { selectUserId } from "@/features/auth";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { formatNumber } from "@/lib/i18n/formatNumber";
@@ -11,6 +12,7 @@ import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { Trash, Camera } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
 import { getDefectCategoriesOptions } from "@/api/defect/getDefectCategoriesOptions";
 import { getListingByIdOptions } from "../api/getListingByIdOptions";
 import { useDeleteListing } from "../api/useDeleteListing";
@@ -34,7 +36,8 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
   const { mutateAsync: deleteListingAsync } = useDeleteListing();
 
   const listing = listingQuery.data;
-  const { permissions, userId } = useAppSelector((state) => state.auth);
+  const permissions = useAppSelector((state) => state.auth.permissions);
+  const userId = useAppSelector(selectUserId);
 
   const canManageListing = permissions.includes(PERMISSIONS.ManageListings);
 
@@ -218,7 +221,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       {t("details.transmission")}
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.transmissionName}
+                      {translateVehicleAttr("transmission", listing.transmissionName, t)}
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
@@ -226,21 +229,21 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                       {t("details.drivetrain")}
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.drivetrainName}
+                      {translateVehicleAttr("drivetrain", listing.drivetrainName, t)}
                     </dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
                       {t("details.fuelType")}
                     </dt>
-                    <dd className="text-right text-sm">{listing.fuelName}</dd>
+                    <dd className="text-right text-sm">{translateVehicleAttr("fuel", listing.fuelName, t)}</dd>
                   </div>
                   <div className="grid grid-cols-2 px-6 py-3">
                     <dt className="text-muted-foreground text-sm font-medium">
                       {t("details.bodyType")}
                     </dt>
                     <dd className="text-right text-sm">
-                      {listing.bodyTypeName}
+                      {translateVehicleAttr("bodyType", listing.bodyTypeName, t)}
                     </dd>
                   </div>
                   {listing.colour && (

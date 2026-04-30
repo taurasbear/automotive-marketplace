@@ -16,7 +16,7 @@ const ModelFilter = ({
   onFilterChange,
 }: ModelFilterProps) => {
   const { data: modelsQuery } = useQuery({
-    ...getModelsByMakeIdOptions({ makeId }),
+    ...getModelsByMakeIdOptions({ makeId, onlyWithListings: true }),
     enabled: !!makeId,
   });
 

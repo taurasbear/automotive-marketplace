@@ -6,4 +6,5 @@ export type UpsertUserPreferencesCommand = {
   conditionWeight: number;
   autoGenerateAiSummary: boolean;
   enableVehicleScoring: boolean;
+  hasCompletedQuiz: boolean;
 };

@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   getUserPreferencesOptions,
-  QuizModal,
+  UserPreferencesDialog,
   useUpsertUserPreferences,
 } from "@/features/userPreferences";
 
@@ -35,6 +35,7 @@ export default function Settings() {
       conditionWeight: prefs.conditionWeight,
       autoGenerateAiSummary: prefs.autoGenerateAiSummary,
       enableVehicleScoring: checked,
+      hasCompletedQuiz: prefs.hasCompletedQuiz,
     });
   };
 
@@ -48,6 +49,7 @@ export default function Settings() {
       conditionWeight: prefs.conditionWeight,
       autoGenerateAiSummary: checked,
       enableVehicleScoring: prefs.enableVehicleScoring,
+      hasCompletedQuiz: prefs.hasCompletedQuiz,
     });
   };
 
@@ -58,8 +60,9 @@ export default function Settings() {
       reliabilityWeight: 0.21,
       mileageWeight: 0.17,
       conditionWeight: 0.15,
-      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? false,
+      autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: true,
+      hasCompletedQuiz: prefs?.hasCompletedQuiz ?? false,
     });
   };
 
@@ -127,7 +130,7 @@ export default function Settings() {
               </div>
             </div>
             <Switch
-              checked={prefs?.autoGenerateAiSummary ?? false}
+              checked={prefs?.autoGenerateAiSummary ?? true}
               onCheckedChange={handleAiSummaryToggle}
             />
           </div>
@@ -153,22 +156,7 @@ export default function Settings() {
         </CardContent>
       </Card>
 
-      <QuizModal
-        open={quizOpen}
-        onOpenChange={setQuizOpen}
-        initialWeights={
-          prefs?.hasPreferences
-            ? {
-                valueWeight: prefs.valueWeight,
-                efficiencyWeight: prefs.efficiencyWeight,
-                reliabilityWeight: prefs.reliabilityWeight,
-                mileageWeight: prefs.mileageWeight,
-                conditionWeight: prefs.conditionWeight,
-              }
-            : undefined
-        }
-        initialStep={prefs?.hasPreferences ? 2 : undefined}
-      />
+      <UserPreferencesDialog open={quizOpen} onOpenChange={setQuizOpen} />
     </div>
   );
 }

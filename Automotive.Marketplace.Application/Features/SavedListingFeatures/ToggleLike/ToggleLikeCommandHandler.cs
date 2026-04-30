@@ -1,3 +1,4 @@
+using Automotive.Marketplace.Application.Common.Exceptions;
 using Automotive.Marketplace.Application.Interfaces.Data;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
@@ -10,6 +11,14 @@ public class ToggleLikeCommandHandler(IRepository repository)
 {
     public async Task<ToggleLikeResponse> Handle(ToggleLikeCommand request, CancellationToken cancellationToken)
     {
+        var listing = await repository
+            .AsQueryable<Listing>()
+            .FirstOrDefaultAsync(l => l.Id == request.ListingId, cancellationToken)
+            ?? throw new DbEntityNotFoundException("Listing", request.ListingId);
+
+        if (listing.SellerId == request.UserId)
+            throw new UnauthorizedAccessException("You cannot like your own listing.");
+
         var existingLike = await repository
             .AsQueryable<UserListingLike>()
             .FirstOrDefaultAsync(

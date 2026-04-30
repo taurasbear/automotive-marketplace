@@ -31,6 +31,16 @@ export const handleAxiosError = async (error: AxiosError) => {
     return refreshTokenAndRetry(error.config);
   }
 
+  if (status === 403) {
+    if (!isRedirecting) {
+      isRedirecting = true;
+      toast.error("Access denied.");
+      await router.navigate({ to: "/" });
+      isRedirecting = false;
+    }
+    return Promise.reject(error);
+  }
+
   return Promise.reject(error);
 };
 

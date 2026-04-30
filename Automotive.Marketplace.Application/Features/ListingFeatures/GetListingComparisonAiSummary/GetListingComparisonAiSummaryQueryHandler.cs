@@ -33,7 +33,7 @@ public class GetListingComparisonAiSummaryQueryHandler(IRepository repository, I
                      && c.SummaryType == SummaryType && c.Language == lang,
                 cancellationToken);
 
-        if (cache != null && cache.ExpiresAt > DateTime.UtcNow)
+        if (!request.ForceRegenerate && cache != null && cache.ExpiresAt > DateTime.UtcNow)
         {
             var aModified = listingA.ModifiedAt ?? listingA.CreatedAt;
             var bModified = listingB.ModifiedAt ?? listingB.CreatedAt;
@@ -104,31 +104,37 @@ public class GetListingComparisonAiSummaryQueryHandler(IRepository repository, I
             : "none";
         var languageName = LanguageNames.GetValueOrDefault(lang, "Lithuanian");
 
+        var sameIdentity = a.Year == b.Year && makeA == makeB && modelA == modelB;
+        var disambiguationA = lang == "lt" ? " (skelbimas 1)" : " (listing 1)";
+        var disambiguationB = lang == "lt" ? " (skelbimas 2)" : " (listing 2)";
+        var labelA = sameIdentity ? $"{a.Year} {makeA} {modelA}{disambiguationA}" : $"{a.Year} {makeA} {modelA}";
+        var labelB = sameIdentity ? $"{b.Year} {makeB} {modelB}{disambiguationB}" : $"{b.Year} {makeB} {modelB}";
+
         var lines = new List<string>
         {
             "You are an automotive assistant. Compare these two vehicle listings and recommend which is the better buy in 2-3 sentences.",
-            $"Vehicle A: {a.Year} {makeA} {modelA} — {a.Price:0} EUR, {a.Mileage:N0} km, {a.Variant.Fuel.Name}, defects: {defectsA}",
-            $"Vehicle B: {b.Year} {makeB} {modelB} — {b.Price:0} EUR, {b.Mileage:N0} km, {b.Variant.Fuel.Name}, defects: {defectsB}",
+            $"{labelA}: {a.Price:0} EUR, {a.Mileage:N0} km, {a.Variant.Fuel.Name}, defects: {defectsA}",
+            $"{labelB}: {b.Price:0} EUR, {b.Mileage:N0} km, {b.Variant.Fuel.Name}, defects: {defectsB}",
         };
 
         if (marketA != null)
-            lines.Add($"Vehicle A market data: median price {marketA.MedianPrice:0} EUR across {marketA.TotalListings} listings.");
+            lines.Add($"{labelA} market data: median price {marketA.MedianPrice:0} EUR across {marketA.TotalListings} listings.");
         if (marketB != null)
-            lines.Add($"Vehicle B market data: median price {marketB.MedianPrice:0} EUR across {marketB.TotalListings} listings.");
+            lines.Add($"{labelB} market data: median price {marketB.MedianPrice:0} EUR across {marketB.TotalListings} listings.");
         if (efficiencyA != null)
         {
-            if (efficiencyA.KWhPer100Km.HasValue) lines.Add($"Vehicle A efficiency: {efficiencyA.KWhPer100Km.Value:F1} kWh/100km.");
-            else if (efficiencyA.LitersPer100Km.HasValue) lines.Add($"Vehicle A efficiency: {efficiencyA.LitersPer100Km.Value:F1} L/100km.");
+            if (efficiencyA.KWhPer100Km.HasValue) lines.Add($"{labelA} efficiency: {efficiencyA.KWhPer100Km.Value:F1} kWh/100km.");
+            else if (efficiencyA.LitersPer100Km.HasValue) lines.Add($"{labelA} efficiency: {efficiencyA.LitersPer100Km.Value:F1} L/100km.");
         }
         if (efficiencyB != null)
         {
-            if (efficiencyB.KWhPer100Km.HasValue) lines.Add($"Vehicle B efficiency: {efficiencyB.KWhPer100Km.Value:F1} kWh/100km.");
-            else if (efficiencyB.LitersPer100Km.HasValue) lines.Add($"Vehicle B efficiency: {efficiencyB.LitersPer100Km.Value:F1} L/100km.");
+            if (efficiencyB.KWhPer100Km.HasValue) lines.Add($"{labelB} efficiency: {efficiencyB.KWhPer100Km.Value:F1} kWh/100km.");
+            else if (efficiencyB.LitersPer100Km.HasValue) lines.Add($"{labelB} efficiency: {efficiencyB.LitersPer100Km.Value:F1} L/100km.");
         }
         if (reliabilityA != null)
-            lines.Add($"Vehicle A reliability: {reliabilityA.RecallCount} recalls, {reliabilityA.ComplaintCrashes} crash complaints, {reliabilityA.ComplaintInjuries} injury complaints.");
+            lines.Add($"{labelA} reliability: {reliabilityA.RecallCount} recalls, {reliabilityA.ComplaintCrashes} crash complaints, {reliabilityA.ComplaintInjuries} injury complaints.");
         if (reliabilityB != null)
-            lines.Add($"Vehicle B reliability: {reliabilityB.RecallCount} recalls, {reliabilityB.ComplaintCrashes} crash complaints, {reliabilityB.ComplaintInjuries} injury complaints.");
+            lines.Add($"{labelB} reliability: {reliabilityB.RecallCount} recalls, {reliabilityB.ComplaintCrashes} crash complaints, {reliabilityB.ComplaintInjuries} injury complaints.");
 
         if (unavailableFactors.Count > 0)
             lines.Add($"Note: the following data was unavailable: {string.Join(", ", unavailableFactors)}.");

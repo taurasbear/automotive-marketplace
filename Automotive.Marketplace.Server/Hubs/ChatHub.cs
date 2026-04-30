@@ -13,6 +13,7 @@ using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToContract
 using Automotive.Marketplace.Application.Features.ChatFeatures.CancelContract;
 using Automotive.Marketplace.Application.Features.ChatFeatures.SubmitContractSellerForm;
 using Automotive.Marketplace.Application.Features.ChatFeatures.SubmitContractBuyerForm;
+using Automotive.Marketplace.Application.Features.ChatFeatures.GetUnreadCount;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -57,6 +58,7 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{UserId}").SendAsync("OfferMade", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("OfferMade", result);
+        await NotifyUnreadCount(result.RecipientId);
     }
 
     public async Task RespondToOffer(Guid offerId, string action, decimal? counterAmount = null)
@@ -98,6 +100,7 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{UserId}").SendAsync("MeetingProposed", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("MeetingProposed", result);
+        await NotifyUnreadCount(result.RecipientId);
     }
 
     public async Task RespondToMeeting(Guid meetingId, string action,
@@ -135,6 +138,7 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{UserId}").SendAsync("AvailabilityShared", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("AvailabilityShared", result);
+        await NotifyUnreadCount(result.RecipientId);
     }
 
     public async Task RespondToAvailability(Guid availabilityCardId, string action,
@@ -194,6 +198,7 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{UserId}").SendAsync("ContractRequested", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("ContractRequested", result);
+        await NotifyUnreadCount(result.RecipientId);
     }
 
     public async Task RespondToContract(Guid contractCardId, string action)
@@ -229,6 +234,7 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.BuyerId}").SendAsync("ContractStatusUpdated", result);
         await Clients.Group($"user-{result.SellerId}").SendAsync("ContractStatusUpdated", result);
+        await NotifyUnreadCount(result.BuyerId);
     }
 
     public async Task SubmitContractBuyerForm(Guid contractCardId, SubmitContractBuyerFormCommand formData)
@@ -239,5 +245,15 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.BuyerId}").SendAsync("ContractStatusUpdated", result);
         await Clients.Group($"user-{result.SellerId}").SendAsync("ContractStatusUpdated", result);
+        await NotifyUnreadCount(result.SellerId);
+    }
+
+    private async Task NotifyUnreadCount(Guid recipientId, CancellationToken cancellationToken = default)
+    {
+        var unreadResult = await mediator.Send(
+            new GetUnreadCountQuery { UserId = recipientId }, cancellationToken);
+        await Clients
+            .Group($"user-{recipientId}")
+            .SendAsync("UpdateUnreadCount", unreadResult.UnreadCount, cancellationToken);
     }
 }

@@ -38,9 +38,10 @@ import { useAddDefectImage } from "@/api/defect/useAddDefectImage";
 
 type CreateListingFormProps = {
   className?: string;
+  submitDisabled?: boolean;
 };
 
-const CreateListingForm = ({ className }: CreateListingFormProps) => {
+const CreateListingForm = ({ className, submitDisabled = false }: CreateListingFormProps) => {
   const { t } = useTranslation("listings");
   const [isModified, setIsModified] = useState(false);
 
@@ -76,6 +77,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
   const { mutateAsync: addDefectImageAsync } = useAddDefectImage();
 
   const onSubmit = async (formData: CreateListingFormData) => {
+    if (submitDisabled) return; // defence in depth — should not be reachable
     const { makeId, defects: formDefects, ...command } = formData;
     const response = await createListingAsync({
       ...command,
@@ -528,7 +530,7 @@ const CreateListingForm = ({ className }: CreateListingFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit">{t("form.submit")}</Button>
+          <Button type="submit" disabled={submitDisabled}>{t("form.submit")}</Button>
         </form>
       </Form>
     </div>

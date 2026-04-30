@@ -1478,6 +1478,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<bool>("EnableVehicleScoring")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("HasCompletedQuiz")
+                        .HasColumnType("boolean");
+
                     b.Property<double>("MileageWeight")
                         .HasColumnType("double precision");
 

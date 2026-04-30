@@ -1,4 +1,5 @@
 using Automotive.Marketplace.Application.Interfaces.Services;
+using Automotive.Marketplace.Domain.Constants;
 using Automotive.Marketplace.Domain.Entities;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Infrastructure.Data.Builders;
@@ -55,25 +56,9 @@ public class UserSeeder(AutomotiveContext context, IPasswordHasher passwordHashe
             Username = "AverageBear",
             Email = "bear@regular.com",
             HashedPassword = passwordHasher.Hash("password"),
-            UserPermissions =
-            [
-                new()
-                {
-                    Permission = Permission.ViewListings,
-                },
-                new()
-                {
-                    Permission = Permission.ViewModels,
-                },
-                new()
-                {
-                    Permission = Permission.ViewVariants,
-                },
-                new()
-                {
-                    Permission = Permission.CreateListings,
-                }
-            ],
+            UserPermissions = DefaultUserPermissions.All
+                .Select(p => new UserPermission { Permission = p })
+                .ToList(),
         };
 
         return regularUser;

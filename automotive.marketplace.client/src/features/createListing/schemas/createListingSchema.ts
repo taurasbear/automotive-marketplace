@@ -22,6 +22,9 @@ export const CreateListingSchema = z
             size: VALIDATION.PRICE.MAX,
             unit: "€",
           }),
+      })
+      .refine((val) => Number.isInteger(Math.round(val * 100)), {
+        message: "Price must have at most 2 decimal places.",
       }),
     description: z
       .string()

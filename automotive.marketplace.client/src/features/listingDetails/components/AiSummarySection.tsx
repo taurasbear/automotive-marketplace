@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Sparkles, RefreshCw, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getListingAiSummaryOptions } from "../api/getListingAiSummaryOptions";
+import { getUserPreferencesOptions } from "@/features/userPreferences";
+import { useAppSelector } from "@/hooks/redux";
 
 type Props = {
   listingId: string;
@@ -19,9 +21,16 @@ export function AiSummarySection({ listingId }: Props) {
   const { t, i18n } = useTranslation("listings");
   const { t: tPrefs } = useTranslation("userPreferences");
 
-  const { data, isFetching, refetch } = useQuery(
-    getListingAiSummaryOptions(listingId, i18n.language),
-  );
+  const queryClient = useQueryClient();
+
+  const userId = useAppSelector((state) => state.auth.userId);
+  const { data: prefsData } = useQuery(getUserPreferencesOptions);
+  const autoGenerate = userId ? (prefsData?.data?.autoGenerateAiSummary ?? true) : false;
+
+  const { data, isFetching } = useQuery({
+    ...getListingAiSummaryOptions(listingId, i18n.language),
+    enabled: autoGenerate,
+  });
 
   const summary = data?.data;
   const hasResult = summary?.isGenerated;
@@ -29,6 +38,17 @@ export function AiSummarySection({ listingId }: Props) {
   const translatedUnavailable = unavailable.map((f) =>
     tPrefs(factorTranslationKeys[f] ?? f),
   );
+
+  const handleRegenerate = async () => {
+    try {
+      await queryClient.fetchQuery({
+        ...getListingAiSummaryOptions(listingId, i18n.language, true),
+        staleTime: 0,
+      });
+    } catch {
+      // fetchQuery throws on error — swallow silently, UI stays as-is
+    }
+  };
 
   return (
     <div className="border-border rounded-lg border p-4">
@@ -40,7 +60,7 @@ export function AiSummarySection({ listingId }: Props) {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => refetch()}
+          onClick={handleRegenerate}
           disabled={isFetching}
           className="flex items-center gap-1"
         >

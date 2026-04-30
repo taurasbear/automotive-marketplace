@@ -1,12 +1,14 @@
 using Automotive.Marketplace.Application.Common.Exceptions;
+using Automotive.Marketplace.Application.Features.ListingFeatures.Common;
 using Automotive.Marketplace.Application.Interfaces.Data;
+using Automotive.Marketplace.Application.Interfaces.Services;
 using Automotive.Marketplace.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetSellerListingInsights;
 
-public class GetSellerListingInsightsQueryHandler(IRepository repository)
+public class GetSellerListingInsightsQueryHandler(IRepository repository, ICardogApiClient cardogClient)
     : IRequestHandler<GetSellerListingInsightsQuery, GetSellerListingInsightsResponse>
 {
     public async Task<GetSellerListingInsightsResponse> Handle(GetSellerListingInsightsQuery request, CancellationToken cancellationToken)
@@ -27,6 +29,26 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository)
             .FirstOrDefaultAsync(
                 c => c.Make == make && c.Model == model && c.Year == listing.Year && c.ExpiresAt > DateTime.UtcNow,
                 cancellationToken);
+
+        if (marketCache?.IsFetchFailed == true)
+        {
+            // Failure sentinel active — respect cooldown, no data
+            marketCache = null;
+        }
+        else if (marketCache == null)
+        {
+            var prefs = await repository.AsQueryable<UserPreferences>()
+                .FirstOrDefaultAsync(p => p.UserId == request.UserId, cancellationToken);
+
+            if (prefs?.EnableVehicleScoring == true)
+            {
+                var result = await cardogClient.GetMarketOverviewAsync(make, model, listing.Year, cancellationToken);
+                await MarketCacheHelper.UpsertMarketCacheAsync(repository, make, model, listing.Year, result, cancellationToken);
+
+                if (result != null)
+                    marketCache = new VehicleMarketCache { MedianPrice = result.MedianPrice, TotalListings = result.TotalListings };
+            }
+        }
 
         var marketPosition = BuildMarketPosition(listing, marketCache);
         var listingQuality = BuildListingQuality(listing);
@@ -72,7 +94,7 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository)
         }
         else
         {
-            suggestions.Add("Add a detailed description to attract more buyers.");
+            suggestions.Add("addDescription");
         }
 
         if (hasPhotos)
@@ -82,14 +104,14 @@ public class GetSellerListingInsightsQueryHandler(IRepository repository)
         }
         else
         {
-            suggestions.Add("Add at least 3 photos to significantly improve visibility.");
+            suggestions.Add("addPhotos");
         }
 
         if (hasVin) points += 15;
-        else suggestions.Add("Include the VIN to build buyer confidence.");
+        else suggestions.Add("addVin");
 
         if (hasColour) points += 10;
-        else suggestions.Add("Specify the colour to help buyers filter listings.");
+        else suggestions.Add("addColour");
 
         var qualityScore = (int)Math.Round(Math.Min(points, 90) / 90.0 * 100);
 

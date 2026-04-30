@@ -8,6 +8,7 @@ export const getListingComparisonAiSummaryOptions = (
   listingAId: string,
   listingBId: string,
   language: string = "lt",
+  forceRegenerate: boolean = false,
 ) =>
   queryOptions({
     queryKey: listingKeys.comparisonAiSummary(listingAId, listingBId, language),
@@ -15,8 +16,8 @@ export const getListingComparisonAiSummaryOptions = (
       axiosClient.get<GetListingComparisonAiSummaryResponse>(
         ENDPOINTS.LISTING.GET_COMPARISON_AI_SUMMARY,
         {
-          params: { listingAId, listingBId, language },
+          params: { listingAId, listingBId, language, forceRegenerate },
         },
       ),
-    enabled: false,
+    enabled: true,
   });

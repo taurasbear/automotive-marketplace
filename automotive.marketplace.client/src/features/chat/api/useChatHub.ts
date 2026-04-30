@@ -5,6 +5,7 @@ import queryClient from "@/lib/tanstack-query/queryClient";
 import * as signalR from "@microsoft/signalr";
 import type { AxiosResponse } from "axios";
 import { useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { HUB_METHODS } from "../constants/chatHub";
 import type { GetUnreadCountResponse } from "../api/getUnreadCountOptions";
 import type {
@@ -41,8 +42,21 @@ const hubUrl = import.meta.env.PROD ? `${apiBase}/hubs/chat` : "/api/hubs/chat";
 
 const connectionRef = { current: null as signalR.HubConnection | null };
 
+function showBrowserNotification(title: string, body: string): void {
+  if (
+    !("Notification" in window) ||
+    Notification.permission !== "granted" ||
+    document.hasFocus()
+  ) {
+    return;
+  }
+  new Notification(title, { body, icon: "/favicon.ico" });
+}
+
 export const useChatHub = () => {
   const accessToken = useAppSelector(selectAccessToken);
+  const currentUserId = useAppSelector((s) => s.auth.userId);
+  const { t } = useTranslation("chat");
   const isOwner = useRef(false);
 
   useEffect(() => {
@@ -71,6 +85,12 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.conversations(),
         });
+        if (message.senderId !== currentUserId) {
+          showBrowserNotification(
+            t("notifications.newMessage"),
+            message.senderUsername,
+          );
+        }
       },
     );
 
@@ -108,6 +128,12 @@ export const useChatHub = () => {
       void queryClient.invalidateQueries({
         queryKey: chatKeys.conversations(),
       });
+      if (payload.senderId !== currentUserId) {
+        showBrowserNotification(
+          t("notifications.offerReceived"),
+          payload.senderUsername,
+        );
+      }
     });
 
     const handleOfferStatusUpdate = (payload: OfferStatusUpdatedPayload) => {
@@ -167,6 +193,12 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.conversations(),
         });
+        if (payload.counterOffer.senderId !== currentUserId) {
+          showBrowserNotification(
+            t("notifications.offerReceived"),
+            payload.counterOffer.senderUsername,
+          );
+        }
       },
     );
 
@@ -219,6 +251,12 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.conversations(),
         });
+        if (payload.senderId !== currentUserId) {
+          showBrowserNotification(
+            t("notifications.meetingProposed"),
+            payload.senderUsername,
+          );
+        }
       },
     );
 
@@ -287,6 +325,12 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.conversations(),
         });
+        if (payload.rescheduledMeeting.senderId !== currentUserId) {
+          showBrowserNotification(
+            t("notifications.meetingProposed"),
+            payload.rescheduledMeeting.senderUsername,
+          );
+        }
       },
     );
 
@@ -342,6 +386,12 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.messages(payload.conversationId),
         });
+        void queryClient.invalidateQueries({
+          queryKey: chatKeys.conversations(),
+        });
+        if (payload.initiatorId !== currentUserId) {
+          showBrowserNotification(t("notifications.meetingCancelled"), "");
+        }
       },
     );
 
@@ -544,6 +594,12 @@ export const useChatHub = () => {
         void queryClient.invalidateQueries({
           queryKey: chatKeys.conversations(),
         });
+        if (payload.senderId !== currentUserId) {
+          showBrowserNotification(
+            t("notifications.contractRequested"),
+            payload.senderUsername,
+          );
+        }
       },
     );
 
@@ -581,7 +637,14 @@ export const useChatHub = () => {
     );
 
     connectionRef.current = connection;
-    connection.start().catch(console.error);
+    connection
+      .start()
+      .then(() => {
+        if ("Notification" in window && Notification.permission === "default") {
+          void Notification.requestPermission();
+        }
+      })
+      .catch(console.error);
     return () => {
       if (isOwner.current) {
         void connection.stop();

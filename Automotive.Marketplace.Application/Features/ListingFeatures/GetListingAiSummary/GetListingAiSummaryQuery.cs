@@ -6,4 +6,5 @@ public class GetListingAiSummaryQuery : IRequest<GetListingAiSummaryResponse>
 {
     public Guid ListingId { get; set; }
     public string Language { get; set; } = "lt";
+    public bool ForceRegenerate { get; set; } = false;
 }

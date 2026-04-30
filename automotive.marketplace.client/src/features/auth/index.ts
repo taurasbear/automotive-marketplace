@@ -12,6 +12,7 @@ export {
   default as authReducer,
   clearCredentials,
   selectAccessToken,
+  selectUserId,
   setAccessToken,
   setCredentials,
 } from "./state/authSlice";

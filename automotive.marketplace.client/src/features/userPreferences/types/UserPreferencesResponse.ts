@@ -7,4 +7,5 @@ export type UserPreferencesResponse = {
   autoGenerateAiSummary: boolean;
   enableVehicleScoring: boolean;
   hasPreferences: boolean;
+  hasCompletedQuiz: boolean;
 };

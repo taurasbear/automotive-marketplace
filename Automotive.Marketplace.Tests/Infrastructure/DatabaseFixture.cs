@@ -31,8 +31,9 @@ public class DatabaseFixture<T> : IAsyncLifetime where T : class
             options.UseLazyLoadingProxies()
                 .UseNpgsql(_connectionString), ServiceLifetime.Transient);
 
+        services.AddLogging();
         services.AddScoped<IRepository, Repository>();
-        services.AddAutoMapper(typeof(GetAllListingsQueryHandler).Assembly);
+        services.AddAutoMapper(cfg => cfg.AddMaps(typeof(GetAllListingsQueryHandler).Assembly));
 
         ServiceProvider = services.BuildServiceProvider();
 

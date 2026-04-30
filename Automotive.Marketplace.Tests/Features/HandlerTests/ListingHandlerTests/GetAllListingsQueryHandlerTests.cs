@@ -50,7 +50,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Should().BeEmpty();
+        result.Items.Should().BeEmpty();
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -145,7 +145,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -194,7 +194,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -219,7 +219,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -244,7 +244,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -269,7 +269,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -295,7 +295,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(expectedCount);
+        result.Items.Count().Should().Be(expectedCount);
     }
 
     [Fact]
@@ -345,7 +345,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        var response = result.Single();
+        var response = result.Items.Single();
         response.VariantId.Should().Be(variant.Id);
         response.Year.Should().Be(expectedYear);
         response.MakeName.Should().Be(make.Name);
@@ -376,8 +376,8 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Count().Should().Be(availableCount);
-        result.Should().OnlyContain(r => r.Status == nameof(Status.Available));
+        result.Items.Count().Should().Be(availableCount);
+        result.Items.Should().OnlyContain(r => r.Status == nameof(Status.Available));
     }
 
     [Fact]
@@ -411,7 +411,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Single().IsLiked.Should().BeTrue();
+        result.Items.Single().IsLiked.Should().BeTrue();
     }
 
     [Fact]
@@ -446,7 +446,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Single().IsLiked.Should().BeFalse();
+        result.Items.Single().IsLiked.Should().BeFalse();
     }
 
     [Fact]
@@ -480,7 +480,7 @@ public class GetAllListingsQueryHandlerTests(
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Single().IsLiked.Should().BeFalse();
+        result.Items.Single().IsLiked.Should().BeFalse();
     }
 
     private async static Task<List<Listing>> SeedListingsAsync(

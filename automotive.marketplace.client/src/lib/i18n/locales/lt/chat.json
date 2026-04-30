@@ -190,5 +190,12 @@
     "next": "Toliau",
     "back": "Atgal",
     "submit": "Pateikti"
+  },
+  "notifications": {
+    "newMessage": "Nauja žinutė",
+    "offerReceived": "Naujas kainos pasiūlymas",
+    "meetingProposed": "Naujas susitikimo pasiūlymas",
+    "meetingCancelled": "Susitikimas atšauktas",
+    "contractRequested": "Prašoma sutarties"
   }
 }

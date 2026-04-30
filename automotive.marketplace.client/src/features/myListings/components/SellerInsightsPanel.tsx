@@ -11,6 +11,7 @@ import {
   Palette,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getSellerListingInsightsOptions } from "@/features/listingDetails";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function SellerInsightsPanel({ listingId }: Props) {
+  const { t } = useTranslation("myListings");
   const [expanded, setExpanded] = useState(false);
   const { data, isLoading } = useQuery(
     getSellerListingInsightsOptions(listingId),
@@ -57,7 +59,7 @@ export function SellerInsightsPanel({ listingId }: Props) {
       >
         <span className="flex items-center gap-2 text-sm font-medium">
           <BarChart2 className="h-4 w-4" />
-          Seller Insights
+          {t("sellerInsights.title")}
         </span>
         {expanded ? (
           <ChevronUp className="h-4 w-4" />
@@ -71,10 +73,10 @@ export function SellerInsightsPanel({ listingId }: Props) {
           {/* Market Position Card */}
           <div className="bg-muted/30 space-y-2 rounded-md p-3">
             <p className="text-xs font-semibold tracking-wide uppercase">
-              Market Position
+              {t("sellerInsights.marketPosition.title")}
             </p>
             <div>
-              <p className="text-muted-foreground text-xs">Your price</p>
+              <p className="text-muted-foreground text-xs">{t("sellerInsights.marketPosition.yourPrice")}</p>
               <p className="font-semibold">
                 €{marketPosition.listingPrice.toLocaleString()}
               </p>
@@ -82,7 +84,7 @@ export function SellerInsightsPanel({ listingId }: Props) {
             {marketPosition.hasMarketData ? (
               <>
                 <div>
-                  <p className="text-muted-foreground text-xs">Market median</p>
+                  <p className="text-muted-foreground text-xs">{t("sellerInsights.marketPosition.marketMedian")}</p>
                   <p className="text-sm">
                     €{marketPosition.marketMedianPrice?.toLocaleString()}
                   </p>
@@ -90,17 +92,17 @@ export function SellerInsightsPanel({ listingId }: Props) {
                 <p className={`text-sm font-medium ${priceColor}`}>
                   {marketPosition.priceDifferencePercent != null &&
                     (marketPosition.priceDifferencePercent >= 0
-                      ? `${marketPosition.priceDifferencePercent.toFixed(1)}% below market`
-                      : `${Math.abs(marketPosition.priceDifferencePercent).toFixed(1)}% above market`)}
+                      ? `${marketPosition.priceDifferencePercent.toFixed(1)}% ${t("sellerInsights.marketPosition.belowMarket")}`
+                      : `${Math.abs(marketPosition.priceDifferencePercent).toFixed(1)}% ${t("sellerInsights.marketPosition.aboveMarket")}`)}
                 </p>
                 <p className="text-muted-foreground text-xs">
-                  {marketPosition.marketListingCount} similar listings •{" "}
-                  {marketPosition.daysListed} days listed
+                  {marketPosition.marketListingCount} {t("sellerInsights.marketPosition.similarListings")} •{" "}
+                  {marketPosition.daysListed} {t("sellerInsights.marketPosition.daysListed")}
                 </p>
               </>
             ) : (
               <p className="text-muted-foreground text-xs">
-                No market data available yet
+                {t("sellerInsights.marketPosition.noData")}
               </p>
             )}
           </div>
@@ -108,7 +110,7 @@ export function SellerInsightsPanel({ listingId }: Props) {
           {/* Listing Quality Card */}
           <div className="bg-muted/30 space-y-2 rounded-md p-3">
             <p className="text-xs font-semibold tracking-wide uppercase">
-              Listing Quality
+              {t("sellerInsights.listingQuality.title")}
             </p>
             <div className={`text-2xl font-bold ${qualityColor}`}>
               {listingQuality.qualityScore}
@@ -121,18 +123,18 @@ export function SellerInsightsPanel({ listingId }: Props) {
                 {
                   check: listingQuality.hasDescription,
                   icon: FileText,
-                  label: "Description",
+                  label: t("sellerInsights.listingQuality.description"),
                 },
                 {
                   check: listingQuality.hasPhotos,
                   icon: Camera,
-                  label: `Photos (${listingQuality.photoCount})`,
+                  label: t("sellerInsights.listingQuality.photos", { count: listingQuality.photoCount }),
                 },
-                { check: listingQuality.hasVin, icon: Tag, label: "VIN" },
+                { check: listingQuality.hasVin, icon: Tag, label: t("sellerInsights.listingQuality.vin") },
                 {
                   check: listingQuality.hasColour,
                   icon: Palette,
-                  label: "Colour",
+                  label: t("sellerInsights.listingQuality.colour"),
                 },
               ].map(({ check, label }) => (
                 <div key={label} className="flex items-center gap-1.5 text-xs">
@@ -151,7 +153,7 @@ export function SellerInsightsPanel({ listingId }: Props) {
               <div className="space-y-1 border-t pt-2">
                 {listingQuality.suggestions.map((s, i) => (
                   <p key={i} className="text-muted-foreground text-xs">
-                    • {s}
+                    • {t(`sellerInsights.suggestions.${s}`, s)}
                   </p>
                 ))}
               </div>

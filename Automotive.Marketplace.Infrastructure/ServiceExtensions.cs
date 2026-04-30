@@ -48,6 +48,7 @@ public static class ServiceExtensions
         {
             client.BaseAddress = new Uri("https://api.cardog.io/v1/");
             client.DefaultRequestHeaders.Add("x-api-key", cardogApiKey);
+            client.Timeout = TimeSpan.FromSeconds(5);
         });
 
         services.AddHttpClient<INhtsaApiClient, NhtsaApiClient>(client =>

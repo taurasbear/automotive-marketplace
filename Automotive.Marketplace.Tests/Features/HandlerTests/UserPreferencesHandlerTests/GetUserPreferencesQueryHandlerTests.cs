@@ -35,7 +35,7 @@ public class GetUserPreferencesQueryHandlerTests(
         result.ReliabilityWeight.Should().Be(0.21);
         result.MileageWeight.Should().Be(0.17);
         result.ConditionWeight.Should().Be(0.15);
-        result.AutoGenerateAiSummary.Should().BeFalse();
+        result.AutoGenerateAiSummary.Should().BeTrue();
         result.EnableVehicleScoring.Should().BeFalse();
     }
 

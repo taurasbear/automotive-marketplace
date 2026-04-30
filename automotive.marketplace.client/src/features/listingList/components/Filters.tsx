@@ -3,6 +3,7 @@ import {
   mapFilterValuesToSearchParams,
   mapSearchParamsToFilterValues,
 } from "@/features/search";
+import { UI_CONSTANTS } from "@/constants/uiConstants";
 
 import { ListingFilterStateValues } from "../types/listingFilterStateValues";
 import BasicFilters from "./BasicFilters";
@@ -21,7 +22,10 @@ const Filters = ({ searchParams, onSearchParamChange }: FiltersProps) => {
     key: K,
     value: string | string[],
   ) => {
-    const updatedFilterValues = { ...filterValues, [key]: value };
+    let updatedFilterValues = { ...filterValues, [key]: value };
+    if (key === "makeId" && value === UI_CONSTANTS.SELECT.ALL_MAKES.VALUE) {
+      updatedFilterValues = { ...updatedFilterValues, models: [] };
+    }
     const updatedSearchParams =
       mapFilterValuesToSearchParams(updatedFilterValues);
 
