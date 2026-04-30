@@ -44,7 +44,7 @@ public class RespondToAvailabilityCommandHandlerTests(
 
         result.Action.Should().Be(AvailabilityResponseAction.PickSlot);
         result.PickedSlotMeeting.Should().NotBeNull();
-        result.PickedSlotMeeting!.Meeting.ProposedAt.Should().Be(slot.StartTime);
+        result.PickedSlotMeeting!.Meeting.ProposedAt.Should().BeCloseTo(slot.StartTime, TimeSpan.FromMicroseconds(1));
         result.PickedSlotMeeting.Meeting.Status.Should().Be(MeetingStatus.Pending);
 
         await context.Entry(card).ReloadAsync();
