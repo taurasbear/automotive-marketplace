@@ -78,7 +78,6 @@ public class RegisterUserCommandHandlerTests(
             {
                 Permission.ViewListings,
                 Permission.CreateListings,
-                Permission.ManageListings,
                 Permission.ViewModels,
                 Permission.ViewVariants,
                 Permission.ViewMakes,
