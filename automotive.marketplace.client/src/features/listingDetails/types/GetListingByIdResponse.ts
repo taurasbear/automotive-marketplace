@@ -25,6 +25,13 @@ export type GetListingByIdResponse = {
   images: Image[];
   defects: ListingDefectDto[];
   isLiked?: boolean;
+  // External API data
+  marketMedianPrice?: number;
+  marketListingCount?: number;
+  fuelEconomyMpgCity?: number;
+  fuelEconomyMpgHighway?: number;
+  safetyRating?: number;
+  recallCount?: number;
 };
 
 export type ListingDefectDto = {
