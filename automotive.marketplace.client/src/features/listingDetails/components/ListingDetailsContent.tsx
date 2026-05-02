@@ -9,7 +9,7 @@ import { router } from "@/lib/router";
 import { formatNumber } from "@/lib/i18n/formatNumber";
 import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
 import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
-import { Trash, Camera } from "lucide-react";
+import { Trash, Camera, Pencil } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
@@ -156,7 +156,17 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                 </div>
                 {(isSeller || canManageListing) && (
                   <div className="flex flex-shrink-0 gap-2">
-                    <EditListingDialog listing={listing} id={id} />
+                    {isSeller ? (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => router.navigate({ to: "/my-listings/$id", params: { id } })}
+                      >
+                        <Pencil className="mr-1 h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <EditListingDialog listing={listing} id={id} />
+                    )}
                     <Button
                       variant="destructive"
                       size="sm"
