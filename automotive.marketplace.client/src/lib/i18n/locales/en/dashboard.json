@@ -1,0 +1,23 @@
+{
+  "title": "Your Dashboard",
+  "offers": {
+    "title": "Price Offers",
+    "awaiting": "{{count}} awaiting response",
+    "none": "No pending offers"
+  },
+  "meetings": {
+    "title": "Meetings",
+    "next": "Next: {{date}}",
+    "none": "No upcoming meetings"
+  },
+  "contracts": {
+    "title": "Contracts",
+    "needsAction": "{{count}} need action",
+    "none": "No pending contracts"
+  },
+  "availability": {
+    "title": "Availability",
+    "pending": "{{count}} pending",
+    "none": "No requests"
+  }
+}

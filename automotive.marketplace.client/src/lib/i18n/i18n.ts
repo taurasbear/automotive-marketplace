@@ -7,6 +7,7 @@ import authEn from "./locales/en/auth.json";
 import chatEn from "./locales/en/chat.json";
 import commonEn from "./locales/en/common.json";
 import compareEn from "./locales/en/compare.json";
+import dashboardEn from "./locales/en/dashboard.json";
 import listingsEn from "./locales/en/listings.json";
 import myListingsEn from "./locales/en/myListings.json";
 import savedEn from "./locales/en/saved.json";
@@ -19,6 +20,7 @@ import authLt from "./locales/lt/auth.json";
 import chatLt from "./locales/lt/chat.json";
 import commonLt from "./locales/lt/common.json";
 import compareLt from "./locales/lt/compare.json";
+import dashboardLt from "./locales/lt/dashboard.json";
 import listingsLt from "./locales/lt/listings.json";
 import myListingsLt from "./locales/lt/myListings.json";
 import savedLt from "./locales/lt/saved.json";
@@ -35,6 +37,7 @@ void i18n
         common: commonEn,
         auth: authEn,
         chat: chatEn,
+        dashboard: dashboardEn,
         listings: listingsEn,
         myListings: myListingsEn,
         saved: savedEn,
@@ -48,6 +51,7 @@ void i18n
         common: commonLt,
         auth: authLt,
         chat: chatLt,
+        dashboard: dashboardLt,
         listings: listingsLt,
         myListings: myListingsLt,
         saved: savedLt,

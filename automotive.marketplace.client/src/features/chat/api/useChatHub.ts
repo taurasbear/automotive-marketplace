@@ -961,5 +961,6 @@ export const useChatHub = () => {
     cancelContract,
     submitContractSellerForm,
     submitContractBuyerForm,
+    connection: connectionRef.current,
   };
 };

@@ -1,0 +1,23 @@
+{
+  "title": "Jūsų suvestinė",
+  "offers": {
+    "title": "Kainos pasiūlymai",
+    "awaiting": "{{count}} laukia atsakymo",
+    "none": "Nėra laukiančių"
+  },
+  "meetings": {
+    "title": "Susitikimai",
+    "next": "Kitas: {{date}}",
+    "none": "Nėra artėjančių"
+  },
+  "contracts": {
+    "title": "Sutartys",
+    "needsAction": "{{count}} reikia veiksmo",
+    "none": "Nėra laukiančių"
+  },
+  "availability": {
+    "title": "Prieinamumas",
+    "pending": "{{count}} laukia",
+    "none": "Nėra užklausų"
+  }
+}
