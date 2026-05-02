@@ -30,4 +30,5 @@ public sealed record GetListingByIdResponse
     public bool IsSteeringWheelRight { get; set; }
     public IEnumerable<ImageDto> Images { get; set; } = [];
     public IEnumerable<ListingDefectDto> Defects { get; set; } = [];
+    public bool IsLiked { get; set; }
 }

@@ -4,12 +4,14 @@ import { ChatPanel, useGetOrCreateConversation } from "@/features/chat";
 import type { ConversationSummary } from "@/features/chat";
 import { CompareSearchModal } from "@/features/compareListings";
 import { selectUserId } from "@/features/auth";
+import { useToggleLike } from "@/features/savedListings/api/useToggleLike";
 import { useAppSelector } from "@/hooks/redux";
 import { router } from "@/lib/router";
 import { formatNumber } from "@/lib/i18n/formatNumber";
 import { getTranslatedName } from "@/lib/i18n/getTranslatedName";
 import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { Trash, Camera, Pencil } from "lucide-react";
+import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { translateVehicleAttr } from "@/features/listingList/utils/translateVehicleAttr";
@@ -40,6 +42,8 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
   const userId = useAppSelector(selectUserId);
 
   const canManageListing = permissions.includes(PERMISSIONS.ManageListings);
+
+  const toggleLike = useToggleLike();
 
   const [chatConversation, setChatConversation] =
     useState<ConversationSummary | null>(null);
@@ -154,28 +158,46 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                     {listing.price.toFixed(2)} €
                   </p>
                 </div>
-                {(isSeller || canManageListing) && (
-                  <div className="flex flex-shrink-0 gap-2">
-                    {isSeller ? (
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => router.navigate({ to: "/my-listings/$id", params: { id } })}
-                      >
-                        <Pencil className="mr-1 h-4 w-4" />
-                      </Button>
-                    ) : (
-                      <EditListingDialog listing={listing} id={id} />
-                    )}
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={handleDelete}
+                <div className="flex flex-shrink-0 gap-2">
+                  {userId && !isSeller && (
+                    <button
+                      onClick={() => toggleLike.mutate({ listingId: id })}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                        listing.isLiked
+                          ? "bg-red-500 text-white"
+                          : "bg-secondary text-muted-foreground hover:text-red-500"
+                      }`}
                     >
-                      <Trash />
-                    </Button>
-                  </div>
-                )}
+                      {listing.isLiked ? (
+                        <IoHeart className="h-5 w-5" />
+                      ) : (
+                        <IoHeartOutline className="h-5 w-5" />
+                      )}
+                    </button>
+                  )}
+                  {(isSeller || canManageListing) && (
+                    <>
+                      {isSeller ? (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => router.navigate({ to: "/my-listings/$id", params: { id } })}
+                        >
+                          <Pencil className="mr-1 h-4 w-4" />
+                        </Button>
+                      ) : (
+                        <EditListingDialog listing={listing} id={id} />
+                      )}
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleDelete}
+                      >
+                        <Trash />
+                      </Button>
+                    </>
+                  )}
+                </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="bg-secondary text-secondary-foreground rounded-full border px-3 py-1 text-sm">

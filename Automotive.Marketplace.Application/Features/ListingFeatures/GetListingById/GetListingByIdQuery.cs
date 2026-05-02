@@ -5,4 +5,5 @@ namespace Automotive.Marketplace.Application.Features.ListingFeatures.GetListing
 public sealed record GetListingByIdQuery : IRequest<GetListingByIdResponse>
 {
     public Guid Id { get; set; }
+    public Guid? CurrentUserId { get; set; }
 };

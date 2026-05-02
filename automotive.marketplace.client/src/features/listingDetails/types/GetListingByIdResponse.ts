@@ -24,6 +24,7 @@ export type GetListingByIdResponse = {
   status: string;
   images: Image[];
   defects: ListingDefectDto[];
+  isLiked?: boolean;
 };
 
 export type ListingDefectDto = {

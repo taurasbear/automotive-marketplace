@@ -74,6 +74,12 @@ public class GetListingByIdQueryHandler(
         }
         response.Defects = defects;
 
+        if (request.CurrentUserId != null)
+        {
+            response.IsLiked = await repository.AsQueryable<UserListingLike>()
+                .AnyAsync(l => l.ListingId == request.Id && l.UserId == request.CurrentUserId, cancellationToken);
+        }
+
         return response;
     }
 }
