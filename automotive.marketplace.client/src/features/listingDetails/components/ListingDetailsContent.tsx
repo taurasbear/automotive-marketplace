@@ -154,7 +154,7 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
                     {listing.price.toFixed(2)} €
                   </p>
                 </div>
-                {canManageListing && (
+                {(isSeller || canManageListing) && (
                   <div className="flex flex-shrink-0 gap-2">
                     <EditListingDialog listing={listing} id={id} />
                     <Button
