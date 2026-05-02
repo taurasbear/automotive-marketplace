@@ -234,6 +234,7 @@ export function UserPreferencesDialog({
       autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
       hasCompletedQuiz: true,
+      enableMarketPriceApi: prefs?.enableMarketPriceApi ?? false,
     });
     setView("settings");
   };
@@ -244,6 +245,7 @@ export function UserPreferencesDialog({
       autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: prefs?.enableVehicleScoring ?? false,
       hasCompletedQuiz: true,
+      enableMarketPriceApi: prefs?.enableMarketPriceApi ?? false,
     });
     onOpenChange(false);
   };

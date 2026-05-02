@@ -13,6 +13,7 @@ public class UserPreferences : BaseEntity
     public bool AutoGenerateAiSummary { get; set; }
     public bool EnableVehicleScoring { get; set; }
     public bool HasCompletedQuiz { get; set; } = false;
+    public bool EnableMarketPriceApi { get; set; } = false;
 
     public virtual User User { get; set; } = null!;
 }

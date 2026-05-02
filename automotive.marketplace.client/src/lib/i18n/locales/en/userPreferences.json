@@ -49,6 +49,8 @@
     "scoringPreferencesButton": "Customize",
     "aiSummaryLabel": "AI Summaries",
     "aiSummaryDescription": "Auto-generate AI buyer verdicts for listings",
+    "marketPriceLabel": "Automatic Market Price Lookup",
+    "marketPriceDescription": "Uses an external API to determine market price. When disabled, only cached data is shown.",
     "resetLabel": "Reset Preferences",
     "resetDescription": "Reset all scoring weights to factory defaults",
     "resetButton": "Reset"

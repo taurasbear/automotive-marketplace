@@ -8,4 +8,5 @@ export type UserPreferencesResponse = {
   enableVehicleScoring: boolean;
   hasPreferences: boolean;
   hasCompletedQuiz: boolean;
+  enableMarketPriceApi: boolean;
 };

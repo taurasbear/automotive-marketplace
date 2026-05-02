@@ -49,6 +49,8 @@
     "scoringPreferencesButton": "Pritaikyti",
     "aiSummaryLabel": "AI Apžvalgos",
     "aiSummaryDescription": "Automatiškai generuoti AI pirkėjo verdiktus skelbimams",
+    "marketPriceLabel": "Automatinis rinkos kainos tikrinimas",
+    "marketPriceDescription": "Naudoja išorinę API rinkos kainai nustatyti. Išjungus, rodomi tik ankstesni duomenys.",
     "resetLabel": "Atstatyti Nustatymus",
     "resetDescription": "Atstatyti visus įvertinimo svorius į numatytuosius",
     "resetButton": "Atstatyti"
