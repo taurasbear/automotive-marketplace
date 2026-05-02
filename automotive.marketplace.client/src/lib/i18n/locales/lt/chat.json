@@ -41,7 +41,7 @@
   },
   "offerCard": {
     "offer": "Pasiūlymas",
-    "counterOffer": "Kontra-pasiūlymas",
+    "counterOffer": "Kitas kainos pasiūlymas",
     "statusLabels": {
       "pending": "Laukiama atsakymo",
       "accepted": "Pasiūlymas priimtas",
@@ -56,7 +56,7 @@
     },
     "actions": {
       "accept": "Priimti",
-      "counter": "Kontra",
+      "counter": "Siūlyti kitą kainą",
       "decline": "Atmesti"
     }
   },
@@ -96,14 +96,14 @@
     "viewListing": "Žiūrėti skelbimą"
   },
   "makeOfferModal": {
-    "counterOfferTitle": "Kontra-pasiūlymas",
+    "counterOfferTitle": "Siūlyti kitą kainą",
     "makeOfferTitle": "Pateikti pasiūlymą",
     "listedPrice": "Skelbiama kaina",
     "discount": "Nuolaida",
     "yourOffer": "Jūsų pasiūlymas (€)",
     "minOffer": "Minimali suma – {{amount}} € (⅓ prašomos kainos).",
     "maxOffer": "Pasiūlymas negali viršyti skelbimo kainos – {{price}} €.",
-    "sendCounter": "Siųsti kontra",
+    "sendCounter": "Siųsti pasiūlymą",
     "sendOffer": "Siųsti pasiūlymą"
   },
   "proposeMeetingModal": {
