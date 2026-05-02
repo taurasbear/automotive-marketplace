@@ -7,4 +7,5 @@ public enum OfferStatus
     Declined = 2,
     Countered = 3,
     Expired = 4,
+    Cancelled = 5,
 }
