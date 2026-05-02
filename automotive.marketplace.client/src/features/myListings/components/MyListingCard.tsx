@@ -259,7 +259,9 @@ export default function MyListingCard({
           onStartChat={onStartChat}
         />
       )}
-      <SellerInsightsPanel listingId={listing.id} />
+      <div className="max-w-204">
+        <SellerInsightsPanel listingId={listing.id} />
+      </div>
     </div>
   );
 }
