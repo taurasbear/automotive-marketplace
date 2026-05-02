@@ -5,6 +5,7 @@ import {
   RefreshTokenResponse,
 } from "@/features/auth";
 import Header from "@/components/layout/header/Header";
+import Footer from "@/components/layout/footer/Footer";
 import { useChatHub } from "@/features/chat";
 import { authClient } from "@/lib/axios/authClient";
 import { store } from "@/lib/redux/store";
@@ -25,13 +26,14 @@ export const authReady = new Promise<void>((resolve) => {
 const RootLayout = () => {
   useChatHub();
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="mx-8 xl:mx-auto xl:max-w-6xl">
+      <div className="mx-8 flex-1 xl:mx-auto xl:max-w-6xl">
         <Outlet />
         <TanStackRouterDevtools />
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
 
