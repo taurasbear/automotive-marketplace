@@ -51,18 +51,28 @@ public class ListingController(IMediator mediator) : BaseController
     }
 
     [HttpDelete]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult> Delete([FromQuery] DeleteListingCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        await mediator.Send(commandWithAuth, cancellationToken);
         return NoContent();
     }
 
     [HttpPut]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult> Update([FromBody] UpdateListingCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        await mediator.Send(commandWithAuth, cancellationToken);
         return NoContent();
     }
 
