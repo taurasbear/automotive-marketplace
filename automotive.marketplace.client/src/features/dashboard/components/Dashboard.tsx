@@ -1,17 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { Calendar, CircleDollarSign, FileText, Clock } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { useChatHub } from "@/features/chat";
+import { formatCurrency } from "@/lib/i18n/formatNumber";
+import { useQuery } from "@tanstack/react-query";
+import { Calendar, CircleDollarSign, Clock, FileText } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { getDashboardSummaryOptions } from "../api/getDashboardSummaryOptions";
 import { useDashboardHub } from "../api/useDashboardHub";
 import { DashboardTile } from "./DashboardTile";
-import { formatCurrency } from "@/lib/i18n/formatNumber";
 
 export function Dashboard() {
   const { t } = useTranslation("dashboard");
   const { connection } = useChatHub();
   const { data, isLoading } = useQuery(getDashboardSummaryOptions);
-  
+
   useDashboardHub(connection);
 
   if (isLoading) {
@@ -39,7 +39,6 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto max-w-3xl py-4">
-      <h3 className="mb-3 text-base font-semibold">{t("title")}</h3>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <DashboardTile
           icon={<CircleDollarSign className="h-5 w-5" />}
@@ -63,7 +62,11 @@ export function Dashboard() {
           count={data.meetings.upcomingCount}
           subtitle={
             data.meetings.nextMeetingAt
-              ? t("meetings.next", { date: new Date(data.meetings.nextMeetingAt).toLocaleDateString() })
+              ? t("meetings.next", {
+                  date: new Date(
+                    data.meetings.nextMeetingAt,
+                  ).toLocaleDateString(),
+                })
               : t("meetings.none")
           }
           detail={data.meetings.nextMeetingListing ?? ""}
@@ -74,7 +77,9 @@ export function Dashboard() {
           count={data.contracts.actionNeededCount}
           subtitle={
             data.contracts.actionNeededCount > 0
-              ? t("contracts.needsAction", { count: data.contracts.actionNeededCount })
+              ? t("contracts.needsAction", {
+                  count: data.contracts.actionNeededCount,
+                })
               : t("contracts.none")
           }
           detail={data.contracts.nextActionListing ?? ""}
@@ -85,7 +90,9 @@ export function Dashboard() {
           count={data.availability.pendingCount}
           subtitle={
             data.availability.pendingCount > 0
-              ? t("availability.pending", { count: data.availability.pendingCount })
+              ? t("availability.pending", {
+                  count: data.availability.pendingCount,
+                })
               : t("availability.none")
           }
           detail=""
