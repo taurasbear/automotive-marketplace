@@ -77,12 +77,12 @@ function ScoreColumn({
           ? t("score.personalized")
           : t("score.unPersonalized")}
       </p>
-      <div className="w-full space-y-0.5 text-center">
-        <MiniFactorRow factor={score.value} />
-        <MiniFactorRow factor={score.efficiency} />
-        <MiniFactorRow factor={score.reliability} />
-        <MiniFactorRow factor={score.mileage} />
-        <MiniFactorRow factor={score.condition} />
+      <div className="w-full space-y-2 text-center">
+        <div className="h-5 flex items-center justify-center"><MiniFactorRow factor={score.value} /></div>
+        <div className="h-5 flex items-center justify-center"><MiniFactorRow factor={score.efficiency} /></div>
+        <div className="h-5 flex items-center justify-center"><MiniFactorRow factor={score.reliability} /></div>
+        <div className="h-5 flex items-center justify-center"><MiniFactorRow factor={score.mileage} /></div>
+        <div className="h-5 flex items-center justify-center"><MiniFactorRow factor={score.condition} /></div>
       </div>
     </div>
   );
@@ -136,12 +136,12 @@ export function CompareScoreBanner({
         </div>
       )}
       <div className="grid grid-cols-3 items-start gap-4">
-        <div className="flex flex-col items-center gap-2 pt-16 text-xs">
-          <div className="text-muted-foreground">{t("score.value")}</div>
-          <div className="text-muted-foreground">{t("score.efficiency")}</div>
-          <div className="text-muted-foreground">{t("score.reliability")}</div>
-          <div className="text-muted-foreground">{t("score.mileage")}</div>
-          <div className="text-muted-foreground">{t("score.condition")}</div>
+        <div className="flex flex-col gap-2 pt-16 text-xs">
+          <div className="text-muted-foreground text-center h-5 flex items-center justify-center">{t("score.value")}</div>
+          <div className="text-muted-foreground text-center h-5 flex items-center justify-center">{t("score.efficiency")}</div>
+          <div className="text-muted-foreground text-center h-5 flex items-center justify-center">{t("score.reliability")}</div>
+          <div className="text-muted-foreground text-center h-5 flex items-center justify-center">{t("score.mileage")}</div>
+          <div className="text-muted-foreground text-center h-5 flex items-center justify-center">{t("score.condition")}</div>
         </div>
         <ScoreColumn score={aData?.data} loading={aLoading} t={t} />
         <ScoreColumn score={bData?.data} loading={bLoading} t={t} />

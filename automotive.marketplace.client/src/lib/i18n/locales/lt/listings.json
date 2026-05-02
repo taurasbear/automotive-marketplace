@@ -48,6 +48,11 @@
     "leftHand": "Kairėje",
     "vin": "VIN",
     "seller": "Pardavėjas",
+    "marketMedianPrice": "Rinkos mediana",
+    "marketListings": "Panašūs skelbimai",
+    "safetyRating": "Saugumo reitingas",
+    "recalls": "Atšaukimai",
+    "fuelEconomy": "Kuro sąnaudos (Miestas/Greitkelis)",
     "contactSeller": "Susisiekti su pardavėju",
     "compareWithAnother": "Palyginti su kitu skelbimu"
   },

@@ -1,5 +1,4 @@
 import { listingKeys } from "@/api/queryKeys/listingKeys";
-import { ENDPOINTS } from "@/constants/endpoints";
 import axiosClient from "@/lib/axios/axiosClient";
 import { useMutation } from "@tanstack/react-query";
 
@@ -9,7 +8,7 @@ type UpdateListingStatusCommand = {
 };
 
 const updateListingStatus = (body: UpdateListingStatusCommand) =>
-  axiosClient.put<void>(`${ENDPOINTS.LISTING.UPDATE}/status`, body);
+  axiosClient.put<void>("/Listing/status", body);
 
 export const useUpdateListingStatus = () =>
   useMutation({

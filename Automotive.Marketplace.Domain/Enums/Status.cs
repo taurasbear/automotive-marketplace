@@ -4,6 +4,8 @@ public enum Status
 {
     Available,
 
+    Sold,
+
     Removed,
 
     Bought,

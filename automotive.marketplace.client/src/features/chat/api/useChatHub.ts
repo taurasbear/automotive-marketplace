@@ -964,3 +964,5 @@ export const useChatHub = () => {
     connection: connectionRef.current,
   };
 };
+
+export { connectionRef as chatConnectionRef };

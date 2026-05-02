@@ -193,7 +193,7 @@ export default function MyListingCard({
             <div className="flex items-center justify-end gap-2">
               {/* Action buttons — only when not sold */}
               {!isSold && (
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {/* Buyer panel toggle */}
                   <button
                     type="button"
@@ -236,14 +236,14 @@ export default function MyListingCard({
                           <AlertDialogDescription>{t("card.markAsSoldConfirmDescription")}</AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>{t("detail.cancel")}</AlertDialogCancel>
+                          <AlertDialogCancel>{t("card.cancel")}</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={handleMarkAsSold}
                             disabled={updateListingStatusMutation.isPending}
                           >
                             {updateListingStatusMutation.isPending
                               ? "..."
-                              : t("detail.confirm")}
+                              : t("card.confirm")}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>

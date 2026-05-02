@@ -17,7 +17,9 @@
     "location": "Vieta",
     "markAsSold": "Pažymėti kaip parduotą",
     "markAsSoldConfirmTitle": "Pažymėti kaip parduotą?",
-    "markAsSoldConfirmDescription": "Skelbimas bus pašalintas iš paieškos rezultatų."
+    "markAsSoldConfirmDescription": "Skelbimas bus pašalintas iš paieškos rezultatų.",
+    "cancel": "Atšaukti",
+    "confirm": "Patvirtinti"
   },
   "detail": {
     "backToMyListings": "Grįžti į mano skelbimus",

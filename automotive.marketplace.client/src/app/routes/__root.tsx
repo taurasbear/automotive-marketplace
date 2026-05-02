@@ -28,7 +28,7 @@ const RootLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="mx-8 flex-1 xl:mx-auto xl:max-w-6xl">
+      <div className="mx-8 w-full flex-1 xl:mx-auto xl:max-w-6xl">
         <Outlet />
         <TanStackRouterDevtools />
       </div>

@@ -17,7 +17,9 @@
     "location": "Location",
     "markAsSold": "Mark as Sold",
     "markAsSoldConfirmTitle": "Mark as sold?",
-    "markAsSoldConfirmDescription": "This listing will be removed from search results."
+    "markAsSoldConfirmDescription": "This listing will be removed from search results.",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "detail": {
     "backToMyListings": "Back to My Listings",

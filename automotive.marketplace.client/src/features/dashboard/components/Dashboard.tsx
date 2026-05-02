@@ -1,6 +1,6 @@
-import { useChatHub } from "@/features/chat";
 import { formatCurrency } from "@/lib/i18n/formatNumber";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 import { Calendar, CircleDollarSign, Clock, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDashboardSummaryOptions } from "../api/getDashboardSummaryOptions";
@@ -9,10 +9,10 @@ import { DashboardTile } from "./DashboardTile";
 
 export function Dashboard() {
   const { t } = useTranslation("dashboard");
-  const { connection } = useChatHub();
   const { data, isLoading } = useQuery(getDashboardSummaryOptions);
+  const router = useRouter();
 
-  useDashboardHub(connection);
+  useDashboardHub();
 
   if (isLoading) {
     return (
@@ -55,6 +55,7 @@ export function Dashboard() {
               : ""
           }
           isHighlighted={data.offers.pendingCount > 0}
+          onClick={() => router.navigate({ to: "/inbox" })}
         />
         <DashboardTile
           icon={<Calendar className="h-5 w-5" />}
@@ -70,6 +71,7 @@ export function Dashboard() {
               : t("meetings.none")
           }
           detail={data.meetings.nextMeetingListing ?? ""}
+          onClick={() => router.navigate({ to: "/inbox" })}
         />
         <DashboardTile
           icon={<FileText className="h-5 w-5" />}
@@ -83,6 +85,7 @@ export function Dashboard() {
               : t("contracts.none")
           }
           detail={data.contracts.nextActionListing ?? ""}
+          onClick={() => router.navigate({ to: "/inbox" })}
         />
         <DashboardTile
           icon={<Clock className="h-5 w-5" />}
@@ -96,6 +99,7 @@ export function Dashboard() {
               : t("availability.none")
           }
           detail=""
+          onClick={() => router.navigate({ to: "/inbox" })}
         />
       </div>
     </div>

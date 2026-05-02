@@ -48,6 +48,11 @@
     "leftHand": "Left-hand",
     "vin": "VIN",
     "seller": "Seller",
+    "marketMedianPrice": "Market median price",
+    "marketListings": "Similar listings",
+    "safetyRating": "Safety rating",
+    "recalls": "Recalls",
+    "fuelEconomy": "Fuel economy (City/Highway)",
     "contactSeller": "Contact Seller",
     "compareWithAnother": "Compare with another listing"
   },

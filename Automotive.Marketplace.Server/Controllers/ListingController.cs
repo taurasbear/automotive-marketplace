@@ -12,6 +12,7 @@ using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingAiSu
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComparisonAiSummary;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetSellerListingInsights;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
+using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListingStatus;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
 using MediatR;
@@ -155,5 +156,18 @@ public class ListingController(IMediator mediator) : BaseController
         query.UserId = UserId;
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
+    }
+
+    [HttpPut("status")]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
+    public async Task<ActionResult> UpdateStatus([FromBody] UpdateListingStatusCommand command, CancellationToken cancellationToken)
+    {
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        await mediator.Send(commandWithAuth, cancellationToken);
+        return NoContent();
     }
 }

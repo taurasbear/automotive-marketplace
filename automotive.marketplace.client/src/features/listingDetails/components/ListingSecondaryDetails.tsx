@@ -19,6 +19,12 @@ export function ListingSecondaryDetails({ listing }: Props) {
     },
     ...(listing.vin ? [{ label: t("details.vin"), value: listing.vin }] : []),
     { label: t("details.seller"), value: listing.sellerName },
+    // External API data
+    ...(listing.marketMedianPrice ? [{ label: t("details.marketMedianPrice"), value: `${listing.marketMedianPrice.toFixed(0)} €` }] : []),
+    ...(listing.marketListingCount ? [{ label: t("details.marketListings"), value: String(listing.marketListingCount) }] : []),
+    ...(listing.safetyRating ? [{ label: t("details.safetyRating"), value: `${listing.safetyRating}/5 ⭐` }] : []),
+    ...(listing.recallCount !== undefined && listing.recallCount !== null ? [{ label: t("details.recalls"), value: String(listing.recallCount) }] : []),
+    ...(listing.fuelEconomyMpgCity && listing.fuelEconomyMpgHighway ? [{ label: t("details.fuelEconomy"), value: `${listing.fuelEconomyMpgCity.toFixed(1)}/${listing.fuelEconomyMpgHighway.toFixed(1)} MPG` }] : []),
   ];
 
   return (

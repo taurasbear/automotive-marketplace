@@ -115,8 +115,8 @@ const ListingDetailsContent = ({ id }: ListingDetailsProps) => {
               className="w-full rounded-lg shadow-lg"
             />
             
-            {/* Two spec cards side by side */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Spec cards stacked vertically */}
+            <div className="space-y-6">
               <ListingKeySpecs listing={listing} />
               <ListingSecondaryDetails listing={listing} />
             </div>
