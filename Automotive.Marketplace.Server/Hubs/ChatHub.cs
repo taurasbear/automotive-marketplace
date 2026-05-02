@@ -60,6 +60,7 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients.Group($"user-{UserId}").SendAsync("OfferMade", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("OfferMade", result);
         await NotifyUnreadCount(result.RecipientId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task RespondToOffer(Guid offerId, string action, decimal? counterAmount = null)
@@ -82,6 +83,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync(eventName, result);
         await Clients.Group($"user-{result.ResponderId}").SendAsync(eventName, result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.ResponderId);
     }
 
     public async Task CancelOffer(Guid offerId)
@@ -94,6 +97,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync("OfferCancelled", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("OfferCancelled", result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task ProposeMeeting(
@@ -114,6 +119,7 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients.Group($"user-{UserId}").SendAsync("MeetingProposed", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("MeetingProposed", result);
         await NotifyUnreadCount(result.RecipientId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task RespondToMeeting(Guid meetingId, string action,
@@ -137,6 +143,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync(eventName, result);
         await Clients.Group($"user-{result.ResponderId}").SendAsync(eventName, result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.ResponderId);
     }
 
     public async Task ShareAvailability(Guid conversationId,
@@ -152,6 +160,7 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients.Group($"user-{UserId}").SendAsync("AvailabilityShared", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("AvailabilityShared", result);
         await NotifyUnreadCount(result.RecipientId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task RespondToAvailability(Guid availabilityCardId, string action,
@@ -175,6 +184,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{UserId}").SendAsync("AvailabilityResponded", result);
         await Clients.Group($"user-{initiatorId}").SendAsync("AvailabilityResponded", result);
+        await NotifyDashboardUpdate(UserId);
+        await NotifyDashboardUpdate(initiatorId);
     }
 
     public async Task CancelMeeting(Guid meetingId)
@@ -187,6 +198,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync("MeetingCancelled", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("MeetingCancelled", result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task CancelAvailability(Guid availabilityCardId)
@@ -199,6 +212,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync("AvailabilityCancelled", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("AvailabilityCancelled", result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task RequestContract(Guid conversationId)
@@ -212,6 +227,7 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients.Group($"user-{UserId}").SendAsync("ContractRequested", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("ContractRequested", result);
         await NotifyUnreadCount(result.RecipientId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task RespondToContract(Guid contractCardId, string action)
@@ -225,6 +241,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync("ContractStatusUpdated", result);
         await Clients.Group($"user-{result.ResponderId}").SendAsync("ContractStatusUpdated", result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.ResponderId);
     }
 
     public async Task CancelContract(Guid contractCardId)
@@ -237,6 +255,8 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync("ContractStatusUpdated", result);
         await Clients.Group($"user-{result.RecipientId}").SendAsync("ContractStatusUpdated", result);
+        await NotifyDashboardUpdate(result.InitiatorId);
+        await NotifyDashboardUpdate(result.RecipientId);
     }
 
     public async Task SubmitContractSellerForm(Guid contractCardId, SubmitContractSellerFormCommand formData)
@@ -248,6 +268,8 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients.Group($"user-{result.BuyerId}").SendAsync("ContractStatusUpdated", result);
         await Clients.Group($"user-{result.SellerId}").SendAsync("ContractStatusUpdated", result);
         await NotifyUnreadCount(result.BuyerId);
+        await NotifyDashboardUpdate(result.BuyerId);
+        await NotifyDashboardUpdate(result.SellerId);
     }
 
     public async Task SubmitContractBuyerForm(Guid contractCardId, SubmitContractBuyerFormCommand formData)
@@ -259,6 +281,8 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients.Group($"user-{result.BuyerId}").SendAsync("ContractStatusUpdated", result);
         await Clients.Group($"user-{result.SellerId}").SendAsync("ContractStatusUpdated", result);
         await NotifyUnreadCount(result.SellerId);
+        await NotifyDashboardUpdate(result.BuyerId);
+        await NotifyDashboardUpdate(result.SellerId);
     }
 
     private async Task NotifyUnreadCount(Guid recipientId, CancellationToken cancellationToken = default)
@@ -268,5 +292,10 @@ public class ChatHub(IMediator mediator) : Hub
         await Clients
             .Group($"user-{recipientId}")
             .SendAsync("UpdateUnreadCount", unreadResult.UnreadCount, cancellationToken);
+    }
+
+    private async Task NotifyDashboardUpdate(Guid userId)
+    {
+        await Clients.Group($"user-{userId}").SendAsync("DashboardUpdated");
     }
 }
