@@ -9,6 +9,8 @@
   "card": {
     "active": "Active",
     "sold": "Sold",
+    "onHold": "On Hold",
+    "removed": "Removed",
     "defects": "{{count}} defects",
     "edit": "Edit",
     "delete": "Delete",

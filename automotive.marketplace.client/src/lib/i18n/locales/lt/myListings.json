@@ -9,6 +9,8 @@
   "card": {
     "active": "Aktyvus",
     "sold": "Parduotas",
+    "onHold": "Sulaikytas",
+    "removed": "Pašalintas",
     "defects": "{{count}} defektai",
     "edit": "Redaguoti",
     "delete": "Ištrinti",

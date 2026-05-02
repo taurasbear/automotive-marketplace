@@ -47,8 +47,17 @@ type MyListingCardProps = {
 
 function StatusBadge({ status }: { status: string }) {
   const { t } = useTranslation("myListings");
-  const isSold = status === "Sold";
+  const isSold = status === "Sold" || status === "Bought";
   const isActive = status === "Active" || status === "Approved" || status === "Available";
+
+  const statusKey = (() => {
+    if (isSold) return "card.sold";
+    if (isActive) return "card.active";
+    if (status === "OnHold") return "card.onHold";
+    if (status === "Removed") return "card.removed";
+    return "card.active";
+  })();
+
   return (
     <span
       className={`rounded px-2 py-0.5 text-xs font-medium ${
@@ -59,7 +68,7 @@ function StatusBadge({ status }: { status: string }) {
             : "bg-yellow-500/90 text-white"
       }`}
     >
-      {isSold ? t("card.sold") : isActive ? t("card.active") : status}
+      {t(statusKey)}
     </span>
   );
 }
