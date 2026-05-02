@@ -14,7 +14,10 @@
     "defects": "{{count}} defects",
     "edit": "Edit",
     "delete": "Delete",
-    "location": "Location"
+    "location": "Location",
+    "markAsSold": "Mark as Sold",
+    "markAsSoldConfirmTitle": "Mark as sold?",
+    "markAsSoldConfirmDescription": "This listing will be removed from search results."
   },
   "detail": {
     "backToMyListings": "Back to My Listings",

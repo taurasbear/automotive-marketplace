@@ -14,7 +14,10 @@
     "defects": "{{count}} defektai",
     "edit": "Redaguoti",
     "delete": "Ištrinti",
-    "location": "Vieta"
+    "location": "Vieta",
+    "markAsSold": "Pažymėti kaip parduotą",
+    "markAsSoldConfirmTitle": "Pažymėti kaip parduotą?",
+    "markAsSoldConfirmDescription": "Skelbimas bus pašalintas iš paieškos rezultatų."
   },
   "detail": {
     "backToMyListings": "Grįžti į mano skelbimus",

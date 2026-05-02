@@ -37,6 +37,7 @@ import { translateVehicleAttr } from "@/features/listingList/utils/translateVehi
 
 import { GetMyListingsResponse } from "../types/GetMyListingsResponse";
 import { useDeleteMyListing } from "../api/useDeleteMyListing";
+import { useUpdateListingStatus } from "../api/useUpdateListingStatus";
 import ListingBuyerPanel from "./ListingBuyerPanel";
 import { SellerInsightsPanel } from "./SellerInsightsPanel";
 
@@ -81,15 +82,25 @@ export default function MyListingCard({
   const { t: tListings } = useTranslation("listings");
   const { userId } = useAppSelector((state) => state.auth);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [markAsSoldDialogOpen, setMarkAsSoldDialogOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const deleteListingMutation = useDeleteMyListing();
+  const updateListingStatusMutation = useUpdateListingStatus();
 
-  const isSold = listing.status === "Sold";
+  const isSold = listing.status === "Sold" || listing.status === "Bought";
+  const isAvailable = listing.status === "Available";
 
   const handleDelete = () => {
     deleteListingMutation.mutate(
       { id: listing.id },
       { onSuccess: () => setDeleteDialogOpen(false) },
+    );
+  };
+
+  const handleMarkAsSold = () => {
+    updateListingStatusMutation.mutate(
+      { id: listing.id, status: "Bought" },
+      { onSuccess: () => setMarkAsSoldDialogOpen(false) },
     );
   };
 
@@ -207,6 +218,37 @@ export default function MyListingCard({
                       {t("card.edit")}
                     </Link>
                   </Button>
+
+                  {/* Mark as Sold button — only when Available */}
+                  {isAvailable && (
+                    <AlertDialog
+                      open={markAsSoldDialogOpen}
+                      onOpenChange={setMarkAsSoldDialogOpen}
+                    >
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="outline">
+                          {t("card.markAsSold")}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t("card.markAsSoldConfirmTitle")}</AlertDialogTitle>
+                          <AlertDialogDescription>{t("card.markAsSoldConfirmDescription")}</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t("detail.cancel")}</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={handleMarkAsSold}
+                            disabled={updateListingStatusMutation.isPending}
+                          >
+                            {updateListingStatusMutation.isPending
+                              ? "..."
+                              : t("detail.confirm")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
 
                   {/* Delete button */}
                   <AlertDialog
