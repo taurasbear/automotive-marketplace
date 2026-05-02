@@ -6,6 +6,7 @@ using Automotive.Marketplace.Application.Features.ChatFeatures.ProposeMeeting;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToAvailability;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToMeeting;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RespondToOffer;
+using Automotive.Marketplace.Application.Features.ChatFeatures.CancelOffer;
 using Automotive.Marketplace.Application.Features.ChatFeatures.SendMessage;
 using Automotive.Marketplace.Application.Features.ChatFeatures.ShareAvailability;
 using Automotive.Marketplace.Application.Features.ChatFeatures.RequestContract;
@@ -81,6 +82,18 @@ public class ChatHub(IMediator mediator) : Hub
 
         await Clients.Group($"user-{result.InitiatorId}").SendAsync(eventName, result);
         await Clients.Group($"user-{result.ResponderId}").SendAsync(eventName, result);
+    }
+
+    public async Task CancelOffer(Guid offerId)
+    {
+        var result = await mediator.Send(new CancelOfferCommand
+        {
+            OfferId = offerId,
+            RequesterId = UserId,
+        });
+
+        await Clients.Group($"user-{result.InitiatorId}").SendAsync("OfferCancelled", result);
+        await Clients.Group($"user-{result.RecipientId}").SendAsync("OfferCancelled", result);
     }
 
     public async Task ProposeMeeting(

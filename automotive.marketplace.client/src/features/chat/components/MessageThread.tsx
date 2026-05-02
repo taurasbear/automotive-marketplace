@@ -40,6 +40,7 @@ const MessageThread = ({
     sendMessage,
     sendOffer,
     respondToOffer,
+    cancelOffer,
     proposeMeeting,
     respondToMeeting,
     shareAvailability,
@@ -213,6 +214,7 @@ const MessageThread = ({
                         counterAmount: amount,
                       })
                     }
+                    onCancel={(offerId) => cancelOffer({ offerId })}
                   />
                 </div>
               );

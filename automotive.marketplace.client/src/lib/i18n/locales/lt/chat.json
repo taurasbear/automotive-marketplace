@@ -46,18 +46,21 @@
       "pending": "Laukiama atsakymo",
       "accepted": "Pasiūlymas priimtas",
       "declined": "Pasiūlymas atmestas",
-      "expired": "Pasiūlymas baigė galioti"
+      "expired": "Pasiūlymas baigė galioti",
+      "cancelled": "Pasiūlymas atšauktas"
     },
     "subtitles": {
       "listingOnHold": "Skelbimas sulaikytas",
       "noDealReached": "Sandoris neįvyko",
       "awaitingResponse": "Laukiama atsakymo",
-      "noResponseWithin48h": "Negautas atsakymas per 48 valandas"
+      "noResponseWithin48h": "Negautas atsakymas per 48 valandas",
+      "cancelled": "Atšaukta iniciatoriaus"
     },
     "actions": {
       "accept": "Priimti",
       "counter": "Siūlyti kitą kainą",
-      "decline": "Atmesti"
+      "decline": "Atmesti",
+      "cancel": "Atšaukti pasiūlymą"
     }
   },
   "availabilityCard": {

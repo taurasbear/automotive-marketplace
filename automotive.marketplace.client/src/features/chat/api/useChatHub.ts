@@ -222,6 +222,26 @@ export const useChatHub = () => {
       );
     });
 
+    connection.on(HUB_METHODS.OFFER_CANCELLED, (payload: OfferStatusUpdatedPayload) => {
+      queryClient.setQueryData<{ data: GetMessagesResponse }>(
+        chatKeys.messages(payload.conversationId),
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              messages: old.data.messages.map((m) =>
+                m.offer?.id === payload.offerId
+                  ? { ...m, offer: { ...m.offer, status: "Cancelled" as const } }
+                  : m,
+              ),
+            },
+          };
+        },
+      );
+    });
+
     connection.on(
       HUB_METHODS.MEETING_PROPOSED,
       (payload: MeetingProposedPayload) => {
@@ -722,6 +742,13 @@ export const useChatHub = () => {
     [],
   );
 
+  const cancelOffer = useCallback(({ offerId }: { offerId: string }) => {
+    if (connectionRef.current?.state !== signalR.HubConnectionState.Connected) {
+      throw new Error("Not connected. Please wait and try again.");
+    }
+    void connectionRef.current.invoke(HUB_METHODS.CANCEL_OFFER, offerId);
+  }, []);
+
   const proposeMeeting = useCallback(
     ({
       conversationId,
@@ -922,6 +949,7 @@ export const useChatHub = () => {
     sendMessage,
     sendOffer,
     respondToOffer,
+    cancelOffer,
     proposeMeeting,
     respondToMeeting,
     shareAvailability,

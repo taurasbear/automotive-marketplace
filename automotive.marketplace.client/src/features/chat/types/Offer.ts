@@ -3,7 +3,8 @@ export type OfferStatus =
   | "Accepted"
   | "Declined"
   | "Countered"
-  | "Expired";
+  | "Expired"
+  | "Cancelled";
 
 export type Offer = {
   id: string;
