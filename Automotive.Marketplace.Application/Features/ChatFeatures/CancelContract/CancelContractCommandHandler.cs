@@ -20,15 +20,25 @@ public class CancelContractCommandHandler(IRepository repository)
         var conversation = card.Conversation;
         var listing = conversation.Listing;
 
-        if (card.InitiatorId != request.RequesterId)
-            throw new UnauthorizedAccessException(
-                "Only the initiator may cancel a contract request.");
+        // Either party can cancel (not just initiator)
+        var buyerId = conversation.BuyerId;
+        var sellerId = listing.SellerId;
+        if (request.RequesterId != buyerId && request.RequesterId != sellerId)
+            throw new UnauthorizedAccessException("Only conversation participants can cancel.");
 
-        if (card.Status != ContractCardStatus.Pending)
+        // Can cancel if not Complete
+        var cancellableStatuses = new[]
+        {
+            ContractCardStatus.Pending,
+            ContractCardStatus.Active,
+            ContractCardStatus.SellerSubmitted,
+            ContractCardStatus.BuyerSubmitted,
+        };
+        if (!cancellableStatuses.Contains(card.Status))
             throw new RequestValidationException(
             [
                 new ValidationFailure("ContractCardId",
-                    "Only Pending contract requests can be cancelled.")
+                    "Contract cannot be cancelled in its current state.")
             ]);
 
         var recipientId = card.InitiatorId == conversation.BuyerId
