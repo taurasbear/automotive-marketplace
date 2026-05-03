@@ -1,0 +1,478 @@
+@startuml Automotive Marketplace - Entity Relationship Diagram
+!theme plain
+hide empty members
+
+' ========================
+' VEHICLE CATALOG
+' ========================
+
+entity Make {
+  * id : UUID <<PK>>
+  --
+  * name : string
+  vpicId : int
+  * vpicName : string
+  syncedAt : datetime
+}
+
+entity Model {
+  * id : UUID <<PK>>
+  * makeId : UUID <<FK>>
+  --
+  * name : string
+  vpicId : int
+  * vpicName : string
+  syncedAt : datetime
+}
+
+entity Variant {
+  * id : UUID <<PK>>
+  * modelId : UUID <<FK>>
+  * fuelId : UUID <<FK>>
+  * transmissionId : UUID <<FK>>
+  * bodyTypeId : UUID <<FK>>
+  --
+  * isCustom : bool
+  * doorCount : int
+  * powerKw : int
+  * engineSizeMl : int
+}
+
+entity Fuel {
+  * id : UUID <<PK>>
+  --
+  * name : string
+}
+
+entity FuelTranslation {
+  * id : UUID <<PK>>
+  * fuelId : UUID <<FK>>
+  --
+  * languageCode : string
+  * name : string
+}
+
+entity Transmission {
+  * id : UUID <<PK>>
+  --
+  * name : string
+}
+
+entity TransmissionTranslation {
+  * id : UUID <<PK>>
+  * transmissionId : UUID <<FK>>
+  --
+  * languageCode : string
+  * name : string
+}
+
+entity BodyType {
+  * id : UUID <<PK>>
+  --
+  * name : string
+}
+
+entity BodyTypeTranslation {
+  * id : UUID <<PK>>
+  * bodyTypeId : UUID <<FK>>
+  --
+  * languageCode : string
+  * name : string
+}
+
+entity Drivetrain {
+  * id : UUID <<PK>>
+  --
+  * name : string
+}
+
+entity DrivetrainTranslation {
+  * id : UUID <<PK>>
+  * drivetrainId : UUID <<FK>>
+  --
+  * languageCode : string
+  * name : string
+}
+
+entity MakeExclusion {
+  * vpicId : int <<PK>>
+  --
+  * vpicName : string
+}
+
+' ========================
+' USERS
+' ========================
+
+entity User {
+  * id : UUID <<PK>>
+  --
+  * username : string
+  * email : string
+  * hashedPassword : string
+  phoneNumber : string
+  personalIdCode : string
+  address : string
+}
+
+entity UserPermission {
+  * id : UUID <<PK>>
+  * userId : UUID <<FK>>
+  --
+  * permission : Permission
+}
+
+entity RefreshToken {
+  * id : UUID <<PK>>
+  * userId : UUID <<FK>>
+  --
+  * token : string
+  * expiryDate : datetime
+  * isRevoked : bool
+  * isUsed : bool
+}
+
+entity UserPreferences {
+  * id : UUID <<PK>>
+  * userId : UUID <<FK>>
+  --
+  * valueWeight : double
+  * efficiencyWeight : double
+  * reliabilityWeight : double
+  * mileageWeight : double
+  * conditionWeight : double
+  * autoGenerateAiSummary : bool
+  * enableVehicleScoring : bool
+  * hasCompletedQuiz : bool
+  * enableMarketPriceApi : bool
+}
+
+' ========================
+' LISTINGS
+' ========================
+
+entity Municipality {
+  * id : UUID <<PK>>
+  --
+  * name : string
+  * syncedAt : datetime
+}
+
+entity Listing {
+  * id : UUID <<PK>>
+  * sellerId : UUID <<FK>>
+  * variantId : UUID <<FK>>
+  * drivetrainId : UUID <<FK>>
+  * municipalityId : UUID <<FK>>
+  --
+  * price : decimal
+  * status : Status
+  description : string
+  vin : string
+  colour : string
+  * isUsed : bool
+  * year : int
+  * mileage : int
+  * isSteeringWheelRight : bool
+}
+
+entity Image {
+  * id : UUID <<PK>>
+  * listingId : UUID <<FK>>
+  listingDefectId : UUID <<FK>>
+  --
+  * bucketName : string
+  * objectKey : string
+  * originalFileName : string
+  * contentType : string
+  * fileSize : long
+  * altText : string
+}
+
+entity ListingDefect {
+  * id : UUID <<PK>>
+  * listingId : UUID <<FK>>
+  defectCategoryId : UUID <<FK>>
+  --
+  customName : string
+}
+
+entity DefectCategory {
+  * id : UUID <<PK>>
+  --
+  * name : string
+}
+
+entity DefectCategoryTranslation {
+  * id : UUID <<PK>>
+  * defectCategoryId : UUID <<FK>>
+  --
+  * languageCode : string
+  * name : string
+}
+
+entity UserListingLike {
+  * id : UUID <<PK>>
+  * listingId : UUID <<FK>>
+  * userId : UUID <<FK>>
+}
+
+entity UserListingNote {
+  * id : UUID <<PK>>
+  * listingId : UUID <<FK>>
+  * userId : UUID <<FK>>
+  --
+  * content : string
+}
+
+entity ListingAiSummaryCache {
+  * id : UUID <<PK>>
+  * listingId : UUID <<FK>>
+  --
+  * summaryType : string
+  comparisonListingId : UUID
+  * language : string
+  * summary : string
+  * generatedAt : datetime
+  * expiresAt : datetime
+}
+
+' ========================
+' MESSAGING & TRANSACTIONS
+' ========================
+
+entity Conversation {
+  * id : UUID <<PK>>
+  * listingId : UUID <<FK>>
+  * buyerId : UUID <<FK>>
+  --
+  * lastMessageAt : datetime
+}
+
+entity Message {
+  * id : UUID <<PK>>
+  * conversationId : UUID <<FK>>
+  * senderId : UUID <<FK>>
+  offerId : UUID <<FK>>
+  meetingId : UUID <<FK>>
+  availabilityCardId : UUID <<FK>>
+  contractCardId : UUID <<FK>>
+  --
+  * content : string
+  * sentAt : datetime
+  * isRead : bool
+  * messageType : MessageType
+}
+
+entity Offer {
+  * id : UUID <<PK>>
+  * conversationId : UUID <<FK>>
+  * initiatorId : UUID <<FK>>
+  parentOfferId : UUID <<FK>>
+  --
+  * amount : decimal
+  * status : OfferStatus
+  * expiresAt : datetime
+}
+
+entity Meeting {
+  * id : UUID <<PK>>
+  * conversationId : UUID <<FK>>
+  * initiatorId : UUID <<FK>>
+  parentMeetingId : UUID <<FK>>
+  --
+  * proposedAt : datetime
+  * durationMinutes : int
+  locationText : string
+  locationLat : decimal
+  locationLng : decimal
+  * status : MeetingStatus
+  * expiresAt : datetime
+}
+
+entity AvailabilityCard {
+  * id : UUID <<PK>>
+  * conversationId : UUID <<FK>>
+  * initiatorId : UUID <<FK>>
+  --
+  * status : AvailabilityCardStatus
+  * expiresAt : datetime
+}
+
+entity AvailabilitySlot {
+  * id : UUID <<PK>>
+  * availabilityCardId : UUID <<FK>>
+  --
+  * startTime : datetime
+  * endTime : datetime
+}
+
+entity ContractCard {
+  * id : UUID <<PK>>
+  * conversationId : UUID <<FK>>
+  * initiatorId : UUID <<FK>>
+  --
+  * status : ContractCardStatus
+  acceptedAt : datetime
+}
+
+entity ContractSellerSubmission {
+  * id : UUID <<PK>>
+  * contractCardId : UUID <<FK>>
+  --
+  sdkCode : string
+  * make : string
+  * commercialName : string
+  * registrationNumber : string
+  * mileage : int
+  vin : string
+  registrationCertificate : string
+  * technicalInspectionValid : bool
+  * wasDamaged : bool
+  damageKnown : bool
+  defectDetails : string
+  price : decimal
+  * personalIdCode : string
+  * fullName : string
+  * phone : string
+  * email : string
+  * address : string
+  * country : string
+  * submittedAt : datetime
+}
+
+entity ContractBuyerSubmission {
+  * id : UUID <<PK>>
+  * contractCardId : UUID <<FK>>
+  --
+  * personalIdCode : string
+  * fullName : string
+  * phone : string
+  * email : string
+  * address : string
+  * submittedAt : datetime
+}
+
+' ========================
+' CACHE
+' ========================
+
+entity VehicleReliabilityCache {
+  * id : UUID <<PK>>
+  --
+  * make : string
+  * model : string
+  * year : int
+  * recallCount : int
+  * complaintCount : int
+  overallSafetyRating : int
+  * fetchedAt : datetime
+  * expiresAt : datetime
+}
+
+entity VehicleEfficiencyCache {
+  * id : UUID <<PK>>
+  --
+  * make : string
+  * model : string
+  * year : int
+  litersPer100Km : double
+  kWhPer100Km : double
+  fetchedTrimName : string
+  * fetchedAt : datetime
+  * expiresAt : datetime
+}
+
+entity VehicleMarketCache {
+  * id : UUID <<PK>>
+  --
+  * make : string
+  * model : string
+  * year : int
+  * medianPrice : decimal
+  * totalListings : int
+  * isFetchFailed : bool
+  * fetchedAt : datetime
+  * expiresAt : datetime
+}
+
+' ========================
+' RELATIONSHIPS
+' ========================
+
+' Vehicle Catalog
+Make ||--o{ Model : "has"
+Model ||--o{ Variant : "has"
+Variant }o--|| Fuel : "uses"
+Variant }o--|| Transmission : "uses"
+Variant }o--|| BodyType : "has"
+Fuel ||--o{ FuelTranslation : "translated by"
+Transmission ||--o{ TransmissionTranslation : "translated by"
+BodyType ||--o{ BodyTypeTranslation : "translated by"
+Drivetrain ||--o{ DrivetrainTranslation : "translated by"
+
+' User
+User ||--o{ UserPermission : "has"
+User ||--o{ RefreshToken : "has"
+User ||--o| UserPreferences : "has"
+
+' Listing
+Listing }o--|| User : "seller"
+Listing }o--|| Variant : "is a"
+Listing }o--|| Drivetrain : "has"
+Listing }o--|| Municipality : "located in"
+Listing ||--o{ Image : "has"
+Listing ||--o{ ListingDefect : "has"
+Listing ||--o{ UserListingLike : "liked via"
+Listing ||--o{ UserListingNote : "noted via"
+Listing ||--o{ Conversation : "subject of"
+Listing ||--o{ ListingAiSummaryCache : "summarised in"
+
+' Defects
+ListingDefect }o--o| DefectCategory : "categorised as"
+ListingDefect ||--o{ Image : "has"
+DefectCategory ||--o{ DefectCategoryTranslation : "translated by"
+
+' User–Listing join tables
+UserListingLike }o--|| User : "by"
+UserListingNote }o--|| User : "by"
+
+' Conversation
+Conversation }o--|| Listing : "about"
+Conversation }o--|| User : "buyer"
+Conversation ||--o{ Message : "contains"
+Conversation ||--o{ Offer : "has"
+Conversation ||--o{ Meeting : "has"
+Conversation ||--o{ AvailabilityCard : "has"
+Conversation ||--o{ ContractCard : "has"
+
+' Message
+Message }o--|| Conversation : "in"
+Message }o--|| User : "sent by"
+Message }o--o| Offer : "references"
+Message }o--o| Meeting : "references"
+Message }o--o| AvailabilityCard : "references"
+Message }o--o| ContractCard : "references"
+
+' Offer
+Offer }o--|| Conversation : "in"
+Offer }o--|| User : "initiated by"
+Offer }o--o| Offer : "counter of"
+
+' Meeting
+Meeting }o--|| Conversation : "in"
+Meeting }o--|| User : "initiated by"
+Meeting }o--o| Meeting : "counter of"
+
+' AvailabilityCard
+AvailabilityCard }o--|| Conversation : "in"
+AvailabilityCard }o--|| User : "initiated by"
+AvailabilityCard ||--o{ AvailabilitySlot : "has"
+
+' ContractCard
+ContractCard }o--|| Conversation : "in"
+ContractCard }o--|| User : "initiated by"
+ContractCard ||--o| ContractSellerSubmission : "has"
+ContractCard ||--o| ContractBuyerSubmission : "has"
+
+@enduml

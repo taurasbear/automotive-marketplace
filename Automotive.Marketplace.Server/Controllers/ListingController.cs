@@ -11,15 +11,19 @@ using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingScor
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingAiSummary;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetListingComparisonAiSummary;
 using Automotive.Marketplace.Application.Features.ListingFeatures.GetSellerListingInsights;
+using Automotive.Marketplace.Application.Features.ListingFeatures.ReactivateListing;
 using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListing;
+using Automotive.Marketplace.Application.Features.ListingFeatures.UpdateListingStatus;
 using Automotive.Marketplace.Domain.Enums;
 using Automotive.Marketplace.Server.Attributes;
+using Automotive.Marketplace.Server.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Automotive.Marketplace.Server.Controllers;
 
-public class ListingController(IMediator mediator) : BaseController
+public class ListingController(IMediator mediator, IHubContext<ChatHub> hubContext) : BaseController
 {
     [HttpGet]
     public async Task<ActionResult<PagedResult<GetAllListingsResponse>>> GetAll(
@@ -36,6 +40,7 @@ public class ListingController(IMediator mediator) : BaseController
        [FromQuery] GetListingByIdQuery query,
        CancellationToken cancellationToken)
     {
+        query.CurrentUserId = UserId != Guid.Empty ? UserId : null;
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
     }
@@ -51,18 +56,28 @@ public class ListingController(IMediator mediator) : BaseController
     }
 
     [HttpDelete]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult> Delete([FromQuery] DeleteListingCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        await mediator.Send(commandWithAuth, cancellationToken);
         return NoContent();
     }
 
     [HttpPut]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult> Update([FromBody] UpdateListingCommand command, CancellationToken cancellationToken)
     {
-        await mediator.Send(command, cancellationToken);
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        await mediator.Send(commandWithAuth, cancellationToken);
         return NoContent();
     }
 
@@ -136,7 +151,7 @@ public class ListingController(IMediator mediator) : BaseController
     }
 
     [HttpGet]
-    [Protect(Permission.ManageListings)]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
     public async Task<ActionResult<GetSellerListingInsightsResponse>> GetSellerInsights(
         [FromQuery] GetSellerListingInsightsQuery query,
         CancellationToken cancellationToken)
@@ -144,5 +159,45 @@ public class ListingController(IMediator mediator) : BaseController
         query.UserId = UserId;
         var result = await mediator.Send(query, cancellationToken);
         return Ok(result);
+    }
+
+    [HttpPut]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
+    public async Task<ActionResult> UpdateStatus([FromBody] UpdateListingStatusCommand command, CancellationToken cancellationToken)
+    {
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        await mediator.Send(commandWithAuth, cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut]
+    [Protect(Permission.CreateListings, Permission.ManageListings)]
+    public async Task<ActionResult> ReactivateListing([FromBody] ReactivateListingCommand command, CancellationToken cancellationToken)
+    {
+        var commandWithAuth = command with
+        {
+            CurrentUserId = UserId,
+            Permissions = Permissions
+        };
+        var result = await mediator.Send(commandWithAuth, cancellationToken);
+
+        foreach (var cancelled in result.CancelledOffers)
+        {
+            var payload = new
+            {
+                offerId = cancelled.OfferId,
+                conversationId = cancelled.ConversationId,
+                initiatorId = cancelled.BuyerId,
+                recipientId = cancelled.SellerId,
+            };
+            await hubContext.Clients.Group($"user-{cancelled.BuyerId}").SendAsync("OfferCancelled", payload, cancellationToken);
+            await hubContext.Clients.Group($"user-{cancelled.SellerId}").SendAsync("OfferCancelled", payload, cancellationToken);
+        }
+
+        return NoContent();
     }
 }

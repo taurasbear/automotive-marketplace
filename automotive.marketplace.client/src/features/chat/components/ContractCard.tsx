@@ -159,6 +159,18 @@ const ContractCardComponent = ({
           </div>
         )}
 
+        {/* Pending — recipient can also cancel */}
+        {card.status === "Pending" && isRecipient && (
+          <Button
+            size="sm"
+            variant="ghost"
+            className="text-destructive hover:text-destructive h-7 text-xs w-full mt-1"
+            onClick={() => onCancel(card.id)}
+          >
+            {t("contractCard.cancel")}
+          </Button>
+        )}
+
         {/* Active / SellerSubmitted / BuyerSubmitted — show badges */}
         {["Active", "SellerSubmitted", "BuyerSubmitted"].includes(card.status) && (
           <div className="space-y-2">
@@ -189,6 +201,15 @@ const ContractCardComponent = ({
                   : format(new Date(card.buyerSubmittedAt!), "MMM d", { locale })}
               </Button>
             )}
+            {/* Cancel button for Active/Submitted states */}
+            <Button
+              size="sm"
+              variant="ghost"
+              className="text-destructive hover:text-destructive h-7 text-xs w-full"
+              onClick={() => onCancel(card.id)}
+            >
+              {t("contractCard.cancel")}
+            </Button>
           </div>
         )}
 

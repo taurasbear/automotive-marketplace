@@ -1475,6 +1475,9 @@ namespace Automotive.Marketplace.Infrastructure.Migrations
                     b.Property<double>("EfficiencyWeight")
                         .HasColumnType("double precision");
 
+                    b.Property<bool>("EnableMarketPriceApi")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("EnableVehicleScoring")
                         .HasColumnType("boolean");
 

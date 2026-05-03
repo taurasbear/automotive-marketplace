@@ -74,6 +74,54 @@ public class GetListingByIdQueryHandler(
         }
         response.Defects = defects;
 
+        if (request.CurrentUserId != null)
+        {
+            response.IsLiked = await repository.AsQueryable<UserListingLike>()
+                .AnyAsync(l => l.ListingId == request.Id && l.UserId == request.CurrentUserId, cancellationToken);
+        }
+
+        // Populate external API data from cache tables
+        var vehicleMarketCache = await repository.AsQueryable<VehicleMarketCache>()
+            .Where(c => c.Make == listing.Variant.Model.Make.Name && 
+                       c.Model == listing.Variant.Model.Name && 
+                       c.Year == listing.Year)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        var vehicleReliabilityCache = await repository.AsQueryable<VehicleReliabilityCache>()
+            .Where(c => c.Make == listing.Variant.Model.Make.Name && 
+                       c.Model == listing.Variant.Model.Name && 
+                       c.Year == listing.Year)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        var vehicleEfficiencyCache = await repository.AsQueryable<VehicleEfficiencyCache>()
+            .Where(c => c.Make == listing.Variant.Model.Make.Name && 
+                       c.Model == listing.Variant.Model.Name && 
+                       c.Year == listing.Year)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (vehicleMarketCache != null && !vehicleMarketCache.IsFetchFailed)
+        {
+            response.MarketMedianPrice = vehicleMarketCache.MedianPrice;
+            response.MarketListingCount = vehicleMarketCache.TotalListings;
+        }
+
+        if (vehicleReliabilityCache != null)
+        {
+            response.SafetyRating = vehicleReliabilityCache.OverallSafetyRating;
+            response.RecallCount = vehicleReliabilityCache.RecallCount;
+        }
+
+        if (vehicleEfficiencyCache != null)
+        {
+            // Convert L/100km to MPG for display (approximate conversion)
+            if (vehicleEfficiencyCache.LitersPer100Km.HasValue)
+            {
+                var mpg = 235.214 / vehicleEfficiencyCache.LitersPer100Km.Value; // Combined MPG approximation
+                response.FuelEconomyMpgCity = mpg * 0.9; // City is typically 10% less efficient
+                response.FuelEconomyMpgHighway = mpg * 1.1; // Highway is typically 10% more efficient
+            }
+        }
+
         return response;
     }
 }

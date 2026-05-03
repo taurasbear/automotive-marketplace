@@ -48,13 +48,13 @@ public class CancelContractCommandHandlerTests(
     }
 
     [Fact]
-    public async Task Handle_CancelActiveCard_ThrowsValidationException()
+    public async Task Handle_CancelActiveCard_TransitionsToCancelled()
     {
         await using var scope = fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (buyer, _, _, card) = await SeedCardAsync(context, ContractCardStatus.Active, initiatorIsBuyer: true);
+        var (buyer, seller, conversation, card) = await SeedCardAsync(context, ContractCardStatus.Active, initiatorIsBuyer: true);
 
         var command = new CancelContractCommand
         {
@@ -62,30 +62,36 @@ public class CancelContractCommandHandlerTests(
             RequesterId = buyer.Id,
         };
 
-        var act = () => handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<RequestValidationException>()
-            .Where(ex => ex.Errors.ContainsKey("ContractCardId"));
+        result.NewStatus.Should().Be(ContractCardStatus.Cancelled);
+        result.RecipientId.Should().Be(seller.Id);
+        await context.Entry(card).ReloadAsync();
+        card.Status.Should().Be(ContractCardStatus.Cancelled);
     }
 
     [Fact]
-    public async Task Handle_NonInitiatorCancels_ThrowsUnauthorized()
+    public async Task Handle_NonInitiatorParticipantCancels_TransitionsToCancelled()
     {
         await using var scope = fixture.ServiceProvider.CreateAsyncScope();
         var handler = CreateHandler(scope);
         var context = scope.ServiceProvider.GetRequiredService<AutomotiveContext>();
 
-        var (_, seller, _, card) = await SeedCardAsync(context, ContractCardStatus.Pending, initiatorIsBuyer: true);
+        var (buyer, seller, conversation, card) = await SeedCardAsync(context, ContractCardStatus.Pending, initiatorIsBuyer: true);
 
         var command = new CancelContractCommand
         {
             ContractCardId = card.Id,
-            RequesterId = seller.Id, // seller is not the initiator
+            RequesterId = seller.Id, // seller is not the initiator but is a participant
         };
 
-        var act = () => handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<UnauthorizedAccessException>();
+        result.NewStatus.Should().Be(ContractCardStatus.Cancelled);
+        result.RecipientId.Should().Be(seller.Id);
+        result.InitiatorId.Should().Be(buyer.Id);
+        await context.Entry(card).ReloadAsync();
+        card.Status.Should().Be(ContractCardStatus.Cancelled);
     }
 
     [Fact]

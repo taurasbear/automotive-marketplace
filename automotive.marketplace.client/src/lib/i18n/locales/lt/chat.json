@@ -41,23 +41,26 @@
   },
   "offerCard": {
     "offer": "Pasiūlymas",
-    "counterOffer": "Kontra-pasiūlymas",
+    "counterOffer": "Kitas kainos pasiūlymas",
     "statusLabels": {
       "pending": "Laukiama atsakymo",
       "accepted": "Pasiūlymas priimtas",
       "declined": "Pasiūlymas atmestas",
-      "expired": "Pasiūlymas baigė galioti"
+      "expired": "Pasiūlymas baigė galioti",
+      "cancelled": "Pasiūlymas atšauktas"
     },
     "subtitles": {
       "listingOnHold": "Skelbimas sulaikytas",
       "noDealReached": "Sandoris neįvyko",
       "awaitingResponse": "Laukiama atsakymo",
-      "noResponseWithin48h": "Negautas atsakymas per 48 valandas"
+      "noResponseWithin48h": "Negautas atsakymas per 48 valandas",
+      "cancelled": "Atšaukta iniciatoriaus"
     },
     "actions": {
       "accept": "Priimti",
-      "counter": "Kontra",
-      "decline": "Atmesti"
+      "counter": "Siūlyti kitą kainą",
+      "decline": "Atmesti",
+      "cancel": "Atšaukti pasiūlymą"
     }
   },
   "availabilityCard": {
@@ -96,14 +99,14 @@
     "viewListing": "Žiūrėti skelbimą"
   },
   "makeOfferModal": {
-    "counterOfferTitle": "Kontra-pasiūlymas",
+    "counterOfferTitle": "Siūlyti kitą kainą",
     "makeOfferTitle": "Pateikti pasiūlymą",
     "listedPrice": "Skelbiama kaina",
     "discount": "Nuolaida",
     "yourOffer": "Jūsų pasiūlymas (€)",
     "minOffer": "Minimali suma – {{amount}} € (⅓ prašomos kainos).",
     "maxOffer": "Pasiūlymas negali viršyti skelbimo kainos – {{price}} €.",
-    "sendCounter": "Siųsti kontra",
+    "sendCounter": "Siųsti pasiūlymą",
     "sendOffer": "Siųsti pasiūlymą"
   },
   "proposeMeetingModal": {
@@ -196,6 +199,7 @@
     "offerReceived": "Naujas kainos pasiūlymas",
     "meetingProposed": "Naujas susitikimo pasiūlymas",
     "meetingCancelled": "Susitikimas atšauktas",
-    "contractRequested": "Prašoma sutarties"
+    "contractRequested": "Prašoma sutarties",
+    "offerCancelled": "Kainos pasiūlymas atšauktas"
   }
 }

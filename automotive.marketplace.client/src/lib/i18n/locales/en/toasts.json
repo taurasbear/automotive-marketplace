@@ -12,8 +12,12 @@
     "createError": "Sorry, we had trouble creating your listing.",
     "updateSuccess": "Successfully updated listing!",
     "updateError": "Sorry, we couldn't update listing",
+    "statusUpdateSuccess": "Listing status updated successfully!",
+    "statusUpdateError": "Sorry, we couldn't update the listing status",
     "deleteSuccess": "Successfully deleted listing!",
-    "deleteError": "Sorry, we had trouble deleting your listing"
+    "deleteError": "Sorry, we had trouble deleting your listing",
+    "reactivateSuccess": "Listing successfully reactivated!",
+    "reactivateError": "Failed to reactivate listing"
   },
   "myListing": {
     "deleteSuccess": "Listing deleted successfully!",

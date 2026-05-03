@@ -27,4 +27,8 @@ public sealed record UpdateListingCommand : IRequest
     public bool IsUsed { get; set; }
 
     public int Year { get; set; }
+
+    public Guid CurrentUserId { get; set; }
+
+    public IReadOnlyList<string> Permissions { get; set; } = [];
 };

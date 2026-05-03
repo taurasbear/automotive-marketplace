@@ -77,6 +77,36 @@ export const CompareTable = ({
         { field: "sellerName", label: t("table.seller") },
       ],
     },
+    {
+      label: t("table.externalData"),
+      rows: [
+        {
+          field: "marketMedianPrice",
+          label: t("table.marketPrice"),
+          format: (v) => v ? `${(v as number).toFixed(0)} €` : "—",
+        },
+        {
+          field: "safetyRating",
+          label: t("table.safetyRating"),
+          format: (v) => v ? `${v}/5` : "—",
+        },
+        {
+          field: "fuelEconomyMpgCity",
+          label: t("table.fuelEconomyCity"),
+          format: (v) => v ? `${v} MPG` : "—",
+        },
+        {
+          field: "fuelEconomyMpgHighway",
+          label: t("table.fuelEconomyHighway"),
+          format: (v) => v ? `${v} MPG` : "—",
+        },
+        {
+          field: "recallCount",
+          label: t("table.recalls"),
+          format: (v) => v != null ? String(v) : "—",
+        },
+      ],
+    },
   ];
 
   return (

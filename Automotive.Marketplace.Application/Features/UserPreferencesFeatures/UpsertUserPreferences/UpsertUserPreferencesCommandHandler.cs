@@ -28,6 +28,7 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
             existing.AutoGenerateAiSummary = request.AutoGenerateAiSummary;
             existing.EnableVehicleScoring = request.EnableVehicleScoring;
             existing.HasCompletedQuiz = request.HasCompletedQuiz;
+            existing.EnableMarketPriceApi = request.EnableMarketPriceApi;
             await repository.UpdateAsync(existing, cancellationToken);
         }
         else
@@ -44,6 +45,7 @@ public class UpsertUserPreferencesCommandHandler(IRepository repository)
                 AutoGenerateAiSummary = request.AutoGenerateAiSummary,
                 EnableVehicleScoring = request.EnableVehicleScoring,
                 HasCompletedQuiz = request.HasCompletedQuiz,
+                EnableMarketPriceApi = request.EnableMarketPriceApi,
             }, cancellationToken);
         }
     }

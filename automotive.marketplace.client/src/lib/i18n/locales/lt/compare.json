@@ -25,7 +25,13 @@
     "listingDetails": "Skelbimo duomenys",
     "price": "Kaina",
     "status": "Būsena",
-    "seller": "Pardavėjas"
+    "seller": "Pardavėjas",
+    "externalData": "Išoriniai duomenys",
+    "marketPrice": "Rinkos mediana",
+    "safetyRating": "Saugumo įvertinimas",
+    "fuelEconomyCity": "Degalų sąnaudos (miestas)",
+    "fuelEconomyHighway": "Degalų sąnaudos (magistralė)",
+    "recalls": "Atšaukimai"
   },
   "searchModal": {
     "title": "Palyginti su kitu skelbimu",

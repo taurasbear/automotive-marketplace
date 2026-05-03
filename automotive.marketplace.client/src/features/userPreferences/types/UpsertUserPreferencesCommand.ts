@@ -7,4 +7,5 @@ export type UpsertUserPreferencesCommand = {
   autoGenerateAiSummary: boolean;
   enableVehicleScoring: boolean;
   hasCompletedQuiz: boolean;
+  enableMarketPriceApi: boolean;
 };

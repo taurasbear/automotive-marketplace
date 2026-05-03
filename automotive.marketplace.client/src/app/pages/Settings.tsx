@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   BarChart2,
+  CircleDollarSign,
   RotateCcw,
   SlidersHorizontal,
   Sparkles,
@@ -36,6 +37,7 @@ export default function Settings() {
       autoGenerateAiSummary: prefs.autoGenerateAiSummary,
       enableVehicleScoring: checked,
       hasCompletedQuiz: prefs.hasCompletedQuiz,
+      enableMarketPriceApi: prefs.enableMarketPriceApi,
     });
   };
 
@@ -50,6 +52,22 @@ export default function Settings() {
       autoGenerateAiSummary: checked,
       enableVehicleScoring: prefs.enableVehicleScoring,
       hasCompletedQuiz: prefs.hasCompletedQuiz,
+      enableMarketPriceApi: prefs.enableMarketPriceApi,
+    });
+  };
+
+  const handleMarketPriceToggle = async (checked: boolean) => {
+    if (!prefs) return;
+    await upsert({
+      valueWeight: prefs.valueWeight,
+      efficiencyWeight: prefs.efficiencyWeight,
+      reliabilityWeight: prefs.reliabilityWeight,
+      mileageWeight: prefs.mileageWeight,
+      conditionWeight: prefs.conditionWeight,
+      autoGenerateAiSummary: prefs.autoGenerateAiSummary,
+      enableVehicleScoring: prefs.enableVehicleScoring,
+      hasCompletedQuiz: prefs.hasCompletedQuiz,
+      enableMarketPriceApi: checked,
     });
   };
 
@@ -63,6 +81,7 @@ export default function Settings() {
       autoGenerateAiSummary: prefs?.autoGenerateAiSummary ?? true,
       enableVehicleScoring: true,
       hasCompletedQuiz: prefs?.hasCompletedQuiz ?? false,
+      enableMarketPriceApi: prefs?.enableMarketPriceApi ?? false,
     });
   };
 
@@ -132,6 +151,26 @@ export default function Settings() {
             <Switch
               checked={prefs?.autoGenerateAiSummary ?? true}
               onCheckedChange={handleAiSummaryToggle}
+            />
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center gap-3">
+              <CircleDollarSign className="text-muted-foreground h-5 w-5" />
+              <div>
+                <p className="text-sm font-medium">
+                  {t("settings.marketPriceLabel")}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  {t("settings.marketPriceDescription")}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={prefs?.enableMarketPriceApi ?? false}
+              onCheckedChange={handleMarketPriceToggle}
             />
           </div>
 

@@ -30,4 +30,12 @@ public sealed record GetListingByIdResponse
     public bool IsSteeringWheelRight { get; set; }
     public IEnumerable<ImageDto> Images { get; set; } = [];
     public IEnumerable<ListingDefectDto> Defects { get; set; } = [];
+    public bool IsLiked { get; set; }
+    // External API data
+    public decimal? MarketMedianPrice { get; set; }
+    public int? MarketListingCount { get; set; }
+    public double? FuelEconomyMpgCity { get; set; }
+    public double? FuelEconomyMpgHighway { get; set; }
+    public int? SafetyRating { get; set; }
+    public int? RecallCount { get; set; }
 }

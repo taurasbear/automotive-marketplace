@@ -46,18 +46,21 @@
       "pending": "Pending response",
       "accepted": "Offer Accepted",
       "declined": "Offer Declined",
-      "expired": "Offer Expired"
+      "expired": "Offer Expired",
+      "cancelled": "Offer Cancelled"
     },
     "subtitles": {
       "listingOnHold": "Listing is now on hold",
       "noDealReached": "No deal reached",
       "awaitingResponse": "Awaiting response",
-      "noResponseWithin48h": "No response within 48 hours"
+      "noResponseWithin48h": "No response within 48 hours",
+      "cancelled": "Withdrawn by sender"
     },
     "actions": {
       "accept": "Accept",
       "counter": "Counter",
-      "decline": "Decline"
+      "decline": "Decline",
+      "cancel": "Cancel Offer"
     }
   },
   "availabilityCard": {
@@ -196,6 +199,7 @@
     "offerReceived": "New price offer",
     "meetingProposed": "New meeting proposal",
     "meetingCancelled": "Meeting cancelled",
-    "contractRequested": "Contract requested"
+    "contractRequested": "Contract requested",
+    "offerCancelled": "Price offer cancelled"
   }
 }

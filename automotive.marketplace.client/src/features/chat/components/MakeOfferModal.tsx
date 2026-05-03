@@ -95,7 +95,7 @@ const MakeOfferModal = ({
               max={listingPrice}
               value={rawValue}
               onChange={(e) => setRawValue(e.target.value)}
-              placeholder={`${Math.ceil(minAmount)} – ${listingPrice}`}
+              placeholder={`${formatCurrency(Math.ceil(minAmount))} – ${formatCurrency(listingPrice)}`}
             />
             {isTooLow && (
               <p className="text-destructive text-xs">

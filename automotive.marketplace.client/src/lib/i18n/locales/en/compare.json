@@ -25,7 +25,13 @@
     "listingDetails": "Listing Details",
     "price": "Price",
     "status": "Status",
-    "seller": "Seller"
+    "seller": "Seller",
+    "externalData": "External Data",
+    "marketPrice": "Market Median Price",
+    "safetyRating": "Safety Rating",
+    "fuelEconomyCity": "Fuel Economy (City)",
+    "fuelEconomyHighway": "Fuel Economy (Highway)",
+    "recalls": "Recalls"
   },
   "searchModal": {
     "title": "Compare with another listing",

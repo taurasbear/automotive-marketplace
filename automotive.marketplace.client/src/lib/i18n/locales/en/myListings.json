@@ -9,10 +9,21 @@
   "card": {
     "active": "Active",
     "sold": "Sold",
+    "onHold": "On Hold",
+    "removed": "Removed",
     "defects": "{{count}} defects",
     "edit": "Edit",
     "delete": "Delete",
-    "location": "Location"
+    "location": "Location",
+    "markAsSold": "Mark as Sold",
+    "markAsSoldConfirmTitle": "Mark as sold?",
+    "markAsSoldConfirmDescription": "This listing will be removed from search results.",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "reactivate": "Reactivate",
+    "reactivateDialogTitle": "Reactivate listing?",
+    "reactivateDialogDescription": "This will cancel the agreed price offer. The listing will become active again.",
+    "markAsBought": "Mark as bought"
   },
   "detail": {
     "backToMyListings": "Back to My Listings",

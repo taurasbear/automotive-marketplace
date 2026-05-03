@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BadgeCheck, BadgeX, Clock, HandCoins, Undo2 } from "lucide-react";
+import { BadgeCheck, BadgeX, Clock, HandCoins, Undo2, Ban } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatCurrency } from "@/lib/i18n/formatNumber";
@@ -13,6 +13,7 @@ type OfferCardProps = {
   onAccept: (offerId: string) => void;
   onDecline: (offerId: string) => void;
   onCounter: (offerId: string, amount: number) => void;
+  onCancel: (offerId: string) => void;
 };
 
 const statusConfig = {
@@ -73,6 +74,17 @@ const statusConfig = {
     priceClass: "text-muted-foreground line-through",
     badgeClass: "bg-muted text-muted-foreground",
   },
+  Cancelled: {
+    headerClass: "bg-muted-foreground/60",
+    borderClass: "border-border",
+    labelKey: "offerCard.statusLabels.cancelled",
+    icon: Ban,
+    labelClass: "text-muted",
+    subLabelKey: "offerCard.subtitles.cancelled",
+    subLabelClass: "text-muted-foreground",
+    priceClass: "text-muted-foreground line-through",
+    badgeClass: "bg-muted text-muted-foreground",
+  },
 } as const;
 
 const OfferCard = ({
@@ -82,6 +94,7 @@ const OfferCard = ({
   onAccept,
   onDecline,
   onCounter,
+  onCancel,
 }: OfferCardProps) => {
   const [counterModalOpen, setCounterModalOpen] = useState(false);
   const { t } = useTranslation("chat");
@@ -91,23 +104,26 @@ const OfferCard = ({
   const canRespond =
     offer.status === "Pending" && currentUserId !== offer.initiatorId;
 
+  const canCancel =
+    offer.status === "Pending" && currentUserId === offer.initiatorId;
+
   return (
     <>
       <div
         className={`w-full max-w-[280px] overflow-hidden rounded-xl border ${config.borderClass} shadow-sm`}
       >
         <div
-          className={`${config.headerClass} flex items-center justify-between px-4 py-2.5`}
+          className={`${config.headerClass} flex flex-col px-4 py-2.5`}
         >
           <div className="flex items-center gap-2">
-            <Icon className={`h-3.5 w-3.5 ${config.labelClass}`} />
+            <Icon className={`h-3.5 w-3.5 shrink-0 ${config.labelClass}`} />
             <span
               className={`text-xs font-semibold tracking-wider uppercase ${config.labelClass}`}
             >
               {t(config.labelKey)}
             </span>
           </div>
-          <span className={`text-xs ${config.subLabelClass}`}>
+          <span className={`mt-0.5 text-xs ${config.subLabelClass}`}>
             {t(config.subLabelKey)}
           </span>
         </div>
@@ -117,7 +133,7 @@ const OfferCard = ({
             <span className={`text-xl font-bold ${config.priceClass}`}>
               €{formatCurrency(offer.amount)}
             </span>
-            {offer.status !== "Declined" && offer.status !== "Expired" && (
+            {offer.status !== "Declined" && offer.status !== "Expired" && offer.status !== "Cancelled" && (
               <span className="text-muted-foreground text-xs line-through">
                 €{formatCurrency(listingPrice)}
               </span>
@@ -130,29 +146,44 @@ const OfferCard = ({
           </div>
 
           {canRespond && (
-            <div className="mt-3 flex gap-2">
-              <Button
-                size="sm"
-                className="h-7 flex-1 text-xs"
-                onClick={() => onAccept(offer.id)}
-              >
-                {t("offerCard.actions.accept")}
-              </Button>
+            <div className="mt-3 flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  className="h-7 flex-1 text-xs"
+                  onClick={() => onAccept(offer.id)}
+                >
+                  {t("offerCard.actions.accept")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-destructive hover:text-destructive h-7 flex-1 text-xs"
+                  onClick={() => onDecline(offer.id)}
+                >
+                  {t("offerCard.actions.decline")}
+                </Button>
+              </div>
               <Button
                 size="sm"
                 variant="outline"
-                className="h-7 flex-1 text-xs"
+                className="h-7 w-full text-xs"
                 onClick={() => setCounterModalOpen(true)}
               >
                 {t("offerCard.actions.counter")}
               </Button>
+            </div>
+          )}
+
+          {canCancel && (
+            <div className="mt-3 flex gap-2">
               <Button
                 size="sm"
                 variant="ghost"
-                className="text-destructive hover:text-destructive h-7 flex-1 text-xs"
-                onClick={() => onDecline(offer.id)}
+                className="text-muted-foreground hover:text-destructive h-7 w-full text-xs"
+                onClick={() => onCancel(offer.id)}
               >
-                {t("offerCard.actions.decline")}
+                {t("offerCard.actions.cancel")}
               </Button>
             </div>
           )}
