@@ -8,6 +8,7 @@ import {
   Heart,
   MessageSquare,
   Pencil,
+  RotateCcw,
   Trash2,
 } from "lucide-react";
 import { IoLocationOutline } from "react-icons/io5";
@@ -38,6 +39,7 @@ import { translateVehicleAttr } from "@/features/listingList/utils/translateVehi
 import { GetMyListingsResponse } from "../types/GetMyListingsResponse";
 import { useDeleteMyListing } from "../api/useDeleteMyListing";
 import { useUpdateListingStatus } from "../api/useUpdateListingStatus";
+import { useReactivateListing } from "../api/useReactivateListing";
 import ListingBuyerPanel from "./ListingBuyerPanel";
 import { SellerInsightsPanel } from "./SellerInsightsPanel";
 
@@ -83,12 +85,15 @@ export default function MyListingCard({
   const { userId } = useAppSelector((state) => state.auth);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [markAsSoldDialogOpen, setMarkAsSoldDialogOpen] = useState(false);
+  const [reactivateDialogOpen, setReactivateDialogOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const deleteListingMutation = useDeleteMyListing();
   const updateListingStatusMutation = useUpdateListingStatus();
+  const reactivateListingMutation = useReactivateListing();
 
   const isSold = listing.status === "Sold" || listing.status === "Bought";
   const isAvailable = listing.status === "Available";
+  const isOnHold = listing.status === "OnHold";
 
   const handleDelete = () => {
     deleteListingMutation.mutate(
@@ -101,6 +106,13 @@ export default function MyListingCard({
     updateListingStatusMutation.mutate(
       { id: listing.id, status: "Bought" },
       { onSuccess: () => setMarkAsSoldDialogOpen(false) },
+    );
+  };
+
+  const handleReactivate = () => {
+    reactivateListingMutation.mutate(
+      { listingId: listing.id },
+      { onSuccess: () => setReactivateDialogOpen(false) },
     );
   };
 
@@ -126,7 +138,46 @@ export default function MyListingCard({
         </div>
 
         {/* Right — Details */}
-        <div className="flex min-w-0 flex-grow flex-col justify-between gap-2 pt-4 pr-4 pb-2">
+        <div className="relative flex min-w-0 flex-grow flex-col justify-between gap-2 pt-4 pr-4 pb-2">
+          {/* Edit & Delete icons — top-right, only when not sold */}
+          {!isSold && (
+            <div className="absolute top-2 right-0 flex items-center gap-1">
+              <Button asChild size="icon" variant="ghost" className="h-7 w-7">
+                <Link to="/my-listings/$id" params={{ id: listing.id }} title={t("card.edit")}>
+                  <Pencil className="h-4 w-4" />
+                </Link>
+              </Button>
+              <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-7 w-7 text-red-600 hover:text-red-700"
+                    title={t("card.delete")}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t("detail.deleteConfirmTitle")}</AlertDialogTitle>
+                    <AlertDialogDescription>{t("detail.deleteConfirmDescription")}</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("detail.cancel")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      className="bg-red-600 hover:bg-red-700"
+                      disabled={deleteListingMutation.isPending}
+                    >
+                      {deleteListingMutation.isPending ? "..." : t("detail.confirm")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          )}
+
           <div className="truncate">
             <p className="truncate font-sans text-xs">
               {listing.isUsed ? t("fields.used") : t("fields.new")}
@@ -174,7 +225,7 @@ export default function MyListingCard({
             </div>
           </div>
 
-          {/* Bottom row — defect badge and action buttons */}
+          {/* Bottom row — defect badge, engagement toggle and Mark as Sold */}
           <div className="flex flex-col gap-1">
             {/* Defect badge row */}
             {listing.defectCount > 0 && (
@@ -189,45 +240,37 @@ export default function MyListingCard({
               </div>
             )}
 
-            {/* Action buttons row */}
-            <div className="flex items-center justify-end gap-2">
-              {/* Action buttons — only when not sold */}
-              {!isSold && (
-                <div className="flex flex-wrap items-center gap-2">
-                  {/* Buyer panel toggle */}
-                  <button
-                    type="button"
-                    onClick={() => setPanelOpen((o) => !o)}
-                    className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-xs"
-                  >
-                    <Heart className="h-4 w-4" />
-                    <span>{listing.likeCount}</span>
-                    <MessageSquare className="h-4 w-4" />
-                    <span>{listing.conversationCount}</span>
-                    {panelOpen ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </button>
+            {/* Engagement toggle + Mark as Sold */}
+            {!isSold && (
+              <div className="flex items-center justify-between gap-2">
+                {/* Left: engagement toggle */}
+                <button
+                  type="button"
+                  onClick={() => setPanelOpen((o) => !o)}
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-xs"
+                >
+                  <Heart className="h-4 w-4" />
+                  <span>{listing.likeCount}</span>
+                  <MessageSquare className="h-4 w-4" />
+                  <span>{listing.conversationCount}</span>
+                  {panelOpen ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
 
-                  {/* Edit button */}
-                  <Button asChild size="sm" variant="outline">
-                    <Link to="/my-listings/$id" params={{ id: listing.id }}>
-                      <Pencil className="mr-1 h-4 w-4" />
-                      {t("card.edit")}
-                    </Link>
-                  </Button>
-
-                  {/* Mark as Sold button — only when Available */}
-                  {isAvailable && (
+                {/* Right: action buttons */}
+                <div className="flex flex-col items-end gap-1">
+                  {/* Mark as Sold — when Available or OnHold */}
+                  {(isAvailable || isOnHold) && (
                     <AlertDialog
                       open={markAsSoldDialogOpen}
                       onOpenChange={setMarkAsSoldDialogOpen}
                     >
                       <AlertDialogTrigger asChild>
                         <Button size="sm" variant="outline">
-                          {t("card.markAsSold")}
+                          {isOnHold ? t("card.markAsBought") : t("card.markAsSold")}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
@@ -250,49 +293,40 @@ export default function MyListingCard({
                     </AlertDialog>
                   )}
 
-                  {/* Delete button */}
-                  <AlertDialog
-                    open={deleteDialogOpen}
-                    onOpenChange={setDeleteDialogOpen}
-                  >
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="mr-1 h-4 w-4" />
-                        {t("card.delete")}
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          {t("detail.deleteConfirmTitle")}
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t("detail.deleteConfirmDescription")}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>
-                          {t("detail.cancel")}
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={handleDelete}
-                          className="bg-red-600 hover:bg-red-700"
-                          disabled={deleteListingMutation.isPending}
-                        >
-                          {deleteListingMutation.isPending
-                            ? "..."
-                            : t("detail.confirm")}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  {/* Reactivate — only when OnHold */}
+                  {isOnHold && (
+                    <AlertDialog
+                      open={reactivateDialogOpen}
+                      onOpenChange={setReactivateDialogOpen}
+                    >
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="ghost" className="text-green-700 hover:text-green-800">
+                          <RotateCcw className="mr-1 h-3 w-3" />
+                          {t("card.reactivate")}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t("card.reactivateDialogTitle")}</AlertDialogTitle>
+                          <AlertDialogDescription>{t("card.reactivateDialogDescription")}</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t("card.cancel")}</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={handleReactivate}
+                            disabled={reactivateListingMutation.isPending}
+                          >
+                            {reactivateListingMutation.isPending
+                              ? "..."
+                              : t("card.confirm")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

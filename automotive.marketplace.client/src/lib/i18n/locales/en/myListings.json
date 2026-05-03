@@ -19,7 +19,11 @@
     "markAsSoldConfirmTitle": "Mark as sold?",
     "markAsSoldConfirmDescription": "This listing will be removed from search results.",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "reactivate": "Reactivate",
+    "reactivateDialogTitle": "Reactivate listing?",
+    "reactivateDialogDescription": "This will cancel the agreed price offer. The listing will become active again.",
+    "markAsBought": "Mark as bought"
   },
   "detail": {
     "backToMyListings": "Back to My Listings",

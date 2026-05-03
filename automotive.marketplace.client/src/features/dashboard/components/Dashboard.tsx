@@ -4,15 +4,12 @@ import { useRouter } from "@tanstack/react-router";
 import { Calendar, CircleDollarSign, Clock, FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getDashboardSummaryOptions } from "../api/getDashboardSummaryOptions";
-import { useDashboardHub } from "../api/useDashboardHub";
 import { DashboardTile } from "./DashboardTile";
 
 export function Dashboard() {
   const { t } = useTranslation("dashboard");
   const { data, isLoading } = useQuery(getDashboardSummaryOptions);
   const router = useRouter();
-
-  useDashboardHub();
 
   if (isLoading) {
     return (
@@ -28,14 +25,6 @@ export function Dashboard() {
   }
 
   if (!data) return null;
-
-  const totalActions =
-    data.offers.pendingCount +
-    data.meetings.upcomingCount +
-    data.contracts.actionNeededCount +
-    data.availability.pendingCount;
-
-  if (totalActions === 0) return null;
 
   return (
     <div className="mx-auto max-w-3xl py-4">

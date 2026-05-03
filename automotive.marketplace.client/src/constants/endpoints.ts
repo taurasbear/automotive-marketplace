@@ -6,6 +6,8 @@ export const ENDPOINTS = {
     CREATE: "/Listing/Create",
     DELETE: "/Listing/Delete",
     UPDATE: "/Listing/Update",
+    UPDATE_STATUS: "/Listing/UpdateStatus",
+    REACTIVATE: "/Listing/ReactivateListing",
     SEARCH: "/Listing/Search",
     COMPARE: "/Listing/Compare",
     GET_ENGAGEMENTS: "/Listing/GetEngagements",

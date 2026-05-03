@@ -7,6 +7,7 @@ import {
 import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
 import { useChatHub } from "@/features/chat";
+import { useDashboardHub } from "@/features/dashboard";
 import { authClient } from "@/lib/axios/authClient";
 import { store } from "@/lib/redux/store";
 import { QueryClient } from "@tanstack/react-query";
@@ -25,6 +26,7 @@ export const authReady = new Promise<void>((resolve) => {
 
 const RootLayout = () => {
   useChatHub();
+  useDashboardHub();
   return (
     <div className="flex min-h-screen flex-col">
       <Header />

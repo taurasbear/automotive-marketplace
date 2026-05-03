@@ -113,17 +113,17 @@ const OfferCard = ({
         className={`w-full max-w-[280px] overflow-hidden rounded-xl border ${config.borderClass} shadow-sm`}
       >
         <div
-          className={`${config.headerClass} flex items-center justify-between px-4 py-2.5`}
+          className={`${config.headerClass} flex flex-col px-4 py-2.5`}
         >
           <div className="flex items-center gap-2">
-            <Icon className={`h-3.5 w-3.5 ${config.labelClass}`} />
+            <Icon className={`h-3.5 w-3.5 shrink-0 ${config.labelClass}`} />
             <span
               className={`text-xs font-semibold tracking-wider uppercase ${config.labelClass}`}
             >
               {t(config.labelKey)}
             </span>
           </div>
-          <span className={`text-xs ${config.subLabelClass}`}>
+          <span className={`mt-0.5 text-xs ${config.subLabelClass}`}>
             {t(config.subLabelKey)}
           </span>
         </div>
@@ -146,29 +146,31 @@ const OfferCard = ({
           </div>
 
           {canRespond && (
-            <div className="mt-3 flex gap-2">
-              <Button
-                size="sm"
-                className="h-7 flex-1 text-xs"
-                onClick={() => onAccept(offer.id)}
-              >
-                {t("offerCard.actions.accept")}
-              </Button>
+            <div className="mt-3 flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  className="h-7 flex-1 text-xs"
+                  onClick={() => onAccept(offer.id)}
+                >
+                  {t("offerCard.actions.accept")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-destructive hover:text-destructive h-7 flex-1 text-xs"
+                  onClick={() => onDecline(offer.id)}
+                >
+                  {t("offerCard.actions.decline")}
+                </Button>
+              </div>
               <Button
                 size="sm"
                 variant="outline"
-                className="h-7 flex-1 text-xs"
+                className="h-7 w-full text-xs"
                 onClick={() => setCounterModalOpen(true)}
               >
                 {t("offerCard.actions.counter")}
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-destructive hover:text-destructive h-7 flex-1 text-xs"
-                onClick={() => onDecline(offer.id)}
-              >
-                {t("offerCard.actions.decline")}
               </Button>
             </div>
           )}

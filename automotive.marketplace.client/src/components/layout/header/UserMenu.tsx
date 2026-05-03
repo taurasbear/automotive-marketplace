@@ -42,7 +42,7 @@ const UserMenu = () => {
           <Link to="/my-listings">{t("common:userMenu.myListings")}</Link>
         </DropdownMenuItem>
 
-        {permissions.includes(PERMISSIONS.ViewMakes) && (
+        {permissions.includes(PERMISSIONS.ManageMakes) && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>

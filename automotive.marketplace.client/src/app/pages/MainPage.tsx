@@ -7,8 +7,8 @@ const MainPage = () => {
 
   return (
     <div className="flex flex-1 flex-col">
-      {userId && <Dashboard />}
       <ListingSearch className="mt-16 w-full sm:mt-64" />
+      {userId && <Dashboard />}
     </div>
   );
 };

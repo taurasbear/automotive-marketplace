@@ -12,8 +12,12 @@
     "createError": "Atsiprašome, nepavyko sukurti skelbimo.",
     "updateSuccess": "Skelbimas sėkmingai atnaujintas!",
     "updateError": "Atsiprašome, nepavyko atnaujinti skelbimo",
+    "statusUpdateSuccess": "Skelbimo būsena sėkmingai atnaujinta!",
+    "statusUpdateError": "Atsiprašome, nepavyko atnaujinti skelbimo būsenos",
     "deleteSuccess": "Skelbimas sėkmingai ištrintas!",
-    "deleteError": "Atsiprašome, nepavyko ištrinti skelbimo"
+    "deleteError": "Atsiprašome, nepavyko ištrinti skelbimo",
+    "reactivateSuccess": "Skelbimas sėkmingai aktyvuotas iš naujo!",
+    "reactivateError": "Nepavyko aktyvuoti skelbimo iš naujo"
   },
   "myListing": {
     "deleteSuccess": "Skelbimas sėkmingai ištrintas!",

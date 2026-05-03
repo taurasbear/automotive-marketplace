@@ -19,7 +19,11 @@
     "markAsSoldConfirmTitle": "Pažymėti kaip parduotą?",
     "markAsSoldConfirmDescription": "Skelbimas bus pašalintas iš paieškos rezultatų.",
     "cancel": "Atšaukti",
-    "confirm": "Patvirtinti"
+    "confirm": "Patvirtinti",
+    "reactivate": "Aktyvuoti iš naujo",
+    "reactivateDialogTitle": "Aktyvuoti skelbimą iš naujo?",
+    "reactivateDialogDescription": "Veiksmas atšauks sutartą kainos pasiūlymą. Skelbimas vėl taps aktyvus.",
+    "markAsBought": "Pažymėti kaip nupirktą"
   },
   "detail": {
     "backToMyListings": "Grįžti į mano skelbimus",

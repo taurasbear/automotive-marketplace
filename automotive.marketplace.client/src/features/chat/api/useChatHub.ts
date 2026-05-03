@@ -240,6 +240,12 @@ export const useChatHub = () => {
           };
         },
       );
+      void queryClient.invalidateQueries({
+        queryKey: chatKeys.conversations(),
+      });
+      if (payload.initiatorId !== currentUserId) {
+        showBrowserNotification(t("notifications.offerCancelled"), "");
+      }
     });
 
     connection.on(

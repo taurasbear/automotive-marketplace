@@ -199,6 +199,7 @@
     "offerReceived": "Naujas kainos pasiūlymas",
     "meetingProposed": "Naujas susitikimo pasiūlymas",
     "meetingCancelled": "Susitikimas atšauktas",
-    "contractRequested": "Prašoma sutarties"
+    "contractRequested": "Prašoma sutarties",
+    "offerCancelled": "Kainos pasiūlymas atšauktas"
   }
 }

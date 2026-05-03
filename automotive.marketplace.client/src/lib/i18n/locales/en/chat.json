@@ -199,6 +199,7 @@
     "offerReceived": "New price offer",
     "meetingProposed": "New meeting proposal",
     "meetingCancelled": "Meeting cancelled",
-    "contractRequested": "Contract requested"
+    "contractRequested": "Contract requested",
+    "offerCancelled": "Price offer cancelled"
   }
 }
