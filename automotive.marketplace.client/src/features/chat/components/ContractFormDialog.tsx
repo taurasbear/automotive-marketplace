@@ -1,19 +1,19 @@
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { format } from "date-fns";
 import { useDateLocale } from "@/lib/i18n/dateLocale";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getUserContractProfileOptions } from "../api/getUserContractProfileOptions";
 
 type VehicleDefaults = {
@@ -102,16 +102,29 @@ const ContractFormDialog = ({
 
   // Step 1 — Vehicle fields
   const [make, setMake] = useState(vehicleDefaults.make);
-  const [commercialName, setCommercialName] = useState(vehicleDefaults.commercialName);
+  const [commercialName, setCommercialName] = useState(
+    vehicleDefaults.commercialName,
+  );
   const [vin, setVin] = useState(vehicleDefaults.vin ?? "");
   const [mileage, setMileage] = useState(String(vehicleDefaults.mileage));
-  const [price, setPrice] = useState(vehicleDefaults.price ? String(vehicleDefaults.price) : "");
+  const [price, setPrice] = useState(
+    vehicleDefaults.price ? String(Math.round(vehicleDefaults.price)) : "",
+  );
+
+  useEffect(() => {
+    if (vehicleDefaults.price && !price) {
+      setPrice(String(Math.round(vehicleDefaults.price)));
+    }
+  }, [vehicleDefaults.price]);
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [sdkCode, setSdkCode] = useState("");
   const [registrationCertificate, setRegistrationCertificate] = useState("");
-  const [technicalInspectionValid, setTechnicalInspectionValid] = useState(true);
+  const [technicalInspectionValid, setTechnicalInspectionValid] =
+    useState(true);
   const [wasDamaged, setWasDamaged] = useState(false);
-  const [damageKnown, setDamageKnown] = useState<boolean | undefined>(undefined);
+  const [damageKnown, setDamageKnown] = useState<boolean | undefined>(
+    undefined,
+  );
   const [defectBrakes, setDefectBrakes] = useState(false);
   const [defectSafety, setDefectSafety] = useState(false);
   const [defectSteering, setDefectSteering] = useState(false);
@@ -120,7 +133,9 @@ const ContractFormDialog = ({
   const [defectDetails, setDefectDetails] = useState("");
 
   // Step 2 — Personal fields
-  const [personalIdCode, setPersonalIdCode] = useState(profile?.personalIdCode ?? "");
+  const [personalIdCode, setPersonalIdCode] = useState(
+    profile?.personalIdCode ?? "",
+  );
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState(profile?.phoneNumber ?? "");
   const [address, setAddress] = useState(profile?.address ?? "");
@@ -186,12 +201,12 @@ const ContractFormDialog = ({
 
         {/* Step indicator (seller only) */}
         {isSeller && !isReadOnly && (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-            <span className={step === 1 ? "font-semibold text-foreground" : ""}>
+          <div className="text-muted-foreground mb-2 flex items-center gap-2 text-xs">
+            <span className={step === 1 ? "text-foreground font-semibold" : ""}>
               {t("contractForm.step1")}
             </span>
             <span>→</span>
-            <span className={step === 2 ? "font-semibold text-foreground" : ""}>
+            <span className={step === 2 ? "text-foreground font-semibold" : ""}>
               {t("contractForm.step2")}
             </span>
           </div>
@@ -211,7 +226,9 @@ const ContractFormDialog = ({
                 />
               </div>
               <div>
-                <Label className="text-xs">{t("contractForm.commercialName")}</Label>
+                <Label className="text-xs">
+                  {t("contractForm.commercialName")}
+                </Label>
                 <Input
                   value={commercialName}
                   onChange={(e) => setCommercialName(e.target.value)}
@@ -242,6 +259,7 @@ const ContractFormDialog = ({
                 <Label className="text-xs">{t("contractForm.price")}</Label>
                 <Input
                   type="number"
+                  step="1"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   disabled={disabled}
@@ -249,7 +267,9 @@ const ContractFormDialog = ({
                 />
               </div>
               <div>
-                <Label className="text-xs">{t("contractForm.registrationNumber")}</Label>
+                <Label className="text-xs">
+                  {t("contractForm.registrationNumber")}
+                </Label>
                 <Input
                   value={registrationNumber}
                   onChange={(e) => setRegistrationNumber(e.target.value)}
@@ -267,7 +287,9 @@ const ContractFormDialog = ({
                 />
               </div>
               <div>
-                <Label className="text-xs">{t("contractForm.registrationCertificate")}</Label>
+                <Label className="text-xs">
+                  {t("contractForm.registrationCertificate")}
+                </Label>
                 <Input
                   value={registrationCertificate}
                   onChange={(e) => setRegistrationCertificate(e.target.value)}
@@ -346,12 +368,14 @@ const ContractFormDialog = ({
             </div>
 
             <div>
-              <Label className="text-xs">{t("contractForm.defectDetails")}</Label>
+              <Label className="text-xs">
+                {t("contractForm.defectDetails")}
+              </Label>
               <Textarea
                 value={defectDetails}
                 onChange={(e) => setDefectDetails(e.target.value)}
                 disabled={disabled}
-                className="text-sm min-h-[60px]"
+                className="min-h-[60px] text-sm"
               />
             </div>
 
@@ -369,7 +393,11 @@ const ContractFormDialog = ({
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
                 <Label className="text-xs">{t("contractForm.email")}</Label>
-                <Input value={userEmail} disabled className="h-8 text-sm opacity-60" />
+                <Input
+                  value={userEmail}
+                  disabled
+                  className="h-8 text-sm opacity-60"
+                />
               </div>
               <div>
                 <Label className="text-xs">{t("contractForm.fullName")}</Label>
@@ -390,7 +418,9 @@ const ContractFormDialog = ({
                 />
               </div>
               <div>
-                <Label className="text-xs">{t("contractForm.personalIdCode")}</Label>
+                <Label className="text-xs">
+                  {t("contractForm.personalIdCode")}
+                </Label>
                 <Input
                   value={personalIdCode}
                   onChange={(e) => setPersonalIdCode(e.target.value)}
@@ -434,7 +464,11 @@ const ContractFormDialog = ({
 
                 <div className="flex gap-2">
                   {isSeller && (
-                    <Button variant="outline" className="flex-1" onClick={() => setStep(1)}>
+                    <Button
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => setStep(1)}
+                    >
                       {t("contractForm.back")}
                     </Button>
                   )}
