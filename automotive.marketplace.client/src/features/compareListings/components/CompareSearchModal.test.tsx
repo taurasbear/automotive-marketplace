@@ -15,6 +15,11 @@ vi.mock("@/lib/router", () => ({
   router: { navigate: vi.fn() },
 }));
 
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
+}));
+
 const {
   useAppSelectorMock,
   getSavedListingsOptionsMock,
@@ -111,12 +116,12 @@ describe("CompareSearchModal — new prop API", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
+      expect(screen.getAllByRole("button", { name: "searchModal.compare" })).toHaveLength(
         searchResults.length,
       ),
     );
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Compare" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "searchModal.compare" })[0]);
     expect(onSelect).toHaveBeenCalledWith("listing-1");
     expect(onSelect).toHaveBeenCalledTimes(1);
   });
@@ -140,7 +145,7 @@ describe("CompareSearchModal — new prop API", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
+      expect(screen.getAllByRole("button", { name: "searchModal.compare" })).toHaveLength(
         1,
       ),
     );
@@ -170,12 +175,12 @@ describe("CompareSearchModal — new prop API", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getAllByRole("button", { name: "Compare" })).toHaveLength(
+      expect(screen.getAllByRole("button", { name: "searchModal.compare" })).toHaveLength(
         searchResults.length,
       ),
     );
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Compare" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "searchModal.compare" })[0]);
     expect(onSelect).toHaveBeenCalledWith("listing-1");
     expect(onClose).not.toHaveBeenCalled();
   });
@@ -232,7 +237,7 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
     );
 
     await waitFor(() =>
-      expect(screen.getByText("Your saved listings")).toBeInTheDocument(),
+      expect(screen.getByText("searchModal.yourSavedListings")).toBeInTheDocument(),
     );
     expect(screen.getByText("2021 BMW 3 Series")).toBeInTheDocument();
     expect(screen.getByText("2018 Audi A4")).toBeInTheDocument();
@@ -254,7 +259,7 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
       expect(screen.getByText("2021 BMW 3 Series")).toBeInTheDocument(),
     );
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Compare" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "searchModal.compare" })[0]);
     expect(onSelect).toHaveBeenCalledWith("saved-111");
   });
 
@@ -270,7 +275,7 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
     );
 
     await waitFor(() =>
-      expect(screen.getByText("Your saved listings")).toBeInTheDocument(),
+      expect(screen.getByText("searchModal.yourSavedListings")).toBeInTheDocument(),
     );
     expect(screen.queryByText("2021 BMW 3 Series")).not.toBeInTheDocument();
     expect(screen.getByText("2018 Audi A4")).toBeInTheDocument();
@@ -292,7 +297,7 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
     await waitFor(() =>
       expect(screen.getByRole("textbox")).toBeInTheDocument(),
     );
-    expect(screen.queryByText("Your saved listings")).not.toBeInTheDocument();
+    expect(screen.queryByText("searchModal.yourSavedListings")).not.toBeInTheDocument();
   });
 
   it("hides the saved listings section when all items are excluded", async () => {
@@ -309,7 +314,7 @@ describe("CompareSearchModal — liked listings (empty query)", () => {
     await waitFor(() =>
       expect(screen.getByRole("textbox")).toBeInTheDocument(),
     );
-    expect(screen.queryByText("Your saved listings")).not.toBeInTheDocument();
+    expect(screen.queryByText("searchModal.yourSavedListings")).not.toBeInTheDocument();
   });
 });
 
@@ -367,10 +372,10 @@ describe("CompareSearchModal — liked listings (with query)", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getByText(/❤ Saved/)).toBeInTheDocument(),
+      expect(screen.getByText(/searchModal.saved/)).toBeInTheDocument(),
     );
 
-    const compareButtons = screen.getAllByRole("button", { name: "Compare" });
+    const compareButtons = screen.getAllByRole("button", { name: "searchModal.compare" });
     expect(compareButtons).toHaveLength(2);
 
     // BMW (saved match) appears before Honda (unsaved)
