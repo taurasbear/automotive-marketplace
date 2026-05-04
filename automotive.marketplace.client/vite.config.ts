@@ -58,6 +58,11 @@ export default defineConfig(({ mode }) => {
       environment: "jsdom",
       setupFiles: ["./src/test/setup.ts"],
       clearMocks: true,
+      coverage: {
+        provider: "v8",
+        reporter: ["text", "html"],
+        reportsDirectory: "./coverage",
+      },
     },
   };
 });

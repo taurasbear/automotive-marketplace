@@ -1,8 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { CompareTable } from "./CompareTable";
 import type { GetListingByIdResponse } from "@/features/listingDetails/types/GetListingByIdResponse";
 import type { DiffMap } from "../types/diff";
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
+}));
 
 const listingA: GetListingByIdResponse = {
   id: "a1",
@@ -72,9 +77,9 @@ describe("CompareTable", () => {
         diffOnly={false}
       />,
     );
-    expect(screen.getByText("Basic Info")).toBeInTheDocument();
-    expect(screen.getByText("Engine & Performance")).toBeInTheDocument();
-    expect(screen.getByText("Listing Details")).toBeInTheDocument();
+    expect(screen.getByText("table.basicInfo")).toBeInTheDocument();
+    expect(screen.getByText("table.engineAndPerformance")).toBeInTheDocument();
+    expect(screen.getByText("table.listingDetails")).toBeInTheDocument();
   });
 
   it("renders row labels for all spec fields when diffOnly is false", () => {
@@ -86,9 +91,9 @@ describe("CompareTable", () => {
         diffOnly={false}
       />,
     );
-    expect(screen.getByText("Make")).toBeInTheDocument();
-    expect(screen.getByText("Power (kW)")).toBeInTheDocument();
-    expect(screen.getByText("Price")).toBeInTheDocument();
+    expect(screen.getByText("table.make")).toBeInTheDocument();
+    expect(screen.getByText("table.powerKw")).toBeInTheDocument();
+    expect(screen.getByText("table.price")).toBeInTheDocument();
   });
 
   it("hides rows where diff is equal when diffOnly is true", () => {
@@ -100,10 +105,10 @@ describe("CompareTable", () => {
         diffOnly={true}
       />,
     );
-    expect(screen.queryByText("Model")).not.toBeInTheDocument();
-    expect(screen.getByText("Make")).toBeInTheDocument();
-    expect(screen.getByText("Power (kW)")).toBeInTheDocument();
-    expect(screen.getByText("Mileage")).toBeInTheDocument();
+    expect(screen.queryByText("table.model")).not.toBeInTheDocument();
+    expect(screen.getByText("table.make")).toBeInTheDocument();
+    expect(screen.getByText("table.powerKw")).toBeInTheDocument();
+    expect(screen.getByText("table.mileage")).toBeInTheDocument();
   });
 
   it("applies green class to the better cell for a-better numeric field", () => {

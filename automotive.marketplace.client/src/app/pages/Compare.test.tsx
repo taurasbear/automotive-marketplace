@@ -6,6 +6,19 @@ import type { GetListingComparisonResponse } from "@/features/compareListings/ty
 import { router } from "@/lib/router";
 import type { SavedListing } from "@/features/savedListings/types/SavedListing";
 
+// Mock TanStack Router's Link to avoid needing a full router context
+vi.mock("@tanstack/react-router", () => ({
+  Link: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <a className={className}>{children}</a>
+  ),
+}));
+
+// Mock i18n to return translation keys as-is
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
+}));
+
 // Mock the route to supply search params
 vi.mock("@/app/routes/compare", () => ({
   Route: {
@@ -35,6 +48,15 @@ vi.mock("@/features/compareListings/api/searchListingsOptions", () => ({
     queryFn: async () => ({ data: [] }),
     enabled: false,
   }),
+}));
+
+// Mock sub-components that have their own complex dependencies and test files
+vi.mock("@/features/compareListings/components/CompareScoreBanner", () => ({
+  CompareScoreBanner: () => <div data-testid="compare-score-banner" />,
+}));
+
+vi.mock("@/features/compareListings/components/CompareAiSummary", () => ({
+  CompareAiSummary: () => <div data-testid="compare-ai-summary" />,
 }));
 
 const mockComparison: GetListingComparisonResponse = {
@@ -151,9 +173,9 @@ describe("Compare page", () => {
     render(<Compare />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByText("Basic Info")).toBeInTheDocument();
-      expect(screen.getByText("Engine & Performance")).toBeInTheDocument();
-      expect(screen.getByText("Listing Details")).toBeInTheDocument();
+      expect(screen.getByText("table.basicInfo")).toBeInTheDocument();
+      expect(screen.getByText("table.engineAndPerformance")).toBeInTheDocument();
+      expect(screen.getByText("table.listingDetails")).toBeInTheDocument();
     });
   });
 
@@ -188,13 +210,13 @@ describe("Compare page — swap orchestration", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Change listing A" }),
+        screen.getByRole("button", { name: "header.changeListingA" }),
       ).toBeInTheDocument();
     });
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
+    fireEvent.click(screen.getByRole("button", { name: "header.changeListingA" }));
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
@@ -204,13 +226,13 @@ describe("Compare page — swap orchestration", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Change listing B" }),
+        screen.getByRole("button", { name: "header.changeListingB" }),
       ).toBeInTheDocument();
     });
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Change listing B" }));
+    fireEvent.click(screen.getByRole("button", { name: "header.changeListingB" }));
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
@@ -220,11 +242,11 @@ describe("Compare page — swap orchestration", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Change listing A" }),
+        screen.getByRole("button", { name: "header.changeListingA" }),
       ).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
+    fireEvent.click(screen.getByRole("button", { name: "header.changeListingA" }));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
@@ -245,18 +267,18 @@ describe("Compare page — swap orchestration", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByRole("button", { name: "Change listing A" }),
+        screen.getByRole("button", { name: "header.changeListingA" }),
       ).toBeInTheDocument(),
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Change listing A" }));
+    fireEvent.click(screen.getByRole("button", { name: "header.changeListingA" }));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     await waitFor(() =>
       expect(screen.getByText("2022 Volkswagen Golf")).toBeInTheDocument(),
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Compare" }));
+    fireEvent.click(screen.getByRole("button", { name: "searchModal.compare" }));
 
     expect(vi.mocked(router.navigate)).toHaveBeenCalledWith({
       to: "/compare",
@@ -278,18 +300,18 @@ describe("Compare page — swap orchestration", () => {
 
     await waitFor(() =>
       expect(
-        screen.getByRole("button", { name: "Change listing B" }),
+        screen.getByRole("button", { name: "header.changeListingB" }),
       ).toBeInTheDocument(),
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Change listing B" }));
+    fireEvent.click(screen.getByRole("button", { name: "header.changeListingB" }));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     await waitFor(() =>
       expect(screen.getByText("2022 Volkswagen Golf")).toBeInTheDocument(),
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Compare" }));
+    fireEvent.click(screen.getByRole("button", { name: "searchModal.compare" }));
 
     expect(vi.mocked(router.navigate)).toHaveBeenCalledWith({
       to: "/compare",
