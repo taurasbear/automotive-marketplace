@@ -29,5 +29,6 @@
       ]
     }
   },
-  "include": ["src", "tailwind.config.ts"]
+  "include": ["src", "tailwind.config.ts"],
+  "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "src/test/**/*"]
 }
