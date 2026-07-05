@@ -1,0 +1,136 @@
+#!/bin/bash
+
+set -euo pipefail
+
+log_info() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] INFO: $1"
+}
+
+log_error() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: $1" >&2
+}
+
+log_warning() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] WARNING: $1" >&2
+}
+
+check_env_vars() {
+    local missing_vars=()
+    local required_vars=(
+        "POSTGRES_USER"
+        "POSTGRES_PASSWORD"
+        "POSTGRES_DB"
+        "JWT_KEY"
+        "JWT_ISSUER"
+        "JWT_AUDIENCE"
+        "JWT_ACCESSTOKENEXPIRATIONMINUTES"
+        "JWT_REFRESHTOKENEXPIRATIONDAYS"
+        "VITE_APP_API_URL"
+        "DOCKER_GITHUB_TOKEN"
+        "GITHUB_REPOSITORY_OWNER"
+        "MINIO_CONSOLE_URL"
+        "MINIO_BUCKETNAME"
+        "MINIO_PRESIGNEDURLEXPIRATIONHOURS"
+        "MINIO_SERVERURL"
+        "MINIO_ACCESSKEY"
+        "MINIO_SECRETKEY"
+        "OPENAI_APIKEY"
+        "CARDOG_APIKEY"
+    )
+
+    log_info "Checking required environment variables..."
+
+    for var in "${required_vars[@]}"; do
+        if [[ -z "${!var:-}" ]]; then
+            missing_vars+=("$var")
+            log_error "Missing required environment variable: $var"
+        else
+            log_info "✓ $var is set"
+        fi
+    done
+
+    if [[ ${#missing_vars[@]} -gt 0 ]]; then
+        log_error "Deployment cannot continue. Missing environment variables: ${missing_vars[*]}"
+        exit 1
+    fi
+
+    log_info "All required environment variables are present"
+}
+
+log_info "Starting homeserver deployment process..."
+
+check_env_vars
+
+export POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB JWT_KEY JWT_ISSUER JWT_AUDIENCE JWT_ACCESSTOKENEXPIRATIONMINUTES JWT_REFRESHTOKENEXPIRATIONDAYS VITE_APP_API_URL DOCKER_GITHUB_TOKEN GITHUB_REPOSITORY_OWNER MINIO_CONSOLE_URL MINIO_BUCKETNAME MINIO_PRESIGNEDURLEXPIRATIONHOURS MINIO_SERVERURL MINIO_ACCESSKEY MINIO_SECRETKEY OPENAI_APIKEY CARDOG_APIKEY
+
+log_info "Creating application directory..."
+mkdir -p ~/automotive-marketplace
+
+log_info "Generating .env file..."
+cat > ~/automotive-marketplace/.env << EOL
+POSTGRES_USER=${POSTGRES_USER}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+POSTGRES_DB=${POSTGRES_DB}
+JWT_KEY=${JWT_KEY}
+JWT_ISSUER=${JWT_ISSUER}
+JWT_AUDIENCE=${JWT_AUDIENCE}
+JWT_ACCESSTOKENEXPIRATIONMINUTES=${JWT_ACCESSTOKENEXPIRATIONMINUTES}
+JWT_REFRESHTOKENEXPIRATIONDAYS=${JWT_REFRESHTOKENEXPIRATIONDAYS}
+VITE_APP_API_URL=${VITE_APP_API_URL}
+MINIO_CONSOLE_URL=${MINIO_CONSOLE_URL}
+MINIO_BUCKETNAME=${MINIO_BUCKETNAME}
+MINIO_PRESIGNEDURLEXPIRATIONHOURS=${MINIO_PRESIGNEDURLEXPIRATIONHOURS}
+MINIO_SERVERURL=${MINIO_SERVERURL}
+MINIO_ACCESSKEY=${MINIO_ACCESSKEY}
+MINIO_SECRETKEY=${MINIO_SECRETKEY}
+OPENAI_APIKEY=${OPENAI_APIKEY}
+CARDOG_APIKEY=${CARDOG_APIKEY}
+DOCKER_REGISTRY=ghcr.io/${GITHUB_REPOSITORY_OWNER}/
+EOL
+log_info "✓ .env file created successfully"
+
+log_info "Logging into Docker registry..."
+if echo ${DOCKER_GITHUB_TOKEN} | docker login ghcr.io -u ${GITHUB_REPOSITORY_OWNER} --password-stdin; then
+    log_info "✓ Successfully logged into Docker registry"
+else
+    log_error "Failed to login to Docker registry"
+    exit 1
+fi
+
+log_info "Changing to application directory..."
+cd ~/automotive-marketplace
+
+COMPOSE_FILES="-f docker-compose.yml -f docker-compose.homeserver.yml"
+
+log_info "Stopping existing containers..."
+if docker compose $COMPOSE_FILES down; then
+    log_info "✓ Containers stopped successfully"
+else
+    log_warning "Failed to stop containers (they might not be running)"
+fi
+
+log_info "Cleaning up Docker system..."
+if docker system prune -f; then
+    log_info "✓ Docker system cleaned up"
+else
+    log_warning "Docker system cleanup had some issues"
+fi
+
+log_info "Pulling latest images..."
+if docker compose $COMPOSE_FILES pull; then
+    log_info "✓ Images pulled successfully"
+else
+    log_error "Failed to pull images"
+    exit 1
+fi
+
+log_info "Starting containers..."
+if docker compose $COMPOSE_FILES up -d; then
+    log_info "✓ Containers started successfully"
+    log_info "Homeserver deployment completed successfully!"
+else
+    log_error "Failed to start containers"
+    exit 1
+fi
+
+log_info "Deployment process finished"

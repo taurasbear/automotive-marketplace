@@ -1,0 +1,27 @@
+services:
+  nginx:
+    profiles:
+      - "excluded"
+
+  automotive.marketplace.server:
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.automotive-server.rule=Host(`api.automotive-marketplace.taurasbear.me`)"
+      - "traefik.http.routers.automotive-server.entrypoints=web"
+      - "traefik.http.services.automotive-server.loadbalancer.server.port=8080"
+
+  automotive.marketplace.client:
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.automotive-client.rule=Host(`automotive-marketplace.taurasbear.me`)"
+      - "traefik.http.routers.automotive-client.entrypoints=web"
+      - "traefik.http.services.automotive-client.loadbalancer.server.port=57263"
+
+networks:
+  proxy:
+    external: true
+    name: proxy
