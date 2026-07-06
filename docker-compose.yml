@@ -30,6 +30,8 @@ services:
       - app-network
   db:
     image: postgres:18
+    ports:
+      - "5433:5433"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

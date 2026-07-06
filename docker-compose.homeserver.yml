@@ -30,10 +30,6 @@ services:
       - "traefik.http.routers.automotive-minio.entrypoints=web"
       - "traefik.http.services.automotive-minio.loadbalancer.server.port=9000"
 
-      - "traefik.http.routers.automotive-minio-console.rule=Host(`automotive-marketplace-minio-console.taurasbear.me`)"
-      - "traefik.http.routers.automotive-minio-console.entrypoints=web"
-      - "traefik.http.services.automotive-minio-console.loadbalancer.server.port=9001"
-
 networks:
   proxy:
     external: true

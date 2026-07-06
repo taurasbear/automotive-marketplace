@@ -36,7 +36,10 @@ public static class ServiceExtensions
         services.AddScoped<ISeeder, DefectCategorySeeder>();
         services.AddScoped<ISeeder, VariantSeeder>();
 
-        services.AddHttpClient<IMunicipalityApiClient, LithuanianMunicipalityApiClient>();
+        services.AddHttpClient<IMunicipalityApiClient, LithuanianMunicipalityApiClient>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(300);
+        });
         services.AddScoped<IMunicipalityInitializer, MunicipalityInitializer>();
 
         services.AddHttpClient<IVehicleDataApiClient, VpicVehicleDataApiClient>();
