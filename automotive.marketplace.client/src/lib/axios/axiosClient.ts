@@ -6,7 +6,7 @@ import { handleAxiosError } from "./axiosErrorHandler";
 const axiosClient = axios.create({
   baseURL:
     (import.meta.env.VITE_APP_API_URL as string) ||
-    "https://api.automotive-marketplace.taurasbear.me",
+    "https://automotive-marketplace-api.taurasbear.me",
   headers: {
     "Content-Type": "application/json",
   },

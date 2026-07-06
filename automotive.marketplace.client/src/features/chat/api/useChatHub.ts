@@ -37,7 +37,7 @@ import type {
 
 const apiBase =
   (import.meta.env.VITE_APP_API_URL as string) ||
-  "https://api.automotive-marketplace.taurasbear.me";
+  "https://automotive-marketplace-api.taurasbear.me";
 const hubUrl = import.meta.env.PROD ? `${apiBase}/hubs/chat` : "/api/hubs/chat";
 
 const connectionRef = { current: null as signalR.HubConnection | null };

@@ -8,7 +8,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.automotive-server.rule=Host(`api.automotive-marketplace.taurasbear.me`)"
+      - "traefik.http.routers.automotive-server.rule=Host(`automotive-marketplace-api.taurasbear.me`)"
       - "traefik.http.routers.automotive-server.entrypoints=web"
       - "traefik.http.services.automotive-server.loadbalancer.server.port=8080"
 

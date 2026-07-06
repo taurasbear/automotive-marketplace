@@ -62,7 +62,7 @@ jobs:
           Host homeserver-tunnel
               HostName ${{ secrets.HOMESERVER_HOST }}
               User ${{ secrets.HOMESERVER_USERNAME }}
-              ProxyCommand /usr/local/bin/cloudflared access ssh --id ${{ secrets.CF_ACCESS_CLIENT_ID }} --secret ${{ secrets.CF_ACCESS_CLIENT_SECRET }} --hostname %h
+              ProxyCommand /bin/sh -c 'TUNNEL_SERVICE_TOKEN_ID=${{ secrets.CF_ACCESS_CLIENT_ID }} TUNNEL_SERVICE_TOKEN_SECRET=${{ secrets.CF_ACCESS_CLIENT_SECRET }} /usr/local/bin/cloudflared --loglevel debug access tcp --hostname %h'
               IdentityFile ~/.ssh/id_ed25519
               StrictHostKeyChecking no
               ServerAliveInterval 240
@@ -70,14 +70,14 @@ jobs:
 
       - name: Copy compose files and deploy script
         run: |
-          ssh homeserver-tunnel "mkdir -p ~/automotive-marketplace"
+          ssh -vvv homeserver-tunnel "mkdir -p ~/automotive-marketplace"
           scp docker-compose.yml docker-compose.homeserver.yml \
             .github/scripts/deploy.homeserver.sh \
             homeserver-tunnel:~/automotive-marketplace/
 
       - name: Deploy to homeserver
         run: |
-          ssh homeserver-tunnel "cd ~/automotive-marketplace && chmod +x deploy.homeserver.sh && \
+          ssh -vvv homeserver-tunnel "cd ~/automotive-marketplace && chmod +x deploy.homeserver.sh && \
             export POSTGRES_USER='${{ secrets.POSTGRES_USER }}' && \
             export POSTGRES_PASSWORD='${{ secrets.POSTGRES_PASSWORD }}' && \
             export POSTGRES_DB='${{ secrets.POSTGRES_DB }}' && \
