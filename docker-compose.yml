@@ -21,6 +21,7 @@ services:
       - db
     networks:
       - app-network
+    mem_limit: 256m
     restart: unless-stopped
   automotive.marketplace.client:
     image: ${DOCKER_REGISTRY}automotive.marketplace.client:latest
@@ -28,6 +29,7 @@ services:
       - VITE_APP_API_URL=${VITE_APP_API_URL}
     networks:
       - app-network
+    mem_limit: 256m
   db:
     image: postgres:18
     ports:
@@ -39,6 +41,7 @@ services:
       PGPORT: 5433
     volumes:
       - postgres_data:/var/lib/postgresql
+    mem_limit: 256m
     networks:
       - app-network
   nginx:
@@ -66,6 +69,7 @@ services:
       MINIO_SCHEME: http
     volumes:
       - minio_data:/data
+    mem_limit: 256m
     command: server /data --console-address ":9001" --address ":9000"
     networks:
       - app-network
