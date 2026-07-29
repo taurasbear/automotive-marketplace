@@ -11,6 +11,7 @@ services:
       - "traefik.http.routers.automotive-server.rule=Host(`automotive-marketplace-api.taurasbear.me`)"
       - "traefik.http.routers.automotive-server.entrypoints=web"
       - "traefik.http.services.automotive-server.loadbalancer.server.port=8080"
+    restart: unless-stopped
 
   automotive.marketplace.client:
     networks:
@@ -20,6 +21,7 @@ services:
       - "traefik.http.routers.automotive-client.rule=Host(`automotive-marketplace.taurasbear.me`)"
       - "traefik.http.routers.automotive-client.entrypoints=web"
       - "traefik.http.services.automotive-client.loadbalancer.server.port=57263"
+    restart: unless-stopped
 
   minio:
     networks:
@@ -29,6 +31,7 @@ services:
       - "traefik.http.routers.automotive-minio.rule=Host(`automotive-marketplace-minio.taurasbear.me`)"
       - "traefik.http.routers.automotive-minio.entrypoints=web"
       - "traefik.http.services.automotive-minio.loadbalancer.server.port=9000"
+    restart: unless-stopped
 
 networks:
   proxy:
